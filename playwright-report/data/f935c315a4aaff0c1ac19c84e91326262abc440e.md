@@ -1,0 +1,302 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - navigation [ref=e5]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: 🏨
+        - heading "Hotel Management" [level=4] [ref=e11]
+      - generic [ref=e12]:
+        - generic [ref=e13] [cursor=pointer]:
+          - generic [ref=e14] [cursor=pointer]: 📊
+          - generic [ref=e15] [cursor=pointer]:
+            - generic [ref=e16] [cursor=pointer]: "12"
+            - generic [ref=e17] [cursor=pointer]: Reservas
+        - generic [ref=e18] [cursor=pointer]:
+          - generic [ref=e19] [cursor=pointer]: 🏨
+          - generic [ref=e20] [cursor=pointer]:
+            - generic [ref=e21] [cursor=pointer]: "1"
+            - generic [ref=e22] [cursor=pointer]: Hoteles
+        - generic [ref=e23] [cursor=pointer]:
+          - generic [ref=e24] [cursor=pointer]: 💰
+          - generic [ref=e25] [cursor=pointer]:
+            - generic [ref=e26] [cursor=pointer]: $45K
+            - generic [ref=e27] [cursor=pointer]: Ingresos
+      - generic [ref=e28]:
+        - button "📊" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30] [cursor=pointer]: 📊
+        - button "🗺️" [ref=e31] [cursor=pointer]:
+          - generic [ref=e32] [cursor=pointer]: 🗺️
+        - button "🎨" [ref=e33] [cursor=pointer]:
+          - generic [ref=e34] [cursor=pointer]: 🎨
+        - button "🔔 3" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36] [cursor=pointer]: 🔔
+          - generic [ref=e37] [cursor=pointer]: "3"
+        - button " Salir" [ref=e38] [cursor=pointer]:
+          - generic [ref=e39] [cursor=pointer]: 
+          - generic [ref=e40] [cursor=pointer]: Salir
+  - generic [ref=e41]:
+    - complementary [ref=e42]:
+      - generic [ref=e43]:
+        - heading "Panel de Control" [level=5] [ref=e44]
+        - generic [ref=e45]: Gestión Hotelera
+      - navigation [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]: Principal
+          - link "📅 Reservas 12" [ref=e49] [cursor=pointer]:
+            - /url: /dashboard/reservas
+            - generic [ref=e51] [cursor=pointer]: 📅
+            - generic [ref=e52] [cursor=pointer]:
+              - generic [ref=e53] [cursor=pointer]: Reservas
+              - generic [ref=e54] [cursor=pointer]: "12"
+        - generic [ref=e55]:
+          - generic [ref=e56]: Herramientas Avanzadas
+          - button "📊 Analytics Visualización de datos" [ref=e57] [cursor=pointer]:
+            - generic [ref=e59] [cursor=pointer]: 📊
+            - generic [ref=e60] [cursor=pointer]:
+              - generic [ref=e61] [cursor=pointer]: Analytics
+              - generic [ref=e62] [cursor=pointer]: Visualización de datos
+          - button "🗺️ Mapas Interactivos Ubicaciones de hoteles" [ref=e63] [cursor=pointer]:
+            - generic [ref=e65] [cursor=pointer]: 🗺️
+            - generic [ref=e66] [cursor=pointer]:
+              - generic [ref=e67] [cursor=pointer]: Mapas Interactivos
+              - generic [ref=e68] [cursor=pointer]: Ubicaciones de hoteles
+          - button "🎨 Material Design Componentes UI" [ref=e69] [cursor=pointer]:
+            - generic [ref=e71] [cursor=pointer]: 🎨
+            - generic [ref=e72] [cursor=pointer]:
+              - generic [ref=e73] [cursor=pointer]: Material Design
+              - generic [ref=e74] [cursor=pointer]: Componentes UI
+          - button "🏠 Página Principal Ver sitio público" [ref=e75] [cursor=pointer]:
+            - generic [ref=e77] [cursor=pointer]: 🏠
+            - generic [ref=e78] [cursor=pointer]:
+              - generic [ref=e79] [cursor=pointer]: Página Principal
+              - generic [ref=e80] [cursor=pointer]: Ver sitio público
+    - main [ref=e81]:
+      - generic [ref=e84]:
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - generic [ref=e88]: 🏨
+            - generic [ref=e89]:
+              - heading "Gestión de Hoteles" [level=1] [ref=e90]
+              - paragraph [ref=e91]: Administra y controla toda la cadena hotelera
+          - button "➕ Nuevo Hotel" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94] [cursor=pointer]: ➕
+            - generic [ref=e95] [cursor=pointer]: Nuevo Hotel
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - generic [ref=e98]: 🏨
+            - generic [ref=e99]:
+              - generic [ref=e100]: "5"
+              - generic [ref=e101]: Total Hoteles
+          - generic [ref=e102]:
+            - generic [ref=e103]: ✅
+            - generic [ref=e104]:
+              - generic [ref=e105]: "4"
+              - generic [ref=e106]: Activos
+          - generic [ref=e107]:
+            - generic [ref=e108]: ⭐
+            - generic [ref=e109]:
+              - generic [ref=e110]: "2"
+              - generic [ref=e111]: 5 Estrellas
+          - generic [ref=e112]:
+            - generic [ref=e113]: 💰
+            - generic [ref=e114]:
+              - generic [ref=e115]: $2.4M
+              - generic [ref=e116]: Revenue Mensual
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - heading "Todos los Hoteles" [level=2] [ref=e119]
+            - generic [ref=e120]:
+              - combobox [ref=e121] [cursor=pointer]:
+                - option "Todos los estados" [selected]
+                - option "Solo activos"
+                - option "Solo inactivos"
+              - combobox [ref=e122] [cursor=pointer]:
+                - option "Todas las categorías" [selected]
+                - option "5 Estrellas"
+                - option "4 Estrellas"
+                - option "3 Estrellas"
+          - generic [ref=e123]:
+            - generic [ref=e124]:
+              - generic [ref=e125]:
+                - generic [ref=e126]:
+                  - heading "Hotel Boutique Central" [level=3] [ref=e127]
+                  - paragraph [ref=e128]:
+                    - generic [ref=e129]: 📍
+                    - text: Centro, Ciudad
+                - generic [ref=e131]: Activo
+              - generic [ref=e132]:
+                - generic [ref=e133]:
+                  - generic [ref=e134]: "Categoría:"
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: ⭐
+                    - generic [ref=e137]: ⭐
+                    - generic [ref=e138]: ⭐
+                    - generic [ref=e139]: ⭐
+                    - generic [ref=e140]: ⭐
+                    - generic [ref=e141]: 5 Estrellas
+                - generic [ref=e142]:
+                  - generic [ref=e143]: "Habitaciones:"
+                  - generic [ref=e144]: "45"
+                - generic [ref=e145]:
+                  - generic [ref=e146]: "Ocupación:"
+                  - generic [ref=e149]: 87%
+              - generic [ref=e150]:
+                - button "👁️ Ver" [ref=e151] [cursor=pointer]:
+                  - generic [ref=e152] [cursor=pointer]: 👁️
+                  - generic [ref=e153] [cursor=pointer]: Ver
+                - button "✏️ Editar" [ref=e154] [cursor=pointer]:
+                  - generic [ref=e155] [cursor=pointer]: ✏️
+                  - generic [ref=e156] [cursor=pointer]: Editar
+                - button "🗑️ Eliminar" [ref=e157] [cursor=pointer]:
+                  - generic [ref=e158] [cursor=pointer]: 🗑️
+                  - generic [ref=e159] [cursor=pointer]: Eliminar
+                - button "⏸️ Pausar" [ref=e160] [cursor=pointer]:
+                  - generic [ref=e161] [cursor=pointer]: ⏸️
+                  - generic [ref=e162] [cursor=pointer]: Pausar
+            - generic [ref=e163]:
+              - generic [ref=e164]:
+                - generic [ref=e165]:
+                  - heading "Hotel Plaza Mayor" [level=3] [ref=e166]
+                  - paragraph [ref=e167]:
+                    - generic [ref=e168]: 📍
+                    - text: Zona Rosa, Ciudad
+                - generic [ref=e170]: Activo
+              - generic [ref=e171]:
+                - generic [ref=e172]:
+                  - generic [ref=e173]: "Categoría:"
+                  - generic [ref=e174]:
+                    - generic [ref=e175]: ⭐
+                    - generic [ref=e176]: ⭐
+                    - generic [ref=e177]: ⭐
+                    - generic [ref=e178]: ⭐
+                    - generic [ref=e179]: 4 Estrellas
+                - generic [ref=e180]:
+                  - generic [ref=e181]: "Habitaciones:"
+                  - generic [ref=e182]: "32"
+                - generic [ref=e183]:
+                  - generic [ref=e184]: "Ocupación:"
+                  - generic [ref=e187]: 92%
+              - generic [ref=e188]:
+                - button "👁️ Ver" [ref=e189] [cursor=pointer]:
+                  - generic [ref=e190] [cursor=pointer]: 👁️
+                  - generic [ref=e191] [cursor=pointer]: Ver
+                - button "✏️ Editar" [ref=e192] [cursor=pointer]:
+                  - generic [ref=e193] [cursor=pointer]: ✏️
+                  - generic [ref=e194] [cursor=pointer]: Editar
+                - button "🗑️ Eliminar" [ref=e195] [cursor=pointer]:
+                  - generic [ref=e196] [cursor=pointer]: 🗑️
+                  - generic [ref=e197] [cursor=pointer]: Eliminar
+                - button "⏸️ Pausar" [ref=e198] [cursor=pointer]:
+                  - generic [ref=e199] [cursor=pointer]: ⏸️
+                  - generic [ref=e200] [cursor=pointer]: Pausar
+            - generic [ref=e201]:
+              - generic [ref=e202]:
+                - generic [ref=e203]:
+                  - heading "Hotel Ejecutivo" [level=3] [ref=e204]
+                  - paragraph [ref=e205]:
+                    - generic [ref=e206]: 📍
+                    - text: Zona Financiera, Ciudad
+                - generic [ref=e208]: Inactivo
+              - generic [ref=e209]:
+                - generic [ref=e210]:
+                  - generic [ref=e211]: "Categoría:"
+                  - generic [ref=e212]:
+                    - generic [ref=e213]: ⭐
+                    - generic [ref=e214]: ⭐
+                    - generic [ref=e215]: ⭐
+                    - generic [ref=e216]: ⭐
+                    - generic [ref=e217]: 4 Estrellas
+                - generic [ref=e218]:
+                  - generic [ref=e219]: "Habitaciones:"
+                  - generic [ref=e220]: "28"
+                - generic [ref=e221]:
+                  - generic [ref=e222]: "Ocupación:"
+                  - generic [ref=e224]: 0%
+              - generic [ref=e225]:
+                - button "👁️ Ver" [ref=e226] [cursor=pointer]:
+                  - generic [ref=e227] [cursor=pointer]: 👁️
+                  - generic [ref=e228] [cursor=pointer]: Ver
+                - button "✏️ Editar" [ref=e229] [cursor=pointer]:
+                  - generic [ref=e230] [cursor=pointer]: ✏️
+                  - generic [ref=e231] [cursor=pointer]: Editar
+                - button "🗑️ Eliminar" [ref=e232] [cursor=pointer]:
+                  - generic [ref=e233] [cursor=pointer]: 🗑️
+                  - generic [ref=e234] [cursor=pointer]: Eliminar
+                - button "▶️ Activar" [ref=e235] [cursor=pointer]:
+                  - generic [ref=e236] [cursor=pointer]: ▶️
+                  - generic [ref=e237] [cursor=pointer]: Activar
+            - generic [ref=e238]:
+              - generic [ref=e239]:
+                - generic [ref=e240]:
+                  - heading "Hotel Paradise Beach" [level=3] [ref=e241]
+                  - paragraph [ref=e242]:
+                    - generic [ref=e243]: 📍
+                    - text: Costa Dorada, Playa
+                - generic [ref=e245]: Activo
+              - generic [ref=e246]:
+                - generic [ref=e247]:
+                  - generic [ref=e248]: "Categoría:"
+                  - generic [ref=e249]:
+                    - generic [ref=e250]: ⭐
+                    - generic [ref=e251]: ⭐
+                    - generic [ref=e252]: ⭐
+                    - generic [ref=e253]: ⭐
+                    - generic [ref=e254]: ⭐
+                    - generic [ref=e255]: 5 Estrellas
+                - generic [ref=e256]:
+                  - generic [ref=e257]: "Habitaciones:"
+                  - generic [ref=e258]: "67"
+                - generic [ref=e259]:
+                  - generic [ref=e260]: "Ocupación:"
+                  - generic [ref=e263]: 95%
+              - generic [ref=e264]:
+                - button "👁️ Ver" [ref=e265] [cursor=pointer]:
+                  - generic [ref=e266] [cursor=pointer]: 👁️
+                  - generic [ref=e267] [cursor=pointer]: Ver
+                - button "✏️ Editar" [ref=e268] [cursor=pointer]:
+                  - generic [ref=e269] [cursor=pointer]: ✏️
+                  - generic [ref=e270] [cursor=pointer]: Editar
+                - button "🗑️ Eliminar" [ref=e271] [cursor=pointer]:
+                  - generic [ref=e272] [cursor=pointer]: 🗑️
+                  - generic [ref=e273] [cursor=pointer]: Eliminar
+                - button "⏸️ Pausar" [ref=e274] [cursor=pointer]:
+                  - generic [ref=e275] [cursor=pointer]: ⏸️
+                  - generic [ref=e276] [cursor=pointer]: Pausar
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - generic [ref=e279]:
+                  - heading "Hotel Business Center" [level=3] [ref=e280]
+                  - paragraph [ref=e281]:
+                    - generic [ref=e282]: 📍
+                    - text: Distrito Financiero, Ciudad
+                - generic [ref=e284]: Activo
+              - generic [ref=e285]:
+                - generic [ref=e286]:
+                  - generic [ref=e287]: "Categoría:"
+                  - generic [ref=e288]:
+                    - generic [ref=e289]: ⭐
+                    - generic [ref=e290]: ⭐
+                    - generic [ref=e291]: ⭐
+                    - generic [ref=e292]: 3 Estrellas
+                - generic [ref=e293]:
+                  - generic [ref=e294]: "Habitaciones:"
+                  - generic [ref=e295]: "24"
+                - generic [ref=e296]:
+                  - generic [ref=e297]: "Ocupación:"
+                  - generic [ref=e300]: 78%
+              - generic [ref=e301]:
+                - button "👁️ Ver" [ref=e302] [cursor=pointer]:
+                  - generic [ref=e303] [cursor=pointer]: 👁️
+                  - generic [ref=e304] [cursor=pointer]: Ver
+                - button "✏️ Editar" [ref=e305] [cursor=pointer]:
+                  - generic [ref=e306] [cursor=pointer]: ✏️
+                  - generic [ref=e307] [cursor=pointer]: Editar
+                - button "🗑️ Eliminar" [ref=e308] [cursor=pointer]:
+                  - generic [ref=e309] [cursor=pointer]: 🗑️
+                  - generic [ref=e310] [cursor=pointer]: Eliminar
+                - button "⏸️ Pausar" [ref=e311] [cursor=pointer]:
+                  - generic [ref=e312] [cursor=pointer]: ⏸️
+                  - generic [ref=e313] [cursor=pointer]: Pausar
+```
