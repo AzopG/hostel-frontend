@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Observable, fromEvent, debounceTime, distinctUntilChanged } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class PerformanceService {
   private intersectionObserver?: IntersectionObserver;
   private resizeObserver?: ResizeObserver;
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.initializeObservers();
   }
 
@@ -16,6 +17,10 @@ export class PerformanceService {
    * Inicializa los observers para optimización
    */
   private initializeObservers(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    
     // Intersection Observer para lazy loading
     if ('IntersectionObserver' in window) {
       this.intersectionObserver = new IntersectionObserver(

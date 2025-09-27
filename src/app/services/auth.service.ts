@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface Usuario {
   _id: string;
@@ -50,7 +51,10 @@ export class AuthService {
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     // Verificar si hay un token guardado al inicializar el servicio
     this.checkStoredToken();
   }
@@ -82,8 +86,10 @@ export class AuthService {
       .pipe(
         tap(response => {
           // Guardar token en localStorage
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.usuario));
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.usuario));
+          }
           
           // Actualizar subjects
           this.isAuthenticatedSubject.next(true);
@@ -108,8 +114,10 @@ export class AuthService {
    */
   logout(): void {
     // Limpiar localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
     
     // Actualizar subjects
     this.isAuthenticatedSubject.next(false);
@@ -144,15 +152,21 @@ export class AuthService {
    * Obtener token del localStorage
    */
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   /**
    * Obtener usuario actual del localStorage
    */
   getCurrentUser(): Usuario | null {
-    const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+    if (isPlatformBrowser(this.platformId)) {
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    }
+    return null;
   }
 
   /**

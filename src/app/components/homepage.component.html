@@ -1,0 +1,212 @@
+﻿<nav class="navbar">
+  <div class="navbar-brand">
+    <span class="brand-icon">🏨</span>
+    <span>Hotel Paradise</span>
+  </div>
+  <ul class="navbar-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#panel">Panel</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li *ngIf="!isAuthenticated">
+      <button class="login-nav-btn" (click)="navigateToLogin()">Iniciar Sesión</button>
+    </li>
+    <li *ngIf="isAuthenticated" class="user-menu">
+      <div class="notification-bell" (click)="toggleNotifications()">
+        <span class="bell-icon">🔔</span>
+        <span class="notification-count" *ngIf="totalNotifications > 0">{{ totalNotifications }}</span>
+      </div>
+      <div class="user-info">
+        <span class="user-name">{{ currentUser?.nombre }}</span>
+        <button class="dashboard-btn" (click)="navigateToDashboard()">Dashboard</button>
+        <button class="logout-btn" (click)="logout()">Salir</button>
+      </div>
+    </li>
+  </ul>
+  
+  <!-- Panel de notificaciones -->
+  <div class="notifications-panel" *ngIf="showNotifications && isAuthenticated">
+    <div class="notifications-header">
+      <h4>Notificaciones</h4>
+      <button class="close-notifications" (click)="toggleNotifications()">×</button>
+    </div>
+    <div class="notifications-content">
+      <div class="notification-item" *ngFor="let notification of notifications" 
+           (click)="executeNotificationAction(notification)"
+           [class.clickable]="notification.action">
+        <div class="notification-icon" [ngClass]="notification.type">{{ notification.icon }}</div>
+        <div class="notification-text">
+          <div class="notification-title">{{ notification.title }}</div>
+          <div class="notification-description">{{ notification.description }}</div>
+        </div>
+        <div class="notification-time">{{ notification.time }}</div>
+        <div class="notification-arrow" *ngIf="notification.action">→</div>
+      </div>
+      <div class="no-notifications" *ngIf="notifications.length === 0">
+        <p>No hay notificaciones nuevas</p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="homepage">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">
+           <span class="gradient-text">Hotel Paradise</span>
+        </h1>
+        <p class="hero-subtitle">
+          Experiencia hotelera excepcional con servicios de lujo y comodidad incomparable
+        </p>
+        <div class="hero-features">
+          <div class="feature-item">
+            <span class="feature-icon">🌟</span>
+            <span>Servicio Premium</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🏊‍♀️</span>
+            <span>Instalaciones de Lujo</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🍽️</span>
+            <span>Gastronomía Exclusiva</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-primary" (click)="navigateToLogin()" *ngIf="!isAuthenticated">
+            <span class="btn-icon">🏨</span>
+            Gestión Hotelera
+          </button>
+          <button class="btn-primary" (click)="navigateToDashboard()" *ngIf="isAuthenticated">
+            <span class="btn-icon">🏨</span>
+            Ir al Dashboard
+          </button>
+          <button class="btn-secondary" (click)="exploreFeatures()">
+            <span class="btn-icon">🏖️</span>
+            Ver Servicios
+          </button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="floating-card">
+          <div class="card-header">
+            <h3>Panel de Control</h3>
+            <div class="status-indicator active"></div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">{{ currentStats.totalHoteles }}</div>
+              <div class="stat-label">Hoteles</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ currentStats.totalReservas }}</div>
+              <div class="stat-label">Reservas</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ currentStats.totalUsuarios }}</div>
+              <div class="stat-label">Usuarios</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ formatRevenue(currentStats.ingresosTotales) }}</div>
+              <div class="stat-label">Revenue</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="features" id="servicios">
+    <div class="container">
+      <h2 class="section-title">Nuestros Servicios</h2>
+      <div class="features-grid">
+        
+        <!-- Reservas -->
+        <div class="feature-card" (click)="navigateToService('reservas')">
+          <div class="feature-icon-large">🏨</div>
+          <h3>Gestión de Reservas</h3>
+          <p>Sistema completo para administrar reservas de habitaciones, salones de eventos y servicios especiales.</p>
+          <div class="service-highlights">
+            <span class="service-tag">{{ currentStats.reservasPendientes }} Pendientes</span>
+            <span class="service-tag">{{ currentStats.reservasConfirmadas }} Confirmadas</span>
+          </div>
+          <div class="feature-action">
+            <span class="action-text">Gestionar Reservas</span>
+            <span class="action-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- Habitaciones -->
+        <div class="feature-card" (click)="navigateToService('habitaciones')">
+          <div class="feature-icon-large">🛏️</div>
+          <h3>Habitaciones</h3>
+          <p>Gestión de habitaciones disponibles y ocupación en tiempo real.</p>
+          <div class="service-highlights">
+            <span class="service-tag">Disponibilidad</span>
+            <span class="service-tag">Ocupación</span>
+          </div>
+          <div class="feature-action">
+            <span class="action-text">Ver Habitaciones</span>
+            <span class="action-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- Hoteles -->
+        <div class="feature-card" (click)="navigateToService('hoteles')">
+          <div class="feature-icon-large">🏢</div>
+          <h3>Gestión de Hoteles</h3>
+          <p>Administra tu cadena hotelera desde un solo lugar.</p>
+          <div class="service-highlights">
+            <span class="service-tag">{{ currentStats.totalHoteles }} Hoteles</span>
+            <span class="service-tag">Multi-sede</span>
+          </div>
+          <div class="feature-action">
+            <span class="action-text">Administrar</span>
+            <span class="action-arrow">→</span>
+          </div>
+        </div>
+
+        <!-- Reportes -->
+        <div class="feature-card" (click)="navigateToService('reportes')">
+          <div class="feature-icon-large">📊</div>
+          <h3>Reportes y Estadísticas</h3>
+          <p>Análisis completo del rendimiento de tu negocio hotelero.</p>
+          <div class="service-highlights">
+            <span class="service-tag">Analytics</span>
+            <span class="service-tag">Revenue: {{ formatRevenue(currentStats.ingresosTotales) }}</span>
+          </div>
+          <div class="feature-action">
+            <span class="action-text">Ver Reportes</span>
+            <span class="action-arrow">→</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contacto">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Hotel Paradise</h4>
+          <p>Sistema de gestión hotelera integral para cadenas y hoteles independientes.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <ul>
+            <li> +57 123 456 7890</li>
+            <li>📧 info&#64;hotelparadise.com</li>
+            <li> Bogotá, Colombia</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Hotel Paradise. Sistema de gestión hotelera.</p>
+      </div>
+    </div>
+  </footer>
+</div>

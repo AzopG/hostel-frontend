@@ -323,16 +323,16 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
     /* Header profesional */
     .navbar {
-      background: rgba(255, 255, 255, 0.95) !important;
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-      height: 80px;
+      height: 70px;
       padding: 0;
     }
 
@@ -382,13 +382,14 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     .stat-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      gap: 14px;
+      padding: 14px 22px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 14px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
       cursor: pointer;
+      min-width: 130px;
     }
 
     .stat-item:hover {
@@ -498,21 +499,22 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     /* Layout principal */
     .dashboard-layout {
       display: flex;
-      margin-top: 80px;
-      min-height: calc(100vh - 80px);
+      margin-top: 70px;
+      min-height: calc(100vh - 70px);
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
     }
 
     /* Sidebar mejorado */
     .sidebar {
-      width: 320px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(15px);
-      border-right: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(226, 232, 240, 0.3);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.06);
       overflow-y: auto;
       position: fixed;
       left: 0;
-      top: 80px;
+      top: 70px;
       bottom: 0;
       z-index: 100;
     }
@@ -557,9 +559,9 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     .nav-item {
       display: flex;
       align-items: center;
-      padding: 16px 24px;
-      margin: 4px 16px;
-      border-radius: 16px;
+      padding: 14px 20px;
+      margin: 3px 12px;
+      border-radius: 12px;
       color: #4a5568;
       text-decoration: none;
       transition: all 0.3s ease;
@@ -568,8 +570,9 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       cursor: pointer;
       border: none;
       background: transparent;
-      width: calc(100% - 32px);
-      font-size: 1rem;
+      width: calc(100% - 24px);
+      font-size: 0.95rem;
+      min-height: 50px;
     }
 
     .nav-item::before {
@@ -688,13 +691,18 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     /* Contenido principal */
     .main-content {
       flex: 1;
-      margin-left: 320px;
+      margin-left: 300px;
       background: rgba(255, 255, 255, 0.02);
+      min-height: calc(100vh - 70px);
     }
 
     .content-wrapper {
-      padding: 32px;
-      min-height: calc(100vh - 80px);
+      padding: 24px 28px;
+      min-height: calc(100vh - 70px);
+      background: rgba(255, 255, 255, 0.95);
+      margin: 8px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     }
 
     /* Scroll personalizado */
@@ -716,6 +724,17 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     }
 
     /* Responsive */
+    @media (max-width: 1200px) {
+      .quick-stats {
+        gap: 16px;
+      }
+      
+      .stat-item {
+        min-width: 110px;
+        padding: 12px 16px;
+      }
+    }
+    
     @media (max-width: 1024px) {
       .quick-stats {
         display: none;
@@ -727,6 +746,10 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
       .main-content {
         margin-left: 280px;
+      }
+      
+      .content-wrapper {
+        padding: 20px 24px;
       }
     }
 
