@@ -38,6 +38,39 @@ export interface RegisterResponse {
   usuario: Usuario;
 }
 
+// HU13: Interfaces para registro de empresa
+export interface ContactoEmpresa {
+  nombre: string;
+  cargo?: string;
+  telefono: string;
+}
+
+export interface RegisterEmpresaRequest {
+  razonSocial: string;
+  nit: string;
+  contacto: ContactoEmpresa;
+  email: string;
+  password: string;
+}
+
+export interface EmpresaData {
+  _id: string;
+  razonSocial: string;
+  nit: string;
+  nitFormateado: string;
+  email: string;
+  tipo: 'empresa';
+  contacto: ContactoEmpresa;
+  createdAt: Date;
+}
+
+export interface RegisterEmpresaResponse {
+  success: boolean;
+  msg: string;
+  token: string;
+  empresa: EmpresaData;
+}
+
 // HU03: Interfaces para recuperación de contraseña
 export interface ForgotPasswordRequest {
   email: string;
@@ -137,6 +170,44 @@ export class AuthService {
     return this.http.post<RegisterResponse>(`${this.API_URL}/register`, userData)
       .pipe(
         catchError(this.handleError<RegisterResponse>('register'))
+      );
+  }
+
+  /**
+   * HU13: Registrar cuenta empresarial
+   * CA1: Envía formulario con razón social, NIT, contacto, correo, contraseña
+   * CA4: Inicia sesión automáticamente al registrar
+   */
+  registerEmpresa(empresaData: RegisterEmpresaRequest): Observable<RegisterEmpresaResponse> {
+    return this.http.post<RegisterEmpresaResponse>(`${this.API_URL}/register-empresa`, empresaData)
+      .pipe(
+        tap(response => {
+          if (response.success && response.token) {
+            // CA4: Guardar sesión automáticamente al registrar empresa
+            if (isPlatformBrowser(this.platformId)) {
+              localStorage.setItem('token', response.token);
+              localStorage.setItem('user', JSON.stringify({
+                _id: response.empresa._id,
+                nombre: response.empresa.contacto.nombre,
+                email: response.empresa.email,
+                tipo: 'empresa',
+                empresa: response.empresa.razonSocial
+              }));
+              localStorage.setItem('rememberMe', 'true');
+            }
+            
+            // Actualizar subjects
+            this.isAuthenticatedSubject.next(true);
+            this.currentUserSubject.next({
+              _id: response.empresa._id,
+              nombre: response.empresa.contacto.nombre,
+              email: response.empresa.email,
+              tipo: 'empresa',
+              empresa: response.empresa.razonSocial
+            });
+          }
+        }),
+        catchError(this.handleError<RegisterEmpresaResponse>('registerEmpresa'))
       );
   }
 
