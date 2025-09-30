@@ -8,6 +8,9 @@
     <li><a href="#panel">Panel</a></li>
     <li><a href="#contacto">Contacto</a></li>
     <li *ngIf="!isAuthenticated">
+      <button class="register-nav-btn" (click)="navigateToRegister()">Registrarse</button>
+    </li>
+    <li *ngIf="!isAuthenticated">
       <button class="login-nav-btn" (click)="navigateToLogin()">Iniciar Sesión</button>
     </li>
     <li *ngIf="isAuthenticated" class="user-menu">
@@ -74,15 +77,27 @@
           </div>
         </div>
         <div class="hero-actions">
-          <button class="btn-primary" (click)="navigateToLogin()" *ngIf="!isAuthenticated">
-            <span class="btn-icon">🏨</span>
-            Gestión Hotelera
+          <button class="btn-primary" (click)="navigateToRegister()" *ngIf="!isAuthenticated">
+            <span class="btn-icon">✨</span>
+            Crear Cuenta
           </button>
           <button class="btn-primary" (click)="navigateToDashboard()" *ngIf="isAuthenticated">
             <span class="btn-icon">🏨</span>
             Ir al Dashboard
           </button>
-          <button class="btn-secondary" (click)="exploreFeatures()">
+          <button class="btn-secondary" (click)="navigateToBuscarHabitaciones()">
+            <span class="btn-icon">🔍</span>
+            Buscar Habitaciones
+          </button>
+          <button class="btn-secondary" (click)="navigateToCalendario()">
+            <span class="btn-icon">📅</span>
+            Ver Disponibilidad
+          </button>
+          <button class="btn-secondary" (click)="navigateToLogin()" *ngIf="!isAuthenticated">
+            <span class="btn-icon">🔑</span>
+            Iniciar Sesión
+          </button>
+          <button class="btn-secondary" (click)="exploreFeatures()" *ngIf="!isAuthenticated">
             <span class="btn-icon">🏖️</span>
             Ver Servicios
           </button>

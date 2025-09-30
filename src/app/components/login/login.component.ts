@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { AuthService, LoginRequest } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   template: `
     <div class="login-container">
       <div class="login-card">
@@ -54,6 +54,18 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
             </div>
           </div>
 
+          <!-- Remember Me -->
+          <div class="form-group-checkbox">
+            <label class="checkbox-container">
+              <input
+                type="checkbox"
+                formControlName="rememberMe"
+                id="rememberMe"
+              />
+              <span class="checkbox-label">Recordarme</span>
+            </label>
+          </div>
+
           <!-- Error general -->
           <div class="error-message" *ngIf="errorMessage">
             {{ errorMessage }}
@@ -62,6 +74,11 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
           <!-- Success message -->
           <div class="success-message" *ngIf="successMessage">
             {{ successMessage }}
+          </div>
+
+          <!-- Success message después de reset password -->
+          <div class="success-message" *ngIf="resetPasswordSuccess">
+            ✓ Tu contraseña ha sido restablecida exitosamente. Ya puedes iniciar sesión.
           </div>
 
           <!-- Submit button -->
@@ -78,6 +95,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
         <!-- Links adicionales -->
         <div class="login-footer">
           <p>¿No tienes cuenta? <a href="#" (click)="goToRegister($event)">Regístrate aquí</a></p>
+          <p><a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a></p>
         </div>
 
         <!-- ...eliminar credenciales de prueba... -->
@@ -151,6 +169,33 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
 
     .form-group input.error {
       border-color: #e74c3c;
+    }
+
+    .form-group-checkbox {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      cursor: pointer;
+      accent-color: #667eea;
+    }
+
+    .checkbox-label {
+      color: #333;
+      font-size: 14px;
+      font-weight: 500;
     }
 
     .error-message {
@@ -264,15 +309,18 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
+  resetPasswordSuccess = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      rememberMe: [false]
     });
   }
 
@@ -281,9 +329,31 @@ export class LoginComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
     }
+
+    // Verificar si viene de reset password exitoso
+    this.route.queryParams.subscribe(params => {
+      if (params['resetSuccess'] === 'true') {
+        this.resetPasswordSuccess = true;
+        // Limpiar el query param después de 5 segundos
+        setTimeout(() => {
+          this.resetPasswordSuccess = false;
+        }, 5000);
+      }
+    });
   }
 
   onSubmit(): void {
+    // Marcar todos los campos como touched para mostrar errores (CA3)
+    Object.keys(this.loginForm.controls).forEach(key => {
+      this.loginForm.get(key)?.markAsTouched();
+    });
+
+    // Validar que los campos no estén vacíos (CA3)
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Por favor, completa todos los campos requeridos';
+      return;
+    }
+
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
@@ -295,22 +365,43 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           this.isLoading = false;
           if (response) {
-            this.successMessage = 'Login exitoso. Redirigiendo...';
+            // CA1: Autenticación válida - Redirigir según el rol
+            this.successMessage = `Bienvenido ${response.usuario.nombre}. Redirigiendo...`;
             setTimeout(() => {
-              this.router.navigate(['/dashboard']);
+              // Redirigir al panel correspondiente según el rol (CA1)
+              this.navigateByRole(response.usuario.tipo);
             }, 1000);
           }
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.error?.msg || 'Error al iniciar sesión. Intenta nuevamente.';
+          // CA2: Credenciales inválidas
+          if (error.status === 401) {
+            this.errorMessage = 'Credenciales inválidas';
+          } else {
+            this.errorMessage = error.error?.msg || 'Error al iniciar sesión. Intenta nuevamente.';
+          }
         }
       });
-    } else {
-      // Marcar todos los campos como touched para mostrar errores
-      Object.keys(this.loginForm.controls).forEach(key => {
-        this.loginForm.get(key)?.markAsTouched();
-      });
+    }
+  }
+
+  /**
+   * Navegar al panel correspondiente según el rol del usuario (CA1)
+   */
+  private navigateByRole(tipo: string): void {
+    switch (tipo) {
+      case 'admin_central':
+      case 'admin_hotel':
+        this.router.navigate(['/dashboard/hoteles']);
+        break;
+      case 'empresa':
+        this.router.navigate(['/dashboard/reservas']);
+        break;
+      case 'cliente':
+      default:
+        this.router.navigate(['/dashboard/mis-reservas']);
+        break;
     }
   }
 

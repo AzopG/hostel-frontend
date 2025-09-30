@@ -1,0 +1,43 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - heading "🔍 Buscar Habitaciones" [level=1] [ref=e6]
+    - paragraph [ref=e7]: Encuentra la habitación perfecta para tu estadía
+  - generic [ref=e8]:
+    - heading "Filtros de Búsqueda" [level=2] [ref=e9]
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - generic [ref=e13]:
+            - generic [ref=e14]: 🌆
+            - text: Ciudad
+          - combobox "🌆 Ciudad" [ref=e15]:
+            - option "Todas las ciudades" [selected]
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - generic [ref=e18]: 📅
+            - text: Check-in *
+          - textbox "📅 Check-in *" [ref=e19]: 2025-09-30
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]: 📅
+            - text: Check-out *
+          - textbox "📅 Check-out *" [ref=e23]: 2025-10-01
+          - generic [ref=e24]: 1 noche(s)
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e27]: 👥
+            - text: Huéspedes *
+          - generic [ref=e28]:
+            - button "-" [ref=e29] [cursor=pointer]
+            - spinbutton "👥 Huéspedes *" [ref=e30]: "2"
+            - button "+" [ref=e31] [cursor=pointer]
+          - generic [ref=e32]: Máximo 10 huéspedes
+      - generic [ref=e33]:
+        - button "Buscando..." [disabled] [ref=e34]:
+          - generic [ref=e35]: Buscando...
+        - button "🗑️ Limpiar" [disabled] [ref=e37] [cursor=pointer]
+  - paragraph [ref=e40]: Buscando habitaciones disponibles...
+```

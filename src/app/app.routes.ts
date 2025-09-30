@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { CalendarioDisponibilidadComponent } from './components/calendario-disponibilidad/calendario-disponibilidad.component';
+import { BuscarHabitacionesComponent } from './components/buscar-habitaciones/buscar-habitaciones.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -9,6 +14,13 @@ export const routes: Routes = [
     loadComponent: () => import('./components/homepage.component').then(m => m.HomepageComponent)
   },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
+  // HU04: Calendario de disponibilidad por ciudad (acceso público)
+  { path: 'disponibilidad-ciudad', component: CalendarioDisponibilidadComponent },
+  // HU05: Buscar habitaciones por fechas y huéspedes (acceso público)
+  { path: 'buscar-habitaciones', component: BuscarHabitacionesComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,

@@ -15,6 +15,7 @@ export interface Usuario {
 export interface LoginRequest {
   email: string;
   password: string;
+  rememberMe?: boolean;
 }
 
 export interface LoginResponse {
@@ -35,6 +36,25 @@ export interface RegisterRequest {
 export interface RegisterResponse {
   msg: string;
   usuario: Usuario;
+}
+
+// HU03: Interfaces para recuperación de contraseña
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  msg: string;
+  resetToken?: string; // Solo en desarrollo
+  resetUrl?: string;   // Solo en desarrollo
+}
+
+export interface ResetPasswordRequest {
+  password: string;
+}
+
+export interface ResetPasswordResponse {
+  msg: string;
 }
 
 @Injectable({
@@ -61,6 +81,7 @@ export class AuthService {
 
   /**
    * Verificar si hay un token almacenado y validarlo
+   * CA4: Verifica tanto localStorage como sessionStorage
    */
   private checkStoredToken(): void {
     const token = this.getToken();
@@ -85,10 +106,20 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.API_URL}/login`, credentials)
       .pipe(
         tap(response => {
-          // Guardar token en localStorage
+          // CA4: Guardar sesión según "Recordarme"
           if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.usuario));
+            const storage = credentials.rememberMe ? localStorage : sessionStorage;
+            
+            // Limpiar del otro storage
+            const otherStorage = credentials.rememberMe ? sessionStorage : localStorage;
+            otherStorage.removeItem('token');
+            otherStorage.removeItem('user');
+            otherStorage.removeItem('rememberMe');
+            
+            // Guardar en el storage apropiado
+            storage.setItem('token', response.token);
+            storage.setItem('user', JSON.stringify(response.usuario));
+            storage.setItem('rememberMe', credentials.rememberMe ? 'true' : 'false');
           }
           
           // Actualizar subjects
@@ -111,12 +142,17 @@ export class AuthService {
 
   /**
    * Cerrar sesión
+   * CA4: Limpiar tanto localStorage como sessionStorage
    */
   logout(): void {
-    // Limpiar localStorage
+    // Limpiar ambos storages
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('rememberMe');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('rememberMe');
     }
     
     // Actualizar subjects
@@ -149,24 +185,57 @@ export class AuthService {
   }
 
   /**
-   * Obtener token del localStorage
+   * HU03 - CA1, CA2, CA3: Solicitar recuperación de contraseña
+   */
+  forgotPassword(email: string): Observable<ForgotPasswordResponse> {
+    return this.http.post<ForgotPasswordResponse>(`${this.API_URL}/forgot-password`, { email })
+      .pipe(
+        catchError(this.handleError<ForgotPasswordResponse>('forgotPassword'))
+      );
+  }
+
+  /**
+   * HU03 - CA4: Restablecer contraseña con token
+   */
+  resetPassword(token: string, password: string): Observable<ResetPasswordResponse> {
+    return this.http.post<ResetPasswordResponse>(`${this.API_URL}/reset-password/${token}`, { password })
+      .pipe(
+        catchError(this.handleError<ResetPasswordResponse>('resetPassword'))
+      );
+  }
+
+  /**
+   * Obtener token del storage apropiado (localStorage o sessionStorage)
+   * CA4: Busca en ambos storages
    */
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('token');
+      return localStorage.getItem('token') || sessionStorage.getItem('token');
     }
     return null;
   }
 
   /**
-   * Obtener usuario actual del localStorage
+   * Obtener usuario actual del storage apropiado
+   * CA4: Busca en ambos storages
    */
   getCurrentUser(): Usuario | null {
     if (isPlatformBrowser(this.platformId)) {
-      const userStr = localStorage.getItem('user');
+      const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
       return userStr ? JSON.parse(userStr) : null;
     }
     return null;
+  }
+
+  /**
+   * Verificar si la sesión fue marcada para recordar
+   * CA4: Check rememberMe flag
+   */
+  isRememberMeEnabled(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('rememberMe') === 'true';
+    }
+    return false;
   }
 
   /**

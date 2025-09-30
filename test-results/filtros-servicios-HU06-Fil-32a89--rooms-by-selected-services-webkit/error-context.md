@@ -1,0 +1,48 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - heading "🔍 Buscar Habitaciones" [level=1] [ref=e5]
+    - paragraph [ref=e6]: Encuentra la habitación perfecta para tu estadía
+  - generic [ref=e7]:
+    - heading "Filtros de Búsqueda" [level=2] [ref=e8]
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]:
+            - generic [ref=e13]: 🌆
+            - text: Ciudad
+          - combobox "🌆 Ciudad" [ref=e14]:
+            - option "Todas las ciudades" [selected]
+            - option "Barranquilla (4 hoteles)"
+            - option "Bogotá (12 hoteles)"
+            - option "Cali (4 hoteles)"
+            - option "Cartagena (8 hoteles)"
+            - option "Medellín (8 hoteles)"
+        - generic [ref=e15]:
+          - generic [ref=e16]:
+            - generic [ref=e17]: 📅
+            - text: Check-in *
+          - textbox "📅 Check-in *" [ref=e18]: 2025-09-30
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: 📅
+            - text: Check-out *
+          - textbox "📅 Check-out *" [ref=e22]: 2025-10-01
+          - generic [ref=e23]: 1 noche(s)
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: 👥
+            - text: Huéspedes *
+          - generic [ref=e27]:
+            - button "-" [ref=e28] [cursor=pointer]
+            - spinbutton "👥 Huéspedes *" [ref=e29]: "2"
+            - button "+" [ref=e30] [cursor=pointer]
+          - generic [ref=e31]: Máximo 10 huéspedes
+      - generic [ref=e32]:
+        - button "Buscando..." [disabled] [ref=e33]:
+          - generic [ref=e34]: Buscando...
+        - button "🗑️ Limpiar" [disabled] [ref=e36] [cursor=pointer]
+  - paragraph [ref=e39]: Buscando habitaciones disponibles...
+```
