@@ -1,0 +1,249 @@
+<div class="modificar-container">
+  <!-- Loading / Verificando -->
+  <div *ngIf="cargando || pasoActual === 'verificando'" class="loading">
+    <div class="spinner"></div>
+    <p>Verificando reserva...</p>
+  </div>
+
+  <!-- PASO 1: SELECCIONAR NUEVAS FECHAS (CA1) -->
+  <div *ngIf="pasoActual === 'seleccionar-fechas' && reserva" class="paso-seleccionar">
+    <h1>Modificar Fechas de Reserva</h1>
+    <p class="subtitulo">Reserva: <strong>{{ reserva.codigoReserva }}</strong></p>
+
+    <div class="card-reserva-actual">
+      <h3>📋 Reserva Actual</h3>
+      <div class="info-grid">
+        <div>
+          <strong>Hotel:</strong>
+          <p>{{ reserva.hotel.nombre }}</p>
+        </div>
+        <div>
+          <strong>Habitación:</strong>
+          <p>{{ reserva.habitacion.tipo }} {{ reserva.habitacion.numero }}</p>
+        </div>
+        <div>
+          <strong>Fechas Actuales:</strong>
+          <p>{{ reserva.fechaInicio | date:'d MMM' }} - {{ reserva.fechaFin | date:'d MMM yyyy' }}</p>
+        </div>
+        <div>
+          <strong>Noches:</strong>
+          <p>{{ reserva.noches }}</p>
+        </div>
+        <div>
+          <strong>Tarifa Actual:</strong>
+          <p class="precio">{{ formatearPrecio(reserva.tarifa.total) }}</p>
+        </div>
+        <div>
+          <strong>Estado:</strong>
+          <p class="estado-confirmada">{{ reserva.estado }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-nuevas-fechas">
+      <h3>📅 Selecciona Nuevas Fechas</h3>
+      
+      <form [formGroup]="fechasForm" class="form-fechas">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fechaInicio">Fecha de Inicio *</label>
+            <input 
+              type="date" 
+              id="fechaInicio" 
+              formControlName="fechaInicio"
+              [class.error]="mostrarError('fechaInicio')">
+            <span *ngIf="mostrarError('fechaInicio')" class="mensaje-error">
+              {{ obtenerErrorCampo('fechaInicio') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="fechaFin">Fecha de Fin *</label>
+            <input 
+              type="date" 
+              id="fechaFin" 
+              formControlName="fechaFin"
+              [class.error]="mostrarError('fechaFin')">
+            <span *ngIf="mostrarError('fechaFin')" class="mensaje-error">
+              {{ obtenerErrorCampo('fechaFin') }}
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="nochesNuevas > 0" class="resumen-nuevo">
+          <div class="resumen-item">
+            <span>Noches:</span>
+            <span><strong>{{ nochesNuevas }}</strong></span>
+          </div>
+          <div class="resumen-item">
+            <span>Nueva Tarifa:</span>
+            <span><strong>{{ formatearPrecio(tarifaNueva) }}</strong></span>
+          </div>
+          <div class="resumen-item" [class.diferencia-positiva]="diferenciaTarifa > 0" [class.diferencia-negativa]="diferenciaTarifa < 0">
+            <span>Diferencia:</span>
+            <span><strong>{{ diferenciaTarifa > 0 ? '+' : '' }}{{ formatearPrecio(diferenciaTarifa) }}</strong></span>
+          </div>
+        </div>
+      </form>
+
+      <div class="info-restriccion">
+        <p>ℹ️ <strong>Nota:</strong> Puedes modificar tu reserva hasta 24 horas antes del check-in.</p>
+        <p>⏰ Tiempo restante: <strong>{{ horasHastaCheckIn.toFixed(1) }}</strong> horas</p>
+      </div>
+    </div>
+
+    <div class="botones">
+      <button (click)="volverAMisReservas()" class="btn-secondary">← Cancelar</button>
+      <button (click)="irAConfirmacion()" [disabled]="fechasForm.invalid || nochesNuevas === 0" class="btn-primary">
+        Continuar →
+      </button>
+    </div>
+  </div>
+
+  <!-- PASO 2: CONFIRMACIÓN (CA2) -->
+  <div *ngIf="pasoActual === 'confirmacion' && reserva" class="paso-confirmacion">
+    <h1>Confirmar Modificación</h1>
+    <p class="subtitulo">Revisa los cambios antes de confirmar</p>
+
+    <div class="comparacion">
+      <div class="card comparacion-item">
+        <h3>📅 Fechas Anteriores</h3>
+        <p><strong>Check-in:</strong> {{ reserva.fechaInicio | date:'d MMM yyyy' }}</p>
+        <p><strong>Check-out:</strong> {{ reserva.fechaFin | date:'d MMM yyyy' }}</p>
+        <p><strong>Noches:</strong> {{ reserva.noches }}</p>
+        <p class="precio-old">{{ formatearPrecio(reserva.tarifa.total) }}</p>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="card comparacion-item comparacion-nueva">
+        <h3>📅 Nuevas Fechas</h3>
+        <p><strong>Check-in:</strong> {{ fechasForm.value.fechaInicio | date:'d MMM yyyy' }}</p>
+        <p><strong>Check-out:</strong> {{ fechasForm.value.fechaFin | date:'d MMM yyyy' }}</p>
+        <p><strong>Noches:</strong> {{ nochesNuevas }}</p>
+        <p class="precio-new">{{ formatearPrecio(tarifaNueva) }}</p>
+      </div>
+    </div>
+
+    <div class="card-diferencia" [class.aumento]="diferenciaTarifa > 0" [class.descuento]="diferenciaTarifa < 0">
+      <h3>💰 Diferencia de Tarifa</h3>
+      <p class="diferencia-monto">
+        <span *ngIf="diferenciaTarifa > 0">Pago adicional requerido:</span>
+        <span *ngIf="diferenciaTarifa < 0">Reembolso disponible:</span>
+        <span *ngIf="diferenciaTarifa === 0">Sin cambios en la tarifa</span>
+        <strong *ngIf="diferenciaTarifa > 0">+{{ formatearPrecio(diferenciaTarifa) }}</strong>
+        <strong *ngIf="diferenciaTarifa < 0">{{ formatearPrecio(diferenciaTarifa) }}</strong>
+        <strong *ngIf="diferenciaTarifa === 0">{{ formatearPrecio(0) }}</strong>
+      </p>
+    </div>
+
+    <div class="card-aviso">
+      <p>⚠️ Al confirmar, tu reserva se actualizará inmediatamente.</p>
+      <p>✉️ Recibirás un email de confirmación con los nuevos detalles.</p>
+    </div>
+
+    <div class="botones">
+      <button (click)="volverPaso()" class="btn-secondary">← Atrás</button>
+      <button 
+        (click)="confirmarModificacion()" 
+        [disabled]="procesando"
+        class="btn-primary btn-confirmar">
+        {{ procesando ? 'Procesando...' : 'Confirmar Modificación' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- PASO 3: ÉXITO (CA2) -->
+  <div *ngIf="pasoActual === 'exito' && reserva" class="paso-exito">
+    <div class="icono-exito">✅</div>
+    <h1>¡Fechas Modificadas Exitosamente!</h1>
+    
+    <div class="mensaje-exito">
+      <p>Tu reserva <strong>{{ reserva.codigoReserva }}</strong> ha sido actualizada.</p>
+    </div>
+
+    <div class="card-resumen-final">
+      <h3>📋 Nuevos Detalles de la Reserva</h3>
+      <div class="detalle-linea">
+        <span>🏨 Hotel:</span>
+        <span>{{ reserva.hotel.nombre }}</span>
+      </div>
+      <div class="detalle-linea">
+        <span>🛏️ Habitación:</span>
+        <span>{{ reserva.habitacion.tipo }} {{ reserva.habitacion.numero }}</span>
+      </div>
+      <div class="detalle-linea">
+        <span>📅 Check-in:</span>
+        <span>{{ reserva.fechaInicio | date:'d MMM yyyy, h:mm a' }}</span>
+      </div>
+      <div class="detalle-linea">
+        <span>📅 Check-out:</span>
+        <span>{{ reserva.fechaFin | date:'d MMM yyyy, h:mm a' }}</span>
+      </div>
+      <div class="detalle-linea">
+        <span>🌙 Noches:</span>
+        <span>{{ reserva.noches }}</span>
+      </div>
+      <div class="detalle-linea total">
+        <span>💰 Total:</span>
+        <span><strong>{{ formatearPrecio(reserva.tarifa.total) }}</strong></span>
+      </div>
+    </div>
+
+    <div class="confirmacion-email">
+      <p>📧 Se ha enviado confirmación a: <strong>{{ reserva.datosHuesped.email }}</strong></p>
+    </div>
+
+    <div class="botones-exito">
+      <button (click)="volverAMisReservas()" class="btn-secondary">← Ver mis reservas</button>
+      <button (click)="verDetalleReserva()" class="btn-primary">Ver detalle completo</button>
+    </div>
+  </div>
+
+  <!-- ERROR (CA3: Conflicto / CA4: Restricción) -->
+  <div *ngIf="pasoActual === 'error'" class="paso-error">
+    <div class="icono-error">⚠️</div>
+    <h1>No se pudo modificar la reserva</h1>
+    
+    <div class="mensaje-error-principal">
+      <!-- CA3: Conflicto de disponibilidad -->
+      <div *ngIf="conflictoDisponibilidad" class="error-conflicto">
+        <h3>La habitación no está disponible</h3>
+        <p>{{ error || 'La habitación no está disponible para las fechas seleccionadas.' }}</p>
+        <div class="sugerencias">
+          <h4>💡 Te recomendamos:</h4>
+          <ul>
+            <li>Seleccionar otras fechas</li>
+            <li>Contactar directamente al hotel</li>
+            <li>Mantener tu reserva actual</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CA1 + CA4: No puede modificar (estado o tiempo) -->
+      <div *ngIf="!conflictoDisponibilidad && motivoNoModificable" class="error-restriccion">
+        <h3>Restricción de Modificación</h3>
+        <p>{{ motivoNoModificable }}</p>
+        <div *ngIf="horasHastaCheckIn < 24" class="info-restriccion-tiempo">
+          <p>⏰ Faltan menos de 24 horas para tu check-in.</p>
+          <p>📞 Para cambios de última hora, contacta directamente al hotel:</p>
+          <p *ngIf="reserva"><strong>{{ reserva.hotel.telefono }}</strong></p>
+        </div>
+      </div>
+
+      <!-- Error genérico -->
+      <div *ngIf="!conflictoDisponibilidad && !motivoNoModificable && error">
+        <p>{{ error }}</p>
+      </div>
+    </div>
+
+    <div class="botones-error">
+      <button *ngIf="conflictoDisponibilidad" (click)="pasoActual = 'seleccionar-fechas'" class="btn-secondary">
+        ← Elegir otras fechas
+      </button>
+      <button (click)="volverAMisReservas()" class="btn-primary">
+        Ver mis reservas
+      </button>
+    </div>
+  </div>
+</div>

@@ -31,6 +31,16 @@ export const routes: Routes = [
     path: 'reservar/:id', 
     loadComponent: () => import('./components/reservar-habitacion/reservar-habitacion.component').then(m => m.ReservarHabitacionComponent)
   },
+  // HU09: Modificar fechas de reserva (acceso público)
+  { 
+    path: 'modificar-reserva/:id', 
+    loadComponent: () => import('./components/modificar-reserva/modificar-reserva.component').then(m => m.ModificarReservaComponent)
+  },
+  // Mis Reservas (acceso público - por código de reserva)
+  { 
+    path: 'mis-reservas', 
+    loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent)
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

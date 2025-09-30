@@ -1,0 +1,526 @@
+.modificar-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0066cc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* T\u00edtulos */
+h1 {
+  font-size: 2rem;
+  color: #212529;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.25rem;
+  color: #495057;
+  margin: 0 0 1rem 0;
+}
+
+.subtitulo {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+/* Cards */
+.card,
+.card-reserva-actual,
+.card-nuevas-fechas,
+.card-diferencia,
+.card-aviso,
+.card-resumen-final {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+  color: #0066cc;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.info-grid div strong {
+  display: block;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.info-grid div p {
+  margin: 0;
+  color: #212529;
+  font-size: 1.05rem;
+}
+
+.info-grid .precio {
+  color: #28a745;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.estado-confirmada {
+  color: #28a745;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Formulario de fechas */
+.form-fechas {
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.form-group input[type="date"] {
+  padding: 0.75rem;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0066cc;
+}
+
+.form-group input.error {
+  border-color: #dc3545;
+}
+
+.mensaje-error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* Resumen nuevo */
+.resumen-nuevo {
+  background: #e7f3ff;
+  border: 2px solid #0066cc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+}
+
+.resumen-item:last-child {
+  border-bottom: none;
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+  border-top: 2px solid rgba(0, 102, 204, 0.3);
+}
+
+.resumen-item.diferencia-positiva {
+  color: #dc3545;
+}
+
+.resumen-item.diferencia-negativa {
+  color: #28a745;
+}
+
+.info-restriccion {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.info-restriccion p {
+  margin: 0.5rem 0;
+  color: #856404;
+  font-size: 0.95rem;
+}
+
+/* Comparaci\u00f3n */
+.comparacion {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.comparacion-item {
+  text-align: center;
+}
+
+.comparacion-nueva {
+  background: #e7f3ff;
+  border-color: #0066cc;
+}
+
+.arrow {
+  font-size: 2rem;
+  color: #0066cc;
+  font-weight: bold;
+}
+
+.precio-old {
+  color: #6c757d;
+  text-decoration: line-through;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.precio-new {
+  color: #28a745;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Card Diferencia */
+.card-diferencia {
+  text-align: center;
+}
+
+.card-diferencia.aumento {
+  background: #fff3cd;
+  border-color: #ffc107;
+}
+
+.card-diferencia.aumento h3 {
+  color: #856404;
+  border-color: #ffc107;
+}
+
+.card-diferencia.descuento {
+  background: #d4edda;
+  border-color: #28a745;
+}
+
+.card-diferencia.descuento h3 {
+  color: #155724;
+  border-color: #28a745;
+}
+
+.diferencia-monto {
+  font-size: 1.3rem;
+  margin: 1rem 0;
+}
+
+.diferencia-monto strong {
+  display: block;
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+/* Card Aviso */
+.card-aviso {
+  background: #e7f3ff;
+  border-color: #0066cc;
+}
+
+.card-aviso p {
+  margin: 0.5rem 0;
+  color: #004085;
+}
+
+/* \u00c9xito */
+.paso-exito {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.icono-exito {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.mensaje-exito {
+  background: #d4edda;
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.mensaje-exito p {
+  margin: 0;
+  color: #155724;
+  font-size: 1.1rem;
+}
+
+.card-resumen-final {
+  text-align: left;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.detalle-linea {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.detalle-linea.total {
+  border-top: 2px solid #dee2e6;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  font-size: 1.2rem;
+  color: #28a745;
+}
+
+.confirmacion-email {
+  background: #e7f3ff;
+  border: 1px solid #0066cc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.confirmacion-email p {
+  margin: 0;
+  color: #004085;
+}
+
+/* Error */
+.paso-error {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.icono-error {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+  color: #ffc107;
+}
+
+.mensaje-error-principal {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+
+.error-conflicto,
+.error-restriccion {
+  background: white;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: left;
+}
+
+.error-conflicto h3,
+.error-restriccion h3 {
+  color: #856404;
+  margin-top: 0;
+}
+
+.error-conflicto p,
+.error-restriccion p {
+  color: #856404;
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.sugerencias {
+  background: #fff3cd;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.sugerencias h4 {
+  color: #856404;
+  margin: 0 0 0.75rem 0;
+}
+
+.sugerencias ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.sugerencias li {
+  color: #856404;
+  margin: 0.5rem 0;
+}
+
+.info-restriccion-tiempo {
+  background: #e7f3ff;
+  border: 1px solid #0066cc;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.info-restriccion-tiempo p {
+  color: #004085 !important;
+}
+
+/* Botones */
+.botones,
+.botones-exito,
+.botones-error {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex: 1;
+}
+
+.btn-primary {
+  background: #0066cc;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #0052a3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+}
+
+.btn-primary:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-secondary {
+  background: white;
+  color: #495057;
+  border: 2px solid #ced4da;
+}
+
+.btn-secondary:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+.btn-confirmar {
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modificar-container {
+    padding: 0 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .comparacion {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+    font-size: 1.5rem;
+  }
+
+  .botones,
+  .botones-exito,
+  .botones-error {
+    flex-direction: column-reverse;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modificar-container {
+    padding: 0 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .card,
+  .card-reserva-actual,
+  .card-nuevas-fechas {
+    padding: 1rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+}

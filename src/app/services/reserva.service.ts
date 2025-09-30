@@ -48,6 +48,7 @@ export interface ReservaCreada {
     _id: string;
     nombre: string;
     ciudad: string;
+    departamento?: string;
     direccion: string;
     telefono: string;
     email: string;
@@ -59,6 +60,45 @@ export interface ReservaCreada {
   tarifa: TarifaReserva;
   estado: string;
   createdAt: string;
+  historialModificaciones?: ModificacionReserva[];
+}
+
+// HU09: Interfaces para modificación de fechas
+export interface ModificacionReserva {
+  fechaModificacion: string;
+  fechaInicioAnterior: string;
+  fechaFinAnterior: string;
+  fechaInicioNueva: string;
+  fechaFinNueva: string;
+  tarifaAnterior: number;
+  tarifaNueva: number;
+  motivoRechazo?: string;
+}
+
+export interface VerificarModificacionResponse {
+  success: boolean;
+  puedeModificar: boolean;
+  motivo?: string;
+  mensaje?: string;
+  horasRestantes?: number;
+  horasHastaCheckIn?: number;
+  fechaLimite?: string;
+}
+
+export interface ModificarFechasRequest {
+  fechaInicioNueva: string;
+  fechaFinNueva: string;
+}
+
+export interface ModificarFechasResponse {
+  success: boolean;
+  message: string;
+  reserva?: ReservaCreada;
+  conflicto?: boolean;
+  disponible?: boolean;
+  puedeModificar?: boolean;
+  motivo?: string;
+  horasRestantes?: number;
 }
 
 export interface CrearReservaResponse {
@@ -72,6 +112,69 @@ export interface CrearReservaResponse {
 export interface ObtenerReservaResponse {
   success: boolean;
   reserva: ReservaCreada;
+}
+
+export interface ObtenerReservasResponse {
+  success: boolean;
+  reservas: ReservaCreada[];
+  total?: number;
+}
+
+export interface CancelarReservaResponse {
+  success: boolean;
+  message: string;
+  reserva?: any;
+  cancelacion?: {
+    fechaCancelacion: string;
+    dentroVentanaGratuita: boolean;
+    porcentajePenalizacion: number;
+    montoPenalizacion: number;
+    montoReembolso: number;
+    horasAntesCancelacion: number;
+    notificacionEnviada: boolean;
+  };
+  estadoActual?: string;
+  fechaCancelacion?: string;
+  yaCancelada?: boolean;
+}
+
+// HU10: Interfaces para cancelación con penalización
+export interface VerificarCancelacionResponse {
+  success: boolean;
+  puedeCancelar: boolean;
+  motivo?: string;
+  mensaje?: string;
+  estadoActual?: string;
+  fechaCancelacion?: string;
+  reserva?: {
+    _id: string;
+    codigoReserva: string;
+    hotel: string;
+    habitacion: string;
+    fechaInicio: string;
+    fechaFin: string;
+    total: number;
+    estado: string;
+  };
+  politicaCancelacion?: {
+    dentroVentanaGratuita: boolean;
+    horasHastaCheckIn: number;
+    diasHastaCheckIn: number;
+    porcentajePenalizacion: number;
+    montoPenalizacion: number;
+    montoReembolso: number;
+    mensaje: string;
+    detalles: {
+      ventanaGratuita: string;
+      penalizacion50: string;
+      penalizacion100: string;
+    };
+  };
+}
+
+export interface CancelarReservaRequest {
+  motivo: string;
+  confirmacionPenalizacion?: boolean; // CA2: Confirmar que acepta penalización
 }
 
 @Injectable({
@@ -97,9 +200,44 @@ export class ReservaService {
   }
 
   /**
-   * Cancelar reserva
+   * Obtener todas las reservas (en producción: filtrar por usuario autenticado)
    */
-  cancelarReserva(id: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/cancelar/${id}`, {});
+  obtenerTodasReservas(): Observable<ObtenerReservasResponse> {
+    return this.http.get<ObtenerReservasResponse>(this.apiUrl);
+  }
+
+  /**
+   * Obtener reserva por ID
+   */
+  obtenerReservaPorId(id: string): Observable<ObtenerReservaResponse> {
+    return this.http.get<ObtenerReservaResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  /**
+   * HU10 CA2: Verificar políticas de cancelación antes de cancelar
+   */
+  verificarPoliticasCancelacion(id: string): Observable<VerificarCancelacionResponse> {
+    return this.http.get<VerificarCancelacionResponse>(`${this.apiUrl}/cancelar/${id}/verificar`);
+  }
+
+  /**
+   * HU10: Cancelar reserva con cálculo de penalización (CA1 + CA2 + CA3 + CA4)
+   */
+  cancelarReserva(id: string, datos: CancelarReservaRequest): Observable<CancelarReservaResponse> {
+    return this.http.put<CancelarReservaResponse>(`${this.apiUrl}/cancelar/${id}`, datos);
+  }
+
+  /**
+   * HU09 CA1 + CA4: Verificar si una reserva puede ser modificada
+   */
+  verificarPuedeModificar(id: string): Observable<VerificarModificacionResponse> {
+    return this.http.get<VerificarModificacionResponse>(`${this.apiUrl}/${id}/puede-modificar`);
+  }
+
+  /**
+   * HU09 CA1 + CA2 + CA3: Modificar fechas de una reserva
+   */
+  modificarFechasReserva(id: string, datos: ModificarFechasRequest): Observable<ModificarFechasResponse> {
+    return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/${id}/modificar-fechas`, datos);
   }
 }
