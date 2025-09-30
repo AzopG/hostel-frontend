@@ -1,0 +1,238 @@
+<!-- HU07: Detalle de Habitación -->
+<div class="detalle-container">
+  
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando detalle de la habitación...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h2>Error al cargar</h2>
+    <p>{{ error }}</p>
+    <button (click)="volverAResultados()" class="btn-volver">
+      ← Volver a resultados
+    </button>
+  </div>
+
+  <!-- Detalle completo -->
+  <div *ngIf="habitacion && !loading" class="detalle-content">
+    
+    <!-- HU07 CA4: Botón Volver conservando filtros -->
+    <button (click)="volverAResultados()" class="btn-volver-arriba">
+      ← Volver a resultados
+    </button>
+
+    <!-- HU07 CA2: Advertencia de disponibilidad cambiada -->
+    <div *ngIf="disponibilidadCambiada" class="alerta-disponibilidad">
+      <span class="icono-alerta">⚠️</span>
+      <div class="mensaje-alerta">
+        <strong>Disponibilidad actualizada</strong>
+        <p>{{ mensajeDisponibilidad }}</p>
+      </div>
+      <button (click)="volverAResultados()" class="btn-buscar-otra">
+        Buscar otra habitación
+      </button>
+    </div>
+
+    <!-- HU07 CA1: Galería de fotos -->
+    <section class="galeria-principal">
+      <div class="foto-principal" (click)="abrirGaleria(0)">
+        <img [src]="fotosDisponibles[0]" [alt]="'Foto principal ' + habitacion.tipo">
+        <div class="overlay-galeria">
+          <span class="icono-expandir">🔍</span>
+          <span>Ver galería ({{ fotosDisponibles.length }} fotos)</span>
+        </div>
+      </div>
+      <div class="fotos-secundarias">
+        <div *ngFor="let foto of fotosDisponibles.slice(1, 5); let i = index" 
+             class="foto-secundaria"
+             (click)="abrirGaleria(i + 1)">
+          <img [src]="foto" [alt]="'Foto ' + (i + 2)">
+          <div *ngIf="i === 3 && fotosDisponibles.length > 5" class="overlay-mas">
+            +{{ fotosDisponibles.length - 5 }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HU07 CA1: Información principal -->
+    <div class="info-principal">
+      
+      <!-- Columna izquierda: Detalles -->
+      <div class="columna-detalles">
+        
+        <!-- Título y capacidad -->
+        <div class="header-habitacion">
+          <h1>{{ habitacion.tipo }} - Habitación {{ habitacion.numero }}</h1>
+          <div class="capacidad-badge">
+            <span class="icono">👥</span>
+            <span>Hasta {{ habitacion.capacidad }} huéspedes</span>
+          </div>
+        </div>
+
+        <!-- Hotel info -->
+        <div class="info-hotel">
+          <h3>🏨 {{ habitacion.hotel.nombre }}</h3>
+          <p class="ubicacion">📍 {{ habitacion.hotel.direccion }}, {{ habitacion.hotel.ciudad }}</p>
+          <div class="contacto">
+            <span>📞 {{ habitacion.hotel.telefono }}</span>
+            <span *ngIf="habitacion.hotel.email">✉️ {{ habitacion.hotel.email }}</span>
+          </div>
+          <div *ngIf="habitacion.hotel.calificacion > 0" class="calificacion">
+            <span class="estrellas">⭐</span>
+            <span>{{ habitacion.hotel.calificacion }} / 5</span>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="descripcion">
+          <h2>📝 Descripción</h2>
+          <p>{{ habitacion.descripcion }}</p>
+        </div>
+
+        <!-- Servicios -->
+        <div class="servicios-detalle">
+          <h2>✨ Servicios Incluidos</h2>
+          <div class="servicios-grid">
+            <div *ngFor="let servicio of habitacion.servicios" class="servicio-item">
+              <span class="check-icon">✓</span>
+              <span>{{ servicio }}</span>
+            </div>
+          </div>
+          <div *ngIf="!habitacion.servicios || habitacion.servicios.length === 0" class="sin-servicios">
+            <p>No hay servicios especificados</p>
+          </div>
+        </div>
+
+        <!-- Políticas del hotel -->
+        <div class="politicas">
+          <h2>📋 Políticas del Hotel</h2>
+          <div class="politicas-grid">
+            <div class="politica-item">
+              <strong>🕒 Check-in:</strong>
+              <span>{{ habitacion.hotel.politicas.checkIn }}</span>
+            </div>
+            <div class="politica-item">
+              <strong>🕐 Check-out:</strong>
+              <span>{{ habitacion.hotel.politicas.checkOut }}</span>
+            </div>
+            <div class="politica-item">
+              <strong>🔄 Cancelación:</strong>
+              <span>{{ habitacion.hotel.politicas.cancelacion }}</span>
+            </div>
+            <div class="politica-item">
+              <strong>🐕 Mascotas:</strong>
+              <span>{{ habitacion.hotel.politicas.mascotas ? 'Permitidas' : 'No permitidas' }}</span>
+            </div>
+            <div class="politica-item">
+              <strong>🚭 Fumar:</strong>
+              <span>{{ habitacion.hotel.politicas.fumadores ? 'Permitido' : 'No permitido' }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna derecha: Tarifa y reserva -->
+      <div class="columna-tarifa">
+        
+        <!-- HU07 CA3: Tarifa clara con desglose -->
+        <div class="card-tarifa">
+          <div class="precio-principal">
+            <span class="desde">Desde</span>
+            <span class="precio">{{ formatearPrecio(habitacion.precio) }}</span>
+            <span class="por-noche">por noche</span>
+          </div>
+
+          <!-- Si hay fechas seleccionadas, mostrar desglose -->
+          <div *ngIf="fechaInicio && fechaFin && !cargandoTarifa" class="desglose-container">
+            <div class="fechas-seleccionadas">
+              <div class="fecha-item">
+                <span class="label">Check-in</span>
+                <strong>{{ fechaInicio | date: 'dd/MM/yyyy' }}</strong>
+              </div>
+              <span class="separador">→</span>
+              <div class="fecha-item">
+                <span class="label">Check-out</span>
+                <strong>{{ fechaFin | date: 'dd/MM/yyyy' }}</strong>
+              </div>
+            </div>
+
+            <div *ngIf="tarifa" class="desglose">
+              <h3>💰 Desglose de Precio</h3>
+              
+              <div class="linea-desglose">
+                <span>{{ formatearPrecio(tarifa.precioPorNoche) }} × {{ noches }} noche<span *ngIf="noches > 1">s</span></span>
+                <strong>{{ formatearPrecio(tarifa.subtotal) }}</strong>
+              </div>
+
+              <div class="linea-desglose impuestos">
+                <span>{{ tarifa.impuestos.concepto }}</span>
+                <strong>{{ formatearPrecio(tarifa.impuestos.monto) }}</strong>
+              </div>
+
+              <div class="separador-desglose"></div>
+
+              <div class="linea-total">
+                <span>Total</span>
+                <strong class="precio-total">{{ formatearPrecio(tarifa.total) }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading tarifa -->
+          <div *ngIf="cargandoTarifa" class="loading-tarifa">
+            <div class="spinner-pequeno"></div>
+            <span>Calculando precio...</span>
+          </div>
+
+          <!-- Sin fechas seleccionadas -->
+          <div *ngIf="!fechaInicio || !fechaFin" class="sin-fechas">
+            <p>💡 Selecciona tus fechas de estadía en la búsqueda para ver el precio total</p>
+          </div>
+
+          <!-- Botón de reserva -->
+          <button 
+            *ngIf="habitacion.disponible && !disponibilidadCambiada"
+            (click)="irAReserva()" 
+            class="btn-reservar"
+            [disabled]="!fechaInicio || !fechaFin">
+            {{ (!fechaInicio || !fechaFin) ? 'Selecciona fechas para reservar' : 'Reservar ahora' }}
+          </button>
+
+          <!-- No disponible -->
+          <div *ngIf="!habitacion.disponible || disponibilidadCambiada" class="no-disponible">
+            <span class="icono">⚠️</span>
+            <span>No disponible</span>
+          </div>
+        </div>
+
+        <!-- Info adicional -->
+        <div class="info-adicional">
+          <p class="tip">💡 <strong>Tip:</strong> El precio puede variar según temporada y disponibilidad</p>
+          <p class="garantia">✓ Mejor precio garantizado</p>
+          <p class="cancelacion-gratis">✓ {{ habitacion.hotel.politicas.cancelacion }}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Modal de galería fullscreen -->
+<div *ngIf="mostrarGaleria" class="modal-galeria" (click)="cerrarGaleria()">
+  <button class="btn-cerrar-modal" (click)="cerrarGaleria()">✕</button>
+  <button class="btn-nav btn-anterior" (click)="fotoAnterior(); $event.stopPropagation()">‹</button>
+  <button class="btn-nav btn-siguiente" (click)="fotoSiguiente(); $event.stopPropagation()">›</button>
+  
+  <div class="galeria-content" (click)="$event.stopPropagation()">
+    <img [src]="fotosDisponibles[fotoActual]" [alt]="'Foto ' + (fotoActual + 1)">
+    <div class="contador-fotos">{{ fotoActual + 1 }} / {{ fotosDisponibles.length }}</div>
+  </div>
+</div>

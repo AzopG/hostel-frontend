@@ -1370,12 +1370,20 @@ export class BuscarHabitacionesComponent implements OnInit {
   }
 
   /**
-   * Ver detalles de habitación (placeholder)
+   * HU07 CA4: Ver detalles de habitación conservando filtros
    */
   verDetalles(habitacion: HabitacionResultado): void {
-    console.log('Ver detalles:', habitacion);
-    // TODO: Implementar modal o página de detalles
-    alert(`Detalles de la habitación ${habitacion.numero}`);
+    // HU07 CA4: Navegar al detalle pasando todos los queryParams actuales
+    // para que al volver con "← Volver" se conserven los filtros
+    this.router.navigate(['/habitacion', habitacion._id], {
+      queryParams: {
+        fechaInicio: this.filtros.fechaInicio,
+        fechaFin: this.filtros.fechaFin,
+        huespedes: this.filtros.huespedes,
+        ciudad: this.filtros.ciudad || undefined,
+        // No enviamos servicios como array en la URL, solo en la navegación de vuelta
+      }
+    });
   }
 
   // ==================== HU06: FILTROS POR SERVICIOS ====================

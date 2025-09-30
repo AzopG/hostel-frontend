@@ -21,6 +21,16 @@ export const routes: Routes = [
   { path: 'disponibilidad-ciudad', component: CalendarioDisponibilidadComponent },
   // HU05: Buscar habitaciones por fechas y huéspedes (acceso público)
   { path: 'buscar-habitaciones', component: BuscarHabitacionesComponent },
+  // HU07: Ver detalle de una habitación (acceso público)
+  { 
+    path: 'habitacion/:id', 
+    loadComponent: () => import('./components/detalle-habitacion/detalle-habitacion.component').then(m => m.DetalleHabitacionComponent)
+  },
+  // HU08: Reservar una habitación (acceso público)
+  { 
+    path: 'reservar/:id', 
+    loadComponent: () => import('./components/reservar-habitacion/reservar-habitacion.component').then(m => m.ReservarHabitacionComponent)
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

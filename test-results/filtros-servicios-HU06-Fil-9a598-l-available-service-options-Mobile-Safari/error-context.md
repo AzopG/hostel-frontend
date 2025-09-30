@@ -1,0 +1,154 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - heading "🔍 Buscar Habitaciones" [level=1] [ref=e5]
+    - paragraph [ref=e6]: Encuentra la habitación perfecta para tu estadía
+  - generic [ref=e7]:
+    - heading "Filtros de Búsqueda" [level=2] [ref=e8]
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]:
+            - generic [ref=e13]: 🌆
+            - text: Ciudad
+          - combobox "🌆 Ciudad" [ref=e14]:
+            - option "Todas las ciudades" [selected]
+        - generic [ref=e15]:
+          - generic [ref=e16]:
+            - generic [ref=e17]: 📅
+            - text: Check-in *
+          - textbox "📅 Check-in *" [ref=e18]: 2025-09-30
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: 📅
+            - text: Check-out *
+          - textbox "📅 Check-out *" [ref=e22]: 2025-10-01
+          - generic [ref=e23]: 1 noche(s)
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: 👥
+            - text: Huéspedes *
+          - generic [ref=e27]:
+            - button "-" [ref=e28] [cursor=pointer]
+            - spinbutton "👥 Huéspedes *" [ref=e29]: "2"
+            - button "+" [ref=e30] [cursor=pointer]
+          - generic [ref=e31]: Máximo 10 huéspedes
+      - generic [ref=e32]:
+        - button "🔍 Buscar Habitaciones" [ref=e33] [cursor=pointer]:
+          - generic [ref=e34] [cursor=pointer]: 🔍 Buscar Habitaciones
+        - button "🗑️ Limpiar" [ref=e35] [cursor=pointer]
+  - generic [ref=e36]:
+    - heading "✨ Servicios Adicionales" [level=2] [ref=e37]
+    - paragraph [ref=e38]:
+      - text: Selecciona servicios para afinar tu búsqueda. Solo se mostrarán habitaciones con
+      - strong [ref=e39]: todos
+      - text: los servicios marcados.
+    - generic [ref=e40]:
+      - generic [ref=e41] [cursor=pointer]:
+        - checkbox "📶 WiFi Internet inalámbrico de alta velocidad"
+        - generic [ref=e43] [cursor=pointer]:
+          - generic [ref=e44] [cursor=pointer]: 📶
+          - generic [ref=e45] [cursor=pointer]:
+            - strong [ref=e46] [cursor=pointer]: WiFi
+            - generic [ref=e47] [cursor=pointer]: Internet inalámbrico de alta velocidad
+      - generic [ref=e48] [cursor=pointer]:
+        - checkbox "🚀 WiFi Premium Internet inalámbrico ultra rápido"
+        - generic [ref=e50] [cursor=pointer]:
+          - generic [ref=e51] [cursor=pointer]: 🚀
+          - generic [ref=e52] [cursor=pointer]:
+            - strong [ref=e53] [cursor=pointer]: WiFi Premium
+            - generic [ref=e54] [cursor=pointer]: Internet inalámbrico ultra rápido
+      - generic [ref=e55] [cursor=pointer]:
+        - checkbox "📺 TV Televisión por cable"
+        - generic [ref=e57] [cursor=pointer]:
+          - generic [ref=e58] [cursor=pointer]: 📺
+          - generic [ref=e59] [cursor=pointer]:
+            - strong [ref=e60] [cursor=pointer]: TV
+            - generic [ref=e61] [cursor=pointer]: Televisión por cable
+      - generic [ref=e62] [cursor=pointer]:
+        - checkbox "📱 TV Smart Televisión inteligente con aplicaciones"
+        - generic [ref=e64] [cursor=pointer]:
+          - generic [ref=e65] [cursor=pointer]: 📱
+          - generic [ref=e66] [cursor=pointer]:
+            - strong [ref=e67] [cursor=pointer]: TV Smart
+            - generic [ref=e68] [cursor=pointer]: Televisión inteligente con aplicaciones
+      - generic [ref=e69] [cursor=pointer]:
+        - checkbox "❄️ Aire Acondicionado Sistema de climatización"
+        - generic [ref=e71] [cursor=pointer]:
+          - generic [ref=e72] [cursor=pointer]: ❄️
+          - generic [ref=e73] [cursor=pointer]:
+            - strong [ref=e74] [cursor=pointer]: Aire Acondicionado
+            - generic [ref=e75] [cursor=pointer]: Sistema de climatización
+      - generic [ref=e76] [cursor=pointer]:
+        - checkbox "🔥 Calefacción Sistema de calefacción"
+        - generic [ref=e78] [cursor=pointer]:
+          - generic [ref=e79] [cursor=pointer]: 🔥
+          - generic [ref=e80] [cursor=pointer]:
+            - strong [ref=e81] [cursor=pointer]: Calefacción
+            - generic [ref=e82] [cursor=pointer]: Sistema de calefacción
+      - generic [ref=e83] [cursor=pointer]:
+        - checkbox "🍷 Minibar Minibar con bebidas y snacks"
+        - generic [ref=e85] [cursor=pointer]:
+          - generic [ref=e86] [cursor=pointer]: 🍷
+          - generic [ref=e87] [cursor=pointer]:
+            - strong [ref=e88] [cursor=pointer]: Minibar
+            - generic [ref=e89] [cursor=pointer]: Minibar con bebidas y snacks
+      - generic [ref=e90] [cursor=pointer]:
+        - checkbox "🍳 Desayuno Desayuno incluido en la tarifa"
+        - generic [ref=e92] [cursor=pointer]:
+          - generic [ref=e93] [cursor=pointer]: 🍳
+          - generic [ref=e94] [cursor=pointer]:
+            - strong [ref=e95] [cursor=pointer]: Desayuno
+            - generic [ref=e96] [cursor=pointer]: Desayuno incluido en la tarifa
+      - generic [ref=e97] [cursor=pointer]:
+        - checkbox "🔒 Caja Fuerte Caja de seguridad en la habitación"
+        - generic [ref=e99] [cursor=pointer]:
+          - generic [ref=e100] [cursor=pointer]: 🔒
+          - generic [ref=e101] [cursor=pointer]:
+            - strong [ref=e102] [cursor=pointer]: Caja Fuerte
+            - generic [ref=e103] [cursor=pointer]: Caja de seguridad en la habitación
+      - generic [ref=e104] [cursor=pointer]:
+        - checkbox "🪴 Balcón Balcón o terraza privada"
+        - generic [ref=e106] [cursor=pointer]:
+          - generic [ref=e107] [cursor=pointer]: 🪴
+          - generic [ref=e108] [cursor=pointer]:
+            - strong [ref=e109] [cursor=pointer]: Balcón
+            - generic [ref=e110] [cursor=pointer]: Balcón o terraza privada
+      - generic [ref=e111] [cursor=pointer]:
+        - checkbox "🌊 Vista al Mar Vista panorámica al océano"
+        - generic [ref=e113] [cursor=pointer]:
+          - generic [ref=e114] [cursor=pointer]: 🌊
+          - generic [ref=e115] [cursor=pointer]:
+            - strong [ref=e116] [cursor=pointer]: Vista al Mar
+            - generic [ref=e117] [cursor=pointer]: Vista panorámica al océano
+      - generic [ref=e118] [cursor=pointer]:
+        - checkbox "⛰️ Vista Montaña Vista panorámica a las montañas"
+        - generic [ref=e120] [cursor=pointer]:
+          - generic [ref=e121] [cursor=pointer]: ⛰️
+          - generic [ref=e122] [cursor=pointer]:
+            - strong [ref=e123] [cursor=pointer]: Vista Montaña
+            - generic [ref=e124] [cursor=pointer]: Vista panorámica a las montañas
+      - generic [ref=e125] [cursor=pointer]:
+        - checkbox "🛁 Jacuzzi Jacuzzi o bañera de hidromasaje"
+        - generic [ref=e127] [cursor=pointer]:
+          - generic [ref=e128] [cursor=pointer]: 🛁
+          - generic [ref=e129] [cursor=pointer]:
+            - strong [ref=e130] [cursor=pointer]: Jacuzzi
+            - generic [ref=e131] [cursor=pointer]: Jacuzzi o bañera de hidromasaje
+      - generic [ref=e132] [cursor=pointer]:
+        - checkbox "🖥️ Escritorio Área de trabajo con escritorio"
+        - generic [ref=e134] [cursor=pointer]:
+          - generic [ref=e135] [cursor=pointer]: 🖥️
+          - generic [ref=e136] [cursor=pointer]:
+            - strong [ref=e137] [cursor=pointer]: Escritorio
+            - generic [ref=e138] [cursor=pointer]: Área de trabajo con escritorio
+      - generic [ref=e139] [cursor=pointer]:
+        - checkbox "🍽️ Room Service Servicio de comida a la habitación 24h"
+        - generic [ref=e141] [cursor=pointer]:
+          - generic [ref=e142] [cursor=pointer]: 🍽️
+          - generic [ref=e143] [cursor=pointer]:
+            - strong [ref=e144] [cursor=pointer]: Room Service
+            - generic [ref=e145] [cursor=pointer]: Servicio de comida a la habitación 24h
+```

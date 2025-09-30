@@ -1,0 +1,610 @@
+.reservar-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0066cc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Progreso */
+.progreso {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.paso {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #6c757d;
+  background: white;
+  border: 2px solid #dee2e6;
+}
+
+.paso.activo {
+  background: #0066cc;
+  color: white;
+  border-color: #0066cc;
+  font-weight: 600;
+}
+
+.paso.completado {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+/* Títulos */
+h1 {
+  font-size: 2rem;
+  color: #212529;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.75rem;
+  color: #212529;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.25rem;
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.subtitulo {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+/* Cards */
+.card {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #0066cc;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card p {
+  margin: 0.5rem 0;
+  color: #495057;
+}
+
+/* Resumen Habitación */
+.resumen-habitacion {
+  display: flex;
+  gap: 1.5rem;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.foto-habitacion {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.info-habitacion h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+.hotel-info {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin: 0.5rem 0;
+}
+
+/* Fechas */
+.resumen-fechas {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.fechas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.fechas-grid div {
+  text-align: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.fechas-grid strong {
+  display: block;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.fechas-grid p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+/* Desglose Tarifa */
+.desglose-tarifa {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.linea-precio {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  color: #495057;
+}
+
+.linea-precio.total {
+  font-size: 1.2rem;
+  color: #212529;
+  padding-top: 1rem;
+}
+
+.desglose-tarifa hr {
+  margin: 1rem 0;
+  border: none;
+  border-top: 2px solid #e9ecef;
+}
+
+/* Formulario */
+.formulario-datos {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0066cc;
+}
+
+.form-group input.error {
+  border-color: #dc3545;
+}
+
+.mensaje-error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* Políticas */
+.card-politicas {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-politicas h3 {
+  color: #856404;
+  margin-top: 0;
+  border-bottom: 2px solid #ffc107;
+  padding-bottom: 0.5rem;
+}
+
+.politicas-contenido {
+  margin-bottom: 1rem;
+}
+
+.politicas-contenido p {
+  margin: 0.5rem 0;
+  color: #856404;
+}
+
+.checkbox-politicas {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+}
+
+.checkbox-politicas input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.checkbox-politicas span {
+  flex: 1;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Resumen Final (Confirmación) */
+.resumen-final {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.precio-total {
+  font-size: 1.1rem;
+  color: #28a745;
+  font-weight: 700;
+  margin-top: 1rem !important;
+}
+
+/* Éxito */
+.paso-exito {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.icono-exito {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.codigo-reserva {
+  background: white;
+  border: 3px solid #28a745;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+}
+
+.label-codigo {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.codigo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #28a745;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+}
+
+.info-codigo {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 1rem;
+}
+
+.confirmacion-email {
+  background: #e7f3ff;
+  border: 1px solid #0066cc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.confirmacion-email p {
+  margin: 0;
+  color: #495057;
+}
+
+.resumen-reserva {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.resumen-reserva h3 {
+  text-align: center;
+  color: #0066cc;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.detalle-linea {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.detalle-linea.total {
+  border-top: 2px solid #dee2e6;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Error */
+.paso-error {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.icono-error {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.mensaje-error-principal {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.mensaje-error-principal p {
+  margin: 0.5rem 0;
+  color: #856404;
+  font-size: 1.1rem;
+}
+
+.sugerencias {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.sugerencias h3 {
+  color: #0066cc;
+  margin-top: 0;
+}
+
+.sugerencias ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.sugerencias li {
+  margin: 0.5rem 0;
+  color: #495057;
+}
+
+.error-inicial {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.error-inicial h2 {
+  color: #dc3545;
+}
+
+/* Botones */
+.botones,
+.botones-exito,
+.botones-error {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex: 1;
+}
+
+.btn-primary {
+  background: #0066cc;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #0052a3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+}
+
+.btn-primary:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-secondary {
+  background: white;
+  color: #495057;
+  border: 2px solid #ced4da;
+}
+
+.btn-secondary:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+.btn-confirmar {
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reservar-container {
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .progreso {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .paso {
+    width: 100%;
+    text-align: center;
+  }
+
+  .resumen-habitacion {
+    flex-direction: column;
+  }
+
+  .foto-habitacion {
+    width: 100%;
+    height: 200px;
+  }
+
+  .fechas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .resumen-final {
+    grid-template-columns: 1fr;
+  }
+
+  .botones,
+  .botones-exito,
+  .botones-error {
+    flex-direction: column-reverse;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  .codigo {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reservar-container {
+    padding: 0 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .formulario-datos {
+    padding: 1rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .codigo {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+}
