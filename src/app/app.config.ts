@@ -48,7 +48,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([performanceInterceptor, authInterceptor])
     ),
     provideAnimations(),
-    provideClientHydration(withEventReplay()),
     provideStore(reducers, { metaReducers }),
     provideEffects(HotelEffects),
     provideStoreDevtools({ 

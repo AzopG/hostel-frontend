@@ -627,7 +627,10 @@ export class PerformanceMonitorComponent implements OnInit, OnDestroy {
     }
 
     // Elementos DOM
-    const domElements = document.querySelectorAll('*').length;
+    let domElements = 0;
+    if (typeof document !== 'undefined') {
+      domElements = document.querySelectorAll('*').length;
+    }
     this.performanceMetrics[3].value = domElements;
     this.performanceMetrics[3].status = domElements > 2000 ? 'critical' : domElements > 1000 ? 'warning' : 'good';
   }

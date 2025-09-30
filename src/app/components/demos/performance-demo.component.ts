@@ -848,8 +848,7 @@ export class PerformanceDemoComponent implements OnInit, OnDestroy {
   }
 
   private setupPerformanceMonitoring(): void {
-    // Monitor performance entries
-    if ('PerformanceObserver' in window) {
+    if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
       this.performanceObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach(entry => {
@@ -858,23 +857,21 @@ export class PerformanceDemoComponent implements OnInit, OnDestroy {
           }
         });
       });
-      
       this.performanceObserver.observe({ entryTypes: ['measure', 'navigation'] });
     }
   }
 
   private updateMetrics(): void {
     // Update memory usage (approximation)
-    if ((performance as any).memory) {
+    if (typeof performance !== 'undefined' && (performance as any).memory) {
       this.metrics.memoryUsage = (performance as any).memory.usedJSHeapSize;
     }
-    
     // Update loaded images count
-    this.loadedImages = document.querySelectorAll('img[src]').length;
-    
+    if (typeof document !== 'undefined') {
+      this.loadedImages = document.querySelectorAll('img[src]').length;
+    }
     // Calculate bandwidth saved (approximation)
     this.bandwidthSaved = Math.round((this.sampleImages.length - this.loadedImages) * 150);
-    
     // Increment change detection counter
     this.changeDetectionCount++;
   }

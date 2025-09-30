@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -9,7 +10,7 @@ export class BundleOptimizationService {
   private preloadQueue: string[] = [];
   private isPreloading = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
     this.initializePreloadingStrategy();
   }
 
@@ -48,20 +49,22 @@ export class BundleOptimizationService {
    * Configurar precarga en hover
    */
   private setupHoverPreloading(): void {
-    document.addEventListener('mouseover', (event) => {
-      const target = event.target as HTMLElement;
-      const link = target.closest('a[routerLink]');
-      
-      if (link) {
-        const routerLink = link.getAttribute('routerLink');
-        if (routerLink && !this.preloadedRoutes.has(routerLink)) {
-          // Precargar después de un pequeño delay para evitar precargas innecesarias
-          setTimeout(() => {
-            this.preloadRoute(routerLink);
-          }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      document.addEventListener('mouseover', (event) => {
+        const target = event.target as HTMLElement;
+        const link = target.closest('a[routerLink]');
+        
+        if (link) {
+          const routerLink = link.getAttribute('routerLink');
+          if (routerLink && !this.preloadedRoutes.has(routerLink)) {
+            // Precargar después de un pequeño delay para evitar precargas innecesarias
+            setTimeout(() => {
+              this.preloadRoute(routerLink);
+            }, 100);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   /**

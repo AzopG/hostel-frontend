@@ -7,9 +7,11 @@ import {
   ViewChild, 
   ChangeDetectionStrategy,
   Output,
-  EventEmitter
+  EventEmitter,
+  Inject,
+  PLATFORM_ID
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { PerformanceService } from '../../services/performance.service';
 
 interface ImageConfig {
@@ -278,17 +280,22 @@ export class OptimizedImageComponent implements OnInit, OnDestroy {
 
   constructor(
     private performanceService: PerformanceService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
     this.optimizationConfig = this.performanceService.getOptimizationConfig();
     this.updateConfig();
-    this.setupImage();
+    if (isPlatformBrowser(this.platformId)) {
+      this.setupImage();
+    }
   }
 
   ngOnDestroy(): void {
-    this.performanceService.unobserve(this.elementRef.nativeElement);
+    if (isPlatformBrowser(this.platformId)) {
+      this.performanceService.unobserve(this.elementRef.nativeElement);
+    }
   }
 
   private updateConfig(): void {
@@ -314,43 +321,42 @@ export class OptimizedImageComponent implements OnInit, OnDestroy {
     // Determinar la URL optimizada basada en la calidad
     this.displaySrc = this.getOptimizedSrc();
 
-    // Configurar lazy loading si está habilitado
-    if (this.config.lazy) {
-      this.elementRef.nativeElement.dataset['lazyLoad'] = 'image';
-      this.elementRef.nativeElement.dataset['src'] = this.displaySrc;
-      this.performanceService.observeForLazyLoading(this.elementRef.nativeElement);
-    }
+    if (isPlatformBrowser(this.platformId)) {
+      // Configurar lazy loading si está habilitado
+      if (this.config.lazy) {
+        this.elementRef.nativeElement.dataset['lazyLoad'] = 'image';
+        this.elementRef.nativeElement.dataset['src'] = this.displaySrc;
+        this.performanceService.observeForLazyLoading(this.elementRef.nativeElement);
+      }
 
-    // Precargar imagen si no es lazy
-    if (!this.config.lazy) {
-      this.preloadImage();
+      // Precargar imagen si no es lazy
+      if (!this.config.lazy) {
+        this.preloadImage();
+      }
     }
   }
 
   private getOptimizedSrc(): string {
     const baseSrc = this.config.src;
-    
-    // En un entorno real, aquí construirías URLs para diferentes calidades
-    // Por ejemplo: Cloudinary, ImageOptim, etc.
-    
     const qualityParams = {
       low: 'q_30,f_auto',
       medium: 'q_70,f_auto', 
       high: 'q_90,f_auto'
     };
-
     // Simular parámetros de optimización
     if (baseSrc.includes('cloudinary.com')) {
       const quality = qualityParams[this.config.quality];
       return baseSrc.replace('/image/upload/', `/image/upload/${quality}/`);
     }
-
-    // Para URLs normales, agregar parámetros de calidad si es posible
-    const url = new URL(baseSrc, window.location.origin);
-    url.searchParams.set('quality', this.config.quality);
-    url.searchParams.set('format', 'webp');
-    
-    return url.toString();
+    // Solo ejecutar en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      const url = new URL(baseSrc, window.location.origin);
+      url.searchParams.set('quality', this.config.quality);
+      url.searchParams.set('format', 'webp');
+      return url.toString();
+    }
+    // SSR: solo retorna el src base
+    return baseSrc;
   }
 
   private preloadImage(): void {
