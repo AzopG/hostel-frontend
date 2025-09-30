@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, ViewChild, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -859,6 +859,7 @@ export class HotelMapComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
   private store = inject(Store<AppState>);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   private map?: L.Map;
   private markers: L.Marker[] = [];
@@ -935,24 +936,26 @@ export class HotelMapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Asegurar que el DOM esté completamente renderizado
-    setTimeout(() => {
-      if (this.mapElement?.nativeElement) {
-        this.initializeMap();
-        this.cdr.detectChanges();
-      } else {
-        console.error('Map element not found in DOM');
-        // Retry after another delay
-        setTimeout(() => {
-          if (this.mapElement?.nativeElement) {
-            this.initializeMap();
-            this.cdr.detectChanges();
-          } else {
-            this.showMapError();
-          }
-        }, 500);
-      }
-    }, 200);
+    if (isPlatformBrowser(this.platformId)) {
+      // Asegurar que el DOM esté completamente renderizado
+      setTimeout(() => {
+        if (this.mapElement?.nativeElement) {
+          this.initializeMap();
+          this.cdr.detectChanges();
+        } else {
+          console.error('Map element not found in DOM');
+          // Retry after another delay
+          setTimeout(() => {
+            if (this.mapElement?.nativeElement) {
+              this.initializeMap();
+              this.cdr.detectChanges();
+            } else {
+              this.showMapError();
+            }
+          }, 500);
+        }
+      }, 200);
+    }
   }
 
   ngOnDestroy(): void {
