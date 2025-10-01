@@ -1,14 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink } from '@angular/router';
-import { AuthService, Usuario } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
+import { AuthService, Usuario } from '../../services/auth.service';
 import { AppState } from '../../store';
 import * as HotelActions from '../../store/actions/hotel.actions';
-import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
 @Component({
   selector: 'app-dashboard',
@@ -200,7 +197,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Usuarios</span>
-                  <span class="nav-badge">{{ getUsersCount() }}</span>
+                  <!-- <span class="nav-badge">{{ getUsersCount() }}</span> -->
                 </div>
               </a>
               
@@ -215,7 +212,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Habitaciones</span>
-                  <span class="nav-badge">{{ getRoomsCount() }}</span>
+                  <!-- <span class="nav-badge">{{ getRoomsCount() }}</span> -->
                 </div>
               </a>
               
@@ -230,7 +227,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Salones</span>
-                  <span class="nav-badge">8</span>
+                  <!-- <span class="nav-badge">8</span> -->
                 </div>
               </a>
               
@@ -244,7 +241,6 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Reservas</span>
-                  <span class="nav-badge new">{{ getActiveReservations() }}</span>
                 </div>
               </a>
               
