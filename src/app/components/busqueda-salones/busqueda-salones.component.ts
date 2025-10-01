@@ -28,20 +28,28 @@ export class BusquedaSalonesComponent implements OnInit {
     { valor: 'nombre', etiqueta: 'Nombre (A-Z)' }
   ];
 
-  // Equipamiento disponible
+  // HU15: Equipamiento disponible para filtrado
   equipamientoDisponible = [
     'Proyector',
     'Sistema de audio',
     'Micrófono',
+    'Micrófono inalámbrico',
     'Pizarra',
+    'Pizarra interactiva',
     'WiFi',
     'Aire acondicionado',
     'Catering',
     'Estacionamiento',
-    'Accesibilidad'
+    'Accesibilidad',
+    'Escenario',
+    'Iluminación profesional',
+    'Sistema de videoconferencia',
+    'Pantalla LED 75"',
+    'Proyector HD'
   ];
 
   equipamientoSeleccionado: string[] = [];
+  mostrarEquipamientoExpandido = false; // HU15: Control de expansión
 
   // Hoteles de ejemplo (en producción vendría de un servicio)
   hoteles = [
@@ -58,6 +66,7 @@ export class BusquedaSalonesComponent implements OnInit {
   ngOnInit(): void {
     this.inicializarFormulario();
     this.configurarRecalculoAutomatico(); // HU14 - CA3
+    this.restaurarFiltrosDesdeStorage(); // HU15 - CA4: Restaurar filtros al cargar
   }
 
   inicializarFormulario(): void {
@@ -142,19 +151,92 @@ export class BusquedaSalonesComponent implements OnInit {
   }
 
   /**
-   * Toggle de equipamiento
+   * HU15 - CA1: Toggle de equipamiento con búsqueda automática
    */
   toggleEquipamiento(equip: string): void {
     const index = this.equipamientoSeleccionado.indexOf(equip);
     if (index > -1) {
+      // HU15 - CA2: Remover filtro
       this.equipamientoSeleccionado.splice(index, 1);
     } else {
+      // HU15 - CA1: Agregar filtro
       this.equipamientoSeleccionado.push(equip);
     }
+
+    // HU15 - CA1/CA2: Actualizar búsqueda si ya hay resultados
+    if (this.mostrarResultados && this.busquedaForm.valid) {
+      this.buscarSalones();
+    }
+
+    // HU15 - CA4: Guardar en localStorage para persistencia
+    this.guardarFiltrosEnStorage();
   }
 
   esEquipamientoSeleccionado(equip: string): boolean {
     return this.equipamientoSeleccionado.includes(equip);
+  }
+
+  /**
+   * HU15 - CA3: Limpiar todos los filtros de equipamiento
+   */
+  limpiarFiltrosEquipamiento(): void {
+    this.equipamientoSeleccionado = [];
+    this.guardarFiltrosEnStorage();
+    
+    // Actualizar búsqueda si ya hay resultados
+    if (this.mostrarResultados && this.busquedaForm.valid) {
+      this.buscarSalones();
+    }
+  }
+
+  /**
+   * HU15 - CA4: Guardar filtros en localStorage
+   */
+  private guardarFiltrosEnStorage(): void {
+    const filtros = {
+      equipamiento: this.equipamientoSeleccionado,
+      formulario: this.busquedaForm.value,
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('busquedaSalones_filtros', JSON.stringify(filtros));
+  }
+
+  /**
+   * HU15 - CA4: Restaurar filtros desde localStorage
+   */
+  private restaurarFiltrosDesdeStorage(): void {
+    const filtrosGuardados = localStorage.getItem('busquedaSalones_filtros');
+    if (filtrosGuardados) {
+      try {
+        const filtros = JSON.parse(filtrosGuardados);
+        
+        // Verificar que no sean muy antiguos (más de 1 hora)
+        const timestamp = new Date(filtros.timestamp);
+        const ahora = new Date();
+        const diferenciaHoras = (ahora.getTime() - timestamp.getTime()) / (1000 * 60 * 60);
+        
+        if (diferenciaHoras < 1) {
+          // Restaurar equipamiento
+          if (filtros.equipamiento && Array.isArray(filtros.equipamiento)) {
+            this.equipamientoSeleccionado = filtros.equipamiento;
+          }
+          
+          // Restaurar formulario
+          if (filtros.formulario) {
+            this.busquedaForm.patchValue(filtros.formulario, { emitEvent: false });
+          }
+        }
+      } catch (error) {
+        console.error('Error al restaurar filtros:', error);
+      }
+    }
+  }
+
+  /**
+   * HU15: Toggle para expandir/colapsar equipamiento
+   */
+  toggleEquipamientoExpandido(): void {
+    this.mostrarEquipamientoExpandido = !this.mostrarEquipamientoExpandido;
   }
 
   /**
@@ -190,7 +272,7 @@ export class BusquedaSalonesComponent implements OnInit {
   }
 
   /**
-   * Limpiar búsqueda
+   * HU15 - CA3: Limpiar búsqueda completa (formulario + filtros)
    */
   limpiarBusqueda(): void {
     this.inicializarFormulario();
@@ -199,6 +281,9 @@ export class BusquedaSalonesComponent implements OnInit {
     this.error = null;
     this.sugerencias = null;
     this.equipamientoSeleccionado = [];
+    
+    // HU15 - CA4: Limpiar también el localStorage
+    localStorage.removeItem('busquedaSalones_filtros');
   }
 
   /**

@@ -80,20 +80,54 @@
         </div>
       </div>
 
-      <!-- Equipamiento Opcional -->
+      <!-- HU15: Equipamiento Requerido con filtrado mejorado -->
       <div class="form-group equipamiento-section">
-        <label>Equipamiento Requerido (opcional)</label>
-        <div class="equipamiento-grid">
+        <div class="equipamiento-header">
+          <label>
+            🔧 Equipamiento Requerido 
+            <span class="badge-filtros" *ngIf="equipamientoSeleccionado.length > 0">
+              {{ equipamientoSeleccionado.length }} seleccionado(s)
+            </span>
+          </label>
+          <div class="equipamiento-acciones">
+            <button 
+              type="button" 
+              class="btn-link"
+              (click)="toggleEquipamientoExpandido()"
+            >
+              {{ mostrarEquipamientoExpandido ? '▼ Mostrar menos' : '▶ Mostrar más' }}
+            </button>
+            <button 
+              type="button" 
+              class="btn-link btn-limpiar"
+              *ngIf="equipamientoSeleccionado.length > 0"
+              (click)="limpiarFiltrosEquipamiento()"
+            >
+              ✕ Limpiar filtros
+            </button>
+          </div>
+        </div>
+
+        <!-- HU15 - CA1: Lista de equipamiento seleccionable -->
+        <div class="equipamiento-grid" [class.expandido]="mostrarEquipamientoExpandido">
           <button 
             type="button"
             *ngFor="let equip of equipamientoDisponible"
             class="equipamiento-btn"
             [class.selected]="esEquipamientoSeleccionado(equip)"
             (click)="toggleEquipamiento(equip)"
+            [title]="'Click para ' + (esEquipamientoSeleccionado(equip) ? 'remover' : 'agregar')"
           >
             <span class="checkmark" *ngIf="esEquipamientoSeleccionado(equip)">✓</span>
             {{ equip }}
           </button>
+        </div>
+
+        <!-- HU15 - CA1: Indicador de filtrado activo -->
+        <div class="filtros-activos" *ngIf="equipamientoSeleccionado.length > 0">
+          <small class="info-filtros">
+            ℹ️ Mostrando solo salones que tienen <strong>todos</strong> los equipamientos seleccionados
+          </small>
         </div>
       </div>
 
@@ -130,17 +164,47 @@
     </form>
   </div>
 
-  <!-- CA2: Mensaje cuando no hay resultados -->
+  <!-- HU15 - CA3: Mensaje mejorado cuando no hay resultados -->
   <div class="card sugerencias-card" *ngIf="sugerencias">
     <div class="no-results">
+      <div class="no-results-icon">🏢</div>
       <h3>😕 {{ sugerencias.mensaje }}</h3>
+      
+      <!-- HU15: Información específica sobre filtros de equipamiento -->
+      <div class="filtros-aplicados" *ngIf="equipamientoSeleccionado.length > 0">
+        <div class="filtros-equipamiento-activos">
+          <p><strong>🔧 Filtros de equipamiento activos:</strong></p>
+          <div class="equipamiento-tags">
+            <span class="tag-equipamiento-activo" *ngFor="let equip of equipamientoSeleccionado">
+              ✓ {{ equip }}
+            </span>
+          </div>
+          <p class="nota-filtros">
+            <small>ℹ️ Solo se muestran salones que tienen <strong>todos</strong> los equipamientos seleccionados</small>
+          </p>
+        </div>
+      </div>
+
       <div class="recomendaciones">
         <h4>💡 Sugerencias:</h4>
         <ul>
           <li *ngFor="let recomendacion of sugerencias.recomendaciones">
             {{ recomendacion }}
           </li>
+          <li *ngIf="equipamientoSeleccionado.length > 0">
+            <strong>Remover algunos filtros de equipamiento</strong> para ver más opciones
+          </li>
         </ul>
+      </div>
+
+      <!-- HU15 - CA3: Botón para limpiar filtros de equipamiento -->
+      <div class="acciones-sugerencias" *ngIf="equipamientoSeleccionado.length > 0">
+        <button class="btn-accion-primario" (click)="limpiarFiltrosEquipamiento()">
+          🔧 Limpiar Filtros de Equipamiento
+        </button>
+        <button class="btn-accion-secundario" (click)="limpiarBusqueda()">
+          🔄 Limpiar Toda la Búsqueda
+        </button>
       </div>
     </div>
   </div>

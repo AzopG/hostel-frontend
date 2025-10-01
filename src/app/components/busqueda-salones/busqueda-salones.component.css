@@ -83,19 +83,89 @@
   margin-top: 0.25rem;
 }
 
-/* Equipamiento Section */
+/* HU15: Equipamiento Section Mejorada */
 .equipamiento-section {
   grid-column: 1 / -1;
   margin-top: 1rem;
 }
 
+/* HU15: Header de equipamiento */
+.equipamiento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.equipamiento-header label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+/* HU15: Badge para contador de filtros */
+.badge-filtros {
+  background: #3498db;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease;
+}
+
+/* HU15: Acciones de equipamiento */
+.equipamiento-acciones {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.btn-link.btn-limpiar {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.btn-link.btn-limpiar:hover {
+  color: #c0392b;
+}
+
+/* HU15: Grid de equipamiento expandible */
 .equipamiento-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 0.75rem;
+  max-height: 200px;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
 }
 
+.equipamiento-grid.expandido {
+  max-height: none;
+}
+
+/* HU15: Botones de equipamiento con animación */
 .equipamiento-btn {
   padding: 0.5rem 1rem;
   border: 2px solid #e0e0e0;
@@ -115,14 +185,49 @@
   background: #ecf6fd;
 }
 
+/* HU15: Botón seleccionado con animación mejorada */
 .equipamiento-btn.selected {
-  background: #3498db;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
   color: white;
-  border-color: #3498db;
+  border-color: #2980b9;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  animation: pulseSelection 0.3s ease;
 }
 
 .checkmark {
   font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* HU15: Animación de selección */
+@keyframes pulseSelection {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* HU15: Información de filtros activos */
+.filtros-activos {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #e8f4f8;
+  border-left: 4px solid #3498db;
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+.info-filtros {
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.5;
 }
 
 /* Alerts */
@@ -205,43 +310,160 @@
   color: white;
 }
 
-/* Sugerencias Card (CA2) */
+/* HU15: Sugerencias Card Mejorada (CA3) */
 .sugerencias-card {
   background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
   border-left: 4px solid #f39c12;
 }
 
+.no-results {
+  text-align: center;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 .no-results h3 {
   color: #e67e22;
   margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
+/* HU15 - CA3: Filtros aplicados */
+.filtros-aplicados {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  border: 2px dashed #f39c12;
+}
+
+.filtros-equipamiento-activos p {
+  margin: 0.5rem 0;
+  color: #2c3e50;
+}
+
+.equipamiento-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.tag-equipamiento-activo {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+.nota-filtros {
+  background: #e8f4f8;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border-left: 3px solid #3498db;
+}
+
+.nota-filtros small {
+  color: #2c3e50;
+  font-size: 0.85rem;
+}
+
+/* HU15 - CA3: Recomendaciones */
 .recomendaciones {
   margin-top: 1.5rem;
+  text-align: left;
 }
 
 .recomendaciones h4 {
   color: #d68910;
   margin-bottom: 0.75rem;
+  text-align: center;
 }
 
 .recomendaciones ul {
   list-style: none;
   padding: 0;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
 .recomendaciones li {
-  padding: 0.5rem 0;
-  padding-left: 1.5rem;
+  padding: 0.75rem;
+  padding-left: 2rem;
   position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.recomendaciones li:last-child {
+  border-bottom: none;
 }
 
 .recomendaciones li::before {
-  content: "→";
+  content: "💡";
   position: absolute;
-  left: 0;
-  color: #f39c12;
-  font-weight: bold;
+  left: 0.5rem;
+  font-size: 1.2rem;
+}
+
+/* HU15 - CA3: Botones de acción en sugerencias */
+.acciones-sugerencias {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-accion-primario,
+.btn-accion-secundario {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-accion-primario {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.btn-accion-primario:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+.btn-accion-secundario {
+  background: white;
+  color: #3498db;
+  border: 2px solid #3498db;
+}
+
+.btn-accion-secundario:hover {
+  background: #ecf6fd;
+  transform: translateY(-2px);
 }
 
 /* Resultados Section */
