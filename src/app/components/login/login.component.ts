@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService, LoginRequest } from '../../services/auth.service';
 
 @Component({
@@ -744,10 +744,8 @@ export class LoginComponent implements OnInit {
           if (response) {
             // CA1: Autenticación válida - Redirigir según el rol
             this.successMessage = `Bienvenido ${response.usuario.nombre}. Redirigiendo...`;
-            setTimeout(() => {
-              // Redirigir al panel correspondiente según el rol (CA1)
-              this.navigateByRole(response.usuario.tipo);
-            }, 1000);
+            // Redirigir inmediatamente sin esperar
+            this.navigateByRole(response.usuario.tipo);
           }
         },
         error: (error) => {
