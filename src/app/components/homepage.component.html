@@ -3,15 +3,26 @@
     <span class="brand-icon">🏨</span>
     <span>Hotel Paradise</span>
   </div>
-  <ul class="navbar-links">
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#panel">Panel</a></li>
-    <li><a href="#contacto">Contacto</a></li>
+  
+  <!-- Botón hamburguesa para móvil -->
+  <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" [class.active]="showMobileMenu">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+
+  <!-- Overlay para cerrar el menú móvil -->
+  <div class="mobile-overlay" *ngIf="showMobileMenu" (click)="closeMobileMenu()"></div>
+
+  <ul class="navbar-links" [class.mobile-open]="showMobileMenu">
+    <li><a href="#servicios" (click)="closeMobileMenu()">Servicios</a></li>
+    <li><a href="#panel" (click)="closeMobileMenu()">Panel</a></li>
+    <li><a href="#contacto" (click)="closeMobileMenu()">Contacto</a></li>
     <li *ngIf="!isAuthenticated">
-      <button class="register-nav-btn" (click)="navigateToRegister()">Registrarse</button>
+      <button class="register-nav-btn" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</button>
     </li>
     <li *ngIf="!isAuthenticated">
-      <button class="login-nav-btn" (click)="navigateToLogin()">Iniciar Sesión</button>
+      <button class="login-nav-btn" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</button>
     </li>
     <li *ngIf="isAuthenticated" class="user-menu">
       <div class="notification-bell" (click)="toggleNotifications()">
@@ -20,12 +31,12 @@
       </div>
       <div class="user-info">
         <span class="user-name">{{ currentUser?.nombre }}</span>
-        <button class="dashboard-btn" (click)="navigateToDashboard()">Panel de Control</button>
-        <button class="logout-btn" (click)="logout()">Salir</button>
+        <button class="dashboard-btn" (click)="navigateToDashboard(); closeMobileMenu()">Panel de Control</button>
+        <button class="logout-btn" (click)="logout(); closeMobileMenu()">Salir</button>
       </div>
     </li>
   </ul>
-  
+
   <!-- Panel de notificaciones -->
   <div class="notifications-panel" *ngIf="showNotifications && isAuthenticated">
     <div class="notifications-header">
@@ -56,51 +67,51 @@
   <section class="hero">
     <div class="hero-content">
       <div class="hero-text">
-        <h1 class="hero-title">
-           <span class="gradient-text">Hotel Paradise</span>
-        </h1>
+        <h1 class="hero-title">Hotel Paradise</h1>
         <p class="hero-subtitle">
           Experiencia hotelera excepcional con servicios de lujo y comodidad incomparable
         </p>
-        <div class="hero-features">
-          <div class="feature-item">
-            <span class="feature-icon">🌟</span>
-            <span>Servicio Premium</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">🏊‍♀️</span>
-            <span>Instalaciones de Lujo</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">🍽️</span>
-            <span>Gastronomía Exclusiva</span>
-          </div>
-        </div>
         <div class="hero-actions">
-          <button class="btn-primary" (click)="navigateToRegister()" *ngIf="!isAuthenticated">
-            <span class="btn-icon">✨</span>
-            Crear Cuenta
-          </button>
-          <button class="btn-primary" (click)="navigateToDashboard()" *ngIf="isAuthenticated">
-            <span class="btn-icon">🏨</span>
-            Ir al Panel de Control
-          </button>
-          <button class="btn-secondary" (click)="navigateToBuscarHabitaciones()">
+          <button class="btn-primary" (click)="navigateToBuscarHabitaciones()">
             <span class="btn-icon">🔍</span>
             Buscar Habitaciones
           </button>
-          <button class="btn-secondary" (click)="navigateToCalendario()">
+          <button class="btn-primary" (click)="navigateToCalendario()">
             <span class="btn-icon">📅</span>
             Ver Disponibilidad
           </button>
-          <button class="btn-secondary" (click)="navigateToLogin()" *ngIf="!isAuthenticated">
-            <span class="btn-icon">🔑</span>
-            Iniciar Sesión
-          </button>
-          <button class="btn-secondary" (click)="exploreFeatures()" *ngIf="!isAuthenticated">
-            <span class="btn-icon">🏖️</span>
-            Ver Servicios
-          </button>
+        </div>
+        <div class="hero-features-icons">
+          <div class="feature-circle" data-tooltip="Servicio Premium">
+            <span class="feature-icon">🌟</span>
+            <div class="custom-tooltip">
+              <div class="tooltip-content">
+                <span class="tooltip-title">Servicio Premium</span>
+                <span class="tooltip-description">Atención personalizada 24/7</span>
+              </div>
+              <div class="tooltip-arrow"></div>
+            </div>
+          </div>
+          <div class="feature-circle" data-tooltip="Instalaciones de Lujo">
+            <span class="feature-icon">🏊‍♀️</span>
+            <div class="custom-tooltip">
+              <div class="tooltip-content">
+                <span class="tooltip-title">Instalaciones de Lujo</span>
+                <span class="tooltip-description">Piscina, spa y gimnasio premium</span>
+              </div>
+              <div class="tooltip-arrow"></div>
+            </div>
+          </div>
+          <div class="feature-circle" data-tooltip="Gastronomía Exclusiva">
+            <span class="feature-icon">🍽️</span>
+            <div class="custom-tooltip">
+              <div class="tooltip-content">
+                <span class="tooltip-title">Gastronomía Exclusiva</span>
+                <span class="tooltip-description">Chefs internacionales y cocina gourmet</span>
+              </div>
+              <div class="tooltip-arrow"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="hero-visual">
