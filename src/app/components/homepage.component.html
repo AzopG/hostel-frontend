@@ -20,7 +20,7 @@
       </div>
       <div class="user-info">
         <span class="user-name">{{ currentUser?.nombre }}</span>
-        <button class="dashboard-btn" (click)="navigateToDashboard()">Dashboard</button>
+        <button class="dashboard-btn" (click)="navigateToDashboard()">Panel de Control</button>
         <button class="logout-btn" (click)="logout()">Salir</button>
       </div>
     </li>
@@ -83,7 +83,7 @@
           </button>
           <button class="btn-primary" (click)="navigateToDashboard()" *ngIf="isAuthenticated">
             <span class="btn-icon">🏨</span>
-            Ir al Dashboard
+            Ir al Panel de Control
           </button>
           <button class="btn-secondary" (click)="navigateToBuscarHabitaciones()">
             <span class="btn-icon">🔍</span>
@@ -124,7 +124,7 @@
             </div>
             <div class="stat-item">
               <div class="stat-number">{{ formatRevenue(currentStats.ingresosTotales) }}</div>
-              <div class="stat-label">Revenue</div>
+              <div class="stat-label">Ingresos</div>
             </div>
           </div>
         </div>
@@ -189,8 +189,8 @@
           <h3>Reportes y Estadísticas</h3>
           <p>Análisis completo del rendimiento de tu negocio hotelero.</p>
           <div class="service-highlights">
-            <span class="service-tag">Analytics</span>
-            <span class="service-tag">Revenue: {{ formatRevenue(currentStats.ingresosTotales) }}</span>
+            <span class="service-tag">Analíticas</span>
+            <span class="service-tag">Ingresos: {{ formatRevenue(currentStats.ingresosTotales) }}</span>
           </div>
           <div class="feature-action">
             <span class="action-text">Ver Reportes</span>

@@ -26,20 +26,20 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
           <!-- Email -->
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Correo Electrónico</label>
             <input
               id="email"
               type="email"
               formControlName="email"
-              placeholder="Ingresa tu email"
+              placeholder="Ingresa tu correo electrónico"
               [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
             />
             <div 
               class="error-message" 
               *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
             >
-              <span *ngIf="loginForm.get('email')?.errors?.['required']">El email es requerido</span>
-              <span *ngIf="loginForm.get('email')?.errors?.['email']">Formato de email inválido</span>
+              <span *ngIf="loginForm.get('email')?.errors?.['required']">El correo electrónico es requerido</span>
+              <span *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo electrónico inválido</span>
             </div>
           </div>
 
@@ -371,10 +371,7 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['resetSuccess'] === 'true') {
         this.resetPasswordSuccess = true;
-        // Limpiar el query param después de 5 segundos
-        setTimeout(() => {
-          this.resetPasswordSuccess = false;
-        }, 5000);
+        // Success message will be cleared automatically when user interacts
       }
     });
   }

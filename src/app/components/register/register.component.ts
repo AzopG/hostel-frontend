@@ -480,17 +480,15 @@ export class RegisterComponent implements OnInit {
           this.authService.login(loginData).subscribe({
             next: (loginResponse) => {
               if (loginResponse) {
-                setTimeout(() => {
-                  this.router.navigate(['/dashboard']);
-                }, 2000);
+                // Navegación inmediata
+                this.router.navigate(['/dashboard']);
               }
             },
             error: (loginError) => {
               // Si falla el login automático, redirigir a login manual
               this.successMessage = 'Cuenta creada exitosamente. Redirigiendo al inicio de sesión...';
-              setTimeout(() => {
-                this.router.navigate(['/login']);
-              }, 2000);
+              // Navegación inmediata al login
+              this.router.navigate(['/login']);
             }
           });
         }

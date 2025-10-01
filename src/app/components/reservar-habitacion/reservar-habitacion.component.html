@@ -124,7 +124,7 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label for="email">Email *</label>
+          <label for="email">Correo Electrónico *</label>
           <input 
             type="email" 
             id="email" 
@@ -223,7 +223,7 @@
       <div class="card">
         <h3>👤 Huésped</h3>
         <p><strong>Nombre:</strong> {{ datosForm.value.nombre }} {{ datosForm.value.apellido }}</p>
-        <p><strong>Email:</strong> {{ datosForm.value.email }}</p>
+        <p><strong>Correo:</strong> {{ datosForm.value.email }}</p>
         <p><strong>Teléfono:</strong> {{ datosForm.value.telefono }}</p>
         <p *ngIf="datosForm.value.pais"><strong>País:</strong> {{ datosForm.value.pais }}</p>
       </div>

@@ -4,7 +4,7 @@
   <!-- Navegación -->
   <div class="header-navigation" *ngIf="!cargando">
     <button class="btn-home" (click)="irAlHome()" title="Ir al inicio">
-      <span>🏠 Home</span>
+      <span>🏠 Inicio</span>
     </button>
     <button class="btn-volver" (click)="volver()" title="Volver a Mis Reservas">
       <span>← Mis Reservas</span>
@@ -34,7 +34,7 @@
         <span *ngIf="descargando">⏳ Descargando...</span>
       </button>
       <button class="btn-accion btn-email" (click)="enviarPorEmail()" [disabled]="enviando">
-        <span *ngIf="!enviando">📧 Enviar por Email</span>
+        <span *ngIf="!enviando">📧 Enviar por Correo</span>
         <span *ngIf="enviando">⏳ Enviando...</span>
       </button>
       <button class="btn-accion btn-imprimir" (click)="imprimir()">
@@ -82,7 +82,7 @@
             <p>{{ reserva.datosHuesped.telefono }}</p>
           </div>
           <div class="campo">
-            <label>Email:</label>
+            <label>Correo:</label>
             <p>{{ reserva.datosHuesped.email }}</p>
           </div>
         </div>

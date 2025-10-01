@@ -123,8 +123,7 @@ export class BundleOptimizationService {
       const route = this.preloadQueue.shift();
       if (route && !this.preloadedRoutes.has(route)) {
         await this.preloadRoute(route);
-        // Pequeña pausa entre precargas para no sobrecargar
-        await this.delay(200);
+        // Delay eliminado para mejorar velocidad
       }
     }
 
@@ -167,11 +166,9 @@ export class BundleOptimizationService {
   }
 
   /**
-   * Utilidad para delay
+   * Delay function removed for better performance
    */
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  // private delay function removed
 
   /**
    * Optimización de bundles en tiempo de ejecución
