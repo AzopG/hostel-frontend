@@ -3,6 +3,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+// HU16: Layout de salón
+export interface Layout {
+  nombre: string;
+  capacidad: number;
+  descripcion?: string;
+  imagen?: string;
+}
+
 export interface Salon {
   _id: string;
   hotel: {
@@ -10,6 +18,8 @@ export interface Salon {
     nombre: string;
     ciudad?: string;
     direccion?: string;
+    telefono?: string;
+    email?: string;
   };
   nombre: string;
   capacidad: number;
@@ -19,9 +29,12 @@ export interface Salon {
   precioPorDia: number;
   serviciosIncluidos?: string[];
   fotos?: string[];
+  layouts?: Layout[]; // HU16 - CA3
   dias?: number;
   precioTotal?: number;
   disponibleParaFechas?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface BusquedaSalonesParams {
@@ -65,7 +78,7 @@ export interface DisponibilidadResponse {
   providedIn: 'root'
 })
 export class SalonService {
-  private apiUrl = `${environment.apiUrl}/salon`;
+  private apiUrl = `${environment.apiUrl}/salones`;
 
   constructor(private http: HttpClient) {}
 
@@ -105,10 +118,36 @@ export class SalonService {
   }
 
   /**
-   * Obtener detalles completos de un salón
+   * HU16 - CA1: Obtener detalle completo de un salón
+   * Incluye capacidad, equipamiento, layouts, fotos, tarifas
    */
-  obtenerSalonDetalle(salonId: string): Observable<{ success: boolean; salon: Salon }> {
+  obtenerDetalleSalon(salonId: string): Observable<{ success: boolean; salon: Salon }> {
     return this.http.get<{ success: boolean; salon: Salon }>(`${this.apiUrl}/${salonId}`);
+  }
+
+  /**
+   * HU16 - CA2: Verificar disponibilidad detallada con estado (libre/parcial/bloqueado)
+   */
+  verificarDisponibilidadDetallada(salonId: string, fechaInicio: string, fechaFin: string): Observable<{
+    success: boolean;
+    disponibilidad: {
+      estado: 'libre' | 'parcial' | 'bloqueado';
+      mensaje: string;
+      fechaInicio: Date;
+      fechaFin: Date;
+      reservasExistentes: number;
+      detalleReservas: Array<{
+        fechaInicio: Date;
+        fechaFin: Date;
+        estado: string;
+      }>;
+    };
+  }> {
+    const params = new HttpParams()
+      .set('fechaInicio', fechaInicio)
+      .set('fechaFin', fechaFin);
+
+    return this.http.get<any>(`${this.apiUrl}/${salonId}/disponibilidad-detallada`, { params });
   }
 
   /**

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SalonService, Salon, BusquedaSalonesResponse } from '../../services/salon.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -60,7 +61,8 @@ export class BusquedaSalonesComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private salonService: SalonService
+    private salonService: SalonService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -310,6 +312,23 @@ export class BusquedaSalonesComponent implements OnInit {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
     return Math.ceil((fin.getTime() - inicio.getTime()) / (1000 * 60 * 60 * 24));
+  }
+
+  /**
+   * HU16 - CA1, CA4: Ver detalle del salón
+   * Navega al componente de detalle preservando filtros en localStorage
+   */
+  verDetalleSalon(salon: Salon): void {
+    // Los filtros ya están guardados en localStorage por HU15
+    // Agregar fechas como query params para disponibilidad
+    const queryParams: any = {};
+    
+    if (this.busquedaForm.value.fechaInicio && this.busquedaForm.value.fechaFin) {
+      queryParams.fechaInicio = this.busquedaForm.value.fechaInicio;
+      queryParams.fechaFin = this.busquedaForm.value.fechaFin;
+    }
+
+    this.router.navigate(['/salon', salon._id], { queryParams });
   }
 }
 

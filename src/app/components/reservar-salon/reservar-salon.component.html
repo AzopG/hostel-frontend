@@ -1,0 +1,565 @@
+<!-- HU17: Reservar un Salón - 4 Pasos -->
+<div class="reservar-salon-container">
+  <!-- Indicador de pasos -->
+  <div class="pasos-indicador" *ngIf="pasoActual < 4">
+    <div class="paso" [class.activo]="pasoActual === 1" [class.completado]="pasoActual > 1">
+      <div class="paso-numero">1</div>
+      <div class="paso-label">Datos del Evento</div>
+    </div>
+    <div class="paso-linea" [class.completado]="pasoActual > 1"></div>
+    <div class="paso" [class.activo]="pasoActual === 2" [class.completado]="pasoActual > 2">
+      <div class="paso-numero">2</div>
+      <div class="paso-label">Contacto</div>
+    </div>
+    <div class="paso-linea" [class.completado]="pasoActual > 2"></div>
+    <div class="paso" [class.activo]="pasoActual === 3" [class.completado]="pasoActual > 3">
+      <div class="paso-numero">3</div>
+      <div class="paso-label">Políticas</div>
+    </div>
+  </div>
+
+  <!-- CA2: Alerta de conflicto -->
+  <div class="alerta-conflicto" *ngIf="conflictoDetectado">
+    <div class="icono-alerta">⚠️</div>
+    <div class="contenido-alerta">
+      <h3>{{ mensajeConflicto }}</h3>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="volverABusqueda()">
+        Volver a la Búsqueda
+      </button>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div class="loader-overlay" *ngIf="cargando">
+    <div class="loader"></div>
+    <p>Procesando...</p>
+  </div>
+
+  <!-- Alerta de error general -->
+  <div class="alerta alerta-error" *ngIf="error && !conflictoDetectado">
+    {{ error }}
+  </div>
+
+  <!-- CA1: PASO 1 - Datos del Evento -->
+  <div class="paso-contenido" *ngIf="pasoActual === 1 && salon">
+    <div class="resumen-salon">
+      <h2>📍 {{ salon.nombre }}</h2>
+      <div class="info-salon-grid">
+        <div class="info-item">
+          <span class="label">Hotel:</span>
+          <span class="valor">{{ salon.hotel.nombre }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Ciudad:</span>
+          <span class="valor">{{ salon.hotel.ciudad }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Capacidad:</span>
+          <span class="valor">{{ salon.capacidad }} personas</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Área:</span>
+          <span class="valor">{{ salon.area }} m²</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Fechas:</span>
+          <span class="valor">{{ formatearFecha(fechaInicio) }} - {{ formatearFecha(fechaFin) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Duración:</span>
+          <span class="valor">{{ dias }} día{{ dias > 1 ? 's' : '' }}</span>
+        </div>
+      </div>
+
+      <!-- Layout seleccionado -->
+      <div class="layout-seleccionado" *ngIf="layoutSeleccionado">
+        <h4>Layout Seleccionado</h4>
+        <div class="layout-info">
+          <span class="layout-nombre">{{ layoutSeleccionado.nombre }}</span>
+          <span class="layout-capacidad">Capacidad: {{ layoutSeleccionado.capacidad }} personas</span>
+        </div>
+      </div>
+
+      <!-- Tarifa estimada -->
+      <div class="tarifa-estimada">
+        <h4>Tarifa Estimada</h4>
+        <div class="tarifa-detalle">
+          <div class="tarifa-row">
+            <span>Subtotal ({{ dias }} día{{ dias > 1 ? 's' : '' }}):</span>
+            <span>${{ formatearPrecio(tarifaEstimada.subtotal) }} COP</span>
+          </div>
+          <div class="tarifa-row">
+            <span>Impuestos (IVA 19%):</span>
+            <span>${{ formatearPrecio(tarifaEstimada.impuestos) }} COP</span>
+          </div>
+          <div class="tarifa-row tarifa-total">
+            <span>TOTAL:</span>
+            <span>${{ formatearPrecio(tarifaEstimada.total) }} COP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de datos del evento -->
+    <div class="formulario-contenedor">
+      <h3>📋 Datos del Evento</h3>
+      <form [formGroup]="formularioEvento">
+        <div class="form-group">
+          <label for="nombreEvento">Nombre del Evento *</label>
+          <input
+            type="text"
+            id="nombreEvento"
+            formControlName="nombreEvento"
+            placeholder="Ej: Conferencia Anual 2024"
+            [class.invalido]="campoInvalido(formularioEvento, 'nombreEvento')"
+          />
+          <span class="error-mensaje" *ngIf="campoInvalido(formularioEvento, 'nombreEvento')">
+            {{ obtenerError(formularioEvento, 'nombreEvento') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="tipoEvento">Tipo de Evento *</label>
+          <select id="tipoEvento" formControlName="tipoEvento">
+            <option value="Corporativo">Corporativo</option>
+            <option value="Conferencia">Conferencia</option>
+            <option value="Capacitación">Capacitación</option>
+            <option value="Seminario">Seminario</option>
+            <option value="Reunión">Reunión</option>
+            <option value="Taller">Taller</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="horarioInicio">Horario de Inicio *</label>
+            <input
+              type="time"
+              id="horarioInicio"
+              formControlName="horarioInicio"
+              [class.invalido]="campoInvalido(formularioEvento, 'horarioInicio')"
+            />
+            <span class="error-mensaje" *ngIf="campoInvalido(formularioEvento, 'horarioInicio')">
+              {{ obtenerError(formularioEvento, 'horarioInicio') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="horarioFin">Horario de Fin *</label>
+            <input
+              type="time"
+              id="horarioFin"
+              formControlName="horarioFin"
+              [class.invalido]="campoInvalido(formularioEvento, 'horarioFin')"
+            />
+            <span class="error-mensaje" *ngIf="campoInvalido(formularioEvento, 'horarioFin')">
+              {{ obtenerError(formularioEvento, 'horarioFin') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="responsable">Responsable del Evento *</label>
+          <input
+            type="text"
+            id="responsable"
+            formControlName="responsable"
+            placeholder="Nombre completo del responsable"
+            [class.invalido]="campoInvalido(formularioEvento, 'responsable')"
+          />
+          <span class="error-mensaje" *ngIf="campoInvalido(formularioEvento, 'responsable')">
+            {{ obtenerError(formularioEvento, 'responsable') }}
+          </span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cargoResponsable">Cargo del Responsable</label>
+            <input
+              type="text"
+              id="cargoResponsable"
+              formControlName="cargoResponsable"
+              placeholder="Ej: Gerente de RRHH"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="telefonoResponsable">Teléfono de Contacto *</label>
+            <input
+              type="tel"
+              id="telefonoResponsable"
+              formControlName="telefonoResponsable"
+              placeholder="3001234567"
+              [class.invalido]="campoInvalido(formularioEvento, 'telefonoResponsable')"
+            />
+            <span class="error-mensaje" *ngIf="campoInvalido(formularioEvento, 'telefonoResponsable')">
+              {{ obtenerError(formularioEvento, 'telefonoResponsable') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="requiremientosEspeciales">Requerimientos Especiales</label>
+          <textarea
+            id="requiremientosEspeciales"
+            formControlName="requiremientosEspeciales"
+            rows="4"
+            placeholder="Describe cualquier requerimiento adicional para tu evento"
+          ></textarea>
+        </div>
+      </form>
+
+      <div class="botones-navegacion">
+        <button class="btn btn-secondary" (click)="volverABusqueda()">Cancelar</button>
+        <button class="btn btn-primary" (click)="siguientePaso()" [disabled]="!formularioEvento.valid">
+          Continuar →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CA1: PASO 2 - Datos de Contacto -->
+  <div class="paso-contenido" *ngIf="pasoActual === 2">
+    <div class="formulario-contenedor">
+      <h3>👤 Datos de Contacto</h3>
+      <form [formGroup]="formularioContacto">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre *</label>
+            <input
+              type="text"
+              id="nombre"
+              formControlName="nombre"
+              placeholder="Nombre"
+              [class.invalido]="campoInvalido(formularioContacto, 'nombre')"
+            />
+            <span class="error-mensaje" *ngIf="campoInvalido(formularioContacto, 'nombre')">
+              {{ obtenerError(formularioContacto, 'nombre') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input
+              type="text"
+              id="apellido"
+              formControlName="apellido"
+              placeholder="Apellido"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="correo@ejemplo.com"
+              [class.invalido]="campoInvalido(formularioContacto, 'email')"
+            />
+            <span class="error-mensaje" *ngIf="campoInvalido(formularioContacto, 'email')">
+              {{ obtenerError(formularioContacto, 'email') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono *</label>
+            <input
+              type="tel"
+              id="telefono"
+              formControlName="telefono"
+              placeholder="3001234567"
+              [class.invalido]="campoInvalido(formularioContacto, 'telefono')"
+            />
+            <span class="error-mensaje" *ngIf="campoInvalido(formularioContacto, 'telefono')">
+              {{ obtenerError(formularioContacto, 'telefono') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="documento">Documento de Identidad</label>
+            <input
+              type="text"
+              id="documento"
+              formControlName="documento"
+              placeholder="CC o NIT"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="pais">País</label>
+            <input
+              type="text"
+              id="pais"
+              formControlName="pais"
+              placeholder="Colombia"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="ciudad">Ciudad</label>
+          <input
+            type="text"
+            id="ciudad"
+            formControlName="ciudad"
+            placeholder="Ciudad"
+          />
+        </div>
+      </form>
+
+      <div class="botones-navegacion">
+        <button class="btn btn-secondary" (click)="pasoAnterior()">← Atrás</button>
+        <button class="btn btn-primary" (click)="siguientePaso()" [disabled]="!formularioContacto.valid">
+          Continuar →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CA4: PASO 3 - Políticas y Confirmación -->
+  <div class="paso-contenido" *ngIf="pasoActual === 3 && politicas">
+    <div class="formulario-contenedor">
+      <h3>📜 Políticas de Reserva</h3>
+
+      <!-- Resumen de políticas principales -->
+      <div class="politicas-resumen">
+        <div class="politica-item">
+          <h4>🔄 Cancelación</h4>
+          <ul>
+            <li><strong>Gratuita:</strong> {{ politicas.cancelacion.ventanaGratuita.plazo }} de anticipación</li>
+            <li><strong>50% penalización:</strong> {{ politicas.cancelacion.ventanaParcial.plazo }}</li>
+            <li><strong>100% penalización:</strong> {{ politicas.cancelacion.ventanaTotal.plazo }}</li>
+          </ul>
+        </div>
+
+        <div class="politica-item">
+          <h4>✏️ Modificación</h4>
+          <p>{{ politicas.modificacion.descripcion }}</p>
+          <ul>
+            <li *ngFor="let restriccion of politicas.modificacion.restricciones">
+              {{ restriccion }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="politica-item">
+          <h4>💰 Pago</h4>
+          <p>{{ politicas.pago.descripcion }}</p>
+          <ul>
+            <li *ngFor="let nota of politicas.pago.notasImportantes">
+              {{ nota }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Toggle para ver políticas completas -->
+      <div class="ver-mas-politicas">
+        <button class="btn-link" (click)="togglePoliticas()">
+          {{ mostrarPoliticas ? '▲ Ver menos' : '▼ Ver políticas completas' }}
+        </button>
+      </div>
+
+      <!-- Políticas completas (colapsable) -->
+      <div class="politicas-completas" *ngIf="mostrarPoliticas">
+        <div class="politica-seccion">
+          <h4>✅ Servicios Incluidos</h4>
+          <ul>
+            <li *ngFor="let servicio of politicas.servicios.incluidos">
+              {{ servicio }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="politica-seccion">
+          <h4>➕ Servicios Adicionales (bajo cotización)</h4>
+          <ul>
+            <li *ngFor="let adicional of politicas.servicios.adicionales">
+              {{ adicional }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="politica-seccion">
+          <h4>📋 Condiciones de Uso</h4>
+          <ul>
+            <li *ngFor="let norma of politicas.uso.normas">
+              {{ norma }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Checkbox de aceptación -->
+      <div class="aceptacion-politicas">
+        <label class="checkbox-container">
+          <input
+            type="checkbox"
+            [(ngModel)]="politicasAceptadas"
+            id="politicasAceptadas"
+          />
+          <span class="checkmark"></span>
+          <span class="checkbox-label">
+            He leído y acepto las políticas de reserva, cancelación y uso del salón. *
+          </span>
+        </label>
+      </div>
+
+      <!-- Resumen final antes de confirmar -->
+      <div class="resumen-final">
+        <h4>Resumen de tu Reserva</h4>
+        <div class="resumen-grid">
+          <div class="resumen-item">
+            <span class="label">Evento:</span>
+            <span class="valor">{{ formularioEvento.value.nombreEvento }}</span>
+          </div>
+          <div class="resumen-item">
+            <span class="label">Salón:</span>
+            <span class="valor">{{ salon.nombre }}</span>
+          </div>
+          <div class="resumen-item">
+            <span class="label">Fechas:</span>
+            <span class="valor">{{ formatearFecha(fechaInicio) }} - {{ formatearFecha(fechaFin) }}</span>
+          </div>
+          <div class="resumen-item">
+            <span class="label">Horario:</span>
+            <span class="valor">{{ formularioEvento.value.horarioInicio }} - {{ formularioEvento.value.horarioFin }}</span>
+          </div>
+          <div class="resumen-item">
+            <span class="label">Responsable:</span>
+            <span class="valor">{{ formularioEvento.value.responsable }}</span>
+          </div>
+          <div class="resumen-item resumen-total">
+            <span class="label">TOTAL A PAGAR:</span>
+            <span class="valor">${{ formatearPrecio(tarifaEstimada.total) }} COP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="botones-navegacion">
+        <button class="btn btn-secondary" (click)="pasoAnterior()">← Atrás</button>
+        <button
+          class="btn btn-primary btn-confirmar"
+          (click)="siguientePaso()"
+          [disabled]="!politicasAceptadas || cargando"
+        >
+          {{ cargando ? 'Confirmando...' : 'Confirmar Reserva ✓' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CA3: PASO 4 - Confirmación Exitosa -->
+  <div class="paso-contenido confirmacion-exitosa" *ngIf="pasoActual === 4 && reservaConfirmada">
+    <div class="icono-exito">✅</div>
+    <h2>¡Reserva Confirmada!</h2>
+    <p class="mensaje-exito">Tu salón ha sido reservado exitosamente.</p>
+
+    <div class="codigo-reserva-box">
+      <h3>Código de Reserva</h3>
+      <div class="codigo-grande">{{ codigoReserva }}</div>
+      <p class="nota-codigo">Guarda este código. Lo necesitarás para cualquier consulta sobre tu reserva.</p>
+    </div>
+
+    <div class="detalles-confirmacion">
+      <h4>Detalles de la Reserva</h4>
+      <div class="detalle-grid">
+        <div class="detalle-item">
+          <span class="icono">🎯</span>
+          <div>
+            <strong>Evento:</strong>
+            <p>{{ reservaConfirmada.datosEvento.nombreEvento }}</p>
+          </div>
+        </div>
+
+        <div class="detalle-item">
+          <span class="icono">🏢</span>
+          <div>
+            <strong>Salón:</strong>
+            <p>{{ reservaConfirmada.salon.nombre }}</p>
+          </div>
+        </div>
+
+        <div class="detalle-item">
+          <span class="icono">🏨</span>
+          <div>
+            <strong>Hotel:</strong>
+            <p>{{ reservaConfirmada.hotel.nombre }}</p>
+            <p class="texto-secundario">{{ reservaConfirmada.hotel.ciudad }}</p>
+          </div>
+        </div>
+
+        <div class="detalle-item">
+          <span class="icono">📅</span>
+          <div>
+            <strong>Fechas:</strong>
+            <p>{{ formatearFecha(reservaConfirmada.fechaInicio) }}</p>
+            <p class="texto-secundario">hasta {{ formatearFecha(reservaConfirmada.fechaFin) }}</p>
+          </div>
+        </div>
+
+        <div class="detalle-item">
+          <span class="icono">⏰</span>
+          <div>
+            <strong>Horario:</strong>
+            <p>{{ reservaConfirmada.datosEvento.horarioInicio }} - {{ reservaConfirmada.datosEvento.horarioFin }}</p>
+          </div>
+        </div>
+
+        <div class="detalle-item">
+          <span class="icono">👤</span>
+          <div>
+            <strong>Responsable:</strong>
+            <p>{{ reservaConfirmada.datosEvento.responsable }}</p>
+          </div>
+        </div>
+
+        <div class="detalle-item total-pagado">
+          <span class="icono">💳</span>
+          <div>
+            <strong>Total Pagado:</strong>
+            <p class="monto-total">${{ formatearPrecio(reservaConfirmada.tarifa.total) }} COP</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notificacion-email">
+      <span class="icono-email">📧</span>
+      <p>
+        Se ha enviado un email de confirmación a <strong>{{ reservaConfirmada.datosHuesped.email }}</strong>
+        con todos los detalles de tu reserva.
+      </p>
+    </div>
+
+    <div class="recordatorios">
+      <h4>📌 Recordatorios Importantes</h4>
+      <ul>
+        <li>Llega con 30 minutos de anticipación para el montaje</li>
+        <li>Respeta el horario acordado: {{ reservaConfirmada.datosEvento.horarioInicio }} - {{ reservaConfirmada.datosEvento.horarioFin }}</li>
+        <li>El equipamiento básico está incluido</li>
+        <li>Para servicios adicionales, contacta al hotel con anticipación</li>
+      </ul>
+    </div>
+
+    <div class="info-contacto">
+      <h4>📞 Información de Contacto</h4>
+      <p><strong>Hotel:</strong> {{ reservaConfirmada.hotel.nombre }}</p>
+      <p><strong>Teléfono:</strong> {{ reservaConfirmada.hotel.telefono }}</p>
+      <p><strong>Dirección:</strong> {{ reservaConfirmada.hotel.direccion }}</p>
+    </div>
+
+    <div class="botones-finales">
+      <button class="btn btn-primary" (click)="volverABusqueda()">
+        Buscar Más Salones
+      </button>
+    </div>
+  </div>
+</div>

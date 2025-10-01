@@ -1,0 +1,222 @@
+<!-- HU16: Detalle de Salón -->
+<div class="detalle-salon-container">
+  
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando información del salón...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-icon">❌</div>
+    <h2>Error al cargar</h2>
+    <p>{{ error }}</p>
+    <button class="btn-secundario" (click)="volverAResultados()">
+      ← Volver a resultados
+    </button>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div *ngIf="salon && !loading" class="detalle-content">
+    
+    <!-- CA4: Botón Volver -->
+    <div class="header-actions">
+      <button class="btn-volver" (click)="volverAResultados()">
+        ← Volver a resultados
+      </button>
+    </div>
+
+    <!-- Header del Salón -->
+    <div class="salon-header">
+      <div class="salon-titulo">
+        <h1>{{ salon.nombre }}</h1>
+        <div class="hotel-info">
+          <span class="hotel-icon">🏨</span>
+          <div>
+            <strong>{{ salon.hotel.nombre }}</strong>
+            <small *ngIf="salon.hotel.ciudad">📍 {{ salon.hotel.ciudad }}</small>
+          </div>
+        </div>
+      </div>
+      
+      <div class="salon-precio">
+        <span class="precio-label">Tarifa por día</span>
+        <span class="precio-valor">${{ salon.precioPorDia | number:'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <!-- CA2: Estado de Disponibilidad (si hay fechas) -->
+    <div *ngIf="disponibilidad" class="disponibilidad-card" [ngClass]="getDisponibilidadClass()">
+      <div class="disponibilidad-header">
+        <span class="disponibilidad-icono">{{ getDisponibilidadIcono() }}</span>
+        <div>
+          <h3>{{ disponibilidad.mensaje }}</h3>
+          <p class="fechas-consulta" *ngIf="fechasConsulta.inicio && fechasConsulta.fin">
+            {{ formatearFecha(fechasConsulta.inicio) }} - {{ formatearFecha(fechasConsulta.fin) }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Detalles de reservas existentes -->
+      <div *ngIf="disponibilidad.reservasExistentes > 0" class="reservas-existentes">
+        <p><strong>Reservas en este periodo:</strong> {{ disponibilidad.reservasExistentes }}</p>
+        <div class="lista-reservas">
+          <div *ngFor="let reserva of disponibilidad.detalleReservas" class="reserva-item">
+            <span class="reserva-fecha">
+              {{ formatearFecha(reserva.fechaInicio) }} - {{ formatearFecha(reserva.fechaFin) }}
+            </span>
+            <span class="reserva-estado" [ngClass]="reserva.estado">{{ reserva.estado }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid Principal -->
+    <div class="info-grid">
+      
+      <!-- CA1: Información General -->
+      <div class="card info-card">
+        <h2>📋 Información General</h2>
+        
+        <div class="info-item">
+          <label>Capacidad Máxima:</label>
+          <span class="capacidad-valor">
+            <strong>{{ salon.capacidad }}</strong> personas
+          </span>
+        </div>
+
+        <div class="info-item" *ngIf="salon.descripcion">
+          <label>Descripción:</label>
+          <p class="descripcion">{{ salon.descripcion }}</p>
+        </div>
+
+        <div class="info-item" *ngIf="salon.hotel.direccion">
+          <label>📍 Dirección:</label>
+          <p>{{ salon.hotel.direccion }}</p>
+        </div>
+
+        <div class="info-item" *ngIf="salon.hotel.telefono">
+          <label>📞 Teléfono:</label>
+          <p>{{ salon.hotel.telefono }}</p>
+        </div>
+
+        <div class="info-item" *ngIf="salon.hotel.email">
+          <label>✉️ Email:</label>
+          <p>{{ salon.hotel.email }}</p>
+        </div>
+      </div>
+
+      <!-- CA3: Layouts Disponibles -->
+      <div class="card layouts-card" *ngIf="salon.layouts && salon.layouts.length > 0">
+        <h2>📐 Configuraciones de Espacio</h2>
+        <p class="layouts-descripcion">
+          Este salón soporta múltiples configuraciones. Selecciona una para ver su capacidad.
+        </p>
+
+        <div class="layouts-grid">
+          <div 
+            *ngFor="let layout of salon.layouts"
+            class="layout-item"
+            [class.seleccionado]="esLayoutSeleccionado(layout)"
+            (click)="seleccionarLayout(layout)"
+          >
+            <div class="layout-icono">
+              <span *ngIf="layout.nombre === 'Teatro'">🎭</span>
+              <span *ngIf="layout.nombre === 'Banquete'">🍽️</span>
+              <span *ngIf="layout.nombre === 'Escuela'">📚</span>
+              <span *ngIf="layout.nombre === 'U-Form'">⛰️</span>
+              <span *ngIf="layout.nombre === 'Cocktail'">🍸</span>
+              <span *ngIf="layout.nombre === 'Boardroom'">💼</span>
+            </div>
+            <h4>{{ layout.nombre }}</h4>
+            <p class="layout-capacidad">
+              <strong>{{ layout.capacidad }}</strong> personas
+            </p>
+            <p class="layout-descripcion" *ngIf="layout.descripcion">
+              {{ layout.descripcion }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Layout Seleccionado Destacado -->
+        <div *ngIf="layoutSeleccionado" class="layout-seleccionado-info">
+          <div class="info-destacada">
+            <span class="label">Configuración Seleccionada:</span>
+            <span class="valor">{{ layoutSeleccionado.nombre }} - {{ layoutSeleccionado.capacidad }} personas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CA1: Equipamiento -->
+      <div class="card equipamiento-card" *ngIf="salon.equipamiento && salon.equipamiento.length > 0">
+        <h2>🔧 Equipamiento Disponible</h2>
+        <div class="equipamiento-lista">
+          <div *ngFor="let equip of salon.equipamiento" class="equip-item">
+            <span class="check-icon">✓</span>
+            <span>{{ equip }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CA1: Servicios Incluidos -->
+      <div class="card servicios-card" *ngIf="salon.serviciosIncluidos && salon.serviciosIncluidos.length > 0">
+        <h2>✨ Servicios Incluidos</h2>
+        <div class="servicios-lista">
+          <div *ngFor="let servicio of salon.serviciosIncluidos" class="servicio-item">
+            <span class="star-icon">⭐</span>
+            <span>{{ servicio }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CA1: Galería de Fotos (placeholder) -->
+      <div class="card fotos-card">
+        <h2>📸 Galería de Fotos</h2>
+        <div *ngIf="salon.fotos && salon.fotos.length > 0; else sinFotos">
+          <div class="fotos-galeria">
+            <img *ngFor="let foto of salon.fotos" [src]="foto" [alt]="salon.nombre">
+          </div>
+        </div>
+        <ng-template #sinFotos>
+          <div class="sin-fotos">
+            <div class="sin-fotos-icono">🖼️</div>
+            <p>No hay fotos disponibles para este salón</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- CA1: Información de Tarifas -->
+      <div class="card tarifas-card">
+        <h2>💰 Información de Tarifas</h2>
+        
+        <div class="tarifa-principal">
+          <div class="tarifa-item">
+            <label>Precio por Día:</label>
+            <span class="precio">${{ salon.precioPorDia | number:'1.0-0' }}</span>
+          </div>
+        </div>
+
+        <div class="notas-tarifas">
+          <p>📌 Las tarifas pueden variar según temporada y servicios adicionales</p>
+          <p>📌 Descuentos disponibles para reservas de múltiples días</p>
+          <p>📌 Consulte condiciones especiales para eventos corporativos</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CA4: Acciones de Pie de Página -->
+    <div class="footer-actions">
+      <button class="btn-secundario" (click)="volverAResultados()">
+        ← Volver a resultados
+      </button>
+      <button class="btn-primario" *ngIf="disponibilidad && disponibilidad.estado === 'libre'" (click)="reservarAhora()">
+        📅 Reservar Ahora
+      </button>
+      <button class="btn-deshabilitado" *ngIf="disponibilidad && disponibilidad.estado === 'bloqueado'" disabled>
+        ❌ No Disponible
+      </button>
+    </div>
+
+  </div>
+</div>

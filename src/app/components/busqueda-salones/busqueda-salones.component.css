@@ -283,6 +283,17 @@
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
+.btn-info {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover:not(:disabled) {
+  background: #138496;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+}
+
 .btn-secondary {
   background: #95a5a6;
   color: white;

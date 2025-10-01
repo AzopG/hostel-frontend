@@ -75,6 +75,118 @@ export interface ModificacionReserva {
   motivoRechazo?: string;
 }
 
+// HU17: Interfaces para reservas de salones
+export interface DatosEvento {
+  nombreEvento: string;
+  tipoEvento?: string;
+  horarioInicio: string;
+  horarioFin: string;
+  responsable: string;
+  cargoResponsable?: string;
+  telefonoResponsable?: string;
+  layoutSeleccionado?: string;
+  capacidadLayout?: number;
+  serviciosAdicionales?: string[];
+  requiremientosEspeciales?: string;
+}
+
+export interface DatosContacto {
+  nombre: string;
+  apellido?: string;
+  email: string;
+  telefono: string;
+  documento?: string;
+  pais?: string;
+  ciudad?: string;
+}
+
+export interface IniciarReservaSalonRequest {
+  fechaInicio: string;
+  fechaFin: string;
+  layoutId?: string;
+}
+
+export interface IniciarReservaSalonResponse {
+  success: boolean;
+  message: string;
+  salon: any; // Detalles del salón
+  layoutSeleccionado: any;
+  fechas: {
+    inicio: string;
+    fin: string;
+    dias: number;
+  };
+  tarifaEstimada: TarifaReserva;
+  formulario: {
+    campos: string[];
+  };
+}
+
+export interface VerificarDisponibilidadSalonRequest {
+  fechaInicio: string;
+  fechaFin: string;
+  horarioInicio?: string;
+  horarioFin?: string;
+}
+
+export interface VerificarDisponibilidadSalonResponse {
+  success: boolean;
+  disponible: boolean;
+  message: string;
+  conflicto?: boolean;
+  motivo?: string;
+  reservasEnConflicto?: any[];
+  sugerencia?: string;
+  salon?: any;
+  fechas?: any;
+}
+
+export interface ConfirmarReservaSalonRequest {
+  usuario?: string;
+  fechaInicio: string;
+  fechaFin: string;
+  datosEvento: DatosEvento;
+  datosContacto: DatosContacto;
+  politicasAceptadas: boolean;
+  notas?: string;
+}
+
+export interface ConfirmarReservaSalonResponse {
+  success: boolean;
+  message: string;
+  reserva?: {
+    _id: string;
+    codigoReserva: string;
+    datosHuesped: DatosContacto;
+    datosEvento: DatosEvento;
+    salon: any;
+    hotel: any;
+    fechaInicio: string;
+    fechaFin: string;
+    dias: number;
+    tarifa: TarifaReserva;
+    estado: string;
+    createdAt: string;
+  };
+  conflicto?: boolean;
+  motivo?: string;
+  sugerencia?: string;
+}
+
+export interface ObtenerPoliticasSalonResponse {
+  success: boolean;
+  politicas: {
+    cancelacion: any;
+    modificacion: any;
+    uso: any;
+    servicios: any;
+    pago: any;
+    hotelEspecificas?: any;
+  };
+  actualizacion: string;
+  version: string;
+}
+
 export interface VerificarModificacionResponse {
   success: boolean;
   puedeModificar: boolean;
@@ -239,5 +351,40 @@ export class ReservaService {
    */
   modificarFechasReserva(id: string, datos: ModificarFechasRequest): Observable<ModificarFechasResponse> {
     return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/${id}/modificar-fechas`, datos);
+  }
+
+  // =====================================================
+  // HU17: RESERVAR UN SALÓN
+  // =====================================================
+
+  /**
+   * HU17 CA1: Iniciar reserva de salón - Obtener resumen y formulario
+   */
+  iniciarReservaSalon(salonId: string, datos: IniciarReservaSalonRequest): Observable<IniciarReservaSalonResponse> {
+    return this.http.post<IniciarReservaSalonResponse>(`${this.apiUrl}/salones/${salonId}/iniciar`, datos);
+  }
+
+  /**
+   * HU17 CA2: Verificar disponibilidad en tiempo real (prevenir conflictos)
+   */
+  verificarDisponibilidadSalonTiempoReal(salonId: string, datos: VerificarDisponibilidadSalonRequest): Observable<VerificarDisponibilidadSalonResponse> {
+    return this.http.post<VerificarDisponibilidadSalonResponse>(`${this.apiUrl}/salones/${salonId}/verificar-disponibilidad`, datos);
+  }
+
+  /**
+   * HU17 CA3: Confirmar reserva de salón (genera código y bloquea horario)
+   */
+  confirmarReservaSalon(salonId: string, datos: ConfirmarReservaSalonRequest): Observable<ConfirmarReservaSalonResponse> {
+    return this.http.post<ConfirmarReservaSalonResponse>(`${this.apiUrl}/salones/${salonId}/confirmar`, datos);
+  }
+
+  /**
+   * HU17 CA4: Obtener políticas de reserva de salones
+   */
+  obtenerPoliticasReservaSalon(hotelId?: string): Observable<ObtenerPoliticasSalonResponse> {
+    const url = hotelId 
+      ? `${this.apiUrl}/salones/politicas/${hotelId}`
+      : `${this.apiUrl}/salones/politicas`;
+    return this.http.get<ObtenerPoliticasSalonResponse>(url);
   }
 }

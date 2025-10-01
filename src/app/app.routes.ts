@@ -41,6 +41,26 @@ export const routes: Routes = [
     path: 'mis-reservas', 
     loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent)
   },
+  // HU14: Búsqueda de salones para eventos (acceso público)
+  { 
+    path: 'busqueda-salones', 
+    loadComponent: () => import('./components/busqueda-salones/busqueda-salones.component').then(m => m.BusquedaSalonesComponent)
+  },
+  // HU16: Ver detalle de un salón (acceso público)
+  { 
+    path: 'salon/:id', 
+    loadComponent: () => import('./components/detalle-salon/detalle-salon.component').then(m => m.DetalleSalonComponent)
+  },
+  // HU17: Reservar un salón (acceso público)
+  { 
+    path: 'reservar-salon/:id', 
+    loadComponent: () => import('./components/reservar-salon/reservar-salon.component').then(m => m.ReservarSalonComponent)
+  },
+  // HU18: Reservar un paquete corporativo (acceso público)
+  { 
+    path: 'reservar-paquete/:hotelId', 
+    loadComponent: () => import('./components/reservar-paquete/reservar-paquete.component').then(m => m.ReservarPaqueteComponent)
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,
