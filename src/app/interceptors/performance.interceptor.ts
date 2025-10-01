@@ -1,20 +1,22 @@
-import {
-    HttpErrorResponse,
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest,
-    HttpResponse
-} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, timer } from 'rxjs';
-import {
-    catchError,
-    finalize,
-    mergeMap,
-    retryWhen,
-    switchMap,
-    tap
+import { 
+  HttpInterceptor, 
+  HttpRequest, 
+  HttpHandler, 
+  HttpEvent, 
+  HttpResponse,
+  HttpErrorResponse
+} from '@angular/common/http';
+import { Observable, throwError, of, timer } from 'rxjs';
+import { 
+  retry, 
+  retryWhen, 
+  delay, 
+  mergeMap, 
+  catchError, 
+  tap, 
+  finalize,
+  switchMap
 } from 'rxjs/operators';
 
 interface CacheEntry {
@@ -181,8 +183,7 @@ export class PerformanceInterceptor implements HttpInterceptor {
       '/api/hoteles',
       '/api/ciudades', 
       '/api/configuracion',
-      '/api/usuarios',
-      '/api/auth/verify'
+      '/api/usuarios'
     ];
 
     return cacheableEndpoints.some(endpoint => req.url.includes(endpoint));
@@ -236,13 +237,12 @@ export class PerformanceInterceptor implements HttpInterceptor {
 
   private getTTLForRequest(req: HttpRequest<any>): number {
     // TTL específico por tipo de recurso
-  if (req.url.includes('/api/configuracion')) return 15 * 60 * 1000; // 15 min
-  if (req.url.includes('/api/hoteles')) return 10 * 60 * 1000; // 10 min
-  if (req.url.includes('/api/usuarios')) return 5 * 60 * 1000; // 5 min
-  if (req.url.includes('/api/disponibilidad')) return 2 * 60 * 1000; // 2 min
-  if (req.url.includes('/api/auth/verify')) return 30 * 1000; // 30 segundos para verificación
+    if (req.url.includes('/api/configuracion')) return 15 * 60 * 1000; // 15 min
+    if (req.url.includes('/api/hoteles')) return 10 * 60 * 1000; // 10 min
+    if (req.url.includes('/api/usuarios')) return 5 * 60 * 1000; // 5 min
+    if (req.url.includes('/api/disponibilidad')) return 2 * 60 * 1000; // 2 min
 
-  return this.defaultTTL;
+    return this.defaultTTL;
   }
 
   private getTimeoutForRequest(req: HttpRequest<any>): number {
@@ -428,4 +428,3 @@ export class PerformanceInterceptor implements HttpInterceptor {
       // Implementar lógica de prefetch
     });
   }
-}
