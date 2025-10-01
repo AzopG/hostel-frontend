@@ -121,23 +121,25 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.9);
-      color: #667eea;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 8px;
-      font-weight: 600;
+      padding: 12px 20px;
+      background: rgba(248, 241, 233, 0.95);
+      color: #1C2526;
+      border: 2px solid #B89778;
+      border-radius: 25px;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      font-size: 0.9rem;
+      backdrop-filter: blur(15px);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .btn-volver:hover {
-      background: #667eea;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      background: linear-gradient(135deg, #B89778 0%, #4A1B2F 100%);
+      color: #F8F1E9;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(184, 151, 120, 0.4);
     }
 
     .login-container {
@@ -145,17 +147,22 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #1C2526 0%, #0A3161 50%, #4A1B2F 100%);
       padding: 20px;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(184, 151, 120, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(74, 27, 47, 0.1) 0%, transparent 50%);
     }
 
     .login-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      padding: 40px;
+      background: linear-gradient(135deg, #F8F1E9 0%, rgba(248, 241, 233, 0.95) 100%);
+      border-radius: 25px;
+      box-shadow: 0 25px 50px rgba(28, 37, 38, 0.3);
+      padding: 50px;
       width: 100%;
-      max-width: 450px;
+      max-width: 500px;
+      border: 2px solid #B89778;
+      backdrop-filter: blur(20px);
     }
 
     .login-header {
@@ -164,14 +171,19 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
     }
 
     .login-header h2 {
-      color: #333;
-      margin-bottom: 10px;
-      font-size: 28px;
+      color: #1C2526;
+      margin-bottom: 15px;
+      font-size: 2.2rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: 2px;
     }
 
     .login-header p {
-      color: #666;
-      font-size: 14px;
+      color: #4A1B2F;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 1px;
     }
 
     .login-form {
@@ -184,28 +196,37 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
 
     .form-group label {
       display: block;
-      margin-bottom: 5px;
-      color: #333;
-      font-weight: 500;
+      margin-bottom: 8px;
+      color: #1C2526;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .form-group input {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #e1e1e1;
-      border-radius: 5px;
-      font-size: 16px;
-      transition: border-color 0.3s;
+      padding: 15px 20px;
+      border: 2px solid #D9D9D6;
+      border-radius: 15px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
       box-sizing: border-box;
+      background: rgba(248, 241, 233, 0.8);
+      color: #1C2526;
+      font-weight: 500;
     }
 
     .form-group input:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #B89778;
+      background: #F8F1E9;
+      box-shadow: 0 0 15px rgba(184, 151, 120, 0.3);
     }
 
     .form-group input.error {
-      border-color: #e74c3c;
+      border-color: #4A1B2F;
+      background: rgba(74, 27, 47, 0.1);
     }
 
     .form-group-checkbox {
@@ -226,23 +247,36 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       height: 18px;
       margin-right: 8px;
       cursor: pointer;
-      accent-color: #667eea;
+      accent-color: #B89778;
     }
 
     .checkbox-label {
-      color: #333;
+      color: #1C2526;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
     }
 
     .error-message {
-      color: #e74c3c;
+      color: #4A1B2F;
+      background: rgba(248, 241, 233, 0.9);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border-left: 4px solid #4A1B2F;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
       font-size: 14px;
       margin-top: 5px;
     }
 
     .success-message {
-      color: #27ae60;
+      color: #0A3161;
+      background: rgba(248, 241, 233, 0.9);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border-left: 4px solid #0A3161;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
       font-size: 14px;
       margin-bottom: 15px;
       text-align: center;
@@ -250,28 +284,38 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
 
     .submit-btn {
       width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 5px;
+      padding: 14px;
+      background: linear-gradient(135deg, #1C2526 0%, #0A3161 100%);
+      color: #F8F1E9;
+      border: 2px solid #B89778;
+      border-radius: 8px;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
       cursor: pointer;
-      transition: opacity 0.3s;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      letter-spacing: 1px;
     }
 
     .submit-btn:hover:not(:disabled) {
-      opacity: 0.9;
+      background: linear-gradient(135deg, #0A3161 0%, #4A1B2F 100%);
+      border-color: #F8F1E9;
+      color: #F8F1E9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(184, 151, 120, 0.4);
     }
 
     .submit-btn:disabled {
-      opacity: 0.6;
+      opacity: 0.5;
       cursor: not-allowed;
+      background: linear-gradient(135deg, #D9D9D6 0%, #666 100%);
+      color: #999;
+      border-color: #D9D9D6;
     }
 
     .loader {

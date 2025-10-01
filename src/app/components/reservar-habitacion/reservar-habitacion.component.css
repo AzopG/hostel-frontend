@@ -28,29 +28,35 @@
 }
 
 .btn-volver-nav {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
-  border: 2px solid rgba(102, 126, 234, 0.2);
+  background: rgba(184, 151, 120, 0.2);
+  color: #1C2526;
+  border: 2px solid #B89778;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .btn-volver-nav:hover {
-  background: #667eea;
-  color: white;
+  background: linear-gradient(135deg, #B89778, #4A1B2F);
+  color: #F8F1E9;
+  border-color: #F8F1E9;
   transform: translateX(-4px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(184, 151, 120, 0.4);
 }
 
 .btn-home-nav {
-  background: rgba(56, 178, 172, 0.1);
-  color: #38b2ac;
-  border: 2px solid rgba(56, 178, 172, 0.2);
+  background: rgba(10, 49, 97, 0.2);
+  color: #1C2526;
+  border: 2px solid #0A3161;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .btn-home-nav:hover {
-  background: #38b2ac;
-  color: white;
+  background: linear-gradient(135deg, #0A3161, #1C2526);
+  color: #F8F1E9;
+  border-color: #B89778;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(56, 178, 172, 0.3);
+  box-shadow: 0 8px 25px rgba(10, 49, 97, 0.4);
 }
 
 .reservar-container {

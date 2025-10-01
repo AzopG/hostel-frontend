@@ -277,19 +277,20 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     </div>
   `,
   styles: [`
-    /* Diseño base */
+    /* Diseño base de lujo */
     .dashboard {
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #1C2526 0%, #0A3161 50%, #4A1B2F 100%);
+      background-attachment: fixed;
       position: relative;
     }
 
-    /* Header profesional */
+    /* Header profesional de lujo */
     .navbar {
-      background: rgba(255, 255, 255, 0.98) !important;
+      background: rgba(248, 241, 233, 0.95) !important;
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(226, 232, 240, 0.3);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border-bottom: 2px solid #B89778;
+      box-shadow: 0 8px 32px rgba(28, 37, 38, 0.3);
       position: fixed;
       top: 0;
       left: 0;
@@ -312,12 +313,12 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       display: flex;
       align-items: center;
       gap: 16px;
-      color: #2d3748 !important;
+      color: #1C2526 !important;
     }
 
     .brand-icon {
       font-size: 2rem;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #B89778, #4A1B2F);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -325,14 +326,17 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
     .brand-text h4 {
       font-weight: 700;
-      color: #2d3748;
+      color: #1C2526;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(184, 151, 120, 0.3);
       margin: 0;
     }
 
     .user-info {
-      color: #718096;
+      color: #4A1B2F;
       font-size: 0.875rem;
-      font-weight: 500;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
     }
 
     /* Stats rápidas */
@@ -347,9 +351,10 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       align-items: center;
       gap: 14px;
       padding: 14px 22px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(248, 241, 233, 0.95);
+      border: 1px solid #B89778;
       border-radius: 14px;
-      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 25px rgba(28, 37, 38, 0.15);
       transition: all 0.3s ease;
       cursor: pointer;
       min-width: 130px;
@@ -357,8 +362,9 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
     .stat-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 12px 40px rgba(184, 151, 120, 0.3);
+      background: rgba(248, 241, 233, 1.0);
+      border-color: #4A1B2F;
     }
 
     .stat-icon {
@@ -368,22 +374,26 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #B89778, #4A1B2F);
       border-radius: 12px;
-      color: white;
+      color: #F8F1E9;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .stat-number {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #2d3748;
+      color: #1C2526;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
       line-height: 1;
     }
 
     .stat-label {
       font-size: 0.875rem;
-      color: #718096;
-      font-weight: 500;
+      color: #4A1B2F;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
     }
 
     /* Acciones rápidas */
@@ -396,10 +406,10 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     .action-btn {
       width: 48px;
       height: 48px;
-      border: none;
+      border: 2px solid #B89778;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
-      color: #667eea;
+      background: rgba(248, 241, 233, 0.9);
+      color: #1C2526;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -416,26 +426,29 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     }
 
     .action-btn:hover {
-      background: #667eea;
-      color: white;
+      background: linear-gradient(135deg, #B89778, #4A1B2F);
+      color: #F8F1E9;
+      border-color: #F8F1E9;
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 12px 30px rgba(184, 151, 120, 0.4);
     }
 
     .notification-badge {
       position: absolute;
       top: -4px;
       right: -4px;
-      background: #e53e3e;
-      color: white;
+      background: #4A1B2F;
+      color: #F8F1E9;
+      border: 2px solid #B89778;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       font-size: 0.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     }
 
     .btn-logout {
@@ -443,20 +456,23 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       align-items: center;
       gap: 8px;
       padding: 12px 20px;
-      background: rgba(226, 232, 240, 0.8);
-      border: none;
+      background: rgba(248, 241, 233, 0.9);
+      border: 2px solid #B89778;
       border-radius: 12px;
-      color: #4a5568;
+      color: #1C2526;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
       font-weight: 500;
       transition: all 0.3s ease;
       cursor: pointer;
     }
 
     .btn-logout:hover {
-      background: #e53e3e;
-      color: white;
+      background: linear-gradient(135deg, #4A1B2F, #1C2526);
+      color: #F8F1E9;
+      border-color: #B89778;
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
+      box-shadow: 0 12px 30px rgba(74, 27, 47, 0.4);
     }
 
     /* Layout principal */
