@@ -23,7 +23,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
     <div class="busqueda-container">
       <!-- Header -->
       <div class="header">
-        <h1>🔍 Buscar Habitaciones</h1>
+        <h1><i class="fas fa-search"></i> Buscar Habitaciones</h1>
         <p class="subtitle">Encuentra la habitación perfecta para tu estadía</p>
       </div>
 
@@ -55,7 +55,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <!-- CA2: Fecha de Inicio -->
             <div class="form-group">
               <label for="fechaInicio">
-                <span class="label-icon">📅</span>
+                <span class="label-icon"><i class="fas fa-calendar-alt"></i></span>
                 Check-in *
               </label>
               <input
@@ -64,9 +64,6 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
                 name="fechaInicio"
                 [(ngModel)]="filtros.fechaInicio"
                 [min]="fechaMinima"
-                #fechaInicioRef
-                (input)="onFechaInicioInput(fechaInicioRef.value)"
-                (change)="onFechaInicioChange(fechaInicioRef.value)"
                 required
                 class="form-control"
                 [class.error]="errorFechas"
@@ -76,7 +73,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <!-- CA2: Fecha de Fin -->
             <div class="form-group">
               <label for="fechaFin">
-                <span class="label-icon">📅</span>
+                <span class="label-icon"><i class="fas fa-calendar-alt"></i></span>
                 Check-out *
               </label>
               <input
@@ -85,9 +82,6 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
                 name="fechaFin"
                 [(ngModel)]="filtros.fechaFin"
                 [min]="fechaMinimaFin"
-                #fechaFinRef
-                (input)="onFechaFinInput(fechaFinRef.value)"
-                (change)="onFechaFinChange(fechaFinRef.value)"
                 required
                 class="form-control"
                 [class.error]="errorFechas"
@@ -100,7 +94,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <!-- CA4: Número de Huéspedes -->
             <div class="form-group">
               <label for="huespedes">
-                <span class="label-icon">👥</span>
+                <span class="label-icon"><i class="fas fa-users"></i></span>
                 Huéspedes *
               </label>
               <div class="huespedes-control">
@@ -157,7 +151,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
               class="btn-buscar"
               [disabled]="isLoading || !busquedaForm.valid"
             >
-              <span *ngIf="!isLoading">🔍 Buscar Habitaciones</span>
+              <span *ngIf="!isLoading"><i class="fas fa-search"></i> Buscar Habitaciones</span>
               <span *ngIf="isLoading">
                 <span class="spinner-small"></span>
                 Buscando...
@@ -1450,73 +1444,6 @@ export class BuscarHabitacionesComponent implements OnInit {
         huespedes: this.filtros.huespedes
       }
     });
-  }
-
-  // ==================== Date input handlers to prevent manual past dates ====================
-  /**
-   * Called while typing in the fechaInicio input (gives immediate feedback)
-   */
-  onFechaInicioInput(value: string): void {
-    // If empty, clear error and wait
-    if (!value) {
-      this.errorFechas = '';
-      return;
-    }
-
-    // If typed date is before fechaMinima, clamp to fechaMinima and show error
-    if (value < this.fechaMinima) {
-      this.errorFechas = 'La fecha de check-in no puede ser anterior a hoy';
-      // clamp value so the model and input reflect a valid date
-      this.filtros.fechaInicio = this.fechaMinima;
-      // ensure fechaFin is at least tomorrow
-      if (this.filtros.fechaFin <= this.filtros.fechaInicio) {
-        this.filtros.fechaFin = this.filtrosService.getFechaManana();
-      }
-    } else {
-      // clear date error when valid
-      this.errorFechas = '';
-    }
-  }
-
-  /**
-   * Called on blur/change of fechaInicio to perform final checks
-   */
-  onFechaInicioChange(value: string): void {
-    // Reuse input handler for consistency
-    this.onFechaInicioInput(value);
-  }
-
-  /**
-   * Called while typing in the fechaFin input
-   */
-  onFechaFinInput(value: string): void {
-    if (!value) {
-      this.errorFechas = '';
-      return;
-    }
-
-    // fechaFin must be at least fechaMinimaFin and strictly after fechaInicio
-    const minFin = this.fechaMinimaFin;
-    if (value < minFin) {
-      this.errorFechas = 'La fecha de check-out debe ser al menos mañana';
-      this.filtros.fechaFin = minFin;
-      return;
-    }
-
-    if (this.filtros.fechaInicio && value <= this.filtros.fechaInicio) {
-      this.errorFechas = 'La fecha de fin debe ser posterior a la fecha de inicio';
-      // adjust to be one day after inicio
-      const inicioDate = new Date(this.filtros.fechaInicio + 'T00:00:00');
-      inicioDate.setDate(inicioDate.getDate() + 1);
-      this.filtros.fechaFin = this.filtrosService.formatDate(inicioDate);
-      return;
-    }
-
-    this.errorFechas = '';
-  }
-
-  onFechaFinChange(value: string): void {
-    this.onFechaFinInput(value);
   }
 
   /**

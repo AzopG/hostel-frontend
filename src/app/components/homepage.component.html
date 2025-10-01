@@ -1,6 +1,6 @@
 ﻿<nav class="navbar">
   <div class="navbar-brand">
-    <span class="brand-icon">🏨</span>
+    <span class="brand-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo"></span>
     <span>Hotel Paradise</span>
   </div>
   
@@ -15,8 +15,8 @@
   <div class="mobile-overlay" *ngIf="showMobileMenu" (click)="closeMobileMenu()"></div>
 
   <ul class="navbar-links" [class.mobile-open]="showMobileMenu">
+    <li><a href="#inicio" (click)="scrollToTop(); closeMobileMenu()">Inicio</a></li>
     <li><a href="#servicios" (click)="closeMobileMenu()">Servicios</a></li>
-    <li><a href="#panel" (click)="closeMobileMenu()">Panel</a></li>
     <li><a href="#contacto" (click)="closeMobileMenu()">Contacto</a></li>
     <li *ngIf="!isAuthenticated">
       <button class="register-nav-btn" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</button>
@@ -26,7 +26,7 @@
     </li>
     <li *ngIf="isAuthenticated" class="user-menu">
       <div class="notification-bell" (click)="toggleNotifications()">
-        <span class="bell-icon">🔔</span>
+        <span class="bell-icon"><i class="fas fa-bell"></i></span>
         <span class="notification-count" *ngIf="totalNotifications > 0">{{ totalNotifications }}</span>
       </div>
       <div class="user-info">
@@ -73,17 +73,17 @@
         </p>
         <div class="hero-actions">
           <button class="btn-primary" (click)="navigateToBuscarHabitaciones()">
-            <span class="btn-icon">🔍</span>
+            <span class="btn-icon"><i class="fas fa-search"></i></span>
             Buscar Habitaciones
           </button>
           <button class="btn-primary" (click)="navigateToCalendario()">
-            <span class="btn-icon">📅</span>
+            <span class="btn-icon"><i class="fas fa-calendar-alt"></i></span>
             Ver Disponibilidad
           </button>
         </div>
         <div class="hero-features-icons">
           <div class="feature-circle" data-tooltip="Servicio Premium">
-            <span class="feature-icon">🌟</span>
+            <span class="feature-icon"><i class="fas fa-star"></i></span>
             <div class="custom-tooltip">
               <div class="tooltip-content">
                 <span class="tooltip-title">Servicio Premium</span>
@@ -93,7 +93,7 @@
             </div>
           </div>
           <div class="feature-circle" data-tooltip="Instalaciones de Lujo">
-            <span class="feature-icon">🏊‍♀️</span>
+            <span class="feature-icon"><i class="fas fa-swimming-pool"></i></span>
             <div class="custom-tooltip">
               <div class="tooltip-content">
                 <span class="tooltip-title">Instalaciones de Lujo</span>
@@ -103,7 +103,7 @@
             </div>
           </div>
           <div class="feature-circle" data-tooltip="Gastronomía Exclusiva">
-            <span class="feature-icon">🍽️</span>
+            <span class="feature-icon"><i class="fas fa-utensils"></i></span>
             <div class="custom-tooltip">
               <div class="tooltip-content">
                 <span class="tooltip-title">Gastronomía Exclusiva</span>
@@ -151,7 +151,7 @@
         
         <!-- Reservas -->
         <div class="feature-card" (click)="navigateToService('reservas')">
-          <div class="feature-icon-large">🏨</div>
+          <div class="feature-icon-large"><i class="fas fa-hotel"></i></div>
           <h3>Gestión de Reservas</h3>
           <p>Sistema completo para administrar reservas de habitaciones, salones de eventos y servicios especiales.</p>
           <div class="service-highlights">
@@ -166,7 +166,7 @@
 
         <!-- Habitaciones -->
         <div class="feature-card" (click)="navigateToService('habitaciones')">
-          <div class="feature-icon-large">🛏️</div>
+          <div class="feature-icon-large"><i class="fas fa-bed"></i></div>
           <h3>Habitaciones</h3>
           <p>Gestión de habitaciones disponibles y ocupación en tiempo real.</p>
           <div class="service-highlights">
@@ -181,7 +181,7 @@
 
         <!-- Hoteles -->
         <div class="feature-card" (click)="navigateToService('hoteles')">
-          <div class="feature-icon-large">🏢</div>
+          <div class="feature-icon-large"><i class="fas fa-building"></i></div>
           <h3>Gestión de Hoteles</h3>
           <p>Administra tu cadena hotelera desde un solo lugar.</p>
           <div class="service-highlights">
@@ -196,7 +196,7 @@
 
         <!-- Reportes -->
         <div class="feature-card" (click)="navigateToService('reportes')">
-          <div class="feature-icon-large">📊</div>
+          <div class="feature-icon-large"><i class="fas fa-chart-bar"></i></div>
           <h3>Reportes y Estadísticas</h3>
           <p>Análisis completo del rendimiento de tu negocio hotelero.</p>
           <div class="service-highlights">
@@ -235,9 +235,9 @@
         <div class="footer-section">
           <h4>Contacto</h4>
           <ul>
-            <li> +57 123 456 7890</li>
-            <li>📧 info&#64;hotelparadise.com</li>
-            <li> Bogotá, Colombia</li>
+            <li><i class="fas fa-phone"></i> +57 123 456 7890</li>
+            <li><i class="fas fa-envelope"></i> info&#64;hotelparadise.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> Bogotá, Colombia</li>
           </ul>
         </div>
       </div>
