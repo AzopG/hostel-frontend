@@ -1,20 +1,20 @@
 import {
-    HttpErrorResponse,
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest,
-    HttpResponse
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError, timer } from 'rxjs';
 import {
-    catchError,
-    finalize,
-    mergeMap,
-    retryWhen,
-    switchMap,
-    tap
+  catchError,
+  finalize,
+  mergeMap,
+  retryWhen,
+  tap,
+  timeout
 } from 'rxjs/operators';
 
 interface CacheEntry {
@@ -70,16 +70,8 @@ export class PerformanceInterceptor implements HttpInterceptor {
     const retryConfig = this.getRetryConfig(optimizedRequest);
 
     const request$ = next.handle(optimizedRequest).pipe(
-      // Timeout
-      switchMap((event) => {
-        if (event instanceof HttpResponse) {
-          return timer(timeoutDuration).pipe(
-            mergeMap(() => throwError(new Error('Request timeout'))),
-            catchError(() => of(event))
-          );
-        }
-        return of(event);
-      }),
+      // Timeout real: si la request tarda más de timeoutDuration, lanza error
+      timeout(timeoutDuration),
 
       // Retry con backoff exponencial
       retryWhen(errors => 

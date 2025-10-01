@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Hotel, HotelService } from '../../services/hotel.service';
+import { HabitacionesEditorComponent } from '../habitaciones-editor';
 
 @Component({
   selector: 'app-hoteles',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HabitacionesEditorComponent],
   animations: [
     trigger('fadeInUp', [
       transition(':enter', [
@@ -36,6 +37,58 @@ import { Hotel, HotelService } from '../../services/hotel.service';
   styleUrls: ['./hoteles.component.css']
 })
 export class HotelesComponent implements OnInit {
+  guardarHabitacionesEditadas(): void {
+    if (!this.hotelHabitaciones || !this.habitacionesValidas) return;
+    this.cargando = true;
+    // Actualiza la cantidad de habitaciones en el backend
+      const habitacionesPayload = this.habitacionesEdit.map((h: any) => ({
+        _id: h._id,
+        numero: h.numero,
+        servicios: h.servicios
+      }));
+      this.hotelService.editarHotel(this.hotelHabitaciones._id, { habitaciones: habitacionesPayload }).subscribe({
+      next: (hotelActualizado) => {
+        this.hotelService.getHoteles().subscribe({
+          next: (hoteles) => {
+            this.hoteles = hoteles;
+            this.aplicarFiltros();
+            this.cargando = false;
+            window.alert('¡Habitaciones y servicios guardados correctamente!');
+            this.cerrarModalHabitaciones();
+          },
+          error: () => {
+            this.cargando = false;
+            window.alert('¡Habitaciones y servicios guardados correctamente!');
+            this.cerrarModalHabitaciones();
+          }
+        });
+      },
+      error: (err) => {
+        this.cargando = false;
+          window.alert('Error al guardar habitaciones: ' + (err?.error?.message || 'Intenta de nuevo'));
+      }
+    });
+  }
+  // Propiedades para el modal de habitaciones
+  abrirModalHabitaciones(hotel: any): void {
+    this.hotelHabitaciones = hotel;
+    // Solo clona habitaciones que ya son objetos completos
+    this.habitacionesEdit = Array.isArray(hotel.habitaciones)
+      ? hotel.habitaciones.map((h: unknown) => typeof h === 'object' && h !== null ? { ...(h as any) } : null).filter((h: any) => h)
+      : [];
+    this.modalHabitacionesVisible = true;
+  }
+  modalHabitacionesVisible = false;
+  hotelHabitaciones: any = null;
+  habitacionesEdit: any[] = [];
+  cerrarModalHabitaciones(): void {
+    this.modalHabitacionesVisible = false;
+    this.hotelHabitaciones = null;
+    this.habitacionesEdit = [];
+  }
+  get habitacionesValidas(): boolean {
+  return Array.isArray(this.habitacionesEdit) && this.habitacionesEdit.every((h: any) => h.numero && h.numero > 0 && h.servicios);
+  }
   hoteles: Hotel[] = [];
   hotelesFiltrados: Hotel[] = [];
   filtroEstado = 'todos';
@@ -186,17 +239,14 @@ export class HotelesComponent implements OnInit {
       return;
     }
     this.cargando = true;
-    this.hotelService.editarHotel(this.modalHotel._id, this.modalHotel).subscribe({
-      next: (hotelActualizado) => {
-        // Actualiza el hotel en la lista
-        const idx = this.hoteles.findIndex(h => h._id === hotelActualizado._id);
-        if (idx > -1) {
-          this.hoteles[idx] = hotelActualizado;
-          this.aplicarFiltros();
-        }
-        this.cargando = false;
-        this.cerrarModal();
-        alert('¡Hotel editado correctamente!');
+    // Eliminar habitaciones del payload si no se está editando habitaciones
+    const hotelData = { ...this.modalHotel };
+    if ('habitaciones' in hotelData) {
+      delete hotelData.habitaciones;
+    }
+    this.hotelService.editarHotel(this.modalHotel._id, hotelData).subscribe({
+      next: () => {
+        window.location.reload();
       },
       error: () => {
         this.cargando = false;
@@ -215,14 +265,7 @@ export class HotelesComponent implements OnInit {
     this.cargando = true;
     this.hotelService.eliminarHotel(hotel._id).subscribe({
       next: () => {
-        const index = this.hoteles.findIndex(h => h._id === hotel._id);
-        if (index > -1) {
-          this.hoteles.splice(index, 1);
-          this.aplicarFiltros();
-        }
-        this.cargando = false;
-        this.cerrarModalEliminar();
-        alert('¡Hotel eliminado correctamente!');
+        window.location.reload();
       },
       error: () => {
         this.cargando = false;

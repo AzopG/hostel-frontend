@@ -3,6 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface Habitacion {
+  _id?: string;
+  numero: number;
+  servicios: string[];
+}
+
 export interface Hotel {
   _id?: string;
   nombre: string;
@@ -12,7 +18,7 @@ export interface Hotel {
   email?: string;
   categoria: number;
   activo: boolean;
-  habitaciones: number;
+  habitaciones: Habitacion[];
   ocupacion: number;
 }
 

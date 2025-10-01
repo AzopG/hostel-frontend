@@ -67,7 +67,7 @@
         </div>
         <div class="form-group">
           <label>Habitaciones:</label>
-          <input type="number" [(ngModel)]="modalHotel.habitaciones" name="habitaciones" [readonly]="modalModo === 'ver'" />
+          <span *ngIf="modalHotel.habitaciones">{{ modalHotel.habitaciones.length }}</span>
         </div>
         <div class="form-group">
           <label>Ocupación (%):</label>
@@ -130,7 +130,7 @@
               <span class="star">★</span>
             </ng-container>
           </span>
-          <span><b>Habitaciones:</b> {{ hotel.habitaciones }}</span>
+          <span><b>Habitaciones:</b> {{ getNumeroHabitaciones(hotel) }}</span>
           <span><b>Ocupación:</b> {{ hotel.ocupacion }}%</span>
         </div>
         <div class="hotel-actions">
@@ -142,9 +142,25 @@
                   [disabled]="cargando">
             {{ hotel.activo ? 'Desactivar' : 'Activar' }}
           </button>
+            <button (click)="abrirModalHabitaciones(hotel)">Editar Habitaciones</button>
         </div>
       </div>
     </div>
   </div>
-  <!-- ...existing code... -->
+
+    <!-- Modal para editar habitaciones -->
+    <div class="modal-backdrop" *ngIf="modalHabitacionesVisible" (click)="cerrarModalHabitaciones()"></div>
+    <div class="modal" *ngIf="modalHabitacionesVisible">
+      <div class="modal-content">
+        <h2>Editar Habitaciones de {{ hotelHabitaciones?.nombre }}</h2>
+        <app-habitaciones-editor
+          [habitaciones]="habitacionesEdit"
+          (habitacionesChange)="habitacionesEdit = $event">
+        </app-habitaciones-editor>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarModalHabitaciones()">Cancelar</button>
+          <button type="button" (click)="guardarHabitacionesEditadas()" [disabled]="cargando || !habitacionesValidas">Guardar</button>
+        </div>
+      </div>
+    </div>
 </div>
