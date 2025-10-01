@@ -61,6 +61,11 @@ export const routes: Routes = [
     path: 'reservar-paquete/:hotelId', 
     loadComponent: () => import('./components/reservar-paquete/reservar-paquete.component').then(m => m.ReservarPaqueteComponent)
   },
+  // HU19: Gestionar lista de asistentes (acceso público)
+  { 
+    path: 'gestionar-asistentes/:reservaId', 
+    loadComponent: () => import('./components/gestionar-asistentes/gestionar-asistentes.component').then(m => m.GestionarAsistentesComponent)
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

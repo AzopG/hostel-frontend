@@ -1,0 +1,404 @@
+<!-- HU19: GESTIONAR LISTA DE ASISTENTES -->
+<div class="gestionar-asistentes-container">
+  
+  <!-- Header -->
+  <div class="header">
+    <button class="btn-volver" (click)="volver()">
+      <span>← Volver</span>
+    </button>
+    <div class="header-content">
+      <h1>Gestión de Asistentes</h1>
+      <div *ngIf="reserva" class="reserva-info">
+        <span class="codigo">{{ reserva.codigoReserva }}</span>
+        <span class="evento">{{ reserva.nombreEvento }}</span>
+        <span class="estado" [class]="'estado-' + reserva.estado">{{ reserva.estado }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="cargando" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Procesando...</p>
+  </div>
+
+  <!-- Mensajes -->
+  <div *ngIf="mensaje" class="alert alert-success">
+    {{ mensaje }}
+    <button class="btn-cerrar" (click)="mensaje = ''">×</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-error">
+    {{ error }}
+    <button class="btn-cerrar" (click)="error = ''">×</button>
+  </div>
+
+  <!-- Estadísticas -->
+  <div *ngIf="estadisticas" class="estadisticas-container">
+    <div class="estadistica-card">
+      <div class="icono">👥</div>
+      <div class="info">
+        <div class="valor">{{ estadisticas.totalAsistentes }}</div>
+        <div class="label">Total Asistentes</div>
+      </div>
+    </div>
+
+    <div class="estadistica-card confirmados">
+      <div class="icono">✓</div>
+      <div class="info">
+        <div class="valor">{{ estadisticas.confirmados }}</div>
+        <div class="label">Confirmados</div>
+      </div>
+    </div>
+
+    <div class="estadistica-card pendientes">
+      <div class="icono">⏳</div>
+      <div class="info">
+        <div class="valor">{{ estadisticas.pendientes }}</div>
+        <div class="label">Pendientes</div>
+      </div>
+    </div>
+
+    <div class="estadistica-card capacidad" [class.completo]="estadisticas.bloqueado">
+      <div class="icono">🏢</div>
+      <div class="info">
+        <div class="valor">
+          {{ estadisticas.totalAsistentes }} / {{ estadisticas.capacidadMaxima || '∞' }}
+        </div>
+        <div class="label">Capacidad</div>
+        <div *ngIf="estadisticas.porcentajeOcupacion !== null" class="porcentaje">
+          {{ estadisticas.porcentajeOcupacion }}%
+        </div>
+      </div>
+    </div>
+
+    <!-- CA4: Alerta de capacidad máxima -->
+    <div *ngIf="estadisticas.bloqueado" class="estadistica-card alerta">
+      <div class="icono">⚠️</div>
+      <div class="info">
+        <div class="label">Capacidad Máxima Alcanzada</div>
+        <div class="texto">No se pueden agregar más asistentes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección principal -->
+  <div class="main-content">
+    
+    <!-- Panel izquierdo: Agregar asistente -->
+    <div class="panel-agregar">
+      <h2>CA1: Agregar Asistente</h2>
+      
+      <!-- CA4: Mostrar alerta si está bloqueado -->
+      <div *ngIf="estadisticas?.bloqueado" class="alert alert-warning">
+        <strong>⚠️ Capacidad máxima alcanzada</strong>
+        <p>No se pueden agregar más asistentes. Capacidad: {{ estadisticas?.capacidadMaxima }}</p>
+      </div>
+
+      <form [formGroup]="formAgregar" (ngSubmit)="agregarAsistente()" *ngIf="!estadisticas?.bloqueado">
+        <div class="form-group">
+          <label for="nombre">Nombre *</label>
+          <input
+            type="text"
+            id="nombre"
+            formControlName="nombre"
+            class="form-control"
+            placeholder="Juan Pérez"
+          />
+          <small *ngIf="formAgregar.get('nombre')?.invalid && formAgregar.get('nombre')?.touched" class="error-text">
+            El nombre es obligatorio (mínimo 3 caracteres)
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="correo">Correo electrónico *</label>
+          <input
+            type="email"
+            id="correo"
+            formControlName="correo"
+            class="form-control"
+            placeholder="juan.perez@empresa.com"
+          />
+          <small *ngIf="formAgregar.get('correo')?.invalid && formAgregar.get('correo')?.touched" class="error-text">
+            Ingrese un correo válido
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="notas">Notas (opcional)</label>
+          <textarea
+            id="notas"
+            formControlName="notas"
+            class="form-control"
+            rows="2"
+            placeholder="Cargo, empresa, restricciones, etc."
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="formAgregar.invalid || cargando"
+        >
+          ➕ Agregar Asistente
+        </button>
+      </form>
+
+      <div class="acciones-masivas">
+        <button class="btn btn-outline" (click)="abrirModalImportar()">
+          📋 Importar Lista
+        </button>
+        <button class="btn btn-outline" (click)="exportarCSV()" [disabled]="asistentes.length === 0">
+          📥 Exportar CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel derecho: Lista de asistentes -->
+    <div class="panel-lista">
+      <div class="lista-header">
+        <h2>Lista de Asistentes ({{ asistentesFiltrados.length }})</h2>
+        
+        <!-- Filtros -->
+        <div class="filtros">
+          <div class="filtro-estado">
+            <label>Filtrar por:</label>
+            <select [(ngModel)]="filtroEstado" class="form-control">
+              <option value="todos">Todos</option>
+              <option value="confirmados">Confirmados</option>
+              <option value="pendientes">Pendientes</option>
+            </select>
+          </div>
+
+          <div class="filtro-busqueda">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusqueda"
+              class="form-control"
+              placeholder="🔍 Buscar por nombre, correo o notas..."
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de asistentes -->
+      <div *ngIf="asistentesFiltrados.length === 0" class="sin-asistentes">
+        <div class="icono">👥</div>
+        <p *ngIf="asistentes.length === 0">No hay asistentes registrados</p>
+        <p *ngIf="asistentes.length > 0 && asistentesFiltrados.length === 0">
+          No se encontraron resultados con los filtros aplicados
+        </p>
+      </div>
+
+      <div *ngIf="asistentesFiltrados.length > 0" class="tabla-container">
+        <table class="tabla-asistentes">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Estado</th>
+              <th>Registro</th>
+              <th>Notas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let asistente of asistentesFiltrados" [class.confirmado]="asistente.confirmado">
+              <td>
+                <strong>{{ asistente.nombre }}</strong>
+              </td>
+              <td>
+                <a [href]="'mailto:' + asistente.correo">{{ asistente.correo }}</a>
+              </td>
+              <td>
+                <span class="badge" [class.badge-success]="asistente.confirmado" [class.badge-warning]="!asistente.confirmado">
+                  {{ asistente.confirmado ? '✓ Confirmado' : '⏳ Pendiente' }}
+                </span>
+              </td>
+              <td class="fecha">
+                {{ asistente.fechaRegistro | date:'short' }}
+              </td>
+              <td class="notas">
+                <span *ngIf="asistente.notas">{{ asistente.notas }}</span>
+                <span *ngIf="!asistente.notas" class="texto-gris">—</span>
+              </td>
+              <td class="acciones">
+                <button
+                  *ngIf="!asistente.confirmado"
+                  class="btn-accion btn-confirmar"
+                  (click)="confirmarAsistencia(asistente)"
+                  title="Confirmar asistencia"
+                >
+                  ✓
+                </button>
+                <button
+                  class="btn-accion btn-editar"
+                  (click)="abrirModalEditar(asistente)"
+                  title="Editar asistente (CA2)"
+                >
+                  ✏️
+                </button>
+                <button
+                  class="btn-accion btn-eliminar"
+                  (click)="abrirModalEliminar(asistente)"
+                  title="Eliminar asistente (CA3)"
+                >
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ======================== -->
+<!-- MODAL: Editar Asistente (CA2) -->
+<!-- ======================== -->
+<div *ngIf="mostrarModalEditar" class="modal-overlay" (click)="cerrarModalEditar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>CA2: Editar Asistente</h3>
+      <button class="btn-cerrar-modal" (click)="cerrarModalEditar()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="formEditar">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input
+            type="text"
+            formControlName="nombre"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Correo *</label>
+          <input
+            type="email"
+            formControlName="correo"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="confirmado" />
+            <span>Asistencia confirmada</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Notas</label>
+          <textarea
+            formControlName="notas"
+            class="form-control"
+            rows="3"
+          ></textarea>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarModalEditar()">
+        Cancelar
+      </button>
+      <button
+        class="btn btn-primary"
+        (click)="guardarEdicion()"
+        [disabled]="formEditar.invalid || cargando"
+      >
+        💾 Guardar Cambios
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== -->
+<!-- MODAL: Confirmar Eliminación (CA3) -->
+<!-- ======================== -->
+<div *ngIf="mostrarModalEliminar" class="modal-overlay" (click)="cerrarModalEliminar()">
+  <div class="modal-content modal-small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>CA3: Eliminar Asistente</h3>
+      <button class="btn-cerrar-modal" (click)="cerrarModalEliminar()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="confirmacion-eliminar">
+        <div class="icono-alerta">⚠️</div>
+        <p>¿Está seguro que desea eliminar este asistente?</p>
+        <div class="datos-asistente">
+          <strong>{{ asistenteEliminar?.nombre }}</strong>
+          <span>{{ asistenteEliminar?.correo }}</span>
+        </div>
+        <p class="advertencia">Esta acción no se puede deshacer.</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarModalEliminar()">
+        Cancelar
+      </button>
+      <button
+        class="btn btn-danger"
+        (click)="confirmarEliminacion()"
+        [disabled]="cargando"
+      >
+        🗑️ Eliminar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== -->
+<!-- MODAL: Importar Lista -->
+<!-- ======================== -->
+<div *ngIf="mostrarModalImportar" class="modal-overlay" (click)="cerrarModalImportar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Importar Lista de Asistentes</h3>
+      <button class="btn-cerrar-modal" (click)="cerrarModalImportar()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <p>Ingrese los datos de los asistentes, uno por línea en el formato:</p>
+      <code>Nombre, Correo, Notas (opcional)</code>
+      
+      <div class="ejemplo">
+        <strong>Ejemplo:</strong><br>
+        Juan Pérez, juan@empresa.com, Gerente General<br>
+        María López, maria@empresa.com, Directora de Marketing<br>
+        Carlos Ruiz, carlos@empresa.com
+      </div>
+
+      <div class="form-group">
+        <label>Datos de asistentes:</label>
+        <textarea
+          [(ngModel)]="textoImportacion"
+          class="form-control"
+          rows="10"
+          placeholder="Juan Pérez, juan@empresa.com, Gerente&#10;María López, maria@empresa.com"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarModalImportar()">
+        Cancelar
+      </button>
+      <button
+        class="btn btn-primary"
+        (click)="procesarImportacion()"
+        [disabled]="!textoImportacion.trim() || cargando"
+      >
+        📋 Importar
+      </button>
+    </div>
+  </div>
+</div>
