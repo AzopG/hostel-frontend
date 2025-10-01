@@ -1,22 +1,20 @@
-import { Injectable } from '@angular/core';
-import { 
-  HttpInterceptor, 
-  HttpRequest, 
-  HttpHandler, 
-  HttpEvent, 
-  HttpResponse,
-  HttpErrorResponse
+import {
+    HttpErrorResponse,
+    HttpEvent,
+    HttpHandler,
+    HttpInterceptor,
+    HttpRequest,
+    HttpResponse
 } from '@angular/common/http';
-import { Observable, throwError, of, timer } from 'rxjs';
-import { 
-  retry, 
-  retryWhen, 
-  delay, 
-  mergeMap, 
-  catchError, 
-  tap, 
-  finalize,
-  switchMap
+import { Injectable } from '@angular/core';
+import { Observable, of, throwError, timer } from 'rxjs';
+import {
+    catchError,
+    finalize,
+    mergeMap,
+    retryWhen,
+    switchMap,
+    tap
 } from 'rxjs/operators';
 
 interface CacheEntry {
@@ -183,7 +181,8 @@ export class PerformanceInterceptor implements HttpInterceptor {
       '/api/hoteles',
       '/api/ciudades', 
       '/api/configuracion',
-      '/api/usuarios'
+      '/api/usuarios',
+      '/api/auth/verify'
     ];
 
     return cacheableEndpoints.some(endpoint => req.url.includes(endpoint));
@@ -237,12 +236,13 @@ export class PerformanceInterceptor implements HttpInterceptor {
 
   private getTTLForRequest(req: HttpRequest<any>): number {
     // TTL específico por tipo de recurso
-    if (req.url.includes('/api/configuracion')) return 15 * 60 * 1000; // 15 min
-    if (req.url.includes('/api/hoteles')) return 10 * 60 * 1000; // 10 min
-    if (req.url.includes('/api/usuarios')) return 5 * 60 * 1000; // 5 min
-    if (req.url.includes('/api/disponibilidad')) return 2 * 60 * 1000; // 2 min
+  if (req.url.includes('/api/configuracion')) return 15 * 60 * 1000; // 15 min
+  if (req.url.includes('/api/hoteles')) return 10 * 60 * 1000; // 10 min
+  if (req.url.includes('/api/usuarios')) return 5 * 60 * 1000; // 5 min
+  if (req.url.includes('/api/disponibilidad')) return 2 * 60 * 1000; // 2 min
+  if (req.url.includes('/api/auth/verify')) return 30 * 1000; // 30 segundos para verificación
 
-    return this.defaultTTL;
+  return this.defaultTTL;
   }
 
   private getTimeoutForRequest(req: HttpRequest<any>): number {
