@@ -13,12 +13,20 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       <!-- Navegación superior -->
       <div class="navigation-header">
         <button class="btn-volver" (click)="volver()" title="Volver al inicio">
-          <span>← Volver al Inicio</span>
+          <span class="back-icon">🏨</span>
+          <span>Volver al Inicio</span>
         </button>
       </div>
 
+      <!-- Fondo decorativo -->
+      <div class="background-decoration"></div>
+
       <div class="register-card">
         <div class="register-header">
+          <div class="brand-section">
+            <span class="brand-icon">🏨</span>
+            <h1>Hotel Paradise</h1>
+          </div>
           <h2>Crear Cuenta</h2>
           <p>Regístrate para acceder al sistema hotelero</p>
         </div>
@@ -27,13 +35,16 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <!-- Nombre -->
           <div class="form-group">
             <label for="nombre">Nombre completo <span class="required">*</span></label>
-            <input
-              id="nombre"
-              type="text"
-              formControlName="nombre"
-              placeholder="Ingresa tu nombre completo"
-              [class.error]="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
-            />
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+              <input
+                id="nombre"
+                type="text"
+                formControlName="nombre"
+                placeholder="Ingresa tu nombre completo"
+                [class.error]="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
+              />
+            </div>
             <div 
               class="error-message" 
               *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
@@ -46,13 +57,16 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <!-- Email -->
           <div class="form-group">
             <label for="email">Correo electrónico <span class="required">*</span></label>
-            <input
-              id="email"
-              type="email"
-              formControlName="email"
-              placeholder="Ingresa tu correo"
-              [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-            />
+            <div class="input-wrapper">
+              <span class="input-icon">📧</span>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="admin@hotelchain.com"
+                [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+              />
+            </div>
             <div 
               class="error-message" 
               *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
@@ -65,13 +79,16 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <!-- Contraseña -->
           <div class="form-group">
             <label for="password">Contraseña <span class="required">*</span></label>
-            <input
-              id="password"
-              type="password"
-              formControlName="password"
-              placeholder="Mínimo 6 caracteres"
-              [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-            />
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                placeholder="••••••••"
+                [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+              />
+            </div>
             <div 
               class="error-message" 
               *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
@@ -84,13 +101,16 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <!-- Confirmar Contraseña -->
           <div class="form-group">
             <label for="confirmPassword">Confirmar contraseña <span class="required">*</span></label>
-            <input
-              id="confirmPassword"
-              type="password"
-              formControlName="confirmPassword"
-              placeholder="Repite tu contraseña"
-              [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
-            />
+            <div class="input-wrapper">
+              <span class="input-icon">🔐</span>
+              <input
+                id="confirmPassword"
+                type="password"
+                formControlName="confirmPassword"
+                placeholder="Repite tu contraseña"
+                [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+              />
+            </div>
             <div 
               class="error-message" 
               *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
@@ -108,15 +128,19 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <!-- Tipo de usuario -->
           <div class="form-group">
             <label for="tipo">Tipo de cuenta <span class="required">*</span></label>
-            <select
-              id="tipo"
-              formControlName="tipo"
-              [class.error]="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched"
-            >
-              <option value="">Selecciona un tipo</option>
-              <option value="cliente">Cliente</option>
-              <option value="empresa">Empresa</option>
-            </select>
+            <div class="select-wrapper">
+              <span class="input-icon">🏷️</span>
+              <select
+                id="tipo"
+                formControlName="tipo"
+                [class.error]="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched"
+              >
+                <option value="">Selecciona un tipo</option>
+                <option value="cliente">Cliente</option>
+                <option value="empresa">Empresa</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
             <div 
               class="error-message" 
               *ngIf="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched"
@@ -126,15 +150,18 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           </div>
 
           <!-- Empresa (solo si tipo es 'empresa') -->
-          <div class="form-group" *ngIf="registerForm.get('tipo')?.value === 'empresa'">
+          <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'empresa'">
             <label for="empresa">Nombre de la empresa <span class="required">*</span></label>
-            <input
-              id="empresa"
-              type="text"
-              formControlName="empresa"
-              placeholder="Ingresa el nombre de tu empresa"
-              [class.error]="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched"
-            />
+            <div class="input-wrapper">
+              <span class="input-icon">🏢</span>
+              <input
+                id="empresa"
+                type="text"
+                formControlName="empresa"
+                placeholder="Ingresa el nombre de tu empresa"
+                [class.error]="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched"
+              />
+            </div>
             <div 
               class="error-message" 
               *ngIf="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched"
@@ -144,12 +171,14 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           </div>
 
           <!-- Error general del servidor -->
-          <div class="error-message" *ngIf="serverError">
+          <div class="alert error-alert" *ngIf="serverError">
+            <span class="alert-icon">⚠️</span>
             <strong>{{ serverError }}</strong>
           </div>
 
           <!-- Success message -->
-          <div class="success-message" *ngIf="successMessage">
+          <div class="alert success-alert" *ngIf="successMessage">
+            <span class="alert-icon">✅</span>
             {{ successMessage }}
           </div>
 
@@ -159,19 +188,49 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
             class="submit-btn"
             [disabled]="isLoading"
           >
-            <span *ngIf="isLoading" class="loader"></span>
-            {{ isLoading ? 'Creando cuenta...' : 'Crear Cuenta' }}
+            <span *ngIf="isLoading" class="loading-spinner"></span>
+            <span class="btn-text">{{ isLoading ? 'Creando cuenta...' : 'Crear Cuenta' }}</span>
           </button>
         </form>
 
         <!-- Links adicionales -->
         <div class="register-footer">
-          <p>¿Ya tienes cuenta? <a href="#" (click)="goToLogin($event)">Inicia sesión aquí</a></p>
+          <p>¿Ya tienes cuenta? <a href="#" (click)="goToLogin($event)" class="login-link">Inicia sesión aquí</a></p>
         </div>
       </div>
     </div>
   `,
   styles: [`
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .register-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1C2526 0%, #0A3161 50%, #4A1B2F 100%);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Playfair Display', 'Georgia', serif;
+    }
+
+    .background-decoration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(184, 151, 120, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(74, 27, 47, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
     .navigation-header {
       position: fixed;
       top: 20px;
@@ -182,160 +241,320 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
     .btn-volver {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.9);
-      color: #667eea;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 8px;
+      gap: 12px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, rgba(248, 241, 233, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
+      color: #1C2526;
+      border: 2px solid rgba(184, 151, 120, 0.5);
+      border-radius: 50px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      font-size: 0.9rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(15px);
+      font-size: 0.95rem;
+      text-shadow: none;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 0.5px;
     }
 
     .btn-volver:hover {
-      background: #667eea;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      background: linear-gradient(135deg, #B89778 0%, #4A1B2F 100%);
+      color: #F8F1E9;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(184, 151, 120, 0.4);
+      border-color: #F8F1E9;
     }
 
-    .register-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 20px;
+    .back-icon {
+      font-size: 1.2rem;
+      color: #B89778;
+      filter: drop-shadow(0 0 4px rgba(184, 151, 120, 0.3));
+    }
+
+    .btn-volver:hover .back-icon {
+      color: #F8F1E9;
     }
 
     .register-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, rgba(248, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%);
+      backdrop-filter: blur(25px);
+      border-radius: 25px;
+      box-shadow: 0 25px 50px rgba(28, 37, 38, 0.4);
+      border: 2px solid rgba(184, 151, 120, 0.5);
       padding: 40px;
       width: 100%;
       max-width: 500px;
       max-height: 90vh;
       overflow-y: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .register-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #B89778 0%, #4A1B2F 50%, #0A3161 100%);
+      border-radius: 25px 25px 0 0;
     }
 
     .register-header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .brand-icon {
+      font-size: 2.2rem;
+      color: #B89778;
+      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .brand-section h1 {
+      color: #1C2526;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
 
     .register-header h2 {
-      color: #333;
-      margin-bottom: 10px;
-      font-size: 28px;
+      color: #1C2526;
+      margin-bottom: 12px;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .register-header p {
-      color: #666;
-      font-size: 14px;
+      color: #4A1B2F;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
     }
 
     .register-form {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .empresa-field {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 5px;
-      color: #333;
-      font-weight: 500;
+      margin-bottom: 8px;
+      color: #1C2526;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      font-family: 'Playfair Display', serif;
     }
 
     .required {
-      color: #e74c3c;
+      color: #4A1B2F;
+      font-weight: 700;
+    }
+
+    .input-wrapper, .select-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: #B89778;
+      z-index: 1;
+      filter: drop-shadow(0 0 2px rgba(184, 151, 120, 0.3));
     }
 
     .form-group input,
     .form-group select {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #e1e1e1;
-      border-radius: 5px;
-      font-size: 16px;
-      transition: border-color 0.3s;
-      box-sizing: border-box;
+      padding: 15px 15px 15px 50px;
+      border: 2px solid rgba(184, 151, 120, 0.3);
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: rgba(255, 255, 255, 0.8);
+      color: #1C2526;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(10px);
     }
 
     .form-group input:focus,
     .form-group select:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #B89778;
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(184, 151, 120, 0.2);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(28, 37, 38, 0.6);
+      font-style: italic;
     }
 
     .form-group input.error,
     .form-group select.error {
-      border-color: #e74c3c;
+      border-color: #4A1B2F;
+      background: rgba(74, 27, 47, 0.05);
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-arrow {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #B89778;
+      pointer-events: none;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
     }
 
     .error-message {
-      color: #e74c3c;
-      font-size: 13px;
-      margin-top: 5px;
+      color: #4A1B2F;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      padding-left: 8px;
     }
 
-    .error-message strong {
-      display: block;
-      text-align: center;
-      padding: 10px;
-      background-color: #fee;
-      border-radius: 5px;
+    .alert {
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(10px);
     }
 
-    .success-message {
-      color: #27ae60;
-      font-size: 14px;
-      margin-bottom: 15px;
-      text-align: center;
-      background-color: #d4edda;
-      border: 1px solid #c3e6cb;
-      padding: 12px;
-      border-radius: 5px;
+    .error-alert {
+      background: rgba(74, 27, 47, 0.1);
+      border: 2px solid rgba(74, 27, 47, 0.3);
+      color: #4A1B2F;
+    }
+
+    .success-alert {
+      background: rgba(184, 151, 120, 0.1);
+      border: 2px solid rgba(184, 151, 120, 0.3);
+      color: #1C2526;
+    }
+
+    .alert-icon {
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));
     }
 
     .submit-btn {
       width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      font-weight: 500;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, #B89778 0%, #4A1B2F 100%);
+      color: #F8F1E9;
+      border: 2px solid #B89778;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: opacity 0.3s;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-family: 'Playfair Display', serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-top: 25px;
+      gap: 12px;
+      margin-top: 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 25px rgba(184, 151, 120, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s;
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
     }
 
     .submit-btn:hover:not(:disabled) {
-      opacity: 0.9;
+      background: linear-gradient(135deg, #4A1B2F 0%, #0A3161 100%);
+      border-color: #F8F1E9;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(74, 27, 47, 0.6);
     }
 
     .submit-btn:disabled {
-      opacity: 0.6;
+      opacity: 0.7;
       cursor: not-allowed;
+      transform: none;
     }
 
-    .loader {
+    .loading-spinner {
       width: 20px;
       height: 20px;
-      border: 2px solid #ffffff;
-      border-top: 2px solid transparent;
+      border: 2px solid rgba(248, 241, 233, 0.3);
+      border-top: 2px solid #F8F1E9;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -345,21 +564,51 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       100% { transform: rotate(360deg); }
     }
 
+    .btn-text {
+      position: relative;
+      z-index: 1;
+    }
+
     .register-footer {
       text-align: center;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #e1e1e1;
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 2px solid rgba(184, 151, 120, 0.3);
     }
 
-    .register-footer a {
-      color: #667eea;
-      text-decoration: none;
+    .register-footer p {
+      color: #4A1B2F;
       font-weight: 500;
+      letter-spacing: 0.3px;
     }
 
-    .register-footer a:hover {
-      text-decoration: underline;
+    .login-link {
+      color: #B89778;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .login-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #B89778, #4A1B2F);
+      transition: width 0.3s ease;
+    }
+
+    .login-link:hover::after {
+      width: 100%;
+    }
+
+    .login-link:hover {
+      color: #4A1B2F;
+      transform: translateY(-1px);
     }
 
     /* Scrollbar personalizada */
@@ -368,17 +617,135 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
     }
 
     .register-card::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: rgba(248, 241, 233, 0.3);
       border-radius: 10px;
     }
 
     .register-card::-webkit-scrollbar-thumb {
-      background: #888;
+      background: linear-gradient(135deg, #B89778, #4A1B2F);
       border-radius: 10px;
     }
 
     .register-card::-webkit-scrollbar-thumb:hover {
-      background: #555;
+      background: linear-gradient(135deg, #4A1B2F, #0A3161);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .register-container {
+        padding: 15px;
+      }
+
+      .navigation-header {
+        top: 15px;
+        left: 15px;
+      }
+
+      .btn-volver {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        gap: 8px;
+      }
+
+      .register-card {
+        padding: 30px 25px;
+        max-width: 100%;
+        border-radius: 20px;
+      }
+
+      .brand-section h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+      }
+
+      .register-header h2 {
+        font-size: 1.7rem;
+      }
+
+      .register-header p {
+        font-size: 0.9rem;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 14px 14px 14px 45px;
+        font-size: 0.95rem;
+      }
+
+      .input-icon {
+        left: 12px;
+        font-size: 1rem;
+      }
+
+      .submit-btn {
+        padding: 16px 20px;
+        font-size: 1rem;
+        letter-spacing: 1px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .register-card {
+        padding: 25px 20px;
+        border-radius: 15px;
+      }
+
+      .brand-section {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .brand-section h1 {
+        font-size: 1.3rem;
+      }
+
+      .register-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 12px 12px 12px 40px;
+        font-size: 0.9rem;
+      }
+
+      .input-icon {
+        left: 10px;
+        font-size: 0.9rem;
+      }
+
+      .submit-btn {
+        padding: 14px 18px;
+        font-size: 0.95rem;
+      }
+    }
+
+    /* Landscape orientation adjustments */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .register-container {
+        padding: 10px;
+      }
+
+      .register-card {
+        max-height: 95vh;
+        padding: 20px;
+      }
+
+      .register-header {
+        margin-bottom: 20px;
+      }
+
+      .brand-section {
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
     }
   `]
 })
