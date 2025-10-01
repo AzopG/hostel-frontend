@@ -387,4 +387,27 @@ export class ReservaService {
       : `${this.apiUrl}/salones/politicas`;
     return this.http.get<ObtenerPoliticasSalonResponse>(url);
   }
+
+  /**
+   * HU11: Obtener recibo de una reserva
+   */
+  obtenerReciboReserva(reservaId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${reservaId}/recibo`);
+  }
+
+  /**
+   * HU11: Descargar recibo en PDF
+   */
+  descargarReciboPDF(reservaId: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${reservaId}/recibo/pdf`, {
+      responseType: 'blob'
+    });
+  }
+
+  /**
+   * HU11: Enviar recibo por email
+   */
+  enviarReciboPorEmail(reservaId: string, email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${reservaId}/recibo/enviar`, { email });
+  }
 }

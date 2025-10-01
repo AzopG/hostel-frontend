@@ -162,6 +162,13 @@ export class MisReservasComponent implements OnInit {
   }
 
   /**
+   * HU11: Navegar a ver recibo
+   */
+  verRecibo(reserva: ReservaConAcciones): void {
+    this.router.navigate(['/recibo', reserva._id]);
+  }
+
+  /**
    * Navegar a modificar fechas (HU09)
    */
   modificarFechas(reserva: ReservaConAcciones): void {

@@ -470,6 +470,10 @@ export class ReservarPaqueteComponent implements OnInit {
     this.router.navigate(['/mis-reservas']);
   }
 
+  irAlHome(): void {
+    this.router.navigate(['/']);
+  }
+
   descargarPDF(): void {
     // Implementar descarga de PDF con los detalles del paquete
     alert('Funcionalidad de descarga de PDF en desarrollo');

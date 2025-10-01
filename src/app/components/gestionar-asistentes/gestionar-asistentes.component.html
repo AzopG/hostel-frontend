@@ -3,9 +3,14 @@
   
   <!-- Header -->
   <div class="header">
-    <button class="btn-volver" (click)="volver()">
-      <span>← Volver</span>
-    </button>
+    <div class="header-navigation">
+      <button class="btn-home" (click)="irAlHome()" title="Ir al inicio">
+        <span>🏠 Home</span>
+      </button>
+      <button class="btn-volver" (click)="volver()" title="Volver a Mis Reservas">
+        <span>← Mis Reservas</span>
+      </button>
+    </div>
     <div class="header-content">
       <h1>Gestión de Asistentes</h1>
       <div *ngIf="reserva" class="reserva-info">
@@ -117,7 +122,7 @@
             id="correo"
             formControlName="correo"
             class="form-control"
-            placeholder="juan.perez@empresa.com"
+            placeholder="juan.perez&#64;empresa.com"
           />
           <small *ngIf="formAgregar.get('correo')?.invalid && formAgregar.get('correo')?.touched" class="error-text">
             Ingrese un correo válido
@@ -372,9 +377,9 @@
       
       <div class="ejemplo">
         <strong>Ejemplo:</strong><br>
-        Juan Pérez, juan@empresa.com, Gerente General<br>
-        María López, maria@empresa.com, Directora de Marketing<br>
-        Carlos Ruiz, carlos@empresa.com
+        Juan Pérez, juan&#64;empresa.com, Gerente General<br>
+        María López, maria&#64;empresa.com, Directora de Marketing<br>
+        Carlos Ruiz, carlos&#64;empresa.com
       </div>
 
       <div class="form-group">
@@ -383,7 +388,7 @@
           [(ngModel)]="textoImportacion"
           class="form-control"
           rows="10"
-          placeholder="Juan Pérez, juan@empresa.com, Gerente&#10;María López, maria@empresa.com"
+          placeholder="Juan Pérez, juan&#64;empresa.com, Gerente&#10;María López, maria&#64;empresa.com"
         ></textarea>
       </div>
     </div>

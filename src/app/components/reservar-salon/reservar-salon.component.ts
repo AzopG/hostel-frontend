@@ -305,6 +305,13 @@ export class ReservarSalonComponent implements OnInit {
   }
 
   /**
+   * Ir al home
+   */
+  irAlHome(): void {
+    this.router.navigate(['/']);
+  }
+
+  /**
    * CA4: Toggle para mostrar/ocultar políticas detalladas
    */
   togglePoliticas(): void {

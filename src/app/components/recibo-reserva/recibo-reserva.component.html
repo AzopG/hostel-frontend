@@ -1,0 +1,230 @@
+<!-- HU11: RECIBO DE RESERVA -->
+<div class="recibo-container">
+  
+  <!-- Navegación -->
+  <div class="header-navigation" *ngIf="!cargando">
+    <button class="btn-home" (click)="irAlHome()" title="Ir al inicio">
+      <span>🏠 Home</span>
+    </button>
+    <button class="btn-volver" (click)="volver()" title="Volver a Mis Reservas">
+      <span>← Mis Reservas</span>
+    </button>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Cargando recibo...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !cargando" class="alert alert-error">
+    <h3>❌ Error</h3>
+    <p>{{ error }}</p>
+    <button class="btn-primary" (click)="volver()">Volver a Mis Reservas</button>
+  </div>
+
+  <!-- Recibo -->
+  <div *ngIf="recibo && reserva && !cargando" class="recibo-content">
+    
+    <!-- Acciones rápidas -->
+    <div class="acciones-recibo no-print">
+      <button class="btn-accion btn-descargar" (click)="descargarPDF()" [disabled]="descargando">
+        <span *ngIf="!descargando">📥 Descargar PDF</span>
+        <span *ngIf="descargando">⏳ Descargando...</span>
+      </button>
+      <button class="btn-accion btn-email" (click)="enviarPorEmail()" [disabled]="enviando">
+        <span *ngIf="!enviando">📧 Enviar por Email</span>
+        <span *ngIf="enviando">⏳ Enviando...</span>
+      </button>
+      <button class="btn-accion btn-imprimir" (click)="imprimir()">
+        <span>🖨️ Imprimir</span>
+      </button>
+    </div>
+
+    <!-- Documento del recibo -->
+    <div class="recibo-documento">
+      
+      <!-- Header del recibo -->
+      <div class="recibo-header">
+        <div class="empresa-info">
+          <h1>🏨 {{ recibo.hotel.nombre }}</h1>
+          <p class="direccion">{{ recibo.hotel.direccion }}</p>
+          <p class="contacto">
+            <span>📞 {{ recibo.hotel.telefono }}</span> |
+            <span>📧 {{ recibo.hotel.email }}</span>
+          </p>
+        </div>
+        <div class="recibo-info">
+          <h2>RECIBO DE PAGO</h2>
+          <p><strong>No. {{ reserva.codigoReserva }}</strong></p>
+          <p class="fecha-emision">Fecha: {{ formatearFecha(recibo.fechaEmision) }}</p>
+          <span class="estado-badge" [ngClass]="getEstadoClase(reserva.estado)">
+            {{ reserva.estado | uppercase }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Información del cliente -->
+      <div class="seccion-cliente">
+        <h3>Información del Huésped</h3>
+        <div class="cliente-grid">
+          <div class="campo">
+            <label>Nombre Completo:</label>
+            <p>{{ reserva.datosHuesped?.nombre }} {{ reserva.datosHuesped?.apellido }}</p>
+          </div>
+          <div class="campo">
+            <label>Documento:</label>
+            <p>{{ reserva.datosHuesped.documento || 'N/A' }}</p>
+          </div>
+          <div class="campo">
+            <label>Teléfono:</label>
+            <p>{{ reserva.datosHuesped?.telefono }}</p>
+          </div>
+          <div class="campo">
+            <label>Email:</label>
+            <p>{{ reserva.datosHuesped?.email }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalles de la reserva -->
+      <div class="seccion-reserva">
+        <h3>Detalles de la Reserva</h3>
+        <div class="reserva-grid">
+          <div class="campo">
+            <label>Tipo de Alojamiento:</label>
+            <p>{{ reserva.habitacion.tipo || 'N/A' }}</p>
+          </div>
+          <div class="campo">
+            <label>Número de Huéspedes:</label>
+            <p>{{ reserva.huespedes }} persona(s)</p>
+          </div>
+          <div class="campo">
+            <label>Check-in:</label>
+            <p>{{ formatearFecha(reserva.fechaInicio) }}</p>
+          </div>
+          <div class="campo">
+            <label>Check-out:</label>
+            <p>{{ formatearFecha(reserva.fechaFin) }}</p>
+          </div>
+          <div class="campo" *ngIf="recibo.noches">
+            <label>Noches:</label>
+            <p>{{ recibo.noches }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desglose de costos -->
+      <div class="seccion-costos">
+        <h3>Desglose de Costos</h3>
+        <table class="tabla-costos">
+          <thead>
+            <tr>
+              <th>Concepto</th>
+              <th class="text-center">Cantidad</th>
+              <th class="text-right">Precio Unitario</th>
+              <th class="text-right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Alojamiento -->
+            <tr>
+              <td>{{ reserva.habitacion.tipo || 'Alojamiento' }}</td>
+              <td class="text-center">{{ recibo.noches || 1 }}</td>
+              <td class="text-right">{{ formatearPrecio(recibo.precioBase) }}</td>
+              <td class="text-right">{{ formatearPrecio(recibo.subtotal) }}</td>
+            </tr>
+            
+            <!-- Servicios adicionales -->
+            <tr *ngIf="recibo.serviciosAdicionales && recibo.serviciosAdicionales.length > 0">
+              <td colspan="4" class="servicios-header">
+                <strong>Servicios Adicionales</strong>
+              </td>
+            </tr>
+            <tr *ngFor="let servicio of recibo.serviciosAdicionales">
+              <td>{{ servicio.nombre }}</td>
+              <td class="text-center">{{ servicio.cantidad }}</td>
+              <td class="text-right">{{ formatearPrecio(servicio.precio) }}</td>
+              <td class="text-right">{{ formatearPrecio(servicio.total) }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="subtotal-row">
+              <td colspan="3"><strong>Subtotal</strong></td>
+              <td class="text-right"><strong>{{ formatearPrecio(recibo.subtotal) }}</strong></td>
+            </tr>
+            <tr *ngIf="recibo.descuentos > 0" class="descuento-row">
+              <td colspan="3">Descuentos</td>
+              <td class="text-right text-success">-{{ formatearPrecio(recibo.descuentos) }}</td>
+            </tr>
+            <tr *ngIf="recibo.impuestos > 0">
+              <td colspan="3">Impuestos ({{ recibo.porcentajeImpuesto }}%)</td>
+              <td class="text-right">{{ formatearPrecio(recibo.impuestos) }}</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3"><strong>TOTAL PAGADO</strong></td>
+              <td class="text-right"><strong>{{ formatearPrecio(reserva.tarifa.total) }}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Información de pago -->
+      <div class="seccion-pago">
+        <h3>Información de Pago</h3>
+        <div class="pago-grid">
+          <div class="campo">
+            <label>Método de Pago:</label>
+            <p>{{ recibo.metodoPago || 'Tarjeta de Crédito' }}</p>
+          </div>
+          <div class="campo">
+            <label>Estado del Pago:</label>
+            <p class="estado-pago completado">✅ Pagado</p>
+          </div>
+          <div class="campo">
+            <label>Fecha de Pago:</label>
+            <p>{{ formatearFecha(recibo.fechaPago || reserva.createdAt) }}</p>
+          </div>
+          <div class="campo" *ngIf="recibo.transaccionId">
+            <label>ID de Transacción:</label>
+            <p>{{ recibo.transaccionId }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Políticas y términos -->
+      <div class="seccion-politicas">
+        <h4>Políticas de Cancelación</h4>
+        <ul>
+          <li>Cancelación gratuita hasta 24 horas antes del check-in</li>
+          <li>Cancelaciones con menos de 24 horas: cargo del 50% del total</li>
+          <li>No-show: cargo del 100% del total de la reserva</li>
+        </ul>
+        
+        <h4>Información Importante</h4>
+        <ul>
+          <li>Check-in: 15:00 hrs | Check-out: 12:00 hrs</li>
+          <li>Presentar documento de identidad al check-in</li>
+          <li>Este recibo es válido como comprobante de pago</li>
+          <li>Conserve este documento para cualquier reclamación</li>
+        </ul>
+      </div>
+
+      <!-- Footer del recibo -->
+      <div class="recibo-footer">
+        <p class="texto-legal">
+          Este documento certifica el pago de la reserva {{ reserva.codigoReserva }}.
+          Para consultas o soporte, comuníquese con nosotros al {{ recibo.hotel.telefono }} 
+          o escriba a {{ recibo.hotel.email }}.
+        </p>
+        <p class="gracias">¡Gracias por su preferencia!</p>
+        <div class="codigo-barras">
+          <p>{{ reserva.codigoReserva }}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

@@ -19,6 +19,30 @@
   border-bottom: 2px solid #e0e0e0;
 }
 
+.header-navigation {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-home {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.btn-home:hover {
+  background: #1976d2;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
 .btn-volver {
   background: #6c757d;
   color: white;
@@ -789,6 +813,16 @@ code {
   .header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .header-navigation {
+    width: 100%;
+  }
+
+  .btn-home,
+  .btn-volver {
+    width: 100%;
+    justify-content: center;
   }
 
   .reserva-info {

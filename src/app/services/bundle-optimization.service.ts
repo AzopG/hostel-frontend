@@ -159,7 +159,8 @@ export class BundleOptimizationService {
     const moduleMap: { [key: string]: () => Promise<any> } = {
       '/dashboard': () => import('../components/dashboard/dashboard.component').catch(() => null),
       '/login': () => import('../components/login/login.component').catch(() => null),
-      '/performance-demo': () => Promise.resolve(null)
+      '/register': () => import('../components/register/register.component').catch(() => null),
+      '/buscar-habitaciones': () => import('../components/buscar-habitaciones/buscar-habitaciones.component').catch(() => null)
     };
 
     return moduleMap[route] || null;

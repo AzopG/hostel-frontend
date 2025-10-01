@@ -7,6 +7,49 @@
   min-height: 100vh;
 }
 
+/* ==================== NAVEGACIÓN ==================== */
+.header-navigation {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-home {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.btn-home:hover {
+  background: #1976d2;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.btn-back {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.btn-back:hover {
+  background: #5a6268;
+  transform: scale(1.02);
+}
+
 /* ==================== INDICADOR DE PASOS ==================== */
 .pasos-indicador {
   display: flex;
@@ -797,6 +840,17 @@
 @media (max-width: 768px) {
   .reservar-salon-container {
     padding: 10px;
+  }
+
+  .header-navigation {
+    width: 100%;
+  }
+
+  .btn-home,
+  .btn-back {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
   }
 
   .pasos-indicador {

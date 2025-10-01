@@ -41,6 +41,11 @@ export const routes: Routes = [
     path: 'mis-reservas', 
     loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent)
   },
+  // HU11: Ver recibo de reserva (acceso público)
+  { 
+    path: 'recibo/:id', 
+    loadComponent: () => import('./components/recibo-reserva/recibo-reserva.component').then(m => m.ReciboReservaComponent)
+  },
   // HU14: Búsqueda de salones para eventos (acceso público)
   { 
     path: 'busqueda-salones', 
@@ -71,6 +76,7 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     children: [
+      // Rutas administrativas
       { 
         path: 'hoteles', 
         loadComponent: () => import('./components/dashboard/hoteles.component').then(m => m.HotelesComponent) 
@@ -95,76 +101,7 @@ export const routes: Routes = [
         path: 'reservas', 
         loadComponent: () => import('./components/dashboard/reservas.component').then(m => m.ReservasComponent) 
       },
-      { 
-        path: 'eventos', 
-        loadComponent: () => import('./components/dashboard/eventos.component').then(m => m.EventosComponent) 
-      },
-      { 
-        path: 'disponibilidad', 
-        loadComponent: () => import('./components/dashboard/disponibilidad.component').then(m => m.DisponibilidadComponent) 
-      },
-      { 
-        path: 'inventario', 
-        loadComponent: () => import('./components/dashboard/inventario.component').then(m => m.InventarioComponent) 
-      },
-      { 
-        path: 'mis-reservas', 
-        loadComponent: () => import('./components/dashboard/mis-reservas.component').then(m => m.MisReservasComponent) 
-      },
-      { 
-        path: 'paquetes', 
-        loadComponent: () => import('./components/dashboard/paquetes.component').then(m => m.PaquetesComponent) 
-      },
-      { 
-        path: 'historial', 
-        loadComponent: () => import('./components/dashboard/historial.component').then(m => m.HistorialComponent) 
-      },
-      { 
-        path: 'buscar-hoteles', 
-        loadComponent: () => import('./components/dashboard/hoteles.component').then(m => m.HotelesComponent) 
-      },
-      { 
-        path: 'demos/animations', 
-        loadComponent: () => import('./components/demos/animations-demo.component').then(m => m.AnimationsDemoComponent) 
-      },
-      { 
-        path: 'demos/performance', 
-        loadComponent: () => import('./components/demos/performance-demo.component').then(m => m.PerformanceDemoComponent) 
-      },
-      { 
-        path: 'performance-monitor', 
-        loadComponent: () => import('./components/performance-monitor/performance-monitor.component').then(m => m.PerformanceMonitorComponent) 
-      },
-      { 
-        path: 'analytics', 
-        loadComponent: () => import('./components/analytics-dashboard/analytics-dashboard.component').then(m => m.AnalyticsDashboardComponent) 
-      },
-      { 
-        path: 'material-showcase', 
-        loadComponent: () => import('./components/material-showcase/material-showcase.component').then(m => m.MaterialShowcaseComponent) 
-      },
-      { 
-        path: 'hotel-map', 
-        loadComponent: () => import('./components/hotel-map/hotel-map.component').then(m => m.HotelMapComponent) 
-      }
-    ]
-  },
-  {
-    path: 'demos',
-    children: [
-      { 
-        path: 'animations', 
-        loadComponent: () => import('./components/demos/animations-demo.component').then(m => m.AnimationsDemoComponent) 
-      },
-      { 
-        path: 'performance', 
-        loadComponent: () => import('./components/demos/performance-demo.component').then(m => m.PerformanceDemoComponent) 
-      },
-      { 
-        path: 'monitor', 
-        loadComponent: () => import('./components/performance-monitor/performance-monitor.component').then(m => m.PerformanceMonitorComponent) 
-      },
-      { path: '', redirectTo: 'animations', pathMatch: 'full' }
+      { path: '', redirectTo: 'reservas', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: '' }

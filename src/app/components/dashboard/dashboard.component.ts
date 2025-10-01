@@ -79,18 +79,8 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
             <!-- Acciones rápidas -->
             <div class="header-actions">
-              <button class="action-btn analytics" (click)="goToAnalytics()" title="Ver Analytics">
-                <span class="emoji">📊</span>
-              </button>
-              <button class="action-btn maps" (click)="goToMaps()" title="Ver Mapas">
-                <span class="emoji">🗺️</span>
-              </button>
-              <button class="action-btn material" (click)="goToMaterial()" title="Material UI">
-                <span class="emoji">🎨</span>
-              </button>
-              <button class="action-btn notifications" title="Notificaciones">
-                <span class="emoji">🔔</span>
-                <span class="notification-badge">3</span>
+              <button class="action-btn home" (click)="goToHome()" title="Ir a Inicio">
+                <span class="emoji">🏠</span>
               </button>
               <button class="btn-logout" (click)="logout()">
                 <i class="fas fa-sign-out-alt"></i>
@@ -188,63 +178,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                 </div>
               </a>
               
-              <!-- Disponibilidad -->
-              <a *ngIf="canAccessSection('disponibilidad')" 
-                 class="nav-item" 
-                 routerLink="/dashboard/disponibilidad" 
-                 routerLinkActive="active"
-                 [@listAnimation]="5">
-                <div class="nav-icon">
-                  <i class="fas fa-calendar-check"></i>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Disponibilidad</span>
-                </div>
-              </a>
-              
-              <!-- Eventos -->
-              <a *ngIf="canAccessSection('eventos')" 
-                 class="nav-item" 
-                 routerLink="/dashboard/eventos" 
-                 routerLinkActive="active"
-                 [@listAnimation]="6">
-                <div class="nav-icon">
-                  <i class="fas fa-calendar-plus"></i>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Eventos</span>
-                  <span class="nav-badge">12</span>
-                </div>
-              </a>
-              
-              <!-- Paquetes -->
-              <a *ngIf="canAccessSection('paquetes')" 
-                 class="nav-item" 
-                 routerLink="/dashboard/paquetes" 
-                 routerLinkActive="active"
-                 [@listAnimation]="7">
-                <div class="nav-icon">
-                  <i class="fas fa-box"></i>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Paquetes</span>
-                  <span class="nav-badge">6</span>
-                </div>
-              </a>
-              
-              <!-- Inventario -->
-              <a *ngIf="canAccessSection('inventario')" 
-                 class="nav-item" 
-                 routerLink="/dashboard/inventario" 
-                 routerLinkActive="active"
-                 [@listAnimation]="8">
-                <div class="nav-icon">
-                  <i class="fas fa-boxes"></i>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Inventario</span>
-                </div>
-              </a>
+
               
               <!-- Reportes -->
               <a *ngIf="canAccessSection('reportes')" 
@@ -259,47 +193,6 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                   <span class="nav-label">Reportes</span>
                 </div>
               </a>
-            </div>
-            
-            <!-- Sección avanzada -->
-            <div class="nav-section">
-              <div class="section-header">Herramientas Avanzadas</div>
-              <button class="nav-item quick-action" (click)="goToAnalytics()">
-                <div class="nav-icon">
-                  <span class="emoji">📊</span>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Analytics</span>
-                  <span class="nav-description">Visualización de datos</span>
-                </div>
-              </button>
-              <button class="nav-item quick-action" (click)="goToMaps()">
-                <div class="nav-icon">
-                  <span class="emoji">🗺️</span>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Mapas Interactivos</span>
-                  <span class="nav-description">Ubicaciones de hoteles</span>
-                </div>
-              </button>
-              <button class="nav-item quick-action" (click)="goToMaterial()">
-                <div class="nav-icon">
-                  <span class="emoji">🎨</span>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Material Design</span>
-                  <span class="nav-description">Componentes UI</span>
-                </div>
-              </button>
-              <button class="nav-item quick-action" (click)="goToHome()">
-                <div class="nav-icon">
-                  <span class="emoji">🏠</span>
-                </div>
-                <div class="nav-content">
-                  <span class="nav-label">Página Principal</span>
-                  <span class="nav-description">Ver sitio público</span>
-                </div>
-              </button>
             </div>
           </nav>
         </aside>
@@ -840,17 +733,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  goToAnalytics(): void {
-    this.router.navigate(['/analytics-dashboard']);
-  }
 
-  goToMaps(): void {
-    this.router.navigate(['/hotel-map']);
-  }
-
-  goToMaterial(): void {
-    this.router.navigate(['/material-showcase']);
-  }
 
   goToHome(): void {
     this.router.navigate(['/']);

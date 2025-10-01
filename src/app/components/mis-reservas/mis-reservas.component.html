@@ -1,4 +1,14 @@
 <div class="mis-reservas-container">
+  <!-- Navegación -->
+  <div class="header-navigation">
+    <button class="btn-home" (click)="router.navigate(['/'])" title="Ir al inicio">
+      <span>🏠 Home</span>
+    </button>
+    <button class="btn-buscar" (click)="router.navigate(['/buscar-habitaciones'])" title="Buscar habitaciones">
+      <span>🔍 Buscar Habitaciones</span>
+    </button>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <h1>📋 Mis Reservas</h1>
@@ -153,6 +163,15 @@
 
       <!-- Footer de Card: Botones de Acción -->
       <div class="card-footer">
+        <!-- HU11: Botón Descargar Recibo -->
+        <button 
+          class="btn btn-recibo" 
+          *ngIf="reserva.estado === 'confirmada' || reserva.estado === 'completada'"
+          (click)="verRecibo(reserva)"
+          title="Ver y descargar recibo de pago">
+          📄 Ver Recibo
+        </button>
+
         <button class="btn btn-secondary" (click)="verDetalle(reserva)">
           👁️ Ver Detalle
         </button>
@@ -164,24 +183,22 @@
           [disabled]="!reserva.puedeModificar"
           [title]="!reserva.puedeModificar ? 'No se puede modificar esta reserva' : 'Modificar fechas de la reserva'"
           (click)="modificarFechas(reserva)">
-          📅 Modificar Fechas
+          📅 Modificar
         </button>
 
-        <!-- Botón Cancelar -->
+        <!-- HU10: Botón Cancelar -->
         <button 
           class="btn btn-danger" 
           *ngIf="reserva.estado === 'confirmada'"
           [disabled]="!reserva.puedeCancelar"
           [title]="!reserva.puedeCancelar ? 'No se puede cancelar esta reserva' : 'Cancelar reserva'"
           (click)="abrirModalCancelar(reserva)">
-          🚫 Cancelar
+          ❌ Cancelar
         </button>
 
         <!-- Estado no permite acciones -->
-        <span class="sin-acciones" *ngIf="reserva.estado !== 'confirmada'">
-          {{ reserva.estado === 'cancelada' ? 'Reserva cancelada' : 
-             reserva.estado === 'completada' ? 'Estadía completada' : 
-             'Reserva en proceso' }}
+        <span class="sin-acciones" *ngIf="reserva.estado !== 'confirmada' && reserva.estado !== 'completada'">
+          {{ reserva.estado === 'cancelada' ? 'Reserva cancelada' : 'Reserva en proceso' }}
         </span>
       </div>
     </div>

@@ -388,9 +388,16 @@ export class GestionarAsistentesComponent implements OnInit {
   }
 
   /**
-   * Volver a la reserva
+   * Volver a mis reservas
    */
   volver(): void {
     this.router.navigate(['/mis-reservas']);
+  }
+
+  /**
+   * Ir al home
+   */
+  irAlHome(): void {
+    this.router.navigate(['/']);
   }
 }

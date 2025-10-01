@@ -1,5 +1,15 @@
 <!-- HU17: Reservar un Salón - 4 Pasos -->
 <div class="reservar-salon-container">
+  <!-- Navegación -->
+  <div class="header-navigation" *ngIf="pasoActual < 4">
+    <button class="btn-home" (click)="irAlHome()" title="Ir al inicio">
+      <span>🏠 Home</span>
+    </button>
+    <button class="btn-back" (click)="volverABusqueda()" title="Volver a búsqueda">
+      <span>← Búsqueda</span>
+    </button>
+  </div>
+
   <!-- Indicador de pasos -->
   <div class="pasos-indicador" *ngIf="pasoActual < 4">
     <div class="paso" [class.activo]="pasoActual === 1" [class.completado]="pasoActual > 1">

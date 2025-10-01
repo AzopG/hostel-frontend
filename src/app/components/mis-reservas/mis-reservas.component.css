@@ -6,6 +6,35 @@
   min-height: 100vh;
 }
 
+/* ==================== NAVEGACIÓN ==================== */
+.header-navigation {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-home,
+.btn-buscar {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-home:hover,
+.btn-buscar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #5a6fd8, #6b46a3);
+}
+
 /* ==================== HEADER ==================== */
 .header {
   display: flex;
@@ -475,6 +504,18 @@
 
 .btn-danger:hover:not(:disabled) {
   background-color: #c0392b;
+}
+
+.btn-recibo {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-recibo:hover {
+  background: linear-gradient(135deg, #5a6fd8, #6b46a3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .sin-acciones {
