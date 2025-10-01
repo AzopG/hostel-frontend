@@ -862,4 +862,3 @@ export class HotelesComponent implements OnInit {
     }
     this.aplicarFiltros();
   }
-}

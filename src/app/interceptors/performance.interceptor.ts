@@ -428,4 +428,3 @@ export class PerformanceInterceptor implements HttpInterceptor {
       // Implementar lógica de prefetch
     });
   }
-}
