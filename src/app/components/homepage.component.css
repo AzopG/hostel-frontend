@@ -18,19 +18,37 @@
 .navbar-brand {
   display: flex;
   align-items: center;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 3px;
-  gap: 12px;
+  letter-spacing: 2px;
+  gap: 15px;
   color: #F8F1E9;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   z-index: 1001;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  text-transform: uppercase;
 }
 
 .brand-icon {
   font-size: 2.2rem;
   color: #B89778;
   filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-logo {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+  transition: all 0.3s ease;
+}
+
+.brand-logo:hover {
+  filter: drop-shadow(0 0 12px rgba(184, 151, 120, 0.8)) drop-shadow(2px 2px 6px rgba(0,0,0,0.4));
+  transform: scale(1.05);
 }
 
 /* Botón hamburguesa */
@@ -112,6 +130,8 @@
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
   padding: 8px 16px;
   border-radius: 25px;
@@ -132,6 +152,7 @@
   padding: 12px 24px;
   font-size: 1rem;
   font-weight: 600;
+  font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-left: 8px;
@@ -373,6 +394,7 @@
   line-height: 1.7;
   font-weight: 500;
   letter-spacing: 1.2px;
+  font-family: 'Crimson Text', serif;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
   opacity: 0.95;
 }
@@ -394,6 +416,7 @@
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 700;
+  font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
@@ -446,6 +469,7 @@
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 600;
+  font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
   transition: all 0.4s ease;
   text-decoration: none;
@@ -799,6 +823,7 @@
   margin-bottom: 1.8rem;
   font-weight: 400;
   letter-spacing: 0.3px;
+  font-family: 'Crimson Text', serif;
 }
 
 .service-highlights {

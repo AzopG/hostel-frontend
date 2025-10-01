@@ -1,296 +1,166 @@
-import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Hotel, HotelService } from '../../services/hotel.service';
-import { HabitacionesEditorComponent } from '../habitaciones-editor';
+<div class="hoteles-container">
+  <!-- Barra superior de gestión -->
+  <div class="hoteles-topbar">
+    <div class="hoteles-title">
+      <span class="icon-hoteles"></span>
+      <h1>Gestión de Hoteles</h1>
+      <p>Administra y controla toda la cadena hotelera</p>
+    </div>
+    <button class="agregar-btn" (click)="agregarHotel()" [disabled]="cargando">+ Nuevo Hotel</button>
+  </div>
+  <div class="hoteles-metrics pretty-metrics">
+    <div class="metric-card pretty-card">
+      <span class="metric-icon metric-hoteles">🏨</span>
+      <div>
+        <div class="metric-value">{{ getTotalHoteles() }}</div>
+        <div class="metric-label">Total Hoteles</div>
+      </div>
+    </div>
+    <div class="metric-card pretty-card">
+      <span class="metric-icon metric-activos">✅</span>
+      <div>
+        <div class="metric-value">{{ getHotelesActivos() }}</div>
+        <div class="metric-label">Activos</div>
+      </div>
+    </div>
+    <div class="metric-card pretty-card">
+      <span class="metric-icon metric-premium">⭐</span>
+      <div>
+        <div class="metric-value">{{ getHotelesPremium() }}</div>
+        <div class="metric-label">5 Estrellas</div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal para ver/editar hotel -->
+  <div class="modal-backdrop" *ngIf="modalVisible" (click)="cerrarModal()"></div>
+  <div class="modal" *ngIf="modalVisible">
+    <div class="modal-content" [ngClass]="modalModo">
+      <h2>
+        <ng-container *ngIf="modalModo === 'crear'">Nuevo Hotel</ng-container>
+        <ng-container *ngIf="modalModo === 'editar'">Editar Hotel</ng-container>
+        <ng-container *ngIf="modalModo === 'ver'">Detalles del Hotel</ng-container>
+      </h2>
+      <form *ngIf="modalHotel" (ngSubmit)="guardarEdicionHotel()" autocomplete="off">
+        <div class="form-group">
+          <label>Nombre:</label>
+          <input [(ngModel)]="modalHotel.nombre" name="nombre" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <label>Ciudad:</label>
+          <input [(ngModel)]="modalHotel.ciudad" name="ciudad" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <label>Dirección:</label>
+          <input [(ngModel)]="modalHotel.direccion" name="direccion" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <label>Teléfono:</label>
+          <input [(ngModel)]="modalHotel.telefono" name="telefono" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <label>Email:</label>
+          <input [(ngModel)]="modalHotel.email" name="email" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <label>Categoría:</label>
+          <input type="number" [(ngModel)]="modalHotel.categoria" name="categoria" min="1" max="5" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <label>Habitaciones:</label>
+          <span *ngIf="modalHotel.habitaciones">{{ modalHotel.habitaciones.length }}</span>
+        </div>
+        <div class="form-group">
+          <label>Ocupación (%):</label>
+          <input type="number" [(ngModel)]="modalHotel.ocupacion" name="ocupacion" min="0" max="100" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarModal()">Cerrar</button>
+          <button *ngIf="modalModo === 'editar'" type="submit" [disabled]="cargando">Guardar</button>
+          <button *ngIf="modalModo === 'crear'" type="submit" [disabled]="cargando" class="btn-crear">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal de confirmación de eliminación -->
+  <div class="modal-backdrop" *ngIf="modalEliminarVisible" (click)="cerrarModalEliminar()"></div>
+  <div class="modal" *ngIf="modalEliminarVisible">
+    <div class="modal-content">
+      <h2>¿Eliminar hotel?</h2>
+      <p>¿Seguro que quieres eliminar <b>{{ hotelAEliminar?.nombre }}</b>? Esta acción no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarModalEliminar()">Cancelar</button>
+        <button type="button" (click)="eliminarHotel(hotelAEliminar)" [disabled]="cargando">Eliminar</button>
+      </div>
+    </div>
+  </div>
+  <!-- Filtros y botón agregar -->
+  <div class="hoteles-header">
+    <div class="filtros">
+      <select (change)="filtrarPorEstado($event)">
+        <option value="todos">Todos</option>
+        <option value="activo">Activos</option>
+        <option value="inactivo">Inactivos</option>
+      </select>
+      <select (change)="filtrarPorCategoria($event)">
+        <option value="todas">Todas las categorías</option>
+        <option *ngFor="let cat of [1,2,3,4,5]" [value]="cat">{{ cat }} estrellas</option>
+      </select>
+    </div>
+  <!-- Botón duplicado eliminado -->
+  </div>
+  <!-- Listado de hoteles -->
+  <div class="hoteles-list" [@listAnimation]="hotelesFiltrados.length">
+    <div *ngIf="cargando" class="cargando-hoteles">Cargando hoteles...</div>
+    <div *ngIf="!cargando && hotelesFiltrados.length === 0" class="sin-hoteles">No hay hoteles para mostrar.</div>
+    <div *ngFor="let hotel of hotelesFiltrados; trackBy: trackByHotelId" class="hotel-card" [@fadeInUp]>
+      <div class="hotel-card-header">
+        <span class="hotel-nombre">{{ hotel.nombre }}</span>
+        <span class="hotel-estado" [ngClass]="hotel.activo ? 'activo' : 'inactivo'">
+          {{ hotel.activo ? 'Activo' : 'Inactivo' }}
+        </span>
+      </div>
+      <div class="hotel-card-body">
+        <div class="hotel-info">
+          <span><b>Ciudad:</b> {{ hotel.ciudad }}</span>
+          <span><b>Dirección:</b> {{ hotel.direccion }}</span>
+          <span><b>Teléfono:</b> {{ hotel.telefono }}</span>
+          <span><b>Email:</b> {{ hotel.email }}</span>
+          <span><b>Categoría:</b>
+            <ng-container *ngFor="let star of getStarsArray(hotel.categoria)">
+              <span class="star">★</span>
+            </ng-container>
+          </span>
+          <span><b>Habitaciones:</b> {{ getNumeroHabitaciones(hotel) }}</span>
+          <span><b>Ocupación:</b> {{ hotel.ocupacion }}%</span>
+        </div>
+        <div class="hotel-actions">
+          <button (click)="verHotel(hotel)">Ver</button>
+          <button (click)="editarHotel(hotel)">Editar</button>
+          <button (click)="confirmarEliminarHotel(hotel)">Eliminar</button>
+          <button (click)="toggleEstadoHotel(hotel)"
+                  [ngClass]="hotel.activo ? 'btn-inactivo' : 'btn-activo'"
+                  [disabled]="cargando">
+            {{ hotel.activo ? 'Desactivar' : 'Activar' }}
+          </button>
+            <button (click)="abrirModalHabitaciones(hotel)">Editar Habitaciones</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-@Component({
-  selector: 'app-hoteles',
-  standalone: true,
-  imports: [CommonModule, FormsModule, HabitacionesEditorComponent],
-  animations: [
-    trigger('fadeInUp', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(30px)' }),
-        animate('600ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ])
-    ]),
-    trigger('slideInLeft', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateX(-30px)' }),
-        animate('500ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
-      ])
-    ]),
-    trigger('listAnimation', [
-      transition('* <=> *', [
-        query(':enter', [
-          style({ opacity: 0, transform: 'translateY(20px)' }),
-          stagger('100ms', [
-            animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-          ])
-        ], { optional: true })
-      ])
-    ])
-  ],
-  templateUrl: './hoteles.component.html',
-  styleUrls: ['./hoteles.component.css']
-})
-export class HotelesComponent implements OnInit {
-  guardarHabitacionesEditadas(): void {
-    if (!this.hotelHabitaciones || !this.habitacionesValidas) return;
-    this.cargando = true;
-    // Actualiza la cantidad de habitaciones en el backend
-      const habitacionesPayload = this.habitacionesEdit.map((h: any) => ({
-        _id: h._id,
-        numero: h.numero,
-        servicios: h.servicios
-      }));
-      this.hotelService.editarHotel(this.hotelHabitaciones._id, { habitaciones: habitacionesPayload }).subscribe({
-      next: (hotelActualizado) => {
-        this.hotelService.getHoteles().subscribe({
-          next: (hoteles) => {
-            this.hoteles = hoteles;
-            this.aplicarFiltros();
-            this.cargando = false;
-            window.alert('¡Habitaciones y servicios guardados correctamente!');
-            this.cerrarModalHabitaciones();
-          },
-          error: () => {
-            this.cargando = false;
-            window.alert('¡Habitaciones y servicios guardados correctamente!');
-            this.cerrarModalHabitaciones();
-          }
-        });
-      },
-      error: (err) => {
-        this.cargando = false;
-          window.alert('Error al guardar habitaciones: ' + (err?.error?.message || 'Intenta de nuevo'));
-      }
-    });
-  }
-  // Propiedades para el modal de habitaciones
-  abrirModalHabitaciones(hotel: any): void {
-    this.hotelHabitaciones = hotel;
-    // Solo clona habitaciones que ya son objetos completos
-    this.habitacionesEdit = Array.isArray(hotel.habitaciones)
-      ? hotel.habitaciones.map((h: unknown) => typeof h === 'object' && h !== null ? { ...(h as any) } : null).filter((h: any) => h)
-      : [];
-    this.modalHabitacionesVisible = true;
-  }
-  modalHabitacionesVisible = false;
-  hotelHabitaciones: any = null;
-  habitacionesEdit: any[] = [];
-  cerrarModalHabitaciones(): void {
-    this.modalHabitacionesVisible = false;
-    this.hotelHabitaciones = null;
-    this.habitacionesEdit = [];
-  }
-  get habitacionesValidas(): boolean {
-  return Array.isArray(this.habitacionesEdit) && this.habitacionesEdit.every((h: any) => h.numero && h.numero > 0 && h.servicios);
-  }
-  hoteles: Hotel[] = [];
-  hotelesFiltrados: Hotel[] = [];
-  filtroEstado = 'todos';
-  filtroCategoria = 'todas';
-  cargando = true;
-  modalVisible = false;
-  modalHotel: any = null;
-  modalModo: 'ver' | 'editar' | 'crear' = 'ver';
-  // Modal de eliminación
-  modalEliminarVisible = false;
-  hotelAEliminar: any = null;
-  confirmarEliminarHotel(hotel: any): void {
-    this.hotelAEliminar = hotel;
-    this.modalEliminarVisible = true;
-  }
-
-  cerrarModalEliminar(): void {
-    this.modalEliminarVisible = false;
-    this.hotelAEliminar = null;
-  }
-
-  constructor(private hotelService: HotelService) {}
-
-  ngOnInit(): void {
-    this.hotelService.getHoteles().subscribe({
-      next: (hoteles) => {
-        this.hoteles = hoteles;
-        this.aplicarFiltros();
-        this.cargando = false;
-      },
-      error: () => {
-        this.cargando = false;
-      }
-    });
-  }
-
-  // Métodos de estadísticas
-  getTotalHoteles(): number {
-    return this.hoteles.length;
-  }
-
-  getHotelesActivos(): number {
-    return this.hoteles.filter(hotel => hotel.activo).length;
-  }
-
-  getHotelesPremium(): number {
-    return this.hoteles.filter(hotel => hotel.categoria === 5).length;
-  }
-
-  // Métodos de filtrado
-  filtrarPorEstado(event: any): void {
-    this.filtroEstado = event.target.value;
-    this.aplicarFiltros();
-  }
-
-  filtrarPorCategoria(event: any): void {
-    this.filtroCategoria = event.target.value;
-    this.aplicarFiltros();
-  }
-
-  private aplicarFiltros(): void {
-    this.hotelesFiltrados = this.hoteles.filter(hotel => {
-      // Filtro por estado
-      let pasaFiltroEstado = true;
-      if (this.filtroEstado === 'activo') {
-        pasaFiltroEstado = hotel.activo;
-      } else if (this.filtroEstado === 'inactivo') {
-        pasaFiltroEstado = !hotel.activo;
-      }
-
-      // Filtro por categoría
-      let pasaFiltroCategoria = true;
-      if (this.filtroCategoria !== 'todas') {
-        pasaFiltroCategoria = hotel.categoria === parseInt(this.filtroCategoria);
-      }
-
-      return pasaFiltroEstado && pasaFiltroCategoria;
-    });
-  }
-
-  // Métodos de utilidad
-  getStarsArray(categoria: number): number[] {
-    return Array.from({ length: categoria }, (_, i) => i);
-  }
-
-    getNumeroHabitaciones(hotel: any): number {
-      return Array.isArray(hotel.habitaciones) ? hotel.habitaciones.length : 0;
-    }
-
-  trackByHotelId(index: number, hotel: Hotel): string | undefined {
-    return hotel._id;
-  }
-
-  // Métodos de acciones
-  agregarHotel(): void {
-    this.modalHotel = {
-      nombre: '',
-      ciudad: '',
-      direccion: '',
-      telefono: '',
-      email: '',
-      categoria: 3,
-      activo: true,
-      habitaciones: 0,
-      ocupacion: 0
-    };
-    this.modalModo = 'crear';
-    this.modalVisible = true;
-  }
-
-  guardarCreacionHotel(): void {
-    if (!this.modalHotel) return;
-    this.cargando = true;
-    // Clonar el objeto y eliminar 'habitaciones' antes de enviar
-    const hotelData = { ...this.modalHotel };
-    delete hotelData.habitaciones;
-    this.hotelService.crearHotel(hotelData).subscribe({
-      next: (hotel) => {
-        this.hoteles.push(hotel);
-        this.aplicarFiltros();
-        this.cargando = false;
-        this.cerrarModal();
-        alert('¡Hotel creado correctamente!');
-      },
-      error: () => {
-        this.cargando = false;
-        alert('Error al crear el hotel');
-      }
-    });
-  }
-
-  verHotel(hotel: any): void {
-    this.modalHotel = { ...hotel };
-    this.modalModo = 'ver';
-    this.modalVisible = true;
-  }
-
-  editarHotel(hotel: any): void {
-    this.modalHotel = { ...hotel };
-    this.modalModo = 'editar';
-    this.modalVisible = true;
-  }
-
-  guardarEdicionHotel(): void {
-    if (!this.modalHotel) return;
-    if (this.modalModo === 'crear') {
-      this.guardarCreacionHotel();
-      return;
-    }
-    this.cargando = true;
-    // Eliminar habitaciones del payload si no se está editando habitaciones
-    const hotelData = { ...this.modalHotel };
-    if ('habitaciones' in hotelData) {
-      delete hotelData.habitaciones;
-    }
-    this.hotelService.editarHotel(this.modalHotel._id, hotelData).subscribe({
-      next: () => {
-        window.location.reload();
-      },
-      error: () => {
-        this.cargando = false;
-        alert('Error al editar el hotel');
-      }
-    });
-  }
-
-  cerrarModal(): void {
-    this.modalVisible = false;
-    this.modalHotel = null;
-  }
-
-
-  eliminarHotel(hotel: any): void {
-    this.cargando = true;
-    this.hotelService.eliminarHotel(hotel._id).subscribe({
-      next: () => {
-        window.location.reload();
-      },
-      error: () => {
-        this.cargando = false;
-        alert('Error al eliminar el hotel');
-      }
-    });
-  }
-
-  toggleEstadoHotel(hotel: any): void {
-    const nuevoEstado = !hotel.activo;
-    this.cargando = true;
-    this.hotelService.actualizarEstadoHotel(hotel._id, nuevoEstado).subscribe({
-      next: (hotelActualizado) => {
-        hotel.activo = hotelActualizado.activo;
-        if (!hotel.activo) {
-          hotel.ocupacion = 0;
-        }
-        this.aplicarFiltros();
-        this.cargando = false;
-        alert('¡Estado del hotel actualizado correctamente!');
-      },
-      error: () => {
-        this.cargando = false;
-        alert('Error al actualizar el estado del hotel');
-      }
-    });
-  }
-}
+    <!-- Modal para editar habitaciones -->
+    <div class="modal-backdrop" *ngIf="modalHabitacionesVisible" (click)="cerrarModalHabitaciones()"></div>
+    <div class="modal" *ngIf="modalHabitacionesVisible">
+      <div class="modal-content">
+        <h2>Editar Habitaciones de {{ hotelHabitaciones?.nombre }}</h2>
+        <app-habitaciones-editor
+          [habitaciones]="habitacionesEdit"
+          (habitacionesChange)="habitacionesEdit = $event">
+        </app-habitaciones-editor>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarModalHabitaciones()">Cancelar</button>
+          <button type="button" (click)="guardarHabitacionesEditadas()" [disabled]="cargando || !habitacionesValidas">Guardar</button>
+        </div>
+      </div>
+    </div>
+</div>
