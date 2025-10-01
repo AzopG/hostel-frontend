@@ -9,6 +9,16 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
   imports: [CommonModule, FormsModule],
   template: `
     <div class="calendario-container">
+      <!-- Navegación superior -->
+      <div class="navigation-header">
+        <button class="btn-volver" (click)="volver()" title="Volver al inicio">
+          <span>← Volver al Inicio</span>
+        </button>
+        <button class="btn-buscar" (click)="irABuscar()" title="Buscar habitaciones">
+          <span>🔍 Buscar Habitaciones</span>
+        </button>
+      </div>
+
       <!-- Header -->
       <div class="header">
         <h1>📅 Calendario de Disponibilidad</h1>
@@ -152,6 +162,60 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
     </div>
   `,
   styles: [`
+    .navigation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      margin-bottom: 20px;
+      border-radius: 12px;
+      max-width: 1400px;
+      margin: 0 auto 20px auto;
+    }
+
+    .btn-volver,
+    .btn-buscar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-volver {
+      background: rgba(56, 178, 172, 0.1);
+      color: #38b2ac;
+      border: 2px solid rgba(56, 178, 172, 0.2);
+    }
+
+    .btn-volver:hover {
+      background: #38b2ac;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(56, 178, 172, 0.3);
+    }
+
+    .btn-buscar {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      border: 2px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .btn-buscar:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
     .calendario-container {
       max-width: 1400px;
       margin: 0 auto;
@@ -760,5 +824,21 @@ export class CalendarioDisponibilidadComponent implements OnInit {
     const fin = new Date(this.fechaFin + 'T00:00:00');
     const opciones: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' };
     return `${inicio.toLocaleDateString('es-ES', opciones)} - ${fin.toLocaleDateString('es-ES', opciones)}`;
+  }
+
+  /**
+   * Volver al inicio
+   */
+  volver(): void {
+    // Implementar Router
+    window.location.href = '/';
+  }
+
+  /**
+   * Ir a buscar habitaciones
+   */
+  irABuscar(): void {
+    // Implementar Router
+    window.location.href = '/buscar-habitaciones';
   }
 }

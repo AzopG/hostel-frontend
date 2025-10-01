@@ -330,5 +330,19 @@ export class BusquedaSalonesComponent implements OnInit {
 
     this.router.navigate(['/salon', salon._id], { queryParams });
   }
+
+  /**
+   * Navegación al inicio
+   */
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Navegación al dashboard
+   */
+  irADashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }
 

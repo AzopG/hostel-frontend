@@ -233,4 +233,18 @@ export class DetalleSalonComponent implements OnInit {
   esLayoutSeleccionado(layout: any): boolean {
     return this.layoutSeleccionado && this.layoutSeleccionado.nombre === layout.nombre;
   }
+
+  /**
+   * Navegación al inicio
+   */
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Navegación a buscar salones
+   */
+  irABuscarSalones(): void {
+    this.router.navigate(['/salones']);
+  }
 }

@@ -322,4 +322,18 @@ export class ModificarReservaComponent implements OnInit {
     const control = this.fechasForm.get(campo);
     return !!(control && control.invalid && control.touched);
   }
+
+  /**
+   * Volver a mis reservas
+   */
+  volver(): void {
+    this.router.navigate(['/mis-reservas']);
+  }
+
+  /**
+   * Ir al inicio
+   */
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
 }

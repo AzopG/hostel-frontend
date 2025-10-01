@@ -10,6 +10,13 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   template: `
     <div class="login-container">
+      <!-- Navegación superior -->
+      <div class="navigation-header">
+        <button class="btn-volver" (click)="volver()" title="Volver al inicio">
+          <span>← Volver al Inicio</span>
+        </button>
+      </div>
+
       <div class="login-card">
         <div class="login-header">
           <h2>Iniciar Sesión</h2>
@@ -103,6 +110,36 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
     </div>
   `,
   styles: [`
+    .navigation-header {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+
+    .btn-volver {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #667eea;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      font-size: 0.9rem;
+    }
+
+    .btn-volver:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
     .login-container {
       display: flex;
       justify-content: center;
@@ -408,6 +445,13 @@ export class LoginComponent implements OnInit {
   goToRegister(event: Event): void {
     event.preventDefault();
     this.router.navigate(['/register']);
+  }
+
+  /**
+   * Volver al inicio
+   */
+  volver(): void {
+    this.router.navigate(['/']);
   }
 
   fillTestCredentials(type: string): void {

@@ -1,3 +1,12 @@
+<div class="navigation-header">
+  <button (click)="volverADetalle()" class="btn-volver-nav">
+    ← Volver al Detalle
+  </button>
+  <button (click)="irAInicio()" class="btn-home-nav">
+    🏠 Inicio
+  </button>
+</div>
+
 <div class="reservar-container">
   <!-- Loading -->
   <div *ngIf="cargando" class="loading">

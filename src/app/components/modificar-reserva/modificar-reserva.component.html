@@ -1,4 +1,14 @@
 <div class="modificar-container">
+  <!-- Navegación superior -->
+  <div class="navigation-header">
+    <button (click)="volver()" class="btn-volver-nav">
+      ← Volver a Mis Reservas
+    </button>
+    <button (click)="irAInicio()" class="btn-home-nav">
+      🏠 Inicio
+    </button>
+  </div>
+
   <!-- Loading / Verificando -->
   <div *ngIf="cargando || pasoActual === 'verificando'" class="loading">
     <div class="spinner"></div>

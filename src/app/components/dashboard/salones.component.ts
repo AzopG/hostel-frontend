@@ -1,14 +1,24 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-salones',
   standalone: true,
   imports: [CommonModule],
   template: `
+    <div class="navigation-header">
+      <button (click)="irAInicio()" class="btn-home-nav">
+        🏠 Inicio
+      </button>
+      <button (click)="irADashboard()" class="btn-dashboard-nav">
+        📊 Dashboard
+      </button>
+    </div>
+
     <div class="container-fluid">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Gestión de Salones</h1>
+        <h1 class="h2">🏢 Gestión de Salones</h1>
         <button class="btn btn-primary" (click)="agregarSalon()">
           <i class="fas fa-plus"></i> Agregar Salón
         </button>
@@ -107,6 +117,61 @@ import { CommonModule } from '@angular/common';
     </div>
   `,
   styles: [`
+    /* ========== NAVEGACIÓN HEADER ========== */
+    .navigation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      margin-bottom: 20px;
+      border-radius: 12px;
+      max-width: 1400px;
+      margin: 0 auto 20px auto;
+    }
+
+    .btn-home-nav,
+    .btn-dashboard-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-home-nav {
+      background: rgba(56, 178, 172, 0.1);
+      color: #38b2ac;
+      border: 2px solid rgba(56, 178, 172, 0.2);
+    }
+
+    .btn-home-nav:hover {
+      background: #38b2ac;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(56, 178, 172, 0.3);
+    }
+
+    .btn-dashboard-nav {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      border: 2px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .btn-dashboard-nav:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
     .container-fluid {
       background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
       min-height: 100vh;
@@ -514,6 +579,16 @@ export class SalonesComponent {
       case 'mantenimiento': return 'bg-warning';
       default: return 'bg-secondary';
     }
+  }
+
+  constructor(private router: Router) {}
+
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
+
+  irADashboard(): void {
+    this.router.navigate(['/dashboard']);
   }
 
   agregarSalon(): void {

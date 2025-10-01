@@ -331,4 +331,28 @@ export class ReservarHabitacionComponent implements OnInit {
     const control = this.datosForm.get(campo);
     return !!(control && control.invalid && control.touched);
   }
+
+  /**
+   * Volver al detalle de la habitación
+   */
+  volverADetalle(): void {
+    if (this.habitacion) {
+      this.router.navigate(['/habitacion', this.habitacion._id], {
+        queryParams: {
+          fechaInicio: this.fechaInicio,
+          fechaFin: this.fechaFin,
+          huespedes: this.huespedes
+        }
+      });
+    } else {
+      this.volverABusqueda();
+    }
+  }
+
+  /**
+   * Navegar al inicio
+   */
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
 }

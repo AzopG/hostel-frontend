@@ -59,10 +59,18 @@ export class MisReservasComponent implements OnInit {
     this.cargando = true;
     this.error = '';
 
-    // Por ahora, obtener todas las reservas (en producción filtrar por userId)
-    this.reservaService.obtenerTodasReservas().subscribe({
+    // Usar el nuevo servicio que filtra las reservas
+    this.reservaService.obtenerMisReservas().subscribe({
       next: (response: any) => {
-        this.reservas = response.reservas || [];
+        // Filtrar reservas con datos completos
+        this.reservas = (response.reservas || []).filter((reserva: any) => 
+          reserva && 
+          reserva.datosHuesped && 
+          reserva.datosHuesped.nombre && 
+          reserva.habitacion && 
+          reserva.hotel &&
+          reserva.codigoReserva
+        );
         
         // Verificar acciones disponibles para cada reserva
         this.reservas.forEach(reserva => {
@@ -71,6 +79,8 @@ export class MisReservasComponent implements OnInit {
 
         this.aplicarFiltros();
         this.cargando = false;
+        
+        console.log('Reservas cargadas:', this.reservas.length);
       },
       error: (err: any) => {
         console.error('Error al cargar reservas:', err);
@@ -367,5 +377,19 @@ export class MisReservasComponent implements OnInit {
    */
   recargar(): void {
     this.cargarReservas();
+  }
+
+  /**
+   * Navegar al inicio
+   */
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Navegar a buscar habitaciones
+   */
+  irABuscar(): void {
+    this.router.navigate(['/buscar-habitaciones']);
   }
 }

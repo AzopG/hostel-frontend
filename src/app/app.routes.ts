@@ -76,6 +76,11 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     children: [
+      // Ruta por defecto del dashboard - página de bienvenida
+      { 
+        path: 'home', 
+        loadComponent: () => import('./components/dashboard/dashboard-home.component').then(m => m.DashboardHomeComponent) 
+      },
       // Rutas administrativas
       { 
         path: 'hoteles', 
@@ -101,7 +106,7 @@ export const routes: Routes = [
         path: 'reservas', 
         loadComponent: () => import('./components/dashboard/reservas.component').then(m => m.ReservasComponent) 
       },
-      { path: '', redirectTo: 'reservas', pathMatch: 'full' }
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: '' }

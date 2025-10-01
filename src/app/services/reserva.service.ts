@@ -319,6 +319,15 @@ export class ReservaService {
   }
 
   /**
+   * Obtener reservas del usuario actual (filtradas)
+   */
+  obtenerMisReservas(): Observable<ObtenerReservasResponse> {
+    // En desarrollo: filtrar por email o datos del huésped
+    // En producción: usar token de autenticación
+    return this.http.get<ObtenerReservasResponse>(`${this.apiUrl}/mis-reservas`);
+  }
+
+  /**
    * Obtener reserva por ID
    */
   obtenerReservaPorId(id: string): Observable<ObtenerReservaResponse> {

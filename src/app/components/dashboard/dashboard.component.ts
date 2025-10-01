@@ -104,6 +104,76 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
             <div class="nav-section">
               <div class="section-header">Principal</div>
               
+              <!-- Buscar Habitaciones - Para Clientes -->
+              <a *ngIf="currentUser?.tipo === 'cliente'" 
+                 class="nav-item" 
+                 routerLink="/buscar-habitaciones" 
+                 [@listAnimation]="0">
+                <div class="nav-icon">
+                  <span class="emoji">🔍</span>
+                </div>
+                <div class="nav-content">
+                  <span class="nav-label">Buscar Habitaciones</span>
+                  <span class="nav-description">Encuentra tu habitación ideal</span>
+                </div>
+              </a>
+
+              <!-- Mis Reservas - Para Clientes -->
+              <a *ngIf="currentUser?.tipo === 'cliente'" 
+                 class="nav-item" 
+                 routerLink="/mis-reservas" 
+                 [@listAnimation]="1">
+                <div class="nav-icon">
+                  <span class="emoji">📅</span>
+                </div>
+                <div class="nav-content">
+                  <span class="nav-label">Mis Reservas</span>
+                  <span class="nav-description">Ver y gestionar reservas</span>
+                </div>
+              </a>
+
+              <!-- Disponibilidad - Para Clientes -->
+              <a *ngIf="currentUser?.tipo === 'cliente'" 
+                 class="nav-item" 
+                 routerLink="/disponibilidad-ciudad" 
+                 [@listAnimation]="2">
+                <div class="nav-icon">
+                  <span class="emoji">📊</span>
+                </div>
+                <div class="nav-content">
+                  <span class="nav-label">Disponibilidad</span>
+                  <span class="nav-description">Ver calendario por ciudad</span>
+                </div>
+              </a>
+
+              <!-- Buscar Salones - Para Empresas -->
+              <a *ngIf="currentUser?.tipo === 'empresa'" 
+                 class="nav-item" 
+                 routerLink="/busqueda-salones" 
+                 [@listAnimation]="0">
+                <div class="nav-icon">
+                  <span class="emoji">🏛️</span>
+                </div>
+                <div class="nav-content">
+                  <span class="nav-label">Buscar Salones</span>
+                  <span class="nav-description">Encuentra salones para eventos</span>
+                </div>
+              </a>
+
+              <!-- Mis Reservas - Para Empresas -->
+              <a *ngIf="currentUser?.tipo === 'empresa'" 
+                 class="nav-item" 
+                 routerLink="/mis-reservas" 
+                 [@listAnimation]="1">
+                <div class="nav-icon">
+                  <span class="emoji">📋</span>
+                </div>
+                <div class="nav-content">
+                  <span class="nav-label">Mis Reservas</span>
+                  <span class="nav-description">Gestionar eventos y reservas</span>
+                </div>
+              </a>
+
               <!-- Hoteles -->
               <a *ngIf="currentUser?.tipo === 'admin_central'" 
                  class="nav-item" 
@@ -760,18 +830,29 @@ export class DashboardComponent implements OnInit {
   canAccessSection(section: string): boolean {
     if (!this.currentUser) return false;
     
-    const adminSections = ['usuarios', 'habitaciones', 'salones', 'disponibilidad', 'eventos', 'paquetes', 'inventario', 'reportes'];
-    
+    // Admin central puede acceder a todo
     if (this.currentUser.tipo === 'admin_central') {
-      return true; // Admin central puede acceder a todo
+      return true;
     }
     
+    // Admin hotel puede acceder a gestión
     if (this.currentUser.tipo === 'admin_hotel') {
+      const adminSections = ['usuarios', 'habitaciones', 'salones', 'reservas', 'reportes'];
       return adminSections.includes(section);
     }
     
-    // Empresas y clientes tienen acceso limitado
-    return ['reservas'].includes(section);
+    // Empresas pueden acceder a salones y reservas
+    if (this.currentUser.tipo === 'empresa') {
+      const empresaSections = ['salones', 'reservas'];
+      return empresaSections.includes(section);
+    }
+    
+    // Clientes solo reservas
+    if (this.currentUser.tipo === 'cliente') {
+      return ['reservas'].includes(section);
+    }
+    
+    return false;
   }
 
   getDashboardStats(): any {

@@ -1,13 +1,13 @@
+<div class="navigation-header">
+  <button (click)="irAInicio()" class="btn-home-nav">
+    🏠 Inicio
+  </button>
+  <button (click)="irABuscar()" class="btn-search-nav">
+    🔍 Buscar Habitaciones
+  </button>
+</div>
+
 <div class="mis-reservas-container">
-  <!-- Navegación -->
-  <div class="header-navigation">
-    <button class="btn-home" (click)="router.navigate(['/'])" title="Ir al inicio">
-      <span>🏠 Home</span>
-    </button>
-    <button class="btn-buscar" (click)="router.navigate(['/buscar-habitaciones'])" title="Buscar habitaciones">
-      <span>🔍 Buscar Habitaciones</span>
-    </button>
-  </div>
 
   <!-- Header -->
   <div class="header">
@@ -91,9 +91,12 @@
       No tienes reservas en estado "{{ estadoFiltro }}"
     </p>
     <p *ngIf="!busquedaCodigo && estadoFiltro === 'todas'">
-      Aún no has realizado ninguna reserva.
+      Aún no has realizado ninguna reserva o no se encontraron reservas recientes.
     </p>
-    <button class="btn-buscar-habitaciones" (click)="router.navigate(['/buscar-habitaciones'])">
+    <div class="info-filtro">
+      <small>💡 Se muestran solo las reservas más recientes con datos completos</small>
+    </div>
+    <button class="btn-buscar-habitaciones" (click)="irABuscar()">
       🔍 Buscar Habitaciones
     </button>
   </div>

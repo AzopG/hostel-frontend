@@ -11,6 +11,15 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
+    <div class="navigation-header">
+      <button (click)="irAInicio()" class="btn-home-nav">
+        🏠 Inicio
+      </button>
+      <button (click)="irADashboard()" class="btn-dashboard-nav">
+        📊 Dashboard
+      </button>
+    </div>
+
     <div class="busqueda-container">
       <!-- Header -->
       <div class="header">
@@ -354,6 +363,61 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
     </div>
   `,
   styles: [`
+    /* ========== NAVEGACIÓN HEADER ========== */
+    .navigation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      margin-bottom: 20px;
+      border-radius: 12px;
+      max-width: 1400px;
+      margin: 0 auto 20px auto;
+    }
+
+    .btn-home-nav,
+    .btn-dashboard-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-home-nav {
+      background: rgba(56, 178, 172, 0.1);
+      color: #38b2ac;
+      border: 2px solid rgba(56, 178, 172, 0.2);
+    }
+
+    .btn-home-nav:hover {
+      background: #38b2ac;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(56, 178, 172, 0.3);
+    }
+
+    .btn-dashboard-nav {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      border: 2px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .btn-dashboard-nav:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
     .busqueda-container {
       max-width: 1400px;
       margin: 0 auto;
@@ -1365,8 +1429,21 @@ export class BuscarHabitacionesComponent implements OnInit {
    */
   reservar(habitacion: HabitacionResultado): void {
     console.log('Reservar habitación:', habitacion);
-    // TODO: Implementar navegación a página de reserva
-    alert(`Funcionalidad de reserva en desarrollo.\nHabitación: ${habitacion.numero}\nHotel: ${habitacion.hotel.nombre}`);
+    
+    // Verificar que hay fechas seleccionadas
+    if (!this.filtros.fechaInicio || !this.filtros.fechaFin) {
+      alert('Por favor, selecciona las fechas de tu estadía antes de reservar.');
+      return;
+    }
+
+    // Navegar directamente a la página de reserva con los parámetros
+    this.router.navigate(['/reservar', habitacion._id], {
+      queryParams: {
+        fechaInicio: this.filtros.fechaInicio,
+        fechaFin: this.filtros.fechaFin,
+        huespedes: this.filtros.huespedes
+      }
+    });
   }
 
   /**
@@ -1469,5 +1546,19 @@ export class BuscarHabitacionesComponent implements OnInit {
     if (this.busquedaRealizada) {
       this.buscar();
     }
+  }
+
+  /**
+   * Navegar al inicio
+   */
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Navegar al dashboard
+   */
+  irADashboard(): void {
+    this.router.navigate(['/dashboard']);
   }
 }

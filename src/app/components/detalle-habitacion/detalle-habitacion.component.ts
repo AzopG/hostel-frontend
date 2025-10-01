@@ -224,4 +224,11 @@ export class DetalleHabitacionComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  /**
+   * Navegar al inicio
+   */
+  irAInicio(): void {
+    this.router.navigate(['/']);
+  }
 }
