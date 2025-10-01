@@ -1,0 +1,16 @@
+.habitaciones-editor {
+  padding: 1rem;
+}
+.habitacion-item {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: #f9f9f9;
+}
+.servicios-list {
+  margin-top: 0.5rem;
+}
+.servicios-list label {
+  font-weight: bold;
+}
