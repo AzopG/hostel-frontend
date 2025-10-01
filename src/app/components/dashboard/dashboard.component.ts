@@ -529,14 +529,14 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       padding: 14px 20px;
       margin: 3px 12px;
       border-radius: 12px;
-      color: rgba(248, 241, 233, 0.9);
+      color: #F8F1E9;
       text-decoration: none;
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      border: 1px solid rgba(184, 151, 120, 0.2);
-      background: rgba(248, 241, 233, 0.1);
+      border: 1px solid rgba(184, 151, 120, 0.4);
+      background: rgba(248, 241, 233, 0.15);
       width: calc(100% - 24px);
       font-size: 0.95rem;
       min-height: 50px;
@@ -561,11 +561,11 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     }
 
     .nav-item:hover {
-      background: linear-gradient(135deg, rgba(184, 151, 120, 0.3), rgba(74, 27, 47, 0.4));
+      background: linear-gradient(135deg, rgba(184, 151, 120, 0.4), rgba(74, 27, 47, 0.5));
       color: #F8F1E9;
-      border-color: rgba(184, 151, 120, 0.6);
+      border-color: rgba(184, 151, 120, 0.8);
       transform: translateX(8px);
-      box-shadow: 0 8px 25px rgba(184, 151, 120, 0.2);
+      box-shadow: 0 8px 25px rgba(184, 151, 120, 0.3);
     }
 
     .nav-item.active {
@@ -573,7 +573,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       color: #F8F1E9;
       border-color: #F8F1E9;
       transform: translateX(8px);
-      box-shadow: 0 8px 30px rgba(184, 151, 120, 0.4);
+      box-shadow: 0 8px 30px rgba(184, 151, 120, 0.5);
     }
 
     .nav-item.active::before {
@@ -589,24 +589,32 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       font-size: 1.25rem;
       margin-right: 16px;
       border-radius: 12px;
-      background: rgba(102, 126, 234, 0.1);
+      background: rgba(184, 151, 120, 0.3);
       transition: all 0.3s ease;
+      color: #F8F1E9;
+      border: 1px solid rgba(184, 151, 120, 0.5);
     }
 
     .nav-icon .emoji {
       font-size: 1.3rem;
       line-height: 1;
       opacity: 1 !important;
+      color: #F8F1E9 !important;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
 
     .nav-item:hover .nav-icon {
-      background: rgba(102, 126, 234, 0.2);
+      background: rgba(184, 151, 120, 0.5);
       transform: scale(1.1);
+      border-color: #B89778;
+      box-shadow: 0 4px 12px rgba(184, 151, 120, 0.3);
     }
 
     .nav-item.active .nav-icon {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
+      background: rgba(184, 151, 120, 0.7);
+      color: #F8F1E9;
+      border-color: #B89778;
+      box-shadow: 0 4px 15px rgba(184, 151, 120, 0.4);
     }
 
     .nav-content {
@@ -621,21 +629,29 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       font-size: 0.95rem;
       font-family: 'Cormorant Garamond', serif;
       letter-spacing: 0.5px;
+      color: #F8F1E9;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
 
     .nav-description {
       font-size: 0.8rem;
-      opacity: 0.7;
+      opacity: 0.85;
       font-family: 'Crimson Text', serif;
+      color: rgba(248, 241, 233, 0.9);
     }
 
     .nav-badge {
-      background: #667eea;
-      color: white;
+      background: #B89778;
+      color: #F8F1E9;
       border-radius: 12px;
       padding: 2px 8px;
       font-size: 0.75rem;
       font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      border: 1px solid rgba(248, 241, 233, 0.3);
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
       font-weight: 600;
       margin-left: auto;
       min-width: 24px;
@@ -822,6 +838,19 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Verificar si hay un usuario almacenado al cargar el componente
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+      if (storedUser) {
+        try {
+          this.currentUser = JSON.parse(storedUser);
+        } catch (error) {
+          console.error('Error parsing stored user:', error);
+        }
+      }
+    }
+    
+    // Suscribirse a cambios en el usuario actual
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
@@ -861,27 +890,43 @@ export class DashboardComponent implements OnInit {
   }
 
   canAccessSection(section: string): boolean {
-    if (!this.currentUser) return false;
+    // Si no hay usuario, determinar acceso por localStorage como fallback
+    if (!this.currentUser) {
+      const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          return this.checkUserAccess(user, section);
+        } catch (error) {
+          return false;
+        }
+      }
+      return false;
+    }
     
+    return this.checkUserAccess(this.currentUser, section);
+  }
+
+  private checkUserAccess(user: any, section: string): boolean {
     // Admin central puede acceder a todo
-    if (this.currentUser.tipo === 'admin_central') {
+    if (user.tipo === 'admin_central') {
       return true;
     }
     
     // Admin hotel puede acceder a gestión
-    if (this.currentUser.tipo === 'admin_hotel') {
+    if (user.tipo === 'admin_hotel') {
       const adminSections = ['usuarios', 'habitaciones', 'salones', 'reservas', 'reportes'];
       return adminSections.includes(section);
     }
     
     // Empresas pueden acceder a salones y reservas
-    if (this.currentUser.tipo === 'empresa') {
+    if (user.tipo === 'empresa') {
       const empresaSections = ['salones', 'reservas'];
       return empresaSections.includes(section);
     }
     
     // Clientes solo reservas
-    if (this.currentUser.tipo === 'cliente') {
+    if (user.tipo === 'cliente') {
       return ['reservas'].includes(section);
     }
     
@@ -890,19 +935,51 @@ export class DashboardComponent implements OnInit {
 
   getUsersCount(): string {
     // En una implementación real, esto vendría del store/backend
-    return this.currentUser?.tipo === 'admin_central' ? '24' : '8';
+    const userType = this.getCurrentUserType();
+    return userType === 'admin_central' ? '24' : '8';
   }
 
   getRoomsCount(): string {
     // En una implementación real, esto vendría del store/backend
-    return this.currentUser?.tipo === 'admin_central' ? '156' : '32';
+    const userType = this.getCurrentUserType();
+    return userType === 'admin_central' ? '156' : '32';
   }
 
   getActiveReservations(): string {
     // En una implementación real, esto vendría del store/backend
     const baseReservations = 12;
-    const multiplier = this.currentUser?.tipo === 'admin_central' ? 5 : 1;
+    const userType = this.getCurrentUserType();
+    const multiplier = userType === 'admin_central' ? 5 : 1;
     return (baseReservations * multiplier).toString();
+  }
+
+  private getCurrentUserType(): string {
+    if (this.currentUser) {
+      return this.currentUser.tipo;
+    }
+    
+    // Fallback: obtener tipo de usuario desde localStorage
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          return user.tipo;
+        } catch (error) {
+          return 'cliente';
+        }
+      }
+    }
+    
+    return 'cliente';
+  }
+
+  getDashboardStats(): any {
+    return {
+      hoteles: this.getCurrentUserType() === 'admin_central' ? 5 : 1,
+      reservas: this.getCurrentUserType() === 'admin_central' ? 234 : 12,
+      ingresos: this.getCurrentUserType() === 'admin_central' ? '2.4M' : '45K'
+    };
   }
 
   trackByMenuId(index: number, item: any): any {

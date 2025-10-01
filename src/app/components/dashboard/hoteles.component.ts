@@ -214,27 +214,25 @@ import { trigger, state, style, transition, animate, query, stagger } from '@ang
 
     .page-icon {
       font-size: 3rem;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #B89778;
+      filter: drop-shadow(2px 2px 4px rgba(184, 151, 120, 0.3));
     }
 
     .title-text h1 {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #2d3748;
+      color: #1C2526;
       margin: 0;
-      background: linear-gradient(135deg, #2d3748, #4a5568);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
 
     .subtitle {
-      color: #718096;
+      color: #4A1B2F;
       font-size: 1.1rem;
       margin: 0.5rem 0 0 0;
+      font-family: 'Crimson Text', serif;
+      font-weight: 500;
     }
 
     .btn-add-hotel {
@@ -278,14 +276,15 @@ import { trigger, state, style, transition, animate, query, stagger } from '@ang
       display: flex;
       align-items: center;
       gap: 1rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(184, 151, 120, 0.15);
+      border: 2px solid rgba(184, 151, 120, 0.3);
       transition: all 0.3s ease;
     }
 
     .stat-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 30px rgba(184, 151, 120, 0.25);
+      border-color: #B89778;
     }
 
     .stat-icon {
@@ -296,39 +295,45 @@ import { trigger, state, style, transition, animate, query, stagger } from '@ang
       align-items: center;
       justify-content: center;
       font-size: 1.8rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.4));
     }
 
     .stat-icon.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+      background: linear-gradient(135deg, #B89778, #4A1B2F);
+      color: #F8F1E9;
     }
 
     .stat-icon.success {
       background: linear-gradient(135deg, #48bb78, #38a169);
-      color: white;
+      color: #F8F1E9;
     }
 
     .stat-icon.premium {
       background: linear-gradient(135deg, #ed8936, #dd6b20);
-      color: white;
+      color: #F8F1E9;
     }
 
     .stat-icon.revenue {
       background: linear-gradient(135deg, #38b2ac, #319795);
-      color: white;
+      color: #F8F1E9;
     }
 
     .stat-number {
       font-size: 2rem;
       font-weight: 700;
-      color: #2d3748;
+      color: #1C2526;
       margin-bottom: 0.25rem;
+      font-family: 'Cormorant Garamond', serif;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .stat-label {
-      color: #718096;
+      color: #4A1B2F;
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: 'Crimson Text', serif;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
     }
 
     /* Hotels Section */

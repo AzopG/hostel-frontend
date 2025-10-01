@@ -15,8 +15,8 @@
   <div class="mobile-overlay" *ngIf="showMobileMenu" (click)="closeMobileMenu()"></div>
 
   <ul class="navbar-links" [class.mobile-open]="showMobileMenu">
+    <li><a href="#inicio" (click)="scrollToTop(); closeMobileMenu()">Inicio</a></li>
     <li><a href="#servicios" (click)="closeMobileMenu()">Servicios</a></li>
-    <li><a href="#panel" (click)="closeMobileMenu()">Panel</a></li>
     <li><a href="#contacto" (click)="closeMobileMenu()">Contacto</a></li>
     <li *ngIf="!isAuthenticated">
       <button class="register-nav-btn" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</button>

@@ -117,18 +117,20 @@ export class AuthService {
    * CA4: Verifica tanto localStorage como sessionStorage
    */
   private checkStoredToken(): void {
-    const token = this.getToken();
-    if (token) {
-      this.verifyToken().subscribe({
-        next: (response) => {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = this.getToken();
+      const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+      
+      if (token && userStr) {
+        try {
+          const user = JSON.parse(userStr);
           this.isAuthenticatedSubject.next(true);
-          this.currentUserSubject.next(response.usuario);
-        },
-        error: () => {
-          // Token inválido, limpiarlo
+          this.currentUserSubject.next(user);
+        } catch (error) {
+          // Error al parsear el usuario, limpiar storage
           this.logout();
         }
-      });
+      }
     }
   }
 

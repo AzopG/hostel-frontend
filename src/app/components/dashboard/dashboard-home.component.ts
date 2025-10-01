@@ -186,16 +186,20 @@ import { AuthService, Usuario } from '../../services/auth.service';
 
     .welcome-header h1 {
       font-size: 2.5rem;
-      color: #2d3748;
+      color: #1C2526;
       margin-bottom: 0.5rem;
       font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
 
     .subtitle {
       font-size: 1.1rem;
-      color: #718096;
+      color: #4A1B2F;
       max-width: 600px;
       margin: 0 auto;
+      font-family: 'Crimson Text', serif;
+      font-weight: 500;
     }
 
     .actions-grid {
@@ -206,41 +210,48 @@ import { AuthService, Usuario } from '../../services/auth.service';
     }
 
     .action-card {
-      background: white;
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 12px;
       padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       cursor: pointer;
-      border: 2px solid transparent;
+      border: 2px solid rgba(184, 151, 120, 0.3);
       text-decoration: none;
       color: inherit;
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(10px);
     }
 
     .action-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-      border-color: #667eea;
+      box-shadow: 0 8px 30px rgba(184, 151, 120, 0.3);
+      border-color: #B89778;
+      background: rgba(255, 255, 255, 1);
     }
 
     .card-icon {
       font-size: 3rem;
       margin-bottom: 1rem;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
     }
 
     .action-card h3 {
       font-size: 1.3rem;
-      color: #2d3748;
+      color: #1C2526;
       margin-bottom: 0.5rem;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .action-card p {
-      color: #718096;
+      color: #4A1B2F;
       line-height: 1.5;
       margin-bottom: 1rem;
+      font-family: 'Crimson Text', serif;
+      font-weight: 500;
     }
 
     .card-arrow {
@@ -248,13 +259,16 @@ import { AuthService, Usuario } from '../../services/auth.service';
       top: 1rem;
       right: 1rem;
       font-size: 1.5rem;
-      color: #667eea;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      color: #B89778;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+      font-weight: bold;
     }
 
     .action-card:hover .card-arrow {
       opacity: 1;
+      color: #4A1B2F;
+      transform: translateX(4px);
     }
 
     .stats-section {
@@ -262,9 +276,11 @@ import { AuthService, Usuario } from '../../services/auth.service';
     }
 
     .stats-section h2 {
-      color: #2d3748;
+      color: #1C2526;
       margin-bottom: 1.5rem;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .stats-grid {
@@ -274,41 +290,53 @@ import { AuthService, Usuario } from '../../services/auth.service';
     }
 
     .stat-card {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+      background: linear-gradient(135deg, #B89778, #4A1B2F);
+      color: #F8F1E9;
       padding: 1.5rem;
       border-radius: 12px;
       text-align: center;
+      border: 2px solid rgba(248, 241, 233, 0.3);
+      box-shadow: 0 6px 20px rgba(184, 151, 120, 0.3);
     }
 
     .stat-number {
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
 
     .stat-label {
       font-size: 0.9rem;
-      opacity: 0.9;
+      opacity: 0.95;
+      font-family: 'Crimson Text', serif;
+      font-weight: 500;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
 
     .tips-section {
-      background: #f7fafc;
+      background: rgba(248, 241, 233, 0.8);
       padding: 2rem;
       border-radius: 12px;
-      border-left: 4px solid #667eea;
+      border-left: 4px solid #B89778;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(184, 151, 120, 0.3);
     }
 
     .tips-section h3 {
-      color: #2d3748;
+      color: #1C2526;
       margin-bottom: 1rem;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
     }
 
     .tips-list p {
-      color: #4a5568;
+      color: #4A1B2F;
       margin-bottom: 0.5rem;
       line-height: 1.6;
+      font-family: 'Crimson Text', serif;
+      font-weight: 500;
     }
 
     @media (max-width: 768px) {

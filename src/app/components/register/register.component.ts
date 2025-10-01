@@ -21,15 +21,46 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       <!-- Fondo decorativo -->
       <div class="background-decoration"></div>
 
-      <div class="register-card">
-        <div class="register-header">
-          <div class="brand-section">
-            <span class="brand-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo"></span>
-            <h1>Hotel Paradise</h1>
+      <!-- Layout de dos columnas -->
+      <div class="register-layout">
+        <!-- Columna izquierda - Imagen -->
+        <div class="image-section">
+          <div class="image-container">
+            <img src="registro.png" alt="Registro Hotel Paradise" class="register-image">
+            <div class="image-overlay">
+              <div class="welcome-text">
+                <h2>Únete a Hotel Paradise</h2>
+                <p>Descubre una nueva forma de gestionar tu experiencia hotelera</p>
+                <div class="features-list">
+                  <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Reservas en línea</span>
+                  </div>
+                  <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Gestión completa</span>
+                  </div>
+                  <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Soporte 24/7</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <h2>Crear Cuenta</h2>
-          <p>Regístrate para acceder al sistema hotelero</p>
         </div>
+
+        <!-- Columna derecha - Formulario -->
+        <div class="form-section">
+          <div class="register-card">
+            <div class="register-header">
+              <div class="brand-section">
+                <span class="brand-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo"></span>
+                <h1>Hotel Paradise</h1>
+              </div>
+              <h2>Crear Cuenta</h2>
+              <p>Regístrate para acceder al sistema hotelero</p>
+            </div>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
           <!-- Nombre -->
@@ -102,7 +133,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <div class="form-group">
             <label for="confirmPassword">Confirmar contraseña <span class="required">*</span></label>
             <div class="input-wrapper">
-              <span class="input-icon">🔐</span>
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
               <input
                 id="confirmPassword"
                 type="password"
@@ -129,7 +160,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <div class="form-group">
             <label for="tipo">Tipo de cuenta <span class="required">*</span></label>
             <div class="select-wrapper">
-              <span class="input-icon">🏷️</span>
+              <span class="input-icon"><i class="fas fa-tag"></i></span>
               <select
                 id="tipo"
                 formControlName="tipo"
@@ -153,7 +184,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'empresa'">
             <label for="empresa">Nombre de la empresa <span class="required">*</span></label>
             <div class="input-wrapper">
-              <span class="input-icon">🏢</span>
+              <span class="input-icon"><i class="fas fa-building"></i></span>
               <input
                 id="empresa"
                 type="text"
@@ -172,13 +203,13 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
 
           <!-- Error general del servidor -->
           <div class="alert error-alert" *ngIf="serverError">
-            <span class="alert-icon">⚠️</span>
+            <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
             <strong>{{ serverError }}</strong>
           </div>
 
           <!-- Success message -->
           <div class="alert success-alert" *ngIf="successMessage">
-            <span class="alert-icon">✅</span>
+            <span class="alert-icon"><i class="fas fa-check-circle"></i></span>
             {{ successMessage }}
           </div>
 
@@ -196,6 +227,8 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
         <!-- Links adicionales -->
         <div class="register-footer">
           <p>¿Ya tienes cuenta? <a href="#" (click)="goToLogin($event)" class="login-link">Inicia sesión aquí</a></p>
+        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -265,6 +298,115 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       border-color: #F8F1E9;
     }
 
+    /* Layout de dos columnas */
+    .register-layout {
+      display: flex;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+    }
+
+    /* Sección de imagen */
+    .image-section {
+      flex: 1;
+      position: relative;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1C2526 0%, #4A1B2F 50%, #B89778 100%);
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .register-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+      transition: all 0.6s ease;
+    }
+
+    .image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(28, 37, 38, 0.85) 0%,
+        rgba(74, 27, 47, 0.75) 50%,
+        rgba(184, 151, 120, 0.65) 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+    }
+
+    .welcome-text {
+      text-align: center;
+      color: #F8F1E9;
+      max-width: 400px;
+    }
+
+    .welcome-text h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .welcome-text p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      line-height: 1.6;
+      font-family: 'Crimson Text', serif;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      font-family: 'Crimson Text', serif;
+    }
+
+    .feature-item i {
+      color: #B89778;
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 4px rgba(184, 151, 120, 0.5));
+    }
+
+    /* Sección del formulario */
+    .form-section {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(248, 241, 233, 0.5);
+    }
+
     .back-icon {
       font-size: 1.2rem;
       color: #B89778;
@@ -279,13 +421,18 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       background: linear-gradient(135deg, rgba(248, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%);
       backdrop-filter: blur(25px);
       border-radius: 25px;
-      box-shadow: 0 25px 50px rgba(28, 37, 38, 0.4);
-      border: 2px solid rgba(184, 151, 120, 0.5);
-      padding: 40px;
+      box-shadow: 0 25px 50px rgba(28, 37, 38, 0.2);
+      border: 2px solid rgba(184, 151, 120, 0.3);
+      padding: 30px;
       width: 100%;
-      max-width: 500px;
-      max-height: 90vh;
+      height: 100%;
+      min-height: calc(100vh - 2rem);
+      max-height: none;
       overflow-y: auto;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
       position: relative;
       z-index: 2;
     }
@@ -303,7 +450,8 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
 
     .register-header {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 30px;
+      flex-shrink: 0;
     }
 
     .brand-section {
@@ -311,7 +459,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       align-items: center;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .brand-icon {
@@ -373,12 +521,18 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
     }
 
     .register-form {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 0;
     }
 
     .form-group {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       transition: all 0.3s ease;
+      flex-shrink: 0;
     }
 
     .empresa-field {
@@ -542,11 +696,13 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       align-items: center;
       justify-content: center;
       gap: 12px;
-      margin-top: 30px;
+      margin-top: auto;
+      margin-bottom: 0;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
       box-shadow: 0 8px 25px rgba(184, 151, 120, 0.4);
       position: relative;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .submit-btn::before {
@@ -658,9 +814,74 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
     }
 
     /* Responsive Design */
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .register-layout {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .welcome-text h2 {
+        font-size: 2.2rem;
+      }
+
+      .welcome-text p {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .register-layout {
+        flex-direction: column;
+        min-height: auto;
+      }
+
+      .image-section {
+        min-height: 50vh;
+        flex: none;
+      }
+
+      .form-section {
+        flex: none;
+        padding: 2rem 1rem;
+      }
+
+      .welcome-text {
+        max-width: 500px;
+      }
+
+      .welcome-text h2 {
+        font-size: 2rem;
+      }
+
+      .features-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .feature-item {
+        flex: 1;
+        min-width: 150px;
+        justify-content: center;
+      }
+    }
+
     @media (max-width: 768px) {
       .register-container {
-        padding: 15px;
+        padding: 0;
+        flex-direction: column;
+      }
+
+      .form-section {
+        padding: 0.5rem;
+      }
+
+      .register-card {
+        min-height: 60vh;
+        padding: 25px;
+        border-radius: 20px;
       }
 
       .navigation-header {
@@ -674,10 +895,41 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
         gap: 8px;
       }
 
+      .image-section {
+        min-height: 40vh;
+      }
+
+      .image-overlay {
+        padding: 2rem 1rem;
+      }
+
+      .welcome-text h2 {
+        font-size: 1.8rem;
+      }
+
+      .welcome-text p {
+        font-size: 1rem;
+      }
+
+      .features-list {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .feature-item {
+        font-size: 1rem;
+        justify-content: flex-start;
+      }
+
+      .form-section {
+        padding: 1.5rem 1rem;
+      }
+
       .register-card {
         padding: 30px 25px;
         max-width: 100%;
         border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(28, 37, 38, 0.2);
       }
 
       .brand-section h1 {
@@ -711,19 +963,45 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       .submit-btn {
         padding: 16px 20px;
         font-size: 1rem;
+        margin-top: auto;
+      }
+    }
+        padding: 16px 20px;
+        font-size: 1rem;
         letter-spacing: 1px;
       }
     }
 
     @media (max-width: 480px) {
+      .image-section {
+        min-height: 35vh;
+      }
+
+      .welcome-text h2 {
+        font-size: 1.6rem;
+      }
+
+      .welcome-text p {
+        font-size: 0.95rem;
+      }
+
       .register-card {
         padding: 25px 20px;
         border-radius: 15px;
+        min-height: calc(100vh - 35vh - 1rem);
+        height: auto;
       }
 
       .brand-section {
         flex-direction: column;
         gap: 8px;
+        text-align: center;
+      }
+
+      .brand-logo {
+        width: 35px;
+        height: 35px;
+        margin-bottom: 10px;
       }
 
       .brand-section h1 {
@@ -747,6 +1025,10 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
 
       .submit-btn {
         padding: 14px 18px;
+        font-size: 0.95rem;
+      }
+
+      .feature-item {
         font-size: 0.95rem;
       }
     }
@@ -773,6 +1055,111 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       .form-group {
         margin-bottom: 15px;
       }
+    }
+
+    /* Orientación horizontal para tablets */
+    @media (max-height: 600px) and (orientation: landscape) and (min-width: 768px) {
+      .register-container {
+        min-height: 100vh;
+        padding: 15px;
+      }
+
+      .register-card {
+        min-height: auto;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+
+      .image-section {
+        min-height: 85vh;
+      }
+
+      .welcome-text {
+        padding: 20px;
+      }
+
+      .welcome-text h2 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+      }
+
+      .welcome-text p {
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+      }
+
+      .features-list {
+        gap: 8px;
+      }
+
+      .feature-item {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Móviles en landscape */
+    @media (max-height: 480px) and (orientation: landscape) {
+      .register-container {
+        flex-direction: row;
+        gap: 20px;
+        padding: 10px;
+      }
+
+      .image-section {
+        min-height: 100vh;
+        flex: 0 0 45%;
+      }
+
+      .register-card {
+        flex: 0 0 50%;
+        min-height: auto;
+        max-height: 95vh;
+        overflow-y: auto;
+        padding: 20px;
+      }
+
+      .welcome-text {
+        padding: 15px;
+      }
+
+      .welcome-text h2 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+      }
+
+      .welcome-text p {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+      }
+
+      .features-list {
+        gap: 6px;
+      }
+
+      .feature-item {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Animaciones suaves */
+    .register-container * {
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(26, 188, 156, 0.3);
+    }
+
+    .form-group:focus-within .input-icon {
+      color: #1abc9c;
+      transform: scale(1.1);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #1abc9c;
+      box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
     }
   `]
 })
