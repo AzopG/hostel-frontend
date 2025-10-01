@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       <!-- Navegación superior -->
       <div class="navigation-header">
         <button class="btn-volver" (click)="volver()" title="Volver al inicio">
-          <span class="back-icon">🏨</span>
+          <span class="back-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo-small"></span>
           <span>Volver al Inicio</span>
         </button>
       </div>
@@ -24,7 +24,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       <div class="register-card">
         <div class="register-header">
           <div class="brand-section">
-            <span class="brand-icon">🏨</span>
+            <span class="brand-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo"></span>
             <h1>Hotel Paradise</h1>
           </div>
           <h2>Crear Cuenta</h2>
@@ -36,7 +36,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <div class="form-group">
             <label for="nombre">Nombre completo <span class="required">*</span></label>
             <div class="input-wrapper">
-              <span class="input-icon">👤</span>
+              <span class="input-icon"><i class="fas fa-user"></i></span>
               <input
                 id="nombre"
                 type="text"
@@ -58,7 +58,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <div class="form-group">
             <label for="email">Correo electrónico <span class="required">*</span></label>
             <div class="input-wrapper">
-              <span class="input-icon">📧</span>
+              <span class="input-icon"><i class="fas fa-envelope"></i></span>
               <input
                 id="email"
                 type="email"
@@ -80,7 +80,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
           <div class="form-group">
             <label for="password">Contraseña <span class="required">*</span></label>
             <div class="input-wrapper">
-              <span class="input-icon">🔒</span>
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
               <input
                 id="password"
                 type="password"
@@ -318,6 +318,31 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       font-size: 2.2rem;
       color: #B89778;
       filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      transition: all 0.3s ease;
+    }
+
+    .brand-logo-small {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      transition: all 0.3s ease;
+    }
+
+    .brand-logo:hover,
+    .brand-logo-small:hover {
+      filter: drop-shadow(0 0 12px rgba(184, 151, 120, 0.8)) drop-shadow(2px 2px 6px rgba(0,0,0,0.4));
+      transform: scale(1.05);
     }
 
     .brand-section h1 {

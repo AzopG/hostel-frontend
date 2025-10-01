@@ -23,7 +23,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
     <div class="busqueda-container">
       <!-- Header -->
       <div class="header">
-        <h1>🔍 Buscar Habitaciones</h1>
+        <h1><i class="fas fa-search"></i> Buscar Habitaciones</h1>
         <p class="subtitle">Encuentra la habitación perfecta para tu estadía</p>
       </div>
 
@@ -55,7 +55,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <!-- CA2: Fecha de Inicio -->
             <div class="form-group">
               <label for="fechaInicio">
-                <span class="label-icon">📅</span>
+                <span class="label-icon"><i class="fas fa-calendar-alt"></i></span>
                 Check-in *
               </label>
               <input
@@ -73,7 +73,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <!-- CA2: Fecha de Fin -->
             <div class="form-group">
               <label for="fechaFin">
-                <span class="label-icon">📅</span>
+                <span class="label-icon"><i class="fas fa-calendar-alt"></i></span>
                 Check-out *
               </label>
               <input
@@ -94,7 +94,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <!-- CA4: Número de Huéspedes -->
             <div class="form-group">
               <label for="huespedes">
-                <span class="label-icon">👥</span>
+                <span class="label-icon"><i class="fas fa-users"></i></span>
                 Huéspedes *
               </label>
               <div class="huespedes-control">
@@ -151,7 +151,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
               class="btn-buscar"
               [disabled]="isLoading || !busquedaForm.valid"
             >
-              <span *ngIf="!isLoading">🔍 Buscar Habitaciones</span>
+              <span *ngIf="!isLoading"><i class="fas fa-search"></i> Buscar Habitaciones</span>
               <span *ngIf="isLoading">
                 <span class="spinner-small"></span>
                 Buscando...

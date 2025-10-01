@@ -45,42 +45,17 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
         <div class="container-fluid">
           <div class="navbar-content">
             <div class="navbar-brand">
-              <div class="brand-icon">🏨</div>
+              <div class="brand-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo"></div>
               <div class="brand-text">
                 <h4 class="mb-0">Hotel Management</h4>
                 <small class="user-info" *ngIf="currentUser">{{ currentUser.nombre }} - {{ getUserRole() }}</small>
-              </div>
-            </div>
-            
-            <!-- Stats dinámicas -->
-            <div class="quick-stats">
-              <div class="stat-item" [@fadeInUp]>
-                <div class="stat-icon">📊</div>
-                <div class="stat-info">
-                  <div class="stat-number">{{ getDashboardStats().reservas }}</div>
-                  <div class="stat-label">Reservas</div>
-                </div>
-              </div>
-              <div class="stat-item" [@fadeInUp]>
-                <div class="stat-icon">🏨</div>
-                <div class="stat-info">
-                  <div class="stat-number">{{ getDashboardStats().hoteles }}</div>
-                  <div class="stat-label">Hoteles</div>
-                </div>
-              </div>
-              <div class="stat-item" [@fadeInUp]>
-                <div class="stat-icon">💰</div>
-                <div class="stat-info">
-                  <div class="stat-number">\${{ getDashboardStats().ingresos }}</div>
-                  <div class="stat-label">Ingresos</div>
-                </div>
               </div>
             </div>
 
             <!-- Acciones rápidas -->
             <div class="header-actions">
               <button class="action-btn home" (click)="goToHome()" title="Ir a Inicio">
-                <span class="emoji">🏠</span>
+                <span class="emoji"><i class="fas fa-home"></i></span>
               </button>
               <button class="btn-logout" (click)="logout()">
                 <i class="fas fa-sign-out-alt"></i>
@@ -110,7 +85,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLink="/buscar-habitaciones" 
                  [@listAnimation]="0">
                 <div class="nav-icon">
-                  <span class="emoji">🔍</span>
+                  <span class="emoji"><i class="fas fa-search"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Buscar Habitaciones</span>
@@ -124,7 +99,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLink="/mis-reservas" 
                  [@listAnimation]="1">
                 <div class="nav-icon">
-                  <span class="emoji">📅</span>
+                  <span class="emoji"><i class="fas fa-calendar-alt"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Mis Reservas</span>
@@ -138,7 +113,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLink="/disponibilidad-ciudad" 
                  [@listAnimation]="2">
                 <div class="nav-icon">
-                  <span class="emoji">📊</span>
+                  <span class="emoji"><i class="fas fa-chart-bar"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Disponibilidad</span>
@@ -152,7 +127,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLink="/busqueda-salones" 
                  [@listAnimation]="0">
                 <div class="nav-icon">
-                  <span class="emoji">🏛️</span>
+                  <span class="emoji"><i class="fas fa-building"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Buscar Salones</span>
@@ -166,7 +141,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLink="/mis-reservas" 
                  [@listAnimation]="1">
                 <div class="nav-icon">
-                  <span class="emoji">📋</span>
+                  <span class="emoji"><i class="fas fa-clipboard-list"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Mis Reservas</span>
@@ -181,7 +156,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLinkActive="active"
                  [@listAnimation]="0">
                 <div class="nav-icon">
-                  <span class="emoji">🏨</span>
+                  <span class="emoji"><i class="fas fa-hotel"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Hoteles</span>
@@ -196,7 +171,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLinkActive="active"
                  [@listAnimation]="1">
                 <div class="nav-icon">
-                  <span class="emoji">👥</span>
+                  <span class="emoji"><i class="fas fa-users"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Usuarios</span>
@@ -211,7 +186,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLinkActive="active"
                  [@listAnimation]="2">
                 <div class="nav-icon">
-                  <span class="emoji">🛏️</span>
+                  <span class="emoji"><i class="fas fa-bed"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Habitaciones</span>
@@ -240,7 +215,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
                  routerLinkActive="active"
                  [@listAnimation]="4">
                 <div class="nav-icon">
-                  <span class="emoji">📅</span>
+                  <span class="emoji"><i class="fas fa-calendar-check"></i></span>
                 </div>
                 <div class="nav-content">
                   <span class="nav-label">Reservas</span>
@@ -323,6 +298,22 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       font-size: 2.2rem;
       color: #B89778;
       filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      transition: all 0.3s ease;
+    }
+
+    .brand-logo:hover {
+      filter: drop-shadow(0 0 12px rgba(184, 151, 120, 0.8)) drop-shadow(2px 2px 6px rgba(0,0,0,0.4));
+      transform: scale(1.05);
     }
 
     .brand-text h4 {
@@ -340,94 +331,6 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       font-size: 0.9rem;
       font-weight: 500;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-      letter-spacing: 0.5px;
-    }
-
-    /* Stats rápidas */
-    .quick-stats {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      flex: 1;
-      justify-content: center;
-      max-width: 600px;
-      margin: 0 20px;
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 18px;
-      background: linear-gradient(135deg, rgba(248, 241, 233, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
-      border: 2px solid rgba(184, 151, 120, 0.5);
-      border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      cursor: pointer;
-      min-width: 130px;
-      max-width: 160px;
-      backdrop-filter: blur(15px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-item::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(184, 151, 120, 0.2), transparent);
-      transition: left 0.6s;
-    }
-
-    .stat-item:hover::before {
-      left: 100%;
-    }
-
-    .stat-item:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 35px rgba(184, 151, 120, 0.4);
-      background: linear-gradient(135deg, rgba(248, 241, 233, 1) 0%, rgba(255, 255, 255, 1) 100%);
-      border-color: #B89778;
-    }
-
-    .stat-icon {
-      font-size: 1.3rem;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #B89778 0%, #4A1B2F 100%);
-      border-radius: 10px;
-      color: #F8F1E9;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-      flex-shrink: 0;
-    }
-
-    .stat-info {
-      min-width: 0;
-      flex: 1;
-    }
-
-    .stat-number {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #1C2526;
-      font-family: 'Playfair Display', serif;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-      line-height: 1;
-      margin-bottom: 2px;
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      color: #4A1B2F;
-      font-weight: 600;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
@@ -793,50 +696,14 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
     /* Responsive */
     @media (max-width: 1200px) {
-      .navbar-stats {
-        gap: 12px;
-      }
-      
-      .stat-item {
-        min-width: 100px;
-        padding: 12px 14px;
-      }
-
-      .stat-value {
-        font-size: 1.6rem;
-      }
-
-      .stat-label {
-        font-size: 0.8rem;
+      .navbar {
+        padding: 16px 20px;
       }
     }
     
     @media (max-width: 1024px) {
       .navbar {
-        flex-wrap: wrap;
-        height: auto;
-        min-height: 80px;
         padding: 16px 20px;
-      }
-
-      .navbar-stats {
-        gap: 10px;
-        flex: 1;
-        min-width: 0;
-      }
-
-      .stat-item {
-        min-width: 80px;
-        padding: 10px 12px;
-        flex: 1;
-      }
-
-      .stat-value {
-        font-size: 1.4rem;
-      }
-
-      .stat-label {
-        font-size: 0.75rem;
       }
 
       .sidebar {
@@ -845,7 +712,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
       .main-content {
         margin-left: 280px;
-        padding-top: 100px;
+        padding-top: 80px;
       }
       
       .content-wrapper {
@@ -855,37 +722,11 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
 
     @media (max-width: 768px) {
       .navbar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 16px;
         padding: 16px 20px;
-        height: auto;
-        min-height: 120px;
       }
 
       .navbar-left {
         justify-content: center;
-      }
-
-      .navbar-stats {
-        justify-content: space-around;
-        width: 100%;
-        gap: 8px;
-      }
-
-      .stat-item {
-        min-width: 0;
-        flex: 1;
-        padding: 12px 8px;
-        text-align: center;
-      }
-
-      .stat-value {
-        font-size: 1.3rem;
-      }
-
-      .stat-label {
-        font-size: 0.7rem;
       }
 
       .header-actions {
@@ -919,7 +760,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       .main-content {
         margin-left: 0;
         width: 100%;
-        padding-top: 140px;
+        padding-top: 80px;
       }
 
       .action-btn span {
@@ -938,25 +779,6 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     @media (max-width: 576px) {
       .navbar {
         padding: 12px 16px;
-        min-height: 140px;
-      }
-
-      .navbar-stats {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .stat-item {
-        padding: 16px;
-        text-align: center;
-      }
-
-      .stat-value {
-        font-size: 1.2rem;
-      }
-
-      .stat-label {
-        font-size: 0.7rem;
       }
 
       .header-actions {
@@ -980,7 +802,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       }
 
       .main-content {
-        padding-top: 160px;
+        padding-top: 80px;
       }
     }
   `]
@@ -1059,14 +881,6 @@ export class DashboardComponent implements OnInit {
     }
     
     return false;
-  }
-
-  getDashboardStats(): any {
-    return {
-      reservas: this.getActiveReservations(),
-      hoteles: this.currentUser?.tipo === 'admin_central' ? '5' : '1',
-      ingresos: '45K'
-    };
   }
 
   getUsersCount(): string {
