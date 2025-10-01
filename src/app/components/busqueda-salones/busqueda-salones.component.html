@@ -1,0 +1,245 @@
+<!-- HU14: Búsqueda de Salones para Eventos -->
+<div class="busqueda-salones-container">
+  <div class="header">
+    <h1>🏢 Búsqueda de Salones para Eventos</h1>
+    <p class="subtitle">Encuentra el salón perfecto para tu evento corporativo</p>
+  </div>
+
+  <!-- Formulario de Búsqueda -->
+  <div class="card form-card">
+    <h2>Criterios de Búsqueda</h2>
+    
+    <form [formGroup]="busquedaForm" (ngSubmit)="buscarSalones()">
+      <div class="form-grid">
+        <!-- Hotel -->
+        <div class="form-group">
+          <label for="hotelId">Hotel *</label>
+          <select id="hotelId" formControlName="hotelId" class="form-control">
+            <option value="">Seleccione un hotel</option>
+            <option *ngFor="let hotel of hoteles" [value]="hotel._id">
+              {{ hotel.nombre }}
+            </option>
+          </select>
+          <span class="error-message" *ngIf="esCampoInvalido('hotelId')">
+            Debe seleccionar un hotel
+          </span>
+        </div>
+
+        <!-- Capacidad Mínima (CA1) -->
+        <div class="form-group">
+          <label for="capacidadMinima">Capacidad Mínima (personas) *</label>
+          <input 
+            type="number" 
+            id="capacidadMinima" 
+            formControlName="capacidadMinima"
+            class="form-control"
+            min="1"
+            placeholder="Ej: 50"
+          />
+          <span class="error-message" *ngIf="esCampoInvalido('capacidadMinima')">
+            Ingrese una capacidad válida (mínimo 1 persona)
+          </span>
+        </div>
+
+        <!-- Fecha Inicio (CA1, CA3) -->
+        <div class="form-group">
+          <label for="fechaInicio">Fecha Inicio *</label>
+          <input 
+            type="date" 
+            id="fechaInicio" 
+            formControlName="fechaInicio"
+            class="form-control"
+          />
+          <span class="error-message" *ngIf="esCampoInvalido('fechaInicio')">
+            Seleccione una fecha de inicio
+          </span>
+        </div>
+
+        <!-- Fecha Fin (CA1, CA3) -->
+        <div class="form-group">
+          <label for="fechaFin">Fecha Fin *</label>
+          <input 
+            type="date" 
+            id="fechaFin" 
+            formControlName="fechaFin"
+            class="form-control"
+          />
+          <span class="error-message" *ngIf="esCampoInvalido('fechaFin')">
+            Seleccione una fecha de fin
+          </span>
+        </div>
+
+        <!-- Ordenar Por (CA4) -->
+        <div class="form-group">
+          <label for="ordenarPor">Ordenar Resultados Por</label>
+          <select id="ordenarPor" formControlName="ordenarPor" class="form-control">
+            <option *ngFor="let opcion of opcionesOrdenamiento" [value]="opcion.valor">
+              {{ opcion.etiqueta }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Equipamiento Opcional -->
+      <div class="form-group equipamiento-section">
+        <label>Equipamiento Requerido (opcional)</label>
+        <div class="equipamiento-grid">
+          <button 
+            type="button"
+            *ngFor="let equip of equipamientoDisponible"
+            class="equipamiento-btn"
+            [class.selected]="esEquipamientoSeleccionado(equip)"
+            (click)="toggleEquipamiento(equip)"
+          >
+            <span class="checkmark" *ngIf="esEquipamientoSeleccionado(equip)">✓</span>
+            {{ equip }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Error General -->
+      <div class="alert alert-danger" *ngIf="error">
+        <strong>⚠️ Error:</strong> {{ error }}
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="loading"
+        >
+          <span *ngIf="!loading">🔍 Buscar Salones</span>
+          <span *ngIf="loading">⏳ Buscando...</span>
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="limpiarBusqueda()"
+          [disabled]="loading"
+        >
+          🔄 Limpiar
+        </button>
+      </div>
+
+      <!-- Indicador de recálculo automático (CA3) -->
+      <div class="info-message" *ngIf="mostrarResultados">
+        <small>ℹ️ Los resultados se actualizan automáticamente al cambiar las fechas o capacidad</small>
+      </div>
+    </form>
+  </div>
+
+  <!-- CA2: Mensaje cuando no hay resultados -->
+  <div class="card sugerencias-card" *ngIf="sugerencias">
+    <div class="no-results">
+      <h3>😕 {{ sugerencias.mensaje }}</h3>
+      <div class="recomendaciones">
+        <h4>💡 Sugerencias:</h4>
+        <ul>
+          <li *ngFor="let recomendacion of sugerencias.recomendaciones">
+            {{ recomendacion }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados de Búsqueda -->
+  <div class="resultados-section" *ngIf="mostrarResultados && salones.length > 0">
+    <div class="resultados-header">
+      <h2>✅ Salones Disponibles ({{ salones.length }})</h2>
+      <p class="resultados-info">
+        Mostrando salones con capacidad mayor o igual a 
+        <strong>{{ busquedaForm.get('capacidadMinima')?.value }} personas</strong>
+      </p>
+    </div>
+
+    <div class="salones-grid">
+      <div class="salon-card" *ngFor="let salon of salones">
+        <!-- Header del Card -->
+        <div class="salon-header">
+          <h3>{{ salon.nombre }}</h3>
+          <span class="capacidad-badge">
+            👥 {{ salon.capacidad }} personas
+          </span>
+        </div>
+
+        <!-- Hotel Info -->
+        <div class="salon-hotel">
+          <span class="hotel-icon">🏨</span>
+          <div>
+            <strong>{{ salon.hotel.nombre }}</strong>
+            <small *ngIf="salon.hotel.ciudad">{{ salon.hotel.ciudad }}</small>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <p class="salon-descripcion" *ngIf="salon.descripcion">
+          {{ salon.descripcion }}
+        </p>
+
+        <!-- Equipamiento -->
+        <div class="salon-equipamiento" *ngIf="salon.equipamiento && salon.equipamiento.length > 0">
+          <strong>Equipamiento:</strong>
+          <div class="tags">
+            <span class="tag" *ngFor="let equip of salon.equipamiento">
+              {{ equip }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Servicios Incluidos -->
+        <div class="salon-servicios" *ngIf="salon.serviciosIncluidos && salon.serviciosIncluidos.length > 0">
+          <strong>Servicios incluidos:</strong>
+          <ul class="servicios-list">
+            <li *ngFor="let servicio of salon.serviciosIncluidos">✓ {{ servicio }}</li>
+          </ul>
+        </div>
+
+        <!-- Información de Precio -->
+        <div class="salon-precio">
+          <div class="precio-detalle">
+            <span class="precio-label">Precio por día:</span>
+            <span class="precio-valor">${{ salon.precioPorDia | number:'1.0-0' }}</span>
+          </div>
+          <div class="precio-detalle">
+            <span class="precio-label">Días solicitados:</span>
+            <span class="precio-valor">{{ salon.dias }}</span>
+          </div>
+          <div class="precio-total">
+            <span class="precio-label">Total:</span>
+            <span class="precio-valor-total">${{ salon.precioTotal | number:'1.0-0' }}</span>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="salon-acciones">
+          <button 
+            class="btn btn-outline"
+            (click)="verificarDisponibilidadSalon(salon)"
+          >
+            🔍 Verificar Disponibilidad
+          </button>
+          <button 
+            class="btn btn-primary"
+            (click)="reservarSalon(salon)"
+          >
+            📅 Reservar Salón
+          </button>
+        </div>
+
+        <!-- Badge de Disponibilidad -->
+        <div class="disponibilidad-badge" *ngIf="salon.disponibleParaFechas">
+          ✓ Disponible
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Buscando salones disponibles...</p>
+  </div>
+</div>
