@@ -416,6 +416,7 @@
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 700;
+  font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
@@ -468,6 +469,7 @@
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 600;
+  font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
   transition: all 0.4s ease;
   text-decoration: none;
@@ -821,6 +823,7 @@
   margin-bottom: 1.8rem;
   font-weight: 400;
   letter-spacing: 0.3px;
+  font-family: 'Crimson Text', serif;
 }
 
 .service-highlights {

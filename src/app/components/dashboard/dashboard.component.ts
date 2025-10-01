@@ -330,6 +330,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       color: #B89778;
       font-size: 0.9rem;
       font-weight: 500;
+      font-family: 'Crimson Text', serif;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
       letter-spacing: 0.5px;
     }
@@ -618,11 +619,14 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
     .nav-label {
       font-weight: 600;
       font-size: 0.95rem;
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.5px;
     }
 
     .nav-description {
       font-size: 0.8rem;
       opacity: 0.7;
+      font-family: 'Crimson Text', serif;
     }
 
     .nav-badge {
@@ -631,6 +635,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       border-radius: 12px;
       padding: 2px 8px;
       font-size: 0.75rem;
+      font-family: 'Cormorant Garamond', serif;
       font-weight: 600;
       margin-left: auto;
       min-width: 24px;

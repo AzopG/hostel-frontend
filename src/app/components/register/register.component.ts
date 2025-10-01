@@ -369,6 +369,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       font-size: 1rem;
       font-weight: 500;
       letter-spacing: 0.5px;
+      font-family: 'Crimson Text', serif;
     }
 
     .register-form {
@@ -439,6 +440,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       color: #1C2526;
       font-weight: 500;
       letter-spacing: 0.3px;
+      font-family: 'Crimson Text', serif;
       backdrop-filter: blur(10px);
     }
 
@@ -535,7 +537,7 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-transform: uppercase;
       letter-spacing: 1.2px;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Cormorant Garamond', serif;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -340,6 +340,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       color: #1C2526;
       font-weight: 500;
       letter-spacing: 0.3px;
+      font-family: 'Crimson Text', serif;
       backdrop-filter: blur(10px);
     }
 
@@ -484,7 +485,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-transform: uppercase;
       letter-spacing: 1.2px;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Cormorant Garamond', serif;
       display: flex;
       align-items: center;
       justify-content: center;
