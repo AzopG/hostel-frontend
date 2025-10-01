@@ -1,35 +1,30 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient, withFetch, withInterceptors, HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { ApplicationConfig, inject, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { inject } from '@angular/core';
-import { provideStore } from '@ngrx/store';
+import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
-import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { AuthService } from './services/auth.service';
-import { PerformanceInterceptor } from './interceptors/performance.interceptor';
-import { Router } from '@angular/router';
-import { reducers, metaReducers } from './store';
-import { HotelEffects } from './store/effects/hotel.effects';
 import { environment } from '../environments/environment';
+import { routes } from './app.routes';
+import { PerformanceInterceptor } from './interceptors/performance.interceptor';
+import { metaReducers, reducers } from './store';
+import { HotelEffects } from './store/effects/hotel.effects';
 
 // Interceptor funcional para Angular 19
 const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-  const token = authService.getToken();
-
-  // Si hay token, agregarlo a los headers
+  // Leer el token directamente del storage para evitar ciclo DI
+  let token: string | null = null;
+  if (typeof window !== 'undefined') {
+    token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  }
   let authReq = req;
   if (token) {
     authReq = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${token}`)
     });
   }
-
   return next(authReq);
 };
 
