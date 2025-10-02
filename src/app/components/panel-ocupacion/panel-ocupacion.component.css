@@ -2,39 +2,60 @@
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(28, 37, 38, 0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .filtros-fecha {
   display: flex;
   gap: 2rem;
   margin-bottom: 2rem;
+  justify-content: center;
 }
 .tarjetas-ciudad {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
+  justify-content: center;
 }
 .tarjeta-ciudad {
-  background: #f5f7fa;
-  border-radius: 8px;
-  padding: 1.5rem;
+  background: linear-gradient(135deg, #1C2526 0%, #0A3161 100%);
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
   min-width: 220px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 18px rgba(28, 37, 38, 0.18);
   text-align: center;
+  color: #F8F1E9;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tarjeta-ciudad:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(28, 37, 38, 0.28);
+}
 }
 .porcentaje {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
-  color: #2a7be4;
-  margin: 0.5rem 0;
+  color: #8B1538;
+  margin: 0.5rem 0 0.2rem 0;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.18);
 }
 .detalle {
-  color: #555;
+  color: #F8F1E9;
+  font-size: 1rem;
+  opacity: 0.85;
 }
 .cargando, .error {
   text-align: center;
   margin-top: 1rem;
-  color: #888;
+  color: #8B1538;
+  font-weight: 600;
+}
+
+.ciudad {
+  font-size: 0.95rem;
+  color: #F8F1E9;
+  opacity: 0.7;
+  margin-top: 0.3rem;
 }
