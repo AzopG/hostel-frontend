@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SalonService, Salon, BusquedaSalonesResponse } from '../../services/salon.service';
+import { HotelService } from '../../services/hotel.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
@@ -52,23 +53,42 @@ export class BusquedaSalonesComponent implements OnInit {
   equipamientoSeleccionado: string[] = [];
   mostrarEquipamientoExpandido = false; // HU15: Control de expansión
 
-  // Hoteles de ejemplo (en producción vendría de un servicio)
-  hoteles = [
-    { _id: '1', nombre: 'Hotel Central Plaza' },
-    { _id: '2', nombre: 'Hotel Business Tower' },
-    { _id: '3', nombre: 'Hotel Conference Center' }
-  ];
+  // Hoteles cargados desde el backend
+  hoteles: any[] = [];
+  cargandoHoteles = false;
 
   constructor(
     private fb: FormBuilder,
     private salonService: SalonService,
+    private hotelService: HotelService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.inicializarFormulario();
+    this.cargarHoteles();
     this.configurarRecalculoAutomatico(); // HU14 - CA3
     this.restaurarFiltrosDesdeStorage(); // HU15 - CA4: Restaurar filtros al cargar
+  }
+
+  cargarHoteles(): void {
+    this.cargandoHoteles = true;
+    this.hotelService.getHoteles().subscribe({
+      next: (hoteles) => {
+        this.hoteles = hoteles.filter(hotel => hotel.activo);
+        this.cargandoHoteles = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar hoteles:', error);
+        this.cargandoHoteles = false;
+        // Usar hoteles de ejemplo en caso de error
+        this.hoteles = [
+          { _id: '1', nombre: 'Hotel Central Plaza' },
+          { _id: '2', nombre: 'Hotel Business Tower' },
+          { _id: '3', nombre: 'Hotel Conference Center' }
+        ];
+      }
+    });
   }
 
   inicializarFormulario(): void {

@@ -60,7 +60,36 @@ export interface ReservaCreada {
   tarifa: TarifaReserva;
   estado: string;
   createdAt: string;
+  fechaConfirmacion?: string;
+  fechaCancelacion?: string;
+  fechaCompletado?: string;
+  motivoCancelacion?: string;
+  canceladoPor?: string;
+  notasHotel?: string;
   historialModificaciones?: ModificacionReserva[];
+}
+
+// Para mostrar reservas en el dashboard de hotel
+export interface ReservaParaHotel {
+  _id: string;
+  codigoReserva: string;
+  cliente: string;
+  email: string;
+  telefono: string;
+  hotel: string;
+  habitacion: string;
+  checkIn: Date;
+  checkOut: Date;
+  estado: 'pendiente' | 'confirmada' | 'cancelada' | 'completada';
+  total: number;
+  huespedes: number;
+  noches: number;
+  fechaCreacion: Date;
+  fechaConfirmacion?: Date;
+  fechaCancelacion?: Date;
+  motivoCancelacion?: string;
+  notasHotel?: string;
+  notas?: string;
 }
 
 // HU09: Interfaces para modificación de fechas
@@ -362,6 +391,11 @@ export class ReservaService {
     return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/${id}/modificar-fechas`, datos);
   }
 
+  // Nuevo método para modificar por código
+  modificarFechasReservaPorCodigo(codigo: string, datos: ModificarFechasRequest): Observable<ModificarFechasResponse> {
+    return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/codigo/${codigo}/modificar-fechas`, datos);
+  }
+
   // =====================================================
   // HU17: RESERVAR UN SALÓN
   // =====================================================
@@ -418,5 +452,30 @@ export class ReservaService {
    */
   enviarReciboPorEmail(reservaId: string, email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${reservaId}/recibo/enviar`, { email });
+  }
+
+  // =====================================================
+  // GESTIÓN DE RESERVAS PARA HOTELES
+  // =====================================================
+
+  /**
+   * Confirmar una reserva pendiente (para administradores de hotel)
+   */
+  confirmarReservaPendiente(reservaId: string, notas?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${reservaId}/confirmar`, { notas });
+  }
+
+  /**
+   * Rechazar una reserva pendiente (para administradores de hotel)
+   */
+  rechazarReservaPendiente(reservaId: string, motivo: string, notas?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${reservaId}/rechazar`, { motivo, notas });
+  }
+
+  /**
+   * Actualizar estado de una reserva (para administradores de hotel)
+   */
+  actualizarEstadoReserva(reservaId: string, estado: string, notas?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${reservaId}/estado`, { estado, notas });
   }
 }

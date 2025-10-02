@@ -10,14 +10,18 @@
   </div>
   <div class="hoteles-metrics pretty-metrics">
     <div class="metric-card pretty-card">
+
       <span class="metric-icon metric-hoteles"><i class="fas fa-building"></i></span>
+
       <div>
         <div class="metric-value">{{ getTotalHoteles() }}</div>
         <div class="metric-label">Total Hoteles</div>
       </div>
     </div>
     <div class="metric-card pretty-card">
+
       <span class="metric-icon metric-activos"><i class="fas fa-check-circle"></i></span>
+
       <div>
         <div class="metric-value">{{ getHotelesActivos() }}</div>
         <div class="metric-label">Activos</div>
@@ -63,11 +67,13 @@
           <ng-container *ngIf="modalModo !== 'crear'">
             <ng-container *ngIf="modalModo === 'ver'">
               <input type="text" [value]="'Habitaciones: ' + (modalHotel.habitaciones ? modalHotel.habitaciones.length : 0)" readonly />
+
             </ng-container>
           </ng-container>
         </div>
         <div class="form-group">
           <input type="number" [(ngModel)]="modalHotel.ocupacion" name="ocupacion" min="0" max="100" placeholder="Ocupación actual (%)" [readonly]="modalModo === 'ver'" />
+
         </div>
         <div class="modal-actions">
           <button type="button" (click)="cerrarModal()">Cerrar</button>

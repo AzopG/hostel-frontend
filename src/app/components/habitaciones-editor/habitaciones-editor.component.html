@@ -1,0 +1,57 @@
+<div class="habitaciones-editor">
+  <h3>Habitaciones del hotel</h3>
+  <button (click)="agregarHabitacion()">+ Añadir habitación</button>
+  <button (click)="mostrarTodas = !mostrarTodas" style="margin-left:8px;">{{ mostrarTodas ? 'Ocultar' : 'Ver todas' }}</button>
+  <div style="max-height: 55vh; overflow-y: auto;">
+    <div *ngFor="let habitacion of habitaciones; let i = index" class="habitacion-item" [hidden]="!mostrarTodas && i >= 5">
+    <label>Número:</label>
+    <input [(ngModel)]="habitacion.numero" type="number" min="1" />
+    <button (click)="eliminarHabitacion(i)">Eliminar</button>
+    <div class="tipo-list">
+      <label>Tipo de habitación:</label>
+      <select [(ngModel)]="habitacion.tipo">
+        <option value="individual">Individual</option>
+        <option value="doble">Doble</option>
+        <option value="suite">Suite</option>
+        <option value="presidencial">Presidencial</option>
+      </select>
+    </div>
+    <div class="capacidad-list">
+      <label>Capacidad:</label>
+      <input [(ngModel)]="habitacion.capacidad" type="number" min="1" max="10" />
+    </div>
+    <div class="precio-list">
+      <label>Precio por noche (COP):</label>
+      <input [(ngModel)]="habitacion.precio" type="number" min="0" step="1000" />
+    </div>
+    <div class="servicios-list">
+      <label>Servicios:</label>
+      <div *ngFor="let servicio of serviciosDisponibles">
+        <input type="checkbox" [checked]="habitacion.servicios.includes(servicio)" (change)="toggleServicio(habitacion, servicio)" />
+        {{ servicio }}
+      </div>
+    </div>
+    <div class="disponible-list">
+      <label>Disponible:</label>
+      <select [(ngModel)]="habitacion.disponible">
+        <option [ngValue]="true">Sí</option>
+        <option [ngValue]="false">No</option>
+      </select>
+    </div>
+    <div class="descripcion-list">
+      <label>Descripción:</label>
+      <textarea [(ngModel)]="habitacion.descripcion" rows="2" placeholder="Descripción de la habitación"></textarea>
+    </div>
+    <div class="fotos-list">
+      <label>Fotos (URL):</label>
+      <div *ngFor="let foto of habitacion.fotos; let fi = index" class="foto-url-row">
+        <input [(ngModel)]="habitacion.fotos[fi]" type="text" placeholder="URL de la foto" style="width:80%" />
+        <button (click)="habitacion.fotos.splice(fi,1)" type="button">Eliminar</button>
+      </div>
+      <button (click)="habitacion.fotos.push('')" type="button">+ Añadir foto</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+

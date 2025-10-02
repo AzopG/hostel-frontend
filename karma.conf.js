@@ -2,8 +2,16 @@
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 module.exports = function (config) {
-  const puppeteer = require('puppeteer');
-  process.env.CHROME_BIN = puppeteer.executablePath();
+  let chromePath;
+  try {
+    const puppeteer = require('puppeteer');
+    chromePath = puppeteer.executablePath();
+    process.env.CHROME_BIN = chromePath;
+    console.log('Using Puppeteer Chrome at:', chromePath);
+  } catch (e) {
+    console.log('Puppeteer not found, using system Chrome');
+    chromePath = process.env.CHROME_BIN || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+  }
   
   config.set({
     basePath: '',
@@ -49,7 +57,13 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-web-security', '--disable-gpu', '--remote-debugging-port=9222']
+        flags: [
+          '--no-sandbox', 
+          '--disable-web-security', 
+          '--disable-gpu', 
+          '--remote-debugging-port=9222',
+          '--disable-dev-shm-usage'
+        ]
       }
     },
     restartOnFileChange: true,

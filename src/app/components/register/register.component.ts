@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService, LoginRequest, RegisterRequest } from '../../services/auth.service';
+
 
 @Component({
   selector: 'app-register',
@@ -26,69 +28,77 @@ export class RegisterComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
-      tipo: ['', [Validators.required]]
-    }, {
-      validators: this.passwordMatchValidator
-    });
-  }
-
-  private passwordMatchValidator(group: FormGroup): {[key: string]: any} | null {
-    const password = group.get('password');
-    const confirmPassword = group.get('confirmPassword');
-    
-    if (!password || !confirmPassword) {
-      return null;
-    }
-
-    return password.value === confirmPassword.value ? null : { passwordMismatch: true };
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: this.passwordMatchValidator });
   }
 
   ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
+    // Limpiar mensajes al inicializar
+    this.errorMessage = '';
+    this.successMessage = '';
+  }
+
+  passwordMatchValidator(group: FormGroup) {
+    const password = group.get('password');
+    const confirmPassword = group.get('confirmPassword');
+    
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
     }
+    
+    if (confirmPassword?.hasError('passwordMismatch')) {
+      delete confirmPassword.errors?.['passwordMismatch'];
+      if (Object.keys(confirmPassword.errors || {}).length === 0) {
+        confirmPassword.setErrors(null);
+      }
+    }
+    
+    return null;
   }
 
   onSubmit(): void {
-    if (this.registerForm.invalid) {
-      Object.keys(this.registerForm.controls).forEach(key => {
-        const control = this.registerForm.get(key);
-        if (control?.invalid) {
-          control.markAsTouched();
+    if (this.registerForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      const registerData = {
+        nombre: this.registerForm.value.nombre,
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password,
+        tipo: 'cliente' as const
+      };
+
+      this.authService.register(registerData).subscribe({
+        next: (response) => {
+          this.successMessage = 'Registro exitoso. Redirigiendo al login...';
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.message || 'Error en el registro. Inténtalo de nuevo.';
+        },
+        complete: () => {
+          this.isLoading = false;
         }
       });
-      return;
+    } else {
+      this.markFormGroupTouched();
     }
+  }
 
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    const registrationData = {
-      nombre: this.registerForm.get('nombre')?.value,
-      email: this.registerForm.get('email')?.value,
-      password: this.registerForm.get('password')?.value,
-      tipo: this.registerForm.get('tipo')?.value
-    };
-
-    this.authService.register(registrationData).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        this.successMessage = 'Registro exitoso. Redirigiendo al inicio de sesión...';
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
-      },
-      error: (error) => {
-        this.isLoading = false;
-        if (error.status === 400) {
-          this.errorMessage = error.error?.msg || 'Error en el registro. Por favor, verifica los datos.';
-        } else {
-          this.errorMessage = 'Error en el servidor. Por favor, intenta más tarde.';
-        }
-      }
+  private markFormGroupTouched(): void {
+    Object.keys(this.registerForm.controls).forEach(key => {
+      const control = this.registerForm.get(key);
+      control?.markAsTouched();
     });
+  }
+
+  goToLogin(event: Event): void {
+    event.preventDefault();
+    this.router.navigate(['/login']);
   }
 
   volver(): void {

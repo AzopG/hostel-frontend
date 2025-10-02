@@ -1,137 +1,351 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ReservaService, ReservaParaHotel } from '../../services/reserva.service';
 
 @Component({
   selector: 'app-reservas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
+    <!-- Modal para confirmación/rechazo -->
+    <div *ngIf="modalVisible" class="modal-backdrop" (click)="cerrarModal()"></div>
+    <div *ngIf="modalVisible" class="modal-container">
+      <div class="modal-content-custom">
+        <!-- Modal Ver Detalles -->
+        <div *ngIf="modalTipo === 'ver'" class="modal-view">
+          <h3 class="modal-title">
+            <i class="fas fa-eye me-2"></i>
+            Detalles de la Reserva
+          </h3>
+          <div class="reservation-details" *ngIf="reservaSeleccionada">
+            <div class="detail-row">
+              <span class="detail-label">Código:</span>
+              <span class="detail-value code">{{ reservaSeleccionada.codigoReserva }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Cliente:</span>
+              <span class="detail-value">{{ reservaSeleccionada.cliente }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Email:</span>
+              <span class="detail-value">{{ reservaSeleccionada.email }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Teléfono:</span>
+              <span class="detail-value">{{ reservaSeleccionada.telefono }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Habitación:</span>
+              <span class="detail-value">{{ reservaSeleccionada.habitacion }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Check-in:</span>
+              <span class="detail-value">{{ reservaSeleccionada.checkIn | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Check-out:</span>
+              <span class="detail-value">{{ reservaSeleccionada.checkOut | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Huéspedes:</span>
+              <span class="detail-value">{{ reservaSeleccionada.huespedes }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Noches:</span>
+              <span class="detail-value">{{ reservaSeleccionada.noches }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Total:</span>
+              <span class="detail-value total">{{ reservaSeleccionada.total | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Estado:</span>
+              <span class="badge-modern" [ngClass]="getEstadoBadge(reservaSeleccionada.estado)">
+                {{ reservaSeleccionada.estado | titlecase }}
+              </span>
+            </div>
+            <div class="detail-row" *ngIf="reservaSeleccionada.notasHotel">
+              <span class="detail-label">Notas del Hotel:</span>
+              <span class="detail-value">{{ reservaSeleccionada.notasHotel }}</span>
+            </div>
+            <div class="detail-row" *ngIf="reservaSeleccionada.notas">
+              <span class="detail-label">Notas del Cliente:</span>
+              <span class="detail-value">{{ reservaSeleccionada.notas }}</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" (click)="cerrarModal()">
+              <i class="fas fa-times me-2"></i>Cerrar
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Confirmar Reserva -->
+        <div *ngIf="modalTipo === 'confirmar'" class="modal-confirm">
+          <h3 class="modal-title confirm">
+            <i class="fas fa-check me-2"></i>
+            Confirmar Reserva
+          </h3>
+          <div class="confirm-message" *ngIf="reservaSeleccionada">
+            <p>¿Desea confirmar la reserva <strong>{{ reservaSeleccionada.codigoReserva }}</strong> de <strong>{{ reservaSeleccionada.cliente }}</strong>?</p>
+            <div class="form-group">
+              <label for="notasConfirmar">Notas del hotel (opcional):</label>
+              <textarea 
+                id="notasConfirmar"
+                class="form-control" 
+                [(ngModel)]="notasHotel" 
+                rows="3" 
+                placeholder="Agregue notas adicionales para el cliente...">
+              </textarea>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" (click)="cerrarModal()">
+              <i class="fas fa-times me-2"></i>Cancelar
+            </button>
+            <button class="btn btn-success" (click)="ejecutarConfirmacion()">
+              <i class="fas fa-check me-2"></i>Confirmar Reserva
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Rechazar Reserva -->
+        <div *ngIf="modalTipo === 'rechazar'" class="modal-reject">
+          <h3 class="modal-title reject">
+            <i class="fas fa-times me-2"></i>
+            Rechazar Reserva
+          </h3>
+          <div class="reject-message" *ngIf="reservaSeleccionada">
+            <p>¿Desea rechazar la reserva <strong>{{ reservaSeleccionada.codigoReserva }}</strong> de <strong>{{ reservaSeleccionada.cliente }}</strong>?</p>
+            <div class="form-group">
+              <label for="motivoRechazo">Motivo del rechazo *:</label>
+              <textarea 
+                id="motivoRechazo"
+                class="form-control" 
+                [(ngModel)]="motivoRechazo" 
+                rows="3" 
+                placeholder="Explique el motivo por el cual se rechaza la reserva..."
+                required>
+              </textarea>
+            </div>
+            <div class="form-group">
+              <label for="notasRechazar">Notas adicionales (opcional):</label>
+              <textarea 
+                id="notasRechazar"
+                class="form-control" 
+                [(ngModel)]="notasHotel" 
+                rows="2" 
+                placeholder="Notas internas del hotel...">
+              </textarea>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" (click)="cerrarModal()">
+              <i class="fas fa-arrow-left me-2"></i>Cancelar
+            </button>
+            <button class="btn btn-danger" (click)="ejecutarRechazo()" [disabled]="!motivoRechazo.trim()">
+              <i class="fas fa-times me-2"></i>Rechazar Reserva
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container-fluid">
       <!-- Header -->
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <h1 class="h2">Gestión de Reservas</h1>
-        <button class="btn btn-primary" (click)="nuevaReserva()">
-          <i class="fas fa-plus"></i> Nueva Reserva
+      <div class="header-section">
+        <div class="header-content">
+          <h1 class="page-title">
+            <i class="fas fa-calendar-check me-3"></i>
+            Gestión de Reservas
+          </h1>
+          <p class="page-subtitle">Administra y confirma las reservas de tu hotel</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary btn-modern" (click)="nuevaReserva()">
+            <i class="fas fa-plus me-2"></i>Nueva Reserva
+          </button>
+          <button class="btn btn-outline-secondary btn-modern" (click)="cargarReservas()">
+            <i class="fas fa-sync me-2"></i>Actualizar
+          </button>
+        </div>
+      </div>
+
+      <!-- Mensaje de carga -->
+      <div *ngIf="cargando" class="loading-section">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="loading-text">Cargando reservas...</p>
+      </div>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="error" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-danger ms-3" (click)="cargarReservas()">
+          <i class="fas fa-retry me-1"></i>Reintentar
         </button>
       </div>
 
       <!-- Estadísticas superiores -->
-      <div class="stats-row">
-        <div class="stat-card">
+      <div class="stats-row" *ngIf="!cargando">
+        <div class="stat-card stat-primary">
           <div class="stat-icon">📅</div>
           <div class="stat-number">{{ totalReservas }}</div>
           <div class="stat-label">Total Reservas</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card stat-success">
           <div class="stat-icon">✅</div>
           <div class="stat-number">{{ reservasConfirmadas }}</div>
           <div class="stat-label">Confirmadas</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card stat-warning">
           <div class="stat-icon">⏰</div>
           <div class="stat-number">{{ reservasPendientes }}</div>
           <div class="stat-label">Pendientes</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card stat-danger">
+          <div class="stat-icon">❌</div>
+          <div class="stat-number">{{ reservasCanceladas }}</div>
+          <div class="stat-label">Canceladas</div>
+        </div>
+        <div class="stat-card stat-info">
           <div class="stat-icon">💰</div>
-          <div class="stat-number">{{ ingresosMes | currency:'USD':'symbol':'1.0-0' }}</div>
+          <div class="stat-number">{{ ingresosMes | currency:'COP':'symbol-narrow':'1.0-0' }}</div>
           <div class="stat-label">Ingresos del mes</div>
         </div>
       </div>
 
       <!-- Filtros -->
-      <div class="row mb-3">
-        <div class="col-md-3">
-          <label class="form-label">Fecha desde</label>
-          <input type="date" class="form-control" [value]="fechaDesde">
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Fecha hasta</label>
-          <input type="date" class="form-control" [value]="fechaHasta">
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Estado</label>
-          <select class="form-select">
-            <option value="">Todos los estados</option>
-            <option value="confirmada">Confirmada</option>
-            <option value="pendiente">Pendiente</option>
-            <option value="cancelada">Cancelada</option>
-          </select>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
-          <button class="btn btn-primary w-100" (click)="filtrarReservas()">
-            <i class="fas fa-search"></i> Filtrar
-          </button>
+      <div class="filters-section" *ngIf="!cargando">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label">Fecha desde</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              [(ngModel)]="fechaDesde"
+              (change)="actualizarFiltros()">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Fecha hasta</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              [(ngModel)]="fechaHasta"
+              (change)="actualizarFiltros()">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <select 
+              class="form-select" 
+              [(ngModel)]="estadoFiltro"
+              (change)="actualizarFiltros()">
+              <option value="">Todos los estados</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="cancelada">Cancelada</option>
+              <option value="completada">Completada</option>
+            </select>
+          </div>
+          <div class="col-md-3 d-flex align-items-end gap-2">
+            <button class="btn btn-primary flex-fill" (click)="actualizarFiltros()">
+              <i class="fas fa-search me-2"></i>Filtrar
+            </button>
+            <button class="btn btn-outline-secondary flex-fill" (click)="limpiarFiltros()">
+              <i class="fas fa-eraser me-2"></i>Limpiar
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- Tabla de reservas -->
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Lista de Reservas</h5>
-            </div>
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Cliente</th>
-                      <th>Hotel</th>
-                      <th>Habitación</th>
-                      <th>Check-in</th>
-                      <th>Check-out</th>
-                      <th>Estado</th>
-                      <th>Total</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let reserva of reservas">
-                      <td><strong>#{{ reserva.id }}</strong></td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="avatar-circle me-2">{{ reserva.cliente.charAt(0) }}</div>
-                          <span>{{ reserva.cliente }}</span>
+      <div class="table-section" *ngIf="!cargando">
+        <div class="card table-card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="fas fa-list me-2"></i>
+              Lista de Reservas ({{ reservasFiltradas.length }})
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Cliente</th>
+                    <th>Hotel</th>
+                    <th>Habitación</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reserva of reservasFiltradas" class="table-row">
+                    <td><strong class="codigo-reserva">#{{ reserva.codigoReserva }}</strong></td>
+                    <td>
+                      <div class="client-info">
+                        <div class="avatar-circle">{{ reserva.cliente.charAt(0) }}</div>
+                        <div class="client-details">
+                          <div class="client-name">{{ reserva.cliente }}</div>
+                          <div class="client-email">{{ reserva.email }}</div>
                         </div>
-                      </td>
-                      <td>{{ reserva.hotel }}</td>
-                      <td><span class="room-number">{{ reserva.habitacion }}</span></td>
-                      <td>{{ reserva.checkIn | date:'MMM d, y' }}</td>
-                      <td>{{ reserva.checkOut | date:'MMM d, y' }}</td>
-                      <td>
-                        <span class="badge" [ngClass]="getEstadoBadge(reserva.estado)">
-                          {{ reserva.estado | titlecase }}
-                        </span>
-                      </td>
-                      <td><strong>{{ reserva.total | currency:'USD':'symbol':'1.0-0' }}</strong></td>
-                      <td>
-                        <div class="btn-group">
-                          <button class="btn btn-sm btn-outline-primary" 
-                                  (click)="verReserva(reserva)" 
-                                  title="Ver detalles">
-                            <i class="fas fa-eye"></i>
-                          </button>
-                          <button class="btn btn-sm btn-outline-warning" 
-                                  (click)="editarReserva(reserva)"
-                                  [disabled]="reserva.estado === 'cancelada'" 
-                                  title="Editar">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="btn btn-sm btn-outline-danger" 
-                                  (click)="cancelarReserva(reserva)"
-                                  [disabled]="reserva.estado === 'cancelada'" 
-                                  title="Cancelar">
-                            <i class="fas fa-times"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                      </div>
+                    </td>
+                    <td class="hotel-name">{{ reserva.hotel }}</td>
+                    <td><span class="room-number">{{ reserva.habitacion }}</span></td>
+                    <td class="date-cell">{{ reserva.checkIn | date:'dd/MM/yyyy' }}</td>
+                    <td class="date-cell">{{ reserva.checkOut | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                      <span class="badge-modern" [ngClass]="getEstadoBadge(reserva.estado)">
+                        {{ reserva.estado | titlecase }}
+                      </span>
+                    </td>
+                    <td class="amount-cell">
+                      <strong>{{ reserva.total | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button 
+                          class="btn btn-action btn-action-view" 
+                          (click)="verReserva(reserva)" 
+                          title="Ver detalles">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button 
+                          *ngIf="reserva.estado === 'pendiente'"
+                          class="btn btn-action btn-action-confirm" 
+                          (click)="confirmarReserva(reserva)"
+                          title="Confirmar reserva">
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button 
+                          *ngIf="reserva.estado === 'pendiente'"
+                          class="btn btn-action btn-action-reject" 
+                          (click)="rechazarReserva(reserva)"
+                          title="Rechazar reserva">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="reservasFiltradas.length === 0">
+                    <td colspan="9" class="text-center py-4">
+                      <div class="no-data">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No se encontraron reservas</h5>
+                        <p class="text-muted">Ajusta los filtros o verifica que haya reservas en el sistema</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -548,84 +762,233 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class ReservasComponent {
+export class ReservasComponent implements OnInit {
   fechaDesde = '';
   fechaHasta = '';
+  estadoFiltro = '';
+  cargando = true;
+  error = '';
   
-  totalReservas = 156;
-  reservasConfirmadas = 142;
-  reservasPendientes = 14;
-  ingresosMes = 45200;
+  // Datos dinámicos
+  totalReservas = 0;
+  reservasConfirmadas = 0;
+  reservasPendientes = 0;
+  reservasCanceladas = 0;
+  ingresosMes = 0;
 
-  reservas = [
-    {
-      id: 1001,
-      cliente: 'Juan Pérez',
-      hotel: 'Hotel Boutique Central',
-      habitacion: '101',
-      checkIn: new Date('2025-09-20'),
-      checkOut: new Date('2025-09-23'),
-      estado: 'confirmada',
-      total: 540
-    },
-    {
-      id: 1002,
-      cliente: 'María García',
-      hotel: 'Hotel Plaza Mayor',
-      habitacion: '201',
-      checkIn: new Date('2025-09-25'),
-      checkOut: new Date('2025-09-28'),
-      estado: 'pendiente',
-      total: 720
-    },
-    {
-      id: 1003,
-      cliente: 'Carlos López',
-      hotel: 'Hotel Ejecutivo',
-      habitacion: '301',
-      checkIn: new Date('2025-09-18'),
-      checkOut: new Date('2025-09-20'),
-      estado: 'confirmada',
-      total: 400
-    },
-    {
-      id: 1004,
-      cliente: 'Ana Martínez',
-      hotel: 'Hotel Boutique Central',
-      habitacion: '102',
-      checkIn: new Date('2025-09-15'),
-      checkOut: new Date('2025-09-17'),
-      estado: 'cancelada',
-      total: 300
+  reservas: ReservaParaHotel[] = [];
+  reservasFiltradas: ReservaParaHotel[] = [];
+
+  // Modal para confirmación/rechazo
+  modalVisible = false;
+  modalTipo: 'confirmar' | 'rechazar' | 'ver' = 'ver';
+  reservaSeleccionada: ReservaParaHotel | null = null;
+  motivoRechazo = '';
+  notasHotel = '';
+
+  constructor(private reservaService: ReservaService) {}
+
+  ngOnInit(): void {
+    this.cargarReservas();
+    this.configurarFechasPorDefecto();
+  }
+
+  configurarFechasPorDefecto(): void {
+    const hoy = new Date();
+    const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    const ultimoDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+    
+    this.fechaDesde = primerDiaDelMes.toISOString().split('T')[0];
+    this.fechaHasta = ultimoDiaDelMes.toISOString().split('T')[0];
+  }
+
+  cargarReservas(): void {
+    this.cargando = true;
+    this.error = '';
+    
+    this.reservaService.obtenerTodasReservas().subscribe({
+      next: (response) => {
+        if (response.success && response.reservas) {
+          this.procesarReservas(response.reservas);
+          this.calcularEstadisticas();
+          this.filtrarReservas();
+        } else {
+          this.error = 'No se pudieron cargar las reservas';
+        }
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar reservas:', err);
+        this.error = 'Error de conexión al cargar las reservas';
+        this.cargando = false;
+      }
+    });
+  }
+
+  procesarReservas(reservasRaw: any[]): void {
+    this.reservas = reservasRaw.map(reserva => ({
+      _id: reserva._id,
+      codigoReserva: reserva.codigoReserva,
+      cliente: `${reserva.datosHuesped.nombre} ${reserva.datosHuesped.apellido}`,
+      email: reserva.datosHuesped.email,
+      telefono: reserva.datosHuesped.telefono,
+      hotel: reserva.hotel?.nombre || 'Hotel no especificado',
+      habitacion: reserva.habitacion?.numero || reserva.salon?.nombre || 'N/A',
+      checkIn: new Date(reserva.fechaInicio),
+      checkOut: new Date(reserva.fechaFin),
+      estado: reserva.estado as 'pendiente' | 'confirmada' | 'cancelada' | 'completada',
+      total: reserva.tarifa?.total || 0,
+      huespedes: reserva.huespedes || 1,
+      noches: reserva.noches || 1,
+      fechaCreacion: new Date(reserva.createdAt),
+      fechaConfirmacion: reserva.fechaConfirmacion ? new Date(reserva.fechaConfirmacion) : undefined,
+      fechaCancelacion: reserva.fechaCancelacion ? new Date(reserva.fechaCancelacion) : undefined,
+      motivoCancelacion: reserva.motivoCancelacion,
+      notasHotel: reserva.notasHotel,
+      notas: reserva.notas
+    }));
+  }
+
+  calcularEstadisticas(): void {
+    this.totalReservas = this.reservas.length;
+    this.reservasConfirmadas = this.reservas.filter(r => r.estado === 'confirmada').length;
+    this.reservasPendientes = this.reservas.filter(r => r.estado === 'pendiente').length;
+    this.reservasCanceladas = this.reservas.filter(r => r.estado === 'cancelada').length;
+    
+    // Calcular ingresos del mes actual
+    const hoy = new Date();
+    const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    const ultimoDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+    
+    this.ingresosMes = this.reservas
+      .filter(r => r.estado === 'confirmada' && 
+                   r.fechaCreacion >= primerDiaDelMes && 
+                   r.fechaCreacion <= ultimoDiaDelMes)
+      .reduce((total, r) => total + r.total, 0);
+  }
+
+  filtrarReservas(): void {
+    let filtradas = [...this.reservas];
+    
+    // Filtrar por fechas si están definidas
+    if (this.fechaDesde) {
+      const fechaDesdeObj = new Date(this.fechaDesde);
+      filtradas = filtradas.filter(r => r.checkIn >= fechaDesdeObj);
     }
-  ];
+    
+    if (this.fechaHasta) {
+      const fechaHastaObj = new Date(this.fechaHasta);
+      filtradas = filtradas.filter(r => r.checkOut <= fechaHastaObj);
+    }
+    
+    // Filtrar por estado
+    if (this.estadoFiltro) {
+      filtradas = filtradas.filter(r => r.estado === this.estadoFiltro);
+    }
+    
+    this.reservasFiltradas = filtradas;
+  }
 
   getEstadoBadge(estado: string): string {
     switch (estado) {
       case 'confirmada': return 'bg-success';
       case 'pendiente': return 'bg-warning';
       case 'cancelada': return 'bg-danger';
+      case 'completada': return 'bg-info';
       default: return 'bg-secondary';
     }
   }
 
   nuevaReserva(): void {
-    console.log('Crear nueva reserva');
+    console.log('Crear nueva reserva - funcionalidad por implementar');
+    alert('Funcionalidad de crear nueva reserva por implementar');
   }
 
-  filtrarReservas(): void {
-    console.log('Filtrar reservas');
+  verReserva(reserva: ReservaParaHotel): void {
+    this.reservaSeleccionada = reserva;
+    this.modalTipo = 'ver';
+    this.modalVisible = true;
   }
 
-  verReserva(reserva: any): void {
-    console.log('Ver reserva:', reserva);
+  confirmarReserva(reserva: ReservaParaHotel): void {
+    this.reservaSeleccionada = reserva;
+    this.modalTipo = 'confirmar';
+    this.notasHotel = '';
+    this.modalVisible = true;
   }
 
-  editarReserva(reserva: any): void {
-    console.log('Editar reserva:', reserva);
+  rechazarReserva(reserva: ReservaParaHotel): void {
+    this.reservaSeleccionada = reserva;
+    this.modalTipo = 'rechazar';
+    this.motivoRechazo = '';
+    this.notasHotel = '';
+    this.modalVisible = true;
   }
 
-  cancelarReserva(reserva: any): void {
-    console.log('Cancelar reserva:', reserva);
+  ejecutarConfirmacion(): void {
+    if (!this.reservaSeleccionada) return;
+    
+    this.reservaService.confirmarReservaPendiente(this.reservaSeleccionada._id, this.notasHotel)
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            alert('Reserva confirmada exitosamente');
+            this.cerrarModal();
+            this.cargarReservas();
+          } else {
+            alert(response.message || 'Error al confirmar la reserva');
+          }
+        },
+        error: (err) => {
+          console.error('Error al confirmar reserva:', err);
+          alert('Error de conexión al confirmar la reserva');
+        }
+      });
+  }
+
+  ejecutarRechazo(): void {
+    if (!this.reservaSeleccionada || !this.motivoRechazo.trim()) {
+      alert('Debe proporcionar un motivo para el rechazo');
+      return;
+    }
+    
+    this.reservaService.rechazarReservaPendiente(
+      this.reservaSeleccionada._id, 
+      this.motivoRechazo, 
+      this.notasHotel
+    ).subscribe({
+      next: (response) => {
+        if (response.success) {
+          alert('Reserva rechazada exitosamente');
+          this.cerrarModal();
+          this.cargarReservas();
+        } else {
+          alert(response.message || 'Error al rechazar la reserva');
+        }
+      },
+      error: (err) => {
+        console.error('Error al rechazar reserva:', err);
+        alert('Error de conexión al rechazar la reserva');
+      }
+    });
+  }
+
+  cerrarModal(): void {
+    this.modalVisible = false;
+    this.reservaSeleccionada = null;
+    this.motivoRechazo = '';
+    this.notasHotel = '';
+  }
+
+  actualizarFiltros(): void {
+    this.filtrarReservas();
+  }
+
+  limpiarFiltros(): void {
+    this.fechaDesde = '';
+    this.fechaHasta = '';
+    this.estadoFiltro = '';
+    this.configurarFechasPorDefecto();
+    this.filtrarReservas();
   }
 }

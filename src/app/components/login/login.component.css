@@ -25,6 +25,7 @@
   background: linear-gradient(135deg, rgba(248, 241, 233, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
   color: #001440;
   border: 2px solid rgba(0, 20, 64, 0.5);
+
   border-radius: 50%;
   font-weight: 600;
   cursor: pointer;
@@ -79,7 +80,9 @@
 }
 
 .login-header h2 {
+
   color: #001440;
+
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
@@ -89,6 +92,7 @@
 
 .login-header p {
   color: #002466;
+
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -103,7 +107,9 @@
 .form-group label {
   display: block;
   margin-bottom: 8px;
+
   color: #001440;
+
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.5px;
@@ -112,6 +118,7 @@
 
 .required {
   color: #002466;
+
   font-weight: 700;
 }
 
@@ -127,20 +134,25 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 1rem;
+
   color: #001440;
   z-index: 1;
   filter: drop-shadow(0 0 2px rgba(0, 20, 64, 0.3));
+
 }
 
 .input-wrapper input {
   width: 100%;
   padding: 12px 12px 12px 45px;
+
   border: 2px solid rgba(0, 20, 64, 0.3);
+
   border-radius: 12px;
   font-size: 0.95rem;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background: rgba(255, 255, 255, 0.8);
   color: #001440;
+
   font-weight: 500;
   letter-spacing: 0.3px;
   font-family: 'Crimson Text', serif;
@@ -149,6 +161,7 @@
 
 .input-wrapper input:focus {
   outline: none;
+
   border-color: #002466;
   background: rgba(255, 255, 255, 0.95);
   transform: translateY(-2px);
@@ -157,12 +170,15 @@
 
 .input-wrapper input::placeholder {
   color: rgba(0, 20, 64, 0.6);
+
   font-style: italic;
 }
 
 .input-wrapper input.error {
+
   border-color: #002466;
   background: rgba(0, 36, 102, 0.05);
+
 }
 
 .error-message {
@@ -186,7 +202,9 @@
 }
 
 .checkbox-label {
+
   color: #001440;
+
 }
 
 .submit-btn {
@@ -264,7 +282,9 @@
 
 .login-footer p {
   margin: 0.5rem 0;
+
   color: #001440;
+
 }
 
 .login-footer a {
@@ -376,6 +396,7 @@
   color: #4caf50;
 }
 
+
 /* Mejoras adicionales para el esquema de colores azul */
 .form-group:hover .input-icon {
   color: #002466;
@@ -399,6 +420,7 @@
 }
 
 /* Responsive design improvements */
+
 @media (max-width: 968px) {
   .login-container {
     height: 100%;

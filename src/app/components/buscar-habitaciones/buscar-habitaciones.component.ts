@@ -1288,10 +1288,13 @@ export class BuscarHabitacionesComponent implements OnInit {
     this.errorHuespedes = '';
     this.errorGeneral = '';
 
-    // CA2: Validar fechas
+    // CA2: Validar fechas (servidor/servicio también valida, esto evita bypass por input manual)
+    const fechaInicioISO = this.filtros.fechaInicio || '';
+    const fechaFinISO = this.filtros.fechaFin || '';
+
     const validacionFechas = this.filtrosService.validarFechas(
-      this.filtros.fechaInicio,
-      this.filtros.fechaFin
+      fechaInicioISO,
+      fechaFinISO
     );
 
     if (!validacionFechas.valido) {

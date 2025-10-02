@@ -1,8 +1,10 @@
+
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+
 
 export interface Usuario {
   _id: string;
@@ -117,6 +119,7 @@ export class AuthService {
    * CA4: Verifica tanto localStorage como sessionStorage
    */
   private checkStoredToken(): void {
+
     if (isPlatformBrowser(this.platformId)) {
       const token = this.getToken();
       const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
@@ -130,6 +133,38 @@ export class AuthService {
           // Error al parsear el usuario, limpiar storage
           this.logout();
         }
+
+    const token = this.getToken();
+    if (token) {
+      // Validar que el token no esté expirado antes de hacer la verificación
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const currentTime = Math.floor(Date.now() / 1000);
+        
+        if (payload.exp && payload.exp > currentTime) {
+          // Token no expirado, intentar verificar
+          this.verifyToken().subscribe({
+            next: (response) => {
+              if (response && response.usuario) {
+                this.isAuthenticatedSubject.next(true);
+                this.currentUserSubject.next(response.usuario);
+              } else {
+                this.logout();
+              }
+            },
+            error: (error) => {
+              console.warn('Token verification failed:', error);
+              this.logout();
+            }
+          });
+        } else {
+          // Token expirado
+          this.logout();
+        }
+      } catch (error) {
+        console.warn('Invalid token format:', error);
+        this.logout();
+
       }
     }
   }
@@ -161,11 +196,13 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(response.usuario);
         }),
+
         catchError(error => {
           console.error('Login error:', error);
           // No interceptar el error, dejarlo pasar al componente
           throw error;
         })
+
       );
   }
 
@@ -244,7 +281,15 @@ export class AuthService {
     const headers = this.getAuthHeaders();
     return this.http.get<{ usuario: Usuario }>(`${this.API_URL}/verify`, { headers })
       .pipe(
+
         catchError(this.handleError<{ usuario: Usuario }>('verifyToken'))
+
+        catchError((error) => {
+          console.warn('Token verification endpoint not available:', error);
+          // En lugar de fallar, devolver un observable vacío que cause logout
+          return of(null as any);
+        })
+
       );
   }
 
@@ -365,4 +410,4 @@ export class AuthService {
       return of(result as T);
     };
   }
-}
+

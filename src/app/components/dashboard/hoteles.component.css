@@ -1,3 +1,4 @@
+
 .hoteles-container {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
   min-height: calc(100vh - 70px);
@@ -47,12 +48,16 @@
 .hoteles-title h1 {
   font-size: 2rem;
   font-weight: 800;
+
   color: #2d3748;
+
   margin: 0;
 }
 .hoteles-title p {
   font-size: 1rem;
+
   color: #718096;
+
   margin: 0;
 }
 .icon-hoteles {
@@ -83,7 +88,9 @@
 }
 .metric-icon {
   font-size: 2.2rem;
+
   color: #0A3161;
+
   background: #fff;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(67,206,162,0.10);
@@ -96,7 +103,9 @@
 .metric-value {
   font-size: 1.7rem;
   font-weight: 700;
+
   color: #2d3748;
+
 }
 .metric-label {
   font-size: 1rem;
@@ -105,10 +114,12 @@
 .modal-backdrop {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
+
   background: rgba(0,0,0,0.5);
   z-index: 1000;
   backdrop-filter: blur(5px);
 }
+
 
 .modal {
   position: fixed;
@@ -237,6 +248,7 @@
 .modal-actions button {
   padding: 0.8rem 2rem;
   border-radius: 12px;
+
   border: none;
   font-weight: 600;
   font-size: 1rem;
@@ -323,7 +335,6 @@
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 2rem;
 }
-
 .hotel-card {
   background: #fff;
   border-radius: 18px;
@@ -366,9 +377,11 @@
   padding: 0.3rem 1rem;
   border-radius: 8px;
   font-weight: 600;
+
   white-space: nowrap;
   flex-shrink: 0;
 }
+
 
 .hotel-estado.inactivo {
   background: #e2e8f0;
@@ -376,9 +389,11 @@
   padding: 0.3rem 1rem;
   border-radius: 8px;
   font-weight: 600;
+
   white-space: nowrap;
   flex-shrink: 0;
 }
+
 
 .hotel-card-body {
   display: flex;
@@ -421,10 +436,12 @@
   border: none;
   font-weight: 600;
   font-size: 0.85rem;
+
   cursor: pointer;
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   transition: all 0.2s;
+
   flex: 1;
   min-width: calc(50% - 0.25rem);
   text-align: center;
@@ -432,6 +449,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 .hotel-actions button.btn-inactivo {
   background: linear-gradient(135deg, #e2e8f0, #ff6a6a);
@@ -461,7 +479,6 @@
   color: #185a9d;
   margin-top: 2rem;
 }
-
 /* Responsive Design */
 @media (max-width: 1200px) {
   .hoteles-list {
@@ -682,3 +699,4 @@
     min-width: auto;
   }
 }
+

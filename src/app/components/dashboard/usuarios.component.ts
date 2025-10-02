@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Usuario, UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -85,6 +89,7 @@ import { CommonModule } from '@angular/common';
             </div>
           </div>
           <div class="col-md-3">
+
             <div class="stat-card stat-warning">
               <div class="stat-icon">
                 <i class="fas fa-user-tie"></i>
@@ -137,6 +142,7 @@ import { CommonModule } from '@angular/common';
                   <th>Tipo</th>
                   <th>Empresa</th>
                   <th>Estado</th>
+
                   <th>Último Acceso</th>
                   <th>Acciones</th>
                 </tr>
@@ -153,7 +159,8 @@ import { CommonModule } from '@angular/common';
                       </div>
                       <div class="user-details">
                         <div class="user-name">{{ usuario.nombre }}</div>
-                        <div class="user-id">#{{ usuario.id }}</div>
+                        <div class="user-id">#{{ usuario._id }}</div>
+
                       </div>
                     </div>
                   </td>
@@ -172,14 +179,19 @@ import { CommonModule } from '@angular/common';
                     </span>
                   </td>
                   <td>
-                    <span class="empresa-badge" *ngIf="usuario.empresa; else noEmpresa">
-                      <i class="fas fa-building me-1"></i>
-                      {{ usuario.empresa }}
-                    </span>
-                    <ng-template #noEmpresa>
-                      <span class="text-muted">-</span>
-                    </ng-template>
+
+                    <ng-container *ngIf="usuario.empresa && usuario.empresa !== '-' && usuario.empresa.trim() !== ''">
+                      <span class="empresa-badge">
+                        <i class="fas fa-building me-1"></i>
+                        {{ usuario.empresa }}
+                      </span>
+                    </ng-container>
+                    <ng-container *ngIf="!usuario.empresa || usuario.empresa === '-' || usuario.empresa.trim() === ''">
+                      <span class="text-muted">No es una Empresa</span>
+                    </ng-container>
                   </td>
+                  <!--
+
                   <td>
                     <span class="status-badge" 
                           [ngClass]="usuario.activo ? 'status-active' : 'status-inactive'">
@@ -187,10 +199,12 @@ import { CommonModule } from '@angular/common';
                       {{ usuario.activo ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
+
                   <td>
                     <span class="text-muted">
                       <i class="fas fa-clock me-1"></i>
-                      {{ usuario.ultimoAcceso || 'Nunca' }}
+                      {{ usuario.updatedAt ? (usuario.updatedAt | date:'short') : 'Nunca' }}
+
                     </span>
                   </td>
                   <td>
@@ -690,44 +704,29 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class UsuariosComponent {
-  usuarios = [
-    {
-      id: 1,
-      nombre: 'Juan Pérez',
-      email: 'juan@hotel.com',
-      tipo: 'admin_central',
-      empresa: null,
-      activo: true,
-      ultimoAcceso: '2 horas'
-    },
-    {
-      id: 2,
-      nombre: 'María García',
-      email: 'maria@hotel.com',
-      tipo: 'admin_hotel',
-      empresa: 'Hotel Central',
-      activo: true,
-      ultimoAcceso: '1 día'
-    },
-    {
-      id: 3,
-      nombre: 'Carlos López',
-      email: 'carlos@empresa.com',
-      tipo: 'empresa',
-      empresa: 'Eventos Corp',
-      activo: true,
-      ultimoAcceso: '3 días'
-    },
-    {
-      id: 4,
-      nombre: 'Ana Martínez',
-      email: 'ana@email.com',
-      tipo: 'cliente',
-      empresa: null,
-      activo: false,
-      ultimoAcceso: '1 semana'
-    }
-  ];
+
+  usuarios: Usuario[] = [];
+  modalVisible = false;
+  modalUsuario: any = null;
+  modalModo: 'ver' | 'editar' | 'eliminar' = 'ver';
+  mostrarPassword = false;
+
+  constructor(private usuarioService: UsuarioService) {
+    this.cargarUsuarios();
+  }
+
+  cargarUsuarios() {
+    this.usuarioService.getUsuarios().subscribe(
+      (data) => {
+        this.usuarios = data;
+      },
+      (error) => {
+        // Puedes mostrar un mensaje de error aquí si quieres
+        this.usuarios = [];
+      }
+    );
+  }
+
 
   getBadgeClass(tipo: string): string {
     switch (tipo) {
@@ -760,7 +759,9 @@ export class UsuariosComponent {
   }
 
   getUsuariosActivos(): number {
+
     return this.usuarios.filter(u => u.activo).length;
+
   }
 
   getAdministradores(): number {
@@ -771,8 +772,9 @@ export class UsuariosComponent {
     return this.usuarios.filter(u => u.tipo === 'empresa').length;
   }
 
-  trackByUser(index: number, usuario: any): number {
-    return usuario.id;
+  trackByUser(index: number, usuario: any): string {
+    return usuario._id;
+
   }
 
   agregarUsuario(): void {
@@ -781,17 +783,56 @@ export class UsuariosComponent {
   }
 
   verUsuario(usuario: any): void {
-    console.log('Ver usuario:', usuario);
-    // Implementar lógica para ver detalles del usuario
+
+    this.modalUsuario = { ...usuario };
+    this.modalModo = 'ver';
+    this.mostrarPassword = false;
+    this.modalVisible = true;
   }
 
   editarUsuario(usuario: any): void {
-    console.log('Editar usuario:', usuario);
-    // Implementar lógica para editar usuario
+    this.modalUsuario = { ...usuario };
+    this.modalModo = 'editar';
+    this.modalVisible = true;
+  }
+
+  guardarEdicionUsuario(): void {
+    this.usuarioService.updateUsuario(this.modalUsuario._id, this.modalUsuario).subscribe(
+      (data) => {
+          this.cargarUsuarios();
+          this.cerrarModal();
+          location.reload();
+      },
+      (error) => {
+        alert('Error al guardar usuario');
+      }
+    );
   }
 
   eliminarUsuario(usuario: any): void {
-    console.log('Eliminar usuario:', usuario);
-    // Implementar lógica para eliminar usuario
+    this.modalUsuario = { ...usuario };
+    this.modalModo = 'eliminar';
+    this.modalVisible = true;
   }
+
+  confirmarEliminarUsuario(): void {
+    this.usuarioService.deleteUsuario(this.modalUsuario._id).subscribe(
+      (data) => {
+          this.cargarUsuarios();
+          this.cerrarModal();
+          location.reload();
+      },
+      (error) => {
+        alert('Error al eliminar usuario');
+      }
+    );
+  }
+
+  cerrarModal(): void {
+    this.modalVisible = false;
+    this.modalUsuario = null;
+    this.modalModo = 'ver';
+    this.mostrarPassword = false;
+  }
+
 }

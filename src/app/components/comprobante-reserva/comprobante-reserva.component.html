@@ -1,1 +1,41 @@
-<p>comprobante-reserva works!</p>
+<div *ngIf="cargando" class="comprobante-loading">Cargando comprobante...</div>
+<div *ngIf="error && !cargando" class="comprobante-error">{{ error }}</div>
+
+<div *ngIf="comprobante && !cargando" class="comprobante-container">
+	<h2>Comprobante de Reserva</h2>
+	<div class="comprobante-section">
+		<div><strong>Código:</strong> {{ comprobante.reserva.codigo }}</div>
+		<div><strong>Estado:</strong> {{ comprobante.reserva.estado }}</div>
+		<div><strong>Fecha de creación:</strong> {{ comprobante.reserva.fechaCreacion | date:'medium' }}</div>
+	</div>
+	<div class="comprobante-section">
+		<div><strong>Hotel:</strong> {{ comprobante.hotel.nombre }}</div>
+		<div><strong>Ciudad:</strong> {{ comprobante.hotel.ciudad }}</div>
+		<div><strong>Dirección:</strong> {{ comprobante.hotel.direccion }}</div>
+		<div><strong>Teléfono:</strong> {{ comprobante.hotel.telefono }}</div>
+		<div><strong>Email:</strong> {{ comprobante.hotel.email }}</div>
+	</div>
+	<div class="comprobante-section">
+		<div><strong>Habitación:</strong> {{ comprobante.habitacion.numero }}</div>
+		<div><strong>Tipo:</strong> {{ comprobante.habitacion.tipo }}</div>
+		<div><strong>Capacidad:</strong> {{ comprobante.habitacion.capacidad }}</div>
+		<div><strong>Servicios:</strong> {{ comprobante.habitacion.servicios.join(', ') }}</div>
+	</div>
+	<div class="comprobante-section">
+		<div><strong>Huésped:</strong> {{ comprobante.huesped.nombre }}</div>
+		<div><strong>Email:</strong> {{ comprobante.huesped.email }}</div>
+		<div><strong>Teléfono:</strong> {{ comprobante.huesped.telefono }}</div>
+		<div><strong>Documento:</strong> {{ comprobante.huesped.documento }}</div>
+	</div>
+	<div class="comprobante-section">
+		<div><strong>Fechas:</strong> {{ comprobante.fechas.inicio | date:'shortDate' }} - {{ comprobante.fechas.fin | date:'shortDate' }}</div>
+		<div><strong>Noches:</strong> {{ comprobante.fechas.noches }}</div>
+	</div>
+	<div class="comprobante-section">
+		<div><strong>Precio por noche:</strong> {{ comprobante.tarifa.precioPorNoche | currency:comprobante.tarifa.moneda }}</div>
+		<div><strong>Subtotal:</strong> {{ comprobante.tarifa.subtotal | currency:comprobante.tarifa.moneda }}</div>
+		<div><strong>Impuestos:</strong> {{ comprobante.tarifa.impuestos | currency:comprobante.tarifa.moneda }}</div>
+		<div><strong>Total:</strong> {{ comprobante.tarifa.total | currency:comprobante.tarifa.moneda }}</div>
+		<div><strong>Huéspedes:</strong> {{ comprobante.huespedes }}</div>
+	</div>
+</div>
