@@ -13,10 +13,10 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
   template: `
     <div class="navigation-header">
       <button (click)="irAInicio()" class="btn-home-nav">
-        🏠 Inicio
+        <i class="fas fa-home"></i> Inicio
       </button>
       <button (click)="irADashboard()" class="btn-dashboard-nav">
-        📊 Dashboard
+        <i class="fas fa-chart-bar"></i> Dashboard
       </button>
     </div>
 
@@ -36,7 +36,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <!-- Ciudad (Opcional) -->
             <div class="form-group">
               <label for="ciudad">
-                <span class="label-icon">🌆</span>
+                <span class="label-icon"><i class="fas fa-city"></i></span>
                 Ciudad
               </label>
               <select 
@@ -134,13 +134,13 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
 
           <!-- CA2: Error de Fechas -->
           <div class="error-message" *ngIf="errorFechas">
-            <span class="error-icon">⚠️</span>
+            <span class="error-icon"><i class="fas fa-exclamation-triangle"></i></span>
             <p>{{ errorFechas }}</p>
           </div>
 
           <!-- CA4: Error de Huéspedes -->
           <div class="error-message" *ngIf="errorHuespedes">
-            <span class="error-icon">⚠️</span>
+            <span class="error-icon"><i class="fas fa-exclamation-triangle"></i></span>
             <p>{{ errorHuespedes }}</p>
           </div>
 
@@ -163,7 +163,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
               (click)="limpiarFiltros()"
               [disabled]="isLoading"
             >
-              🗑️ Limpiar
+              <i class="fas fa-trash"></i> Limpiar
             </button>
           </div>
         </form>
@@ -172,7 +172,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
       <!-- HU06: Filtros por Servicios Adicionales -->
       <div class="filtros-servicios" *ngIf="!isLoading">
         <h2>
-          ✨ Servicios Adicionales
+          <i class="fas fa-star"></i> Servicios Adicionales
           <span class="badge-servicios" *ngIf="serviciosSeleccionados.length > 0">
             {{ serviciosSeleccionados.length }} seleccionado{{ serviciosSeleccionados.length !== 1 ? 's' : '' }}
           </span>
@@ -196,7 +196,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             />
             <span class="checkbox-custom"></span>
             <span class="servicio-info">
-              <span class="servicio-icono">{{ servicio.icono }}</span>
+              <i [ngClass]="['servicio-icono', 'fas', servicio.icono]"></i>
               <span class="servicio-texto">
                 <strong>{{ servicio.nombre }}</strong>
                 <small>{{ servicio.descripcion }}</small>
@@ -208,10 +208,10 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
         <!-- HU06 CA2: Botón para limpiar solo servicios -->
         <div class="servicios-actions" *ngIf="serviciosSeleccionados.length > 0">
           <button class="btn-limpiar-servicios" (click)="limpiarServicios()">
-            🗑️ Quitar todos los filtros de servicios
+            <i class="fas fa-trash"></i> Quitar todos los filtros de servicios
           </button>
           <button class="btn-aplicar-servicios" (click)="aplicarFiltrosServicios()">
-            ✅ Aplicar filtros ({{ serviciosSeleccionados.length }})
+            <i class="fas fa-check"></i> Aplicar filtros ({{ serviciosSeleccionados.length }})
           </button>
         </div>
       </div>
@@ -236,13 +236,13 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
           <h3>Filtros Aplicados:</h3>
           <div class="tags">
             <span class="tag" *ngIf="filtrosAplicados?.ciudad && filtrosAplicados.ciudad !== 'Todas'">
-              📍 {{ filtrosAplicados.ciudad }}
+              <i class="fas fa-map-marker-alt"></i> {{ filtrosAplicados.ciudad }}
             </span>
             <span class="tag">
-              📅 {{ formatearFecha(filtrosAplicados?.fechaInicio || '') }} - {{ formatearFecha(filtrosAplicados?.fechaFin || '') }}
+              <i class="fas fa-calendar-alt"></i> {{ formatearFecha(filtrosAplicados?.fechaInicio || '') }} - {{ formatearFecha(filtrosAplicados?.fechaFin || '') }}
             </span>
             <span class="tag">
-              👥 {{ filtrosAplicados?.huespedes }} huésped{{ (filtrosAplicados?.huespedes || 0) > 1 ? 'es' : '' }}
+              <i class="fas fa-users"></i> {{ filtrosAplicados?.huespedes }} huésped{{ (filtrosAplicados?.huespedes || 0) > 1 ? 'es' : '' }}
             </span>
             <!-- HU06: Mostrar servicios aplicados -->
             <span 
@@ -250,14 +250,14 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
               *ngFor="let servicio of filtrosAplicados?.servicios"
               style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: #667eea;"
             >
-              ✨ {{ servicio }}
+              <i class="fas fa-star"></i> {{ servicio }}
             </span>
           </div>
         </div>
 
         <!-- HU05 CA3 + HU06 CA3: Sin Resultados -->
         <div class="sin-resultados" *ngIf="habitaciones.length === 0">
-          <div class="icono-vacio">🏨</div>
+          <div class="icono-vacio"><i class="fas fa-hotel fa-3x"></i></div>
           <h3>No hay habitaciones disponibles con esos criterios</h3>
           <p>Intenta ajustar tus filtros de búsqueda:</p>
           <ul>
@@ -277,7 +277,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
               (click)="limpiarFiltros()"
               *ngIf="serviciosSeleccionados.length > 0"
             >
-              🗑️ Limpiar Todo
+              <i class="fas fa-trash"></i> Limpiar Todo
             </button>
           </div>
         </div>
@@ -300,7 +300,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             <div class="habitacion-info">
               <h3>{{ habitacion.hotel.nombre }}</h3>
               <p class="hotel-ubicacion">
-                📍 {{ habitacion.hotel.ciudad }} - {{ habitacion.hotel.direccion }}
+                <i class="fas fa-map-marker-alt"></i> {{ habitacion.hotel.ciudad }} - {{ habitacion.hotel.direccion }}
               </p>
               
               <div class="habitacion-detalles">
@@ -309,11 +309,11 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
                 
                 <div class="caracteristicas">
                   <span class="caracteristica">
-                    <span class="icon">👥</span>
+                    <span class="icon"><i class="fas fa-users"></i></span>
                     Hasta {{ habitacion.capacidad }} personas
                   </span>
                   <span class="caracteristica">
-                    <span class="icon">💰</span>
+                    <span class="icon"><i class="fas fa-dollar-sign"></i></span>
                     {{ formatearPrecio(habitacion.precio) }}
                   </span>
                 </div>
@@ -341,10 +341,10 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
               <!-- Acciones -->
               <div class="habitacion-acciones">
                 <button class="btn-reservar" (click)="reservar(habitacion)">
-                  ✅ Reservar Ahora
+                  <i class="fas fa-check"></i> Reservar Ahora
                 </button>
                 <button class="btn-ver-mas" (click)="verDetalles(habitacion)">
-                  👁️ Ver Detalles
+                  <i class="fas fa-eye"></i> Ver Detalles
                 </button>
               </div>
             </div>
@@ -354,10 +354,10 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
 
       <!-- Error General -->
       <div class="error-general" *ngIf="errorGeneral">
-        <span class="error-icon">❌</span>
+        <span class="error-icon"><i class="fas fa-times-circle fa-3x"></i></span>
         <p>{{ errorGeneral }}</p>
         <button class="btn-reintentar" (click)="buscar()">
-          🔄 Reintentar
+          <i class="fas fa-redo"></i> Reintentar
         </button>
       </div>
     </div>
@@ -884,9 +884,9 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
     }
 
     .icono-vacio {
-      font-size: 80px;
+      color: #ccc;
       margin-bottom: 20px;
-      opacity: 0.3;
+      opacity: 0.6;
     }
 
     .sin-resultados h3 {
@@ -982,7 +982,14 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
     }
 
     .habitacion-imagen::after {
-      content: "🏨";
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      content: "\\f594";
       font-size: 64px;
       opacity: 0.3;
     }

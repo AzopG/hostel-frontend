@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -8,7 +7,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   template: `
     <div class="usuarios-container">
       <!-- Header moderno -->
@@ -32,14 +31,14 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 
       <!-- Filtros y búsqueda -->
       <div class="filters-section">
-        <div class="row g-3">
-          <div class="col-md-4">
+        <div class="filters-row">
+          <div class="search-container">
             <div class="search-box">
               <i class="fas fa-search search-icon"></i>
               <input type="text" class="form-control search-input" placeholder="Buscar usuarios...">
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="filter-container">
             <select class="form-select filter-select">
               <option value="">Todos los tipos</option>
               <option value="admin_central">Admin Central</option>
@@ -48,15 +47,15 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               <option value="cliente">Cliente</option>
             </select>
           </div>
-          <div class="col-md-3">
+          <div class="filter-container">
             <select class="form-select filter-select">
               <option value="">Todos los estados</option>
               <option value="activo">Activos</option>
               <option value="inactivo">Inactivos</option>
             </select>
           </div>
-          <div class="col-md-2">
-            <button class="btn btn-outline-secondary w-100">
+          <div class="action-container">
+            <button class="btn btn-filter">
               <i class="fas fa-filter me-2"></i>Filtrar
             </button>
           </div>
@@ -65,50 +64,41 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 
       <!-- Estadísticas rápidas -->
       <div class="stats-section">
-        <div class="row g-3">
-          <div class="col-md-3">
-            <div class="stat-card stat-primary">
-              <div class="stat-icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ usuarios.length }}</h3>
-                <p class="stat-label">Total Usuarios</p>
-              </div>
+        <div class="stats-row">
+          <div class="stat-card stat-primary">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ usuarios.length }}</h3>
+              <p class="stat-label">Total Usuarios</p>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="stat-card stat-success">
-              <div class="stat-icon">
-                <i class="fas fa-user-check"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ getUsuariosActivos() }}</h3>
-                <p class="stat-label">Usuarios Activos</p>
-              </div>
+          <div class="stat-card stat-success">
+            <div class="stat-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ getUsuariosActivos() }}</h3>
+              <p class="stat-label">Usuarios Activos</p>
             </div>
           </div>
-          <div class="col-md-3">
-
-            <div class="stat-card stat-warning">
-              <div class="stat-icon">
-                <i class="fas fa-user-tie"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ getAdministradores() }}</h3>
-                <p class="stat-label">Administradores</p>
-              </div>
+          <div class="stat-card stat-warning">
+            <div class="stat-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ getAdministradores() }}</h3>
+              <p class="stat-label">Administradores</p>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="stat-card stat-info">
-              <div class="stat-icon">
-                <i class="fas fa-building"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ getEmpresas() }}</h3>
-                <p class="stat-label">Empresas</p>
-              </div>
+          <div class="stat-card stat-info">
+            <div class="stat-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ getEmpresas() }}</h3>
+              <p class="stat-label">Empresas</p>
             </div>
           </div>
         </div>
@@ -122,10 +112,10 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               <i class="fas fa-list me-2"></i>Lista de Usuarios
             </h5>
             <div class="card-actions">
-              <button class="btn btn-sm btn-outline-primary me-2">
+              <button class="btn btn-export">
                 <i class="fas fa-download me-1"></i>Exportar
               </button>
-              <button class="btn btn-sm btn-outline-secondary">
+              <button class="btn btn-refresh">
                 <i class="fas fa-sync me-1"></i>Actualizar
               </button>
             </div>
@@ -179,32 +169,32 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                     </span>
                   </td>
                   <td>
-                    <ng-container *ngIf="usuario.tipo === 'empresa'">
-                      <div class="empresa-info">
-                        <div class="empresa-nombre">
-                          <i class="fas fa-building me-1"></i>
-                          {{ usuario.razonSocial || usuario.empresa || 'Empresa' }}
-                        </div>
-                        <div class="empresa-nit" *ngIf="usuario.nit">
-                          <small class="text-muted">NIT: {{ formatearNIT(usuario.nit) }}</small>
-                        </div>
-                      </div>
+
+                    <ng-container *ngIf="usuario.empresa && usuario.empresa !== '-' && usuario.empresa.trim() !== ''">
+                      <span class="empresa-badge">
+                        <i class="fas fa-building me-1"></i>
+                        {{ usuario.empresa }}
+                      </span>
                     </ng-container>
-                    <ng-container *ngIf="usuario.tipo !== 'empresa'">
-                      <span class="text-muted">-</span>
+                    <ng-container *ngIf="!usuario.empresa || usuario.empresa === '-' || usuario.empresa.trim() === ''">
+                      <span class="text-muted">No es una Empresa</span>
                     </ng-container>
                   </td>
+                  <!--
+
                   <td>
                     <span class="status-badge" 
-                          [ngClass]="usuario.activo !== false ? 'status-active' : 'status-inactive'">
-                      <i [class]="usuario.activo !== false ? 'fas fa-circle' : 'fas fa-circle'" class="status-dot me-1"></i>
-                      {{ usuario.activo !== false ? 'Activo' : 'Inactivo' }}
+                          [ngClass]="usuario.activo ? 'status-active' : 'status-inactive'">
+                      <i [class]="usuario.activo ? 'fas fa-circle' : 'fas fa-circle'" class="status-dot me-1"></i>
+                      {{ usuario.activo ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
+
                   <td>
                     <span class="text-muted">
                       <i class="fas fa-clock me-1"></i>
                       {{ usuario.updatedAt ? (usuario.updatedAt | date:'short') : 'Nunca' }}
+
                     </span>
                   </td>
                   <td>
@@ -237,173 +227,9 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               Mostrando 1-4 de 4 usuarios
             </div>
             <nav aria-label="Paginación de usuarios">
-              <ul class="pagination pagination-modern">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">
-                    <i class="fas fa-chevron-left"></i>
-                  </a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item disabled">
-                  <a class="page-link" href="#">
-                    <i class="fas fa-chevron-right"></i>
-                  </a>
-                </li>
-              </ul>
+              <!-- Paginación eliminada -->
             </nav>
           </div>
-        </div>
-      </div>
-
-      <!-- Modal para ver/editar/eliminar usuario -->
-      <div class="modal-overlay" *ngIf="modalVisible" (click)="cerrarModal()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-          <div class="modal-header">
-            <h3 class="modal-title">
-              <i *ngIf="modalModo === 'ver'" class="fas fa-eye me-2"></i>
-              <i *ngIf="modalModo === 'editar'" class="fas fa-edit me-2"></i>
-              <i *ngIf="modalModo === 'eliminar'" class="fas fa-trash me-2"></i>
-              {{ modalModo === 'ver' ? 'Ver Usuario' : modalModo === 'editar' ? 'Editar Usuario' : 'Eliminar Usuario' }}
-            </h3>
-            <button class="btn-close" (click)="cerrarModal()">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-
-          <div class="modal-body" *ngIf="modalUsuario">
-            <!-- Modo Ver -->
-            <div *ngIf="modalModo === 'ver'" class="user-details">
-              <div class="detail-grid">
-                <div class="detail-item">
-                  <label>Nombre:</label>
-                  <span>{{ modalUsuario.nombre }}</span>
-                </div>
-                <div class="detail-item">
-                  <label>Email:</label>
-                  <span>{{ modalUsuario.email }}</span>
-                </div>
-                <div class="detail-item">
-                  <label>Tipo:</label>
-                  <span class="badge-modern" [ngClass]="getBadgeClass(modalUsuario.tipo)">
-                    {{ getTipoLabel(modalUsuario.tipo) }}
-                  </span>
-                </div>
-                
-                <!-- HU13: Información adicional para empresas -->
-                <ng-container *ngIf="modalUsuario.tipo === 'empresa'">
-                  <div class="detail-item" *ngIf="modalUsuario.razonSocial">
-                    <label>Razón Social:</label>
-                    <span>{{ modalUsuario.razonSocial }}</span>
-                  </div>
-                  <div class="detail-item" *ngIf="modalUsuario.nit">
-                    <label>NIT:</label>
-                    <span>{{ formatearNIT(modalUsuario.nit) }}</span>
-                  </div>
-                  <div class="detail-item" *ngIf="modalUsuario.contactoEmpresa?.nombre">
-                    <label>Contacto:</label>
-                    <span>{{ modalUsuario.contactoEmpresa.nombre }}</span>
-                  </div>
-                  <div class="detail-item" *ngIf="modalUsuario.contactoEmpresa?.cargo">
-                    <label>Cargo:</label>
-                    <span>{{ modalUsuario.contactoEmpresa.cargo }}</span>
-                  </div>
-                  <div class="detail-item" *ngIf="modalUsuario.contactoEmpresa?.telefono">
-                    <label>Teléfono:</label>
-                    <span>{{ modalUsuario.contactoEmpresa.telefono }}</span>
-                  </div>
-                </ng-container>
-                
-                <div class="detail-item" *ngIf="modalUsuario.telefono">
-                  <label>Teléfono:</label>
-                  <span>{{ modalUsuario.telefono }}</span>
-                </div>
-                <div class="detail-item">
-                  <label>Estado:</label>
-                  <span class="status-badge" [ngClass]="modalUsuario.activo !== false ? 'status-active' : 'status-inactive'">
-                    {{ modalUsuario.activo !== false ? 'Activo' : 'Inactivo' }}
-                  </span>
-                </div>
-                <div class="detail-item" *ngIf="modalUsuario.createdAt">
-                  <label>Registrado:</label>
-                  <span>{{ modalUsuario.createdAt | date:'medium' }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Modo Editar -->
-            <div *ngIf="modalModo === 'editar'" class="edit-form">
-              <div class="form-group">
-                <label>Nombre:</label>
-                <input type="text" [(ngModel)]="modalUsuario.nombre" class="form-control">
-              </div>
-              <div class="form-group">
-                <label>Email:</label>
-                <input type="email" [(ngModel)]="modalUsuario.email" class="form-control">
-              </div>
-              <div class="form-group">
-                <label>Tipo:</label>
-                <select [(ngModel)]="modalUsuario.tipo" class="form-control">
-                  <option value="cliente">Cliente</option>
-                  <option value="empresa">Empresa</option>
-                  <option value="admin_hotel">Admin Hotel</option>
-                  <option value="admin_central">Admin Central</option>
-                </select>
-              </div>
-              
-              <!-- HU13: Campos adicionales para empresas -->
-              <ng-container *ngIf="modalUsuario.tipo === 'empresa'">
-                <div class="form-group">
-                  <label>Razón Social:</label>
-                  <input type="text" [(ngModel)]="modalUsuario.razonSocial" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label>NIT:</label>
-                  <input type="text" [(ngModel)]="modalUsuario.nit" class="form-control">
-                </div>
-              </ng-container>
-              
-              <div class="form-group" *ngIf="modalUsuario.tipo === 'empresa'">
-                <label>Empresa:</label>
-                <input type="text" [(ngModel)]="modalUsuario.empresa" class="form-control">
-              </div>
-              <div class="form-group">
-                <label>Teléfono:</label>
-                <input type="text" [(ngModel)]="modalUsuario.telefono" class="form-control">
-              </div>
-            </div>
-
-            <!-- Modo Eliminar -->
-            <div *ngIf="modalModo === 'eliminar'" class="delete-confirmation">
-              <div class="warning-icon">
-                <i class="fas fa-exclamation-triangle"></i>
-              </div>
-              <p class="warning-text">
-                ¿Está seguro que desea eliminar al usuario <strong>{{ modalUsuario.nombre }}</strong>?
-              </p>
-              <p class="warning-subtitle">
-                Esta acción no se puede deshacer.
-              </p>
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <button *ngIf="modalModo === 'ver'" class="btn btn-secondary" (click)="cerrarModal()">
-              Cerrar
-            </button>
-            <div *ngIf="modalModo === 'editar'">
-              <button class="btn btn-secondary me-2" (click)="cerrarModal()">Cancelar</button>
-              <button class="btn btn-primary" (click)="guardarEdicionUsuario()">Guardar</button>
-            </div>
-            <div *ngIf="modalModo === 'eliminar'">
-              <button class="btn btn-secondary me-2" (click)="cerrarModal()">Cancelar</button>
-              <button class="btn btn-danger" (click)="confirmarEliminarUsuario()">Eliminar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   `,
   styles: [`
     .usuarios-container {
@@ -474,8 +300,30 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
+    .filters-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .search-container {
+      flex: 2;
+      min-width: 250px;
+    }
+
+    .filter-container {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .action-container {
+      flex-shrink: 0;
+    }
+
     .search-box {
       position: relative;
+      width: 100%;
     }
 
     .search-input {
@@ -485,11 +333,13 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       height: 48px;
       font-size: 1rem;
       transition: all 0.3s ease;
+      width: 100%;
     }
 
     .search-input:focus {
       border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      outline: none;
     }
 
     .search-icon {
@@ -499,6 +349,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       transform: translateY(-50%);
       color: #a0aec0;
       z-index: 10;
+      font-size: 1rem;
     }
 
     .filter-select {
@@ -506,20 +357,66 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       border: 2px solid #e2e8f0;
       height: 48px;
       font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+      width: 100%;
+    }
+
+    .filter-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      outline: none;
+    }
+
+    .btn-filter {
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      border: 2px solid #667eea;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn-filter:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      border-color: #5a67d8;
     }
 
     .stats-section {
       margin-bottom: 2rem;
     }
 
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
     .stat-card {
       background: white;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      text-align: center;
+      width: calc(25% - 0.75rem);
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
     }
 
     .stat-card::before {
@@ -528,13 +425,13 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 3px;
       background: linear-gradient(90deg, var(--stat-color), var(--stat-color-light));
     }
 
     .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
 
     .stat-primary {
@@ -558,19 +455,19 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
     }
 
     .stat-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: var(--stat-color);
       background: linear-gradient(135deg, var(--stat-color), var(--stat-color-light));
       background-size: 200% 200%;
       animation: gradientShift 3s ease infinite;
       color: white;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
 
     @keyframes gradientShift {
@@ -580,17 +477,20 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
     }
 
     .stat-number {
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 700;
       margin: 0;
       color: #2d3748;
+      line-height: 1;
     }
 
     .stat-label {
       color: #718096;
-      font-size: 1rem;
+      font-size: 0.9rem;
       margin: 0;
       font-weight: 500;
+      margin-top: 0.3rem;
+      line-height: 1.2;
     }
 
     .table-section {
@@ -620,6 +520,62 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       margin: 0;
       display: flex;
       align-items: center;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn-export {
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      border: 2px solid #48bb78;
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: white;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 12px rgba(72, 187, 120, 0.3);
+    }
+
+    .btn-export:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+      background: linear-gradient(135deg, #38a169, #2f855a);
+      border-color: #38a169;
+    }
+
+    .btn-refresh {
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      border: 2px solid #667eea;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-refresh:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      background: linear-gradient(135deg, #5a67d8, #553c9a);
+      border-color: #5a67d8;
+    }
+
+    .btn-export:active,
+    .btn-refresh:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .table-modern {
@@ -720,22 +676,6 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       font-size: 0.875rem;
     }
 
-    .empresa-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .empresa-nombre {
-      color: #4a5568;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-
-    .empresa-nit {
-      font-size: 0.75rem;
-    }
-
     .status-badge {
       padding: 0.5rem 1rem;
       border-radius: 20px;
@@ -820,31 +760,6 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       font-size: 0.875rem;
     }
 
-    .pagination-modern {
-      margin: 0;
-    }
-
-    .pagination-modern .page-link {
-      border: none;
-      padding: 0.5rem 1rem;
-      margin: 0 0.25rem;
-      border-radius: 8px;
-      color: #4a5568;
-      background: transparent;
-      transition: all 0.3s ease;
-    }
-
-    .pagination-modern .page-item.active .page-link {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .pagination-modern .page-link:hover {
-      background: rgba(102, 126, 234, 0.1);
-      transform: translateY(-1px);
-    }
-
     @media (max-width: 768px) {
       .header-content {
         flex-direction: column;
@@ -856,6 +771,53 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
         font-size: 2rem;
       }
 
+      .usuarios-container {
+        padding: 1rem;
+      }
+
+      .filters-row {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: stretch;
+      }
+
+      .search-container,
+      .filter-container,
+      .action-container {
+        flex: none;
+        width: 100%;
+        min-width: auto;
+      }
+
+      .filters-section {
+        padding: 1rem;
+      }
+
+      .stats-row {
+        gap: 0.5rem;
+      }
+
+      .stat-card {
+        width: calc(25% - 0.375rem);
+        height: 100px;
+        padding: 0.8rem;
+      }
+
+      .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .stat-number {
+        font-size: 1.6rem;
+      }
+
+      .stat-label {
+        font-size: 0.8rem;
+      }
+
       .table-responsive {
         border-radius: 0;
       }
@@ -865,212 +827,63 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       }
     }
 
-    /* Modal Styles */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
+    @media (max-width: 576px) {
+      .filters-section {
+        padding: 0.8rem;
+        margin-bottom: 1.5rem;
+      }
 
-    .modal-content {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-      max-width: 600px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
+      .search-input,
+      .filter-select,
+      .btn-filter {
+        height: 44px;
+        font-size: 0.9rem;
+      }
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2rem;
-      border-bottom: 1px solid #e2e8f0;
-    }
+      .stats-row {
+        gap: 0.3rem;
+      }
 
-    .modal-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #2d3748;
-      margin: 0;
-    }
+      .stat-card {
+        width: calc(25% - 0.225rem);
+        height: 80px;
+        padding: 0.6rem;
+      }
 
-    .btn-close {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: #a0aec0;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
+      .stat-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+      }
 
-    .btn-close:hover {
-      background: #f7fafc;
-      color: #e53e3e;
-    }
+      .stat-number {
+        font-size: 1.3rem;
+      }
 
-    .modal-body {
-      padding: 2rem;
+      .stat-label {
+        font-size: 0.7rem;
+        line-height: 1.1;
+      }
     }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .detail-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .detail-item label {
-      font-weight: 600;
-      color: #4a5568;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .detail-item span {
-      color: #2d3748;
-      font-size: 1rem;
-    }
-
-    .edit-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .form-group label {
-      font-weight: 600;
-      color: #4a5568;
-      font-size: 0.875rem;
-    }
-
-    .form-control {
-      padding: 0.75rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s ease;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .delete-confirmation {
-      text-align: center;
-      padding: 2rem 0;
-    }
-
-    .warning-icon {
-      font-size: 4rem;
-      color: #f56565;
-      margin-bottom: 1rem;
-    }
-
-    .warning-text {
-      font-size: 1.25rem;
-      color: #2d3748;
-      margin-bottom: 0.5rem;
-    }
-
-    .warning-subtitle {
-      color: #718096;
-      font-size: 1rem;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      padding: 2rem;
-      border-top: 1px solid #e2e8f0;
-      background: #f8fafc;
-      border-radius: 0 0 20px 20px;
-    }
-
-    .btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    .btn-secondary {
-      background: #e2e8f0;
-      color: #4a5568;
-    }
-
-    .btn-secondary:hover {
-      background: #cbd5e0;
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #f56565, #e53e3e);
-      color: white;
-    }
-
-    .btn-danger:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(245, 101, 101, 0.3);
-    }
-
+    /* Estilos responsivos */
     @media (max-width: 768px) {
-      .detail-grid {
-        grid-template-columns: 1fr;
+      .btn-export,
+      .btn-refresh {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
       }
 
-      .modal-content {
-        width: 95%;
+      .card-actions {
+        gap: 0.5rem;
       }
+    }
 
-      .modal-header,
-      .modal-body,
-      .modal-footer {
-        padding: 1.5rem;
+    @media (max-width: 576px) {
+      .btn-export,
+      .btn-refresh {
+        padding: 0.45rem 0.8rem;
+        font-size: 0.75rem;
       }
     }
   `]
@@ -1146,26 +959,7 @@ export class UsuariosComponent {
 
   trackByUser(index: number, usuario: any): string {
     return usuario._id;
-  }
 
-  /**
-   * HU13: Formatear NIT para visualización
-   * Ejemplo: 9001234561 → 900.123.456-1
-   */
-  formatearNIT(nit: string): string {
-    if (!nit) return '';
-    
-    const nitStr = nit.toString();
-    
-    if (nitStr.length === 10) {
-      // Formato: XXX.XXX.XXX-X
-      return `${nitStr.slice(0, 3)}.${nitStr.slice(3, 6)}.${nitStr.slice(6, 9)}-${nitStr.slice(9)}`;
-    } else if (nitStr.length === 9) {
-      // Formato: XXX.XXX.XXX
-      return `${nitStr.slice(0, 3)}.${nitStr.slice(3, 6)}.${nitStr.slice(6)}`;
-    }
-    
-    return nitStr;
   }
 
   agregarUsuario(): void {
@@ -1225,5 +1019,4 @@ export class UsuariosComponent {
     this.modalModo = 'ver';
     this.mostrarPassword = false;
   }
-
 }

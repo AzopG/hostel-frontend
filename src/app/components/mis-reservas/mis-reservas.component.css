@@ -1,4 +1,5 @@
-.mis-reservas-container {
+/* Container styles consistent with reportes component */
+.container-fluid {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
   min-height: calc(100vh - 70px);
   margin: 0;
@@ -9,48 +10,51 @@
   right: 0;
   bottom: 0;
   overflow-y: auto;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-/* ========== NAVEGACIÓN HEADER ========== */
-.navigation-header {
+.d-flex.justify-content-between {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+}
+
+.h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-  margin-bottom: 20px;
+}
+
+.btn-success {
+  padding: 12px 24px;
   border-radius: 12px;
-  max-width: 1400px;
-  margin: 0 auto 20px auto;
-}
-
-.btn-home-nav,
-.btn-search-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
   font-weight: 600;
-  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  border: none;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
   transition: all 0.3s ease;
-  text-decoration: none;
-  font-size: 0.95rem;
 }
 
-.btn-home-nav {
-  background: rgba(56, 178, 172, 0.1);
-  color: #38b2ac;
-  border: 2px solid rgba(56, 178, 172, 0.2);
-}
-
-.btn-home-nav:hover {
-  background: #38b2ac;
-  color: white;
+.btn-success:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(56, 178, 172, 0.3);
+  box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+  background: linear-gradient(135deg, #38a169, #2f855a);
+}
+
+.btn-success:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-search-nav {
@@ -68,10 +72,11 @@
 
 /* ==================== CONTENEDOR PRINCIPAL ==================== */
 .mis-reservas-container {
-  max-width: 1400px;
-  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
   padding: 2rem;
-  min-height: 100vh;
+  margin-top: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* ==================== NAVEGACIÓN ==================== */
@@ -999,6 +1004,20 @@
 
 /* Tablet */
 @media (max-width: 768px) {
+  .container-fluid {
+    padding: 1rem;
+  }
+
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .h2 {
+    font-size: 2rem;
+  }
+
   .mis-reservas-container {
     padding: 1rem;
   }
@@ -1051,8 +1070,16 @@
 
 /* Mobile */
 @media (max-width: 480px) {
+  .container-fluid {
+    padding: 0.5rem;
+  }
+
   .mis-reservas-container {
     padding: 0.5rem;
+  }
+
+  .h2 {
+    font-size: 1.5rem;
   }
 
   .header h1 {

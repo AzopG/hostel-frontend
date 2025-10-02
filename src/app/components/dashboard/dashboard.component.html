@@ -3,7 +3,13 @@
   <header class="dashboard-header">
     <div class="header-content">
       <div class="welcome-section">
-        <h1>Bienvenido: {{ getCurrentUserName() }}</h1>
+        <div class="welcome-content">
+          <button class="home-btn" (click)="goToHome()" title="Ir al inicio">
+            <i class="fas fa-arrow-left"></i>
+            <span>Inicio</span>
+          </button>
+          <h1>Bienvenido: {{ getCurrentUserName() }}</h1>
+        </div>
       </div>
       
       <!-- Stats Counters in Header -->

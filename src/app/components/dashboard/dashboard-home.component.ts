@@ -29,21 +29,21 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
         <!-- Cliente Individual -->
         <div *ngSwitchCase="'cliente'" class="actions-grid">
           <div class="action-card" routerLink="/buscar-habitaciones">
-            <div class="card-icon">🔍</div>
+            <div class="card-icon"><i class="fas fa-search"></i></div>
             <h3>Buscar Habitaciones</h3>
             <p>Encuentra la habitación perfecta para tu estadía</p>
             <div class="card-arrow">→</div>
           </div>
           
           <div class="action-card" routerLink="/disponibilidad-ciudad">
-            <div class="card-icon">📊</div>
+            <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
             <h3>Ver Disponibilidad</h3>
             <p>Consulta disponibilidad por ciudad y fechas</p>
             <div class="card-arrow">→</div>
           </div>
           
           <div class="action-card" routerLink="/mis-reservas">
-            <div class="card-icon">📅</div>
+            <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
             <h3>Mis Reservas</h3>
             <p>Gestiona tus reservas existentes</p>
             <div class="card-arrow">→</div>
@@ -53,21 +53,21 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
         <!-- Empresa -->
         <div *ngSwitchCase="'empresa'" class="actions-grid">
           <div class="action-card" routerLink="/busqueda-salones">
-            <div class="card-icon">🏛️</div>
+            <div class="card-icon"><i class="fas fa-building"></i></div>
             <h3>Buscar Salones</h3>
             <p>Encuentra salones para tus eventos corporativos</p>
             <div class="card-arrow">→</div>
           </div>
           
           <div class="action-card" routerLink="/buscar-habitaciones">
-            <div class="card-icon">🛏️</div>
+            <div class="card-icon"><i class="fas fa-bed"></i></div>
             <h3>Habitaciones</h3>
             <p>Reserva habitaciones para tus empleados</p>
             <div class="card-arrow">→</div>
           </div>
           
           <div class="action-card" routerLink="/mis-reservas">
-            <div class="card-icon">📋</div>
+            <div class="card-icon"><i class="fas fa-clipboard-list"></i></div>
             <h3>Mis Reservas</h3>
             <p>Gestiona todas tus reservas empresariales</p>
             <div class="card-arrow">→</div>
@@ -77,14 +77,14 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
         <!-- Admin Hotel -->
         <div *ngSwitchCase="'admin_hotel'" class="actions-grid">
           <div class="action-card" routerLink="/dashboard/habitaciones">
-            <div class="card-icon">🛏️</div>
+            <div class="card-icon"><i class="fas fa-bed"></i></div>
             <h3>Gestionar Habitaciones</h3>
             <p>Administra las habitaciones de tu hotel</p>
             <div class="card-arrow">→</div>
           </div>
           
           <div class="action-card" routerLink="/dashboard/salones">
-            <div class="card-icon">🏛️</div>
+            <div class="card-icon"><i class="fas fa-building"></i></div>
             <h3>Gestionar Salones</h3>
             <p>Administra los salones para eventos</p>
             <div class="card-arrow">→</div>
@@ -98,7 +98,7 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
           </div>
           
           <div class="action-card" routerLink="/dashboard/reservas">
-            <div class="card-icon">📅</div>
+            <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
             <h3>Ver Reservas</h3>
             <p>Consulta todas las reservas del hotel</p>
             <div class="card-arrow">→</div>
@@ -142,7 +142,7 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
 
         <!-- Error message -->
         <div *ngIf="error" class="error-message">
-          <span class="error-icon">⚠️</span>
+          <span class="error-icon"><i class="fas fa-exclamation-triangle"></i></span>
           {{error}}
           <button class="retry-btn" (click)="cargarEstadisticas()">Reintentar</button>
         </div>
@@ -207,7 +207,7 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
 
       <!-- Tips según rol -->
       <div class="tips-section">
-        <h3>💡 Tips útiles</h3>
+        <h3><i class="fas fa-lightbulb me-2"></i>Tips útiles</h3>
         <div class="tips-list" [ngSwitch]="currentUser?.tipo">
           <div *ngSwitchCase="'cliente'">
             <p>• Usa los filtros de búsqueda para encontrar habitaciones con servicios específicos</p>
@@ -314,6 +314,15 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       font-size: 3rem;
       margin-bottom: 1rem;
       filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80px;
+    }
+
+    .card-icon i {
+      color: #2d3748;
+      font-size: 3rem;
     }
 
     .action-card h3 {
@@ -422,6 +431,12 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       font-weight: 700;
       font-family: 'Playfair Display', serif;
       text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+    }
+
+    .tips-section h3 i {
+      color: #f39c12;
     }
 
     .tips-list p {
@@ -460,6 +475,10 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
     .error-icon {
       font-size: 1.2rem;
       margin-right: 0.5rem;
+    }
+
+    .error-icon i {
+      color: #e53e3e;
     }
 
     .retry-btn {
