@@ -132,12 +132,14 @@ export class AuthService {
                 this.isAuthenticatedSubject.next(true);
                 this.currentUserSubject.next(response.usuario);
               } else {
-                this.logout();
+                // No hacer logout automático si la verificación falla
+                // Solo mantener el estado actual del token hasta que sea explícitamente inválido
+                console.warn('Token verification returned null, maintaining current session');
               }
             },
             error: (error) => {
-              console.warn('Token verification failed:', error);
-              this.logout();
+              console.warn('Token verification failed, but maintaining session:', error);
+              // No hacer logout automático en errores de verificación
             }
           });
         } else {
