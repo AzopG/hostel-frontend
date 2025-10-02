@@ -1,8 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Usuario, UsuarioService } from '../../services/usuario.service';
 
 @Component({
@@ -20,7 +18,6 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               Gestión de Usuarios
             </h1>
             <p class="page-subtitle">Administra los usuarios del sistema hotelero</p>
-          </div>
           <div class="header-actions">
             <button class="btn btn-primary btn-modern" (click)="agregarUsuario()">
               <i class="fas fa-plus me-2"></i>
@@ -226,6 +223,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                       </button>
                     </div>
                   </td>
+                  -->
                 </tr>
               </tbody>
             </table>

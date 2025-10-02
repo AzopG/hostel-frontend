@@ -1,9 +1,9 @@
 
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 
 export interface Usuario {
@@ -12,7 +12,8 @@ export interface Usuario {
   email: string;
   tipo: 'cliente' | 'empresa' | 'admin_hotel' | 'admin_central';
   empresa?: string;
-}
+  }
+
 
 export interface LoginRequest {
   email: string;
@@ -119,54 +120,43 @@ export class AuthService {
    * CA4: Verifica tanto localStorage como sessionStorage
    */
   private checkStoredToken(): void {
-
     if (isPlatformBrowser(this.platformId)) {
       const token = this.getToken();
       const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
-      
       if (token && userStr) {
         try {
           const user = JSON.parse(userStr);
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(user);
         } catch (error) {
-          // Error al parsear el usuario, limpiar storage
           this.logout();
         }
-
-    const token = this.getToken();
-    if (token) {
-      // Validar que el token no esté expirado antes de hacer la verificación
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const currentTime = Math.floor(Date.now() / 1000);
-        
-        if (payload.exp && payload.exp > currentTime) {
-          // Token no expirado, intentar verificar
-          this.verifyToken().subscribe({
-            next: (response) => {
-              if (response && response.usuario) {
-                this.isAuthenticatedSubject.next(true);
-                this.currentUserSubject.next(response.usuario);
-              } else {
-                // No hacer logout automático si la verificación falla
-                // Solo mantener el estado actual del token hasta que sea explícitamente inválido
-                console.warn('Token verification returned null, maintaining current session');
+      }
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const currentTime = Math.floor(Date.now() / 1000);
+          if (payload.exp && payload.exp > currentTime) {
+            this.verifyToken().subscribe({
+              next: (response) => {
+                if (response && response.usuario) {
+                  this.isAuthenticatedSubject.next(true);
+                  this.currentUserSubject.next(response.usuario);
+                } else {
+                  console.warn('Token verification returned null, maintaining current session');
+                }
+              },
+              error: (error) => {
+                console.warn('Token verification failed, but maintaining session:', error);
               }
-            },
-            error: (error) => {
-              console.warn('Token verification failed, but maintaining session:', error);
-              // No hacer logout automático en errores de verificación
-            }
-          });
-        } else {
-          // Token expirado
+            });
+          } else {
+            this.logout();
+          }
+        } catch (error) {
+          console.warn('Invalid token format:', error);
           this.logout();
         }
-      } catch (error) {
-        console.warn('Invalid token format:', error);
-        this.logout();
-
       }
     }
   }
@@ -177,41 +167,39 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.API_URL}/login`, credentials)
       .pipe(
-        tap(response => {
+        tap((response: LoginResponse) => {
           // CA4: Guardar sesión según "Recordarme"
           if (isPlatformBrowser(this.platformId)) {
             const storage = credentials.rememberMe ? localStorage : sessionStorage;
-            
+
             // Limpiar del otro storage
             const otherStorage = credentials.rememberMe ? sessionStorage : localStorage;
             otherStorage.removeItem('token');
             otherStorage.removeItem('user');
             otherStorage.removeItem('rememberMe');
-            
+
             // Guardar en el storage apropiado
             storage.setItem('token', response.token);
             storage.setItem('user', JSON.stringify(response.usuario));
             storage.setItem('rememberMe', credentials.rememberMe ? 'true' : 'false');
           }
-          
+
           // Actualizar subjects
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(response.usuario);
         }),
-
-        catchError(error => {
+        catchError((error) => {
           console.error('Login error:', error);
           // No interceptar el error, dejarlo pasar al componente
           throw error;
         })
-
       );
   }
 
   /**
    * Registrar nuevo usuario
    */
-  register(userData: RegisterRequest): Observable<RegisterResponse> {
+  public register(userData: RegisterRequest): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(`${this.API_URL}/register`, userData)
       .pipe(
         catchError(this.handleError<RegisterResponse>('register'))
@@ -283,15 +271,12 @@ export class AuthService {
     const headers = this.getAuthHeaders();
     return this.http.get<{ usuario: Usuario }>(`${this.API_URL}/verify`, { headers })
       .pipe(
-
-        catchError(this.handleError<{ usuario: Usuario }>('verifyToken'))
-
+        catchError(this.handleError<{ usuario: Usuario }>('verifyToken')),
         catchError((error) => {
           console.warn('Token verification endpoint not available:', error);
           // En lugar de fallar, devolver un observable vacío que cause logout
           return of(null as any);
         })
-
       );
   }
 
@@ -412,4 +397,4 @@ export class AuthService {
       return of(result as T);
     };
   }
-
+}

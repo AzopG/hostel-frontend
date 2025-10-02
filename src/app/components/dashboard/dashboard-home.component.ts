@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService, Usuario } from '../../services/auth.service';
-import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
+import { EstadisticasGenerales, EstadisticasService } from '../../services/estadisticas.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -269,8 +269,20 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       color: #495057;
       max-width: 600px;
       margin: 0 auto;
+    }
+
+    .welcome-header h1 {
       font-family: 'Crimson Text', serif;
+    }
+    
+  
+
+    .welcome-header p {
       font-weight: 500;
+    }
+    
+
+    .welcome-header h1 {
       text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
     }
 
@@ -421,9 +433,12 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       color: #495057;
       margin-bottom: 0.5rem;
       font-family: 'Crimson Text', serif;
-      line-height: 1.6;
     }
-      line-height: 1.6;
+
+    .welcome-header p {
+    }
+
+    .welcome-header p {  
       font-family: 'Crimson Text', serif;
       font-weight: 500;
     }
@@ -503,6 +518,7 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
     }
   `]
 })
+
 export class DashboardHomeComponent implements OnInit {
   currentUser: Usuario | null = null;
   estadisticas: EstadisticasGenerales = {};

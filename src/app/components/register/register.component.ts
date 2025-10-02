@@ -1,14 +1,10 @@
 
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService, LoginRequest, RegisterRequest } from '../../services/auth.service';
 
 
 
@@ -76,13 +72,13 @@ export class RegisterComponent implements OnInit {
       };
 
       this.authService.register(registerData).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.successMessage = 'Registro exitoso. Redirigiendo al login...';
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 2000);
         },
-        error: (error) => {
+  error: (error: any) => {
           this.isLoading = false;
           this.errorMessage = error.error?.message || 'Error en el registro. Inténtalo de nuevo.';
         },
