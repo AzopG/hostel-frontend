@@ -98,29 +98,10 @@ export class FiltrosService {
       };
     }
 
-    // Defense-in-depth: start must not be before today
-    const hoy = new Date(this.getFechaHoy() + 'T00:00:00');
-    if (inicio < hoy) {
-      return {
-        valido: false,
-        error: 'La fecha de inicio no puede ser anterior a hoy'
-      };
-    }
-
-    // End must be strictly after start
     if (fin <= inicio) {
       return {
         valido: false,
         error: 'La fecha de fin debe ser posterior a la fecha de inicio'
-      };
-    }
-
-    // fechaFin must be at least tomorrow
-    const manana = new Date(this.getFechaManana() + 'T00:00:00');
-    if (fin < manana) {
-      return {
-        valido: false,
-        error: 'La fecha de fin debe ser al menos mañana'
       };
     }
 

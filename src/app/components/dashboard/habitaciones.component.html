@@ -1,30 +1,49 @@
 <div class="habitaciones-container">
-  <h1>Buscar Habitaciones</h1>
-  <form class="filtros-form" (ngSubmit)="buscarHabitaciones()">
-    <div class="filtros-row">
-      <select [(ngModel)]="filtroTipo" name="tipo">
-        <option value="">Tipo de habitación</option>
-        <option value="estándar">Estándar</option>
-        <option value="doble">Doble</option>
-        <option value="suite">Suite</option>
-        <option value="familiar">Familiar</option>
-        <option value="individual">Individual</option>
-      </select>
-      <input type="number" placeholder="Capacidad" [(ngModel)]="filtroCapacidad" name="capacidad" min="1" />
-      <input type="number" placeholder="Precio mínimo" [(ngModel)]="filtroPrecioMin" name="precioMin" min="0" />
-      <input type="number" placeholder="Precio máximo" [(ngModel)]="filtroPrecioMax" name="precioMax" min="0" />
-      <select [(ngModel)]="filtroDisponible" name="disponible">
-        <option [ngValue]="undefined">Disponibilidad</option>
-        <option [ngValue]="true">Disponible</option>
-        <option [ngValue]="false">No disponible</option>
-      </select>
-      <select [(ngModel)]="filtroHotelId" name="hotelId">
-        <option value="">Todos los hoteles</option>
-        <option *ngFor="let hotel of hoteles" [value]="hotel._id">{{ hotel.nombre }}</option>
-      </select>
-      <button type="submit" class="btn-filtrar">Filtrar</button>
-      <button type="button" class="btn-filtrar" (click)="mostrarAvanzados = !mostrarAvanzados" style="margin-left: 0.5rem;">Filtros avanzados</button>
-    </div>
+  <div class="filters-section">
+    <form class="filters-container" (ngSubmit)="buscarHabitaciones()">
+      <div class="filter-group">
+        <label class="filter-label">🏨 Hotel</label>
+        <select class="filter-select" [(ngModel)]="filtroHotelId" name="hotelId">
+          <option value="">Todos los hoteles</option>
+          <option *ngFor="let hotel of hoteles" [value]="hotel._id">{{ hotel.nombre }}</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">🛏️ Tipo</label>
+        <select class="filter-select" [(ngModel)]="filtroTipo" name="tipo">
+          <option value="">Todos los tipos</option>
+          <option value="estándar">Estándar</option>
+          <option value="doble">Doble</option>
+          <option value="suite">Suite</option>
+          <option value="familiar">Familiar</option>
+          <option value="individual">Individual</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">👥 Capacidad</label>
+        <input class="filter-select" type="number" placeholder="Capacidad" [(ngModel)]="filtroCapacidad" name="capacidad" min="1" />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">💰 Precio mínimo</label>
+        <input class="filter-select" type="number" placeholder="Precio mínimo" [(ngModel)]="filtroPrecioMin" name="precioMin" min="0" />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">💰 Precio máximo</label>
+        <input class="filter-select" type="number" placeholder="Precio máximo" [(ngModel)]="filtroPrecioMax" name="precioMax" min="0" />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">🚦 Disponibilidad</label>
+        <select class="filter-select" [(ngModel)]="filtroDisponible" name="disponible">
+          <option [ngValue]="undefined">Todas</option>
+          <option [ngValue]="true">Disponible</option>
+          <option [ngValue]="false">No disponible</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn-filtrar" type="submit">Filtrar</button>
+        <button class="btn-filtrar" type="button" (click)="mostrarAvanzados = !mostrarAvanzados">Filtros avanzados</button>
+      </div>
+    </form>
     <div class="filtros-row advanced" *ngIf="mostrarAvanzados">
       <label style="font-weight:500; margin-right:8px;">Servicios:</label>
       <ng-container *ngFor="let servicio of serviciosDisponibles">
@@ -50,7 +69,7 @@
         </label>
       </ng-container>
     </div>
-  </form>
+  </div>
 
   <div class="habitaciones-list">
     <div *ngIf="habitaciones.length === 0" class="no-result">No hay habitaciones que coincidan con los filtros.</div>

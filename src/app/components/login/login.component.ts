@@ -13,7 +13,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       <!-- Navegación superior -->
       <div class="navigation-header">
         <button class="btn-volver" (click)="volver()" title="Volver al inicio">
-          <span class="back-icon">🏨</span>
+          <span class="back-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo-small"></span>
           <span>Volver al Inicio</span>
         </button>
       </div>
@@ -24,7 +24,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       <div class="login-card">
         <div class="login-header">
           <div class="brand-section">
-            <span class="brand-icon">🏨</span>
+            <span class="brand-icon"><img src="Hotel.png" alt="Hotel Paradise" class="brand-logo"></span>
             <h1>Hotel Paradise</h1>
           </div>
           <h2>Iniciar Sesión</h2>
@@ -36,7 +36,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
           <div class="form-group">
             <label for="email">Correo Electrónico</label>
             <div class="input-wrapper">
-              <span class="input-icon">📧</span>
+              <span class="input-icon"><i class="fas fa-envelope"></i></span>
               <input
                 id="email"
                 type="email"
@@ -58,7 +58,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
           <div class="form-group">
             <label for="password">Contraseña</label>
             <div class="input-wrapper">
-              <span class="input-icon">🔒</span>
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
               <input
                 id="password"
                 type="password"
@@ -241,6 +241,31 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       font-size: 2.2rem;
       color: #B89778;
       filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      transition: all 0.3s ease;
+    }
+
+    .brand-logo-small {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      transition: all 0.3s ease;
+    }
+
+    .brand-logo:hover,
+    .brand-logo-small:hover {
+      filter: drop-shadow(0 0 12px rgba(184, 151, 120, 0.8)) drop-shadow(2px 2px 6px rgba(0,0,0,0.4));
+      transform: scale(1.05);
     }
 
     .brand-section h1 {
@@ -315,6 +340,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       color: #1C2526;
       font-weight: 500;
       letter-spacing: 0.3px;
+      font-family: 'Crimson Text', serif;
       backdrop-filter: blur(10px);
     }
 
@@ -459,7 +485,7 @@ import { AuthService, LoginRequest } from '../../services/auth.service';
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-transform: uppercase;
       letter-spacing: 1.2px;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Cormorant Garamond', serif;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -744,8 +770,10 @@ export class LoginComponent implements OnInit {
           if (response) {
             // CA1: Autenticación válida - Redirigir según el rol
             this.successMessage = `Bienvenido ${response.usuario.nombre}. Redirigiendo...`;
-            // Redirigir inmediatamente sin esperar
-            this.navigateByRole(response.usuario.tipo);
+            setTimeout(() => {
+              // Redirigir al panel correspondiente según el rol (CA1)
+              this.navigateByRole(response.usuario.tipo);
+            }, 1000);
           }
         },
         error: (error) => {
