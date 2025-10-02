@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
+import { ReportesBarChartComponent } from './reportes-bar-chart.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reportes',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReportesBarChartComponent],
   template: `
     <div class="container-fluid">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="position: relative;">
@@ -17,26 +18,73 @@ import { AuthService } from '../../services/auth.service';
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i>Reservas por Mes</h5>
+              <h5 class="card-title mb-0"><i class="fas fa-chart-bar me-2"></i>Reservas por Mes</h5>
             </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-sm">
+              <app-reportes-bar-chart
+                [labels]="labelsReservasPorMes"
+                [data]="dataReservasPorMes"
+                title="Reservas por Mes">
+              </app-reportes-bar-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mt-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0"><i class="fas fa-dollar-sign me-2"></i>Ingresos por Mes</h5>
+            </div>
+            <div class="card-body">
+              <app-reportes-bar-chart
+                [labels]="labelsReservasPorMes"
+                [data]="dataIngresosPorMes"
+                title="Ingresos por Mes">
+              </app-reportes-bar-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mt-4" *ngIf="labelsTopHoteles.length > 0">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0"><i class="fas fa-hotel me-2"></i>Top Hoteles por Reservas</h5>
+            </div>
+            <div class="card-body">
+              <app-reportes-bar-chart
+                [labels]="labelsTopHoteles"
+                [data]="dataTopHoteles"
+                title="Reservas por Hotel">
+              </app-reportes-bar-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mt-4" *ngIf="labelsHabitaciones.length > 0">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0"><i class="fas fa-bed me-2"></i>Habitaciones por Hotel</h5>
+            </div>
+            <div class="card-body d-flex flex-row flex-wrap align-items-start">
+              <div style="flex:1;min-width:320px;max-width:600px;">
+                <app-reportes-bar-chart
+                  [labels]="labelsHabitaciones"
+                  [data]="dataHabitaciones"
+                  title="Habitaciones por Hotel">
+                </app-reportes-bar-chart>
+              </div>
+              <div style="flex:1;min-width:220px;max-width:350px;padding-left:2rem;">
+                <table class="table table-bordered table-sm">
                   <thead>
                     <tr>
-                      <th>Mes</th>
-                      <th>Reservas</th>
-                      <th>Ingresos</th>
+                      <th>Hotel</th>
+                      <th># Habitaciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let mes of reservasPorMes">
-                      <td>{{ mes.nombre }}</td>
-                      <td>{{ mes.reservas }}</td>
-                      <td>{{ mes.ingresos | currency:'USD':'symbol':'1.0-0' }}</td>
+                    <tr *ngFor="let hotel of labelsHabitaciones; let i = index">
+                      <td>{{ hotel }}</td>
+                      <td>{{ dataHabitaciones[i] }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -44,28 +92,63 @@ import { AuthService } from '../../services/auth.service';
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12 mt-4" *ngIf="labelsSalas.length > 0">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title mb-0"><i class="fas fa-hotel me-2"></i>Top Hoteles</h5>
+              <h5 class="card-title mb-0"><i class="fas fa-building me-2"></i>Salas por Hotel</h5>
             </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-sm">
+            <div class="card-body d-flex flex-row flex-wrap align-items-start">
+              <div style="flex:1;min-width:320px;max-width:600px;">
+                <app-reportes-bar-chart
+                  [labels]="labelsSalas"
+                  [data]="dataSalas"
+                  title="Salas por Hotel">
+                </app-reportes-bar-chart>
+              </div>
+              <div style="flex:1;min-width:220px;max-width:350px;padding-left:2rem;">
+                <table class="table table-bordered table-sm">
                   <thead>
                     <tr>
                       <th>Hotel</th>
-                      <th>Reservas</th>
-                      <th>Rating</th>
+                      <th># Salas</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let hotel of topHoteles">
-                      <td>{{ hotel.nombre }}</td>
-                      <td>{{ hotel.reservas }}</td>
-                      <td>
-                        <span class="badge bg-success">{{ hotel.rating }} <i class="fas fa-star"></i></span>
-                      </td>
+                    <tr *ngFor="let hotel of labelsSalas; let i = index">
+                      <td>{{ hotel }}</td>
+                      <td>{{ dataSalas[i] }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mt-4" *ngIf="labelsPaquetes.length > 0">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0"><i class="fas fa-gift me-2"></i>Paquetes por Hotel</h5>
+            </div>
+            <div class="card-body d-flex flex-row flex-wrap align-items-start">
+              <div style="flex:1;min-width:320px;max-width:600px;">
+                <app-reportes-bar-chart
+                  [labels]="labelsPaquetes"
+                  [data]="dataPaquetes"
+                  title="Paquetes por Hotel">
+                </app-reportes-bar-chart>
+              </div>
+              <div style="flex:1;min-width:220px;max-width:350px;padding-left:2rem;">
+                <table class="table table-bordered table-sm">
+                  <thead>
+                    <tr>
+                      <th>Hotel</th>
+                      <th># Paquetes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let hotel of labelsPaquetes; let i = index">
+                      <td>{{ hotel }}</td>
+                      <td>{{ dataPaquetes[i] }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -373,6 +456,19 @@ export class ReportesComponent implements OnInit {
   reservasPorMes: any[] = [];
   topHoteles: any[] = [];
 
+  // Propiedades para gráficas
+  labelsReservasPorMes: string[] = [];
+  dataReservasPorMes: number[] = [];
+  dataIngresosPorMes: number[] = [];
+  labelsTopHoteles: string[] = [];
+  dataTopHoteles: number[] = [];
+  labelsHabitaciones: string[] = [];
+  dataHabitaciones: number[] = [];
+  labelsSalas: string[] = [];
+  dataSalas: number[] = [];
+  labelsPaquetes: string[] = [];
+  dataPaquetes: number[] = [];
+
   constructor(
     private estadisticasService: EstadisticasService,
     private authService: AuthService
@@ -411,16 +507,47 @@ export class ReportesComponent implements OnInit {
     this.ingresosTotales = this.estadisticas.ingresosTotales || 0;
     this.ocupacionPromedio = this.estadisticas.ocupacionPromedio || 0;
     this.usuariosActivos = this.estadisticas.totalClientes || 0;
-    
-    // Si hay datos de reservas por mes, usarlos; si no, usar datos por defecto
+
+    // Reservas por mes
     if (this.estadisticas.reservasPorMes && this.estadisticas.reservasPorMes.length > 0) {
       this.reservasPorMes = this.estadisticas.reservasPorMes.map(item => ({
-        nombre: this.getNombreMes(item._id.month),
-        reservas: item.count,
-        ingresos: item.totalIngresos || 0
+        nombre: this.getNombreMes(item._id?.month ?? item.month ?? 1),
+        reservas: item.count ?? 0,
+        ingresos: item.totalIngresos ?? 0
       }));
+      this.labelsReservasPorMes = this.reservasPorMes.map(m => m.nombre);
+      this.dataReservasPorMes = this.reservasPorMes.map(m => m.reservas);
+      this.dataIngresosPorMes = this.reservasPorMes.map(m => m.ingresos);
     } else {
       this.usarDatosPorDefectoReservas();
+      this.labelsReservasPorMes = this.reservasPorMes.map(m => m.nombre);
+      this.dataReservasPorMes = this.reservasPorMes.map(m => m.reservas);
+      this.dataIngresosPorMes = this.reservasPorMes.map(m => m.ingresos);
+    }
+
+    // Habitaciones por hotel
+    if (this.estadisticas.habitacionesPorHotel) {
+      this.labelsHabitaciones = Object.keys(this.estadisticas.habitacionesPorHotel);
+      this.dataHabitaciones = Object.values(this.estadisticas.habitacionesPorHotel);
+    } else {
+      this.labelsHabitaciones = [];
+      this.dataHabitaciones = [];
+    }
+    // Salas por hotel
+    if (this.estadisticas.salasPorHotel) {
+      this.labelsSalas = Object.keys(this.estadisticas.salasPorHotel);
+      this.dataSalas = Object.values(this.estadisticas.salasPorHotel);
+    } else {
+      this.labelsSalas = [];
+      this.dataSalas = [];
+    }
+    // Paquetes por hotel
+    if (this.estadisticas.paquetesPorHotel) {
+      this.labelsPaquetes = Object.keys(this.estadisticas.paquetesPorHotel);
+      this.dataPaquetes = Object.values(this.estadisticas.paquetesPorHotel);
+    } else {
+      this.labelsPaquetes = [];
+      this.dataPaquetes = [];
     }
   }
 

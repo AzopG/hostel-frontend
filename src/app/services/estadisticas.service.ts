@@ -17,6 +17,9 @@ export interface EstadisticasGenerales {
   nombreHotel?: string;
   reservasPorMes?: any[];
   proximasReservas?: any[];
+  habitacionesPorHotel?: { [hotel: string]: number };
+  salasPorHotel?: { [hotel: string]: number };
+  paquetesPorHotel?: { [hotel: string]: number };
 }
 
 export interface EstadisticasResponse {
