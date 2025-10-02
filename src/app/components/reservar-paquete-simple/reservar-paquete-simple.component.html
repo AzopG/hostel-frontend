@@ -1,0 +1,155 @@
+<div class="container-fluid" *ngIf="paquete">
+  <!-- Navegación -->
+  <div class="navigation-header">
+    <button (click)="volver()" class="btn-nav">
+      <i class="fas fa-arrow-left me-2"></i>Volver a Paquetes
+    </button>
+    <button (click)="irADashboard()" class="btn-nav-secondary">
+      <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+    </button>
+  </div>
+
+  <!-- Header -->
+  <div class="header-section">
+    <h1 class="page-title">Reservar: {{paquete.nombre}}</h1>
+    <p class="page-subtitle">{{paquete.hotel?.nombre}} - {{paquete.hotel?.ciudad}}</p>
+  </div>
+
+  <div class="row">
+    <!-- Información del Paquete -->
+    <div class="col-md-6">
+      <div class="info-card">
+        <h3>Detalles del Paquete</h3>
+        <div class="paquete-info">
+          <p><strong>Descripción:</strong> {{paquete.descripcion}}</p>
+          <p><strong>Capacidad:</strong> {{paquete.capacidadMinima}} - {{paquete.capacidadMaxima}} personas</p>
+          <p><strong>Duración:</strong> {{paquete.duracionDias}} días</p>
+          <p><strong>Precio base:</strong> ${{formatearPrecio(paquete.precios.base)}}</p>
+        </div>
+
+        <div class="servicios-incluidos">
+          <h5>Servicios Incluidos:</h5>
+          <ul>
+            <li *ngFor="let servicio of paquete.serviciosIncluidos">{{servicio}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de Reserva -->
+    <div class="col-md-6">
+      <div class="reserva-card">
+        <h3>Datos de la Reserva</h3>
+        <form (ngSubmit)="realizarReserva()" #reservaForm="ngForm">
+          
+          <!-- Datos del Evento -->
+          <div class="form-section">
+            <h5>Información del Evento</h5>
+            
+            <div class="form-group">
+              <label>Nombre del Evento*</label>
+              <input type="text" class="form-control" [(ngModel)]="reservaData.nombreEvento" 
+                     name="nombreEvento" required>
+            </div>
+
+            <div class="form-group">
+              <label>Tipo de Evento*</label>
+              <select class="form-control" [(ngModel)]="reservaData.tipoEvento" name="tipoEvento" required>
+                <option value="">Seleccionar tipo</option>
+                <option value="evento_corporativo">Evento Corporativo</option>
+                <option value="reunion_negocios">Reunión de Negocios</option>
+                <option value="congreso">Congreso</option>
+                <option value="capacitacion">Capacitación</option>
+                <option value="celebracion_empresarial">Celebración Empresarial</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Fecha de Inicio*</label>
+                  <input type="date" class="form-control" [(ngModel)]="reservaData.fechaInicio" 
+                         name="fechaInicio" required [min]="minDate">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Número de Asistentes*</label>
+                  <input type="number" class="form-control" [(ngModel)]="reservaData.numeroAsistentes" 
+                         name="numeroAsistentes" required 
+                         [min]="paquete.capacidadMinima" [max]="paquete.capacidadMaxima">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos de la Empresa -->
+          <div class="form-section">
+            <h5>Información de la Empresa</h5>
+            
+            <div class="form-group">
+              <label>Razón Social*</label>
+              <input type="text" class="form-control" [(ngModel)]="reservaData.empresa.razonSocial" 
+                     name="razonSocial" required>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>NIT*</label>
+                  <input type="text" class="form-control" [(ngModel)]="reservaData.empresa.nit" 
+                         name="nit" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Teléfono*</label>
+                  <input type="tel" class="form-control" [(ngModel)]="reservaData.empresa.telefono" 
+                         name="telefono" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Email de Contacto*</label>
+              <input type="email" class="form-control" [(ngModel)]="reservaData.empresa.email" 
+                     name="email" required>
+            </div>
+          </div>
+
+          <!-- Resumen de Precios -->
+          <div class="precio-resumen">
+            <h5>Resumen de Precios</h5>
+            <div class="precio-linea">
+              <span>Precio base del paquete:</span>
+              <span>${{formatearPrecio(paquete.precios.base)}}</span>
+            </div>
+            <div class="precio-linea">
+              <span>IVA (19%):</span>
+              <span>${{formatearPrecio(calcularIVA())}}</span>
+            </div>
+            <div class="precio-total">
+              <span>Total:</span>
+              <span>${{formatearPrecio(calcularTotal())}}</span>
+            </div>
+          </div>
+
+          <!-- Botones -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="volver()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="!reservaForm.valid || procesando">
+              <span *ngIf="procesando">
+                <i class="fas fa-spinner fa-spin me-2"></i>Procesando...
+              </span>
+              <span *ngIf="!procesando">
+                <i class="fas fa-check me-2"></i>Confirmar Reserva
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+.navigation-header {
+  background: #f8f9fa;
+  padding: 1rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-nav {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-nav:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.btn-nav-secondary {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-nav-secondary:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.header-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.info-card, .reserva-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.precio-resumen {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+}
+
+.precio-linea {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.precio-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}

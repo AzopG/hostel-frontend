@@ -1,32 +1,50 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
-export interface Habitacion {
-  _id?: string;
-  numero: number;
-  servicios: string[];
-}
-
+// Interfaz para Hotel
 export interface Hotel {
   _id?: string;
   nombre: string;
+  descripcion: string;
   ciudad: string;
-  direccion?: string;
-  telefono?: string;
-  email?: string;
+  direccion: string;
+  telefono: string;
+  email: string;
   categoria: number;
+  servicios: string[];
+  habitaciones: any[];
+  salones: any[];
+  fotos: string[];
   activo: boolean;
-  habitaciones: Habitacion[];
-  ocupacion: number;
+  ocupacion?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class HotelService {
-  private readonly apiUrl = `${environment.apiUrl}/hoteles`;
+  private apiUrl = 'http://localhost:5000/api/admin/hoteles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  /**
+   * Listar todos los hoteles
+   */
+  listarHoteles(): Observable<{success: boolean, hoteles: any[]}> {
+    return this.http.get<{success: boolean, hoteles: any[]}>(`${this.apiUrl}`, { headers: this.getHeaders() });
+  }
+
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
 
   getHoteles(): Observable<Hotel[]> {
     return this.http.get<Hotel[]>(this.apiUrl);

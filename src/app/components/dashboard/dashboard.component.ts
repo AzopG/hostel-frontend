@@ -148,6 +148,13 @@ export class DashboardComponent implements OnInit {
             icon: 'fas fa-glass-cheers',
             route: '/dashboard/salones',
             description: 'Gestión de salones'
+          },
+          {
+            id: 'paquetes',
+            label: 'Paquetes',
+            icon: 'fas fa-cubes',
+            route: '/dashboard/paquetes',
+            description: 'Gestión de paquetes corporativos'
           }
         ];
         break;
@@ -161,6 +168,13 @@ export class DashboardComponent implements OnInit {
             icon: 'fas fa-calendar',
             route: '/mis-reservas',
             description: 'Ver mis reservas'
+          },
+          {
+            id: 'ver-paquetes',
+            label: 'Paquetes Corporativos',
+            icon: 'fas fa-cube',
+            route: '/ver-paquetes',
+            description: 'Ver y reservar paquetes empresariales'
           },
           {
             id: 'salones',

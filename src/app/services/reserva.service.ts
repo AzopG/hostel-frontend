@@ -478,4 +478,37 @@ export class ReservaService {
   actualizarEstadoReserva(reservaId: string, estado: string, notas?: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${reservaId}/estado`, { estado, notas });
   }
+
+  // =====================================================
+  // GESTIÓN DE RESERVAS DE PAQUETES PARA HOTELES
+  // =====================================================
+
+  /**
+   * Obtener todas las reservas de paquetes del hotel
+   */
+  obtenerReservasPaquetesHotel(estado?: string, limit?: number, offset?: number): Observable<any> {
+    let params = new URLSearchParams();
+    if (estado) params.append('estado', estado);
+    if (limit) params.append('limit', limit.toString());
+    if (offset) params.append('offset', offset.toString());
+    
+    const queryString = params.toString();
+    const url = queryString ? `${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/hotel/todas?${queryString}` : `${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/hotel/todas`;
+    
+    return this.http.get(url);
+  }
+
+  /**
+   * Confirmar una reserva de paquete pendiente
+   */
+  confirmarReservaPaquete(reservaId: string, notasHotel?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/${reservaId}/confirmar`, { notasHotel });
+  }
+
+  /**
+   * Rechazar una reserva de paquete pendiente
+   */
+  rechazarReservaPaquete(reservaId: string, motivoRechazo: string, notasHotel?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/${reservaId}/rechazar`, { motivoRechazo, notasHotel });
+  }
 }
