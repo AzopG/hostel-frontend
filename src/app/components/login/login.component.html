@@ -1,0 +1,115 @@
+<div class="login-container">
+  <div class="navigation-header">
+    <button class="btn-volver" (click)="volver()" title="Volver al inicio">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </div>
+
+  <div class="background-decoration"></div>
+
+  <div class="login-content">
+    <div class="login-form-section">
+      <div class="login-card">
+        <div class="login-header">
+          <h2>Iniciar Sesión</h2>
+          <p>Accede a tu cuenta del sistema hotelero</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <div class="form-group">
+            <label for="email">Correo electrónico <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fas fa-envelope"></i></span>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="admin@hotmail.com"
+                [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+              />
+            </div>
+            <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+              <span *ngIf="loginForm.get('email')?.errors?.['required']">El correo electrónico es requerido</span>
+              <span *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo electrónico inválido</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                placeholder="••••••••"
+                [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+              />
+            </div>
+            <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              <span *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es requerida</span>
+            </div>
+          </div>
+
+          <div class="form-group-checkbox">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="rememberMe" id="rememberMe" />
+              <span class="checkmark"></span>
+              <span class="checkbox-label">Recordarme</span>
+            </label>
+          </div>
+
+          <div class="alert error-alert" *ngIf="errorMessage">
+            <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+            <strong>{{ errorMessage }}</strong>
+          </div>
+
+          <div class="alert success-alert" *ngIf="successMessage">
+            <span class="alert-icon"><i class="fas fa-check-circle"></i></span>
+            {{ successMessage }}
+          </div>
+
+          <button 
+            type="submit" 
+            class="submit-btn"
+            [disabled]="loginForm.invalid || isLoading"
+          >
+            <span *ngIf="isLoading" class="loading-spinner"></span>
+            <span class="btn-text">{{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}</span>
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <p>¿No tienes cuenta? <a href="#" (click)="goToRegister($event)" class="register-link">Regístrate aquí</a></p>
+          <p><a routerLink="/forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-image-section">
+      <div class="image-container">
+        <img src="login.png" alt="Inicio de Sesión Hotel Paradise" class="login-image">
+        <div class="image-overlay">
+          <div class="welcome-text">
+            <h2>Únete a Hotel Paradise</h2>
+            <p>Descubre una nueva forma de gestionar tu experiencia hotelera</p>
+            <div class="features-list">
+              <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Reservas en línea</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Gestión completa</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Soporte 24/7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

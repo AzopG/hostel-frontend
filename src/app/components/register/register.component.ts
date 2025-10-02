@@ -1,12 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.service';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
   standalone: true,
+<<<<<<< HEAD
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <div class="register-container">
@@ -1157,11 +1160,14 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
       box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
     }
   `]
+=======
+  imports: [CommonModule, ReactiveFormsModule, RouterLink]
+>>>>>>> cafd2ced9f2676afb556218be834183f61492649
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   isLoading = false;
-  serverError = '';
+  errorMessage = '';
   successMessage = '';
 
   constructor(
@@ -1169,45 +1175,21 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {
-    // Inicializar el formulario con validaciones
     this.registerForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-      tipo: ['', [Validators.required]],
-      empresa: ['']
+      tipo: ['', [Validators.required]]
     }, {
       validators: this.passwordMatchValidator
     });
-
-    // Listener para el cambio de tipo de usuario
-    this.registerForm.get('tipo')?.valueChanges.subscribe(tipo => {
-      const empresaControl = this.registerForm.get('empresa');
-      if (tipo === 'empresa') {
-        empresaControl?.setValidators([Validators.required]);
-      } else {
-        empresaControl?.clearValidators();
-        empresaControl?.setValue('');
-      }
-      empresaControl?.updateValueAndValidity();
-    });
   }
 
-  ngOnInit(): void {
-    // Si ya está autenticado, redirigir al dashboard
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
-    }
-  }
-
-  /**
-   * Validador personalizado para verificar que las contraseñas coincidan
-   */
-  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
-
+  private passwordMatchValidator(group: FormGroup): {[key: string]: any} | null {
+    const password = group.get('password');
+    const confirmPassword = group.get('confirmPassword');
+    
     if (!password || !confirmPassword) {
       return null;
     }
@@ -1215,91 +1197,53 @@ export class RegisterComponent implements OnInit {
     return password.value === confirmPassword.value ? null : { passwordMismatch: true };
   }
 
-  /**
-   * Manejar el envío del formulario
-   */
-  onSubmit(): void {
-    // Marcar todos los campos como touched para mostrar errores
-    Object.keys(this.registerForm.controls).forEach(key => {
-      this.registerForm.get(key)?.markAsTouched();
-    });
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
 
-    // Validar que el formulario sea válido
+  onSubmit(): void {
     if (this.registerForm.invalid) {
-      this.serverError = 'Por favor, completa todos los campos correctamente';
+      Object.keys(this.registerForm.controls).forEach(key => {
+        const control = this.registerForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
       return;
     }
 
     this.isLoading = true;
-    this.serverError = '';
+    this.errorMessage = '';
     this.successMessage = '';
 
-    // Preparar datos para enviar
-    const { confirmPassword, ...userData } = this.registerForm.value;
-    const registerData: RegisterRequest = userData;
+    const registrationData = {
+      nombre: this.registerForm.get('nombre')?.value,
+      email: this.registerForm.get('email')?.value,
+      password: this.registerForm.get('password')?.value,
+      tipo: this.registerForm.get('tipo')?.value
+    };
 
-    // Llamar al servicio de registro
-    this.authService.register(registerData).subscribe({
+    this.authService.register(registrationData).subscribe({
       next: (response) => {
         this.isLoading = false;
-        
-        if (response && response.usuario) {
-          // Registro exitoso
-          this.successMessage = `¡Bienvenido ${response.usuario.nombre}! Tu cuenta ha sido creada exitosamente. Iniciando sesión...`;
-          
-          // Iniciar sesión automáticamente
-          const loginData: LoginRequest = {
-            email: registerData.email,
-            password: registerData.password
-          };
-
-          this.authService.login(loginData).subscribe({
-            next: (loginResponse) => {
-              if (loginResponse) {
-                // Navegación inmediata
-                this.router.navigate(['/dashboard']);
-              }
-            },
-            error: (loginError) => {
-              // Si falla el login automático, redirigir a login manual
-              this.successMessage = 'Cuenta creada exitosamente. Redirigiendo al inicio de sesión...';
-              // Navegación inmediata al login
-              this.router.navigate(['/login']);
-            }
-          });
-        }
+        this.successMessage = 'Registro exitoso. Redirigiendo al inicio de sesión...';
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
       },
       error: (error) => {
         this.isLoading = false;
-        
-        // Manejar errores específicos del servidor
-        if (error.error?.msg) {
-          const errorMsg = error.error.msg;
-          
-          // Error de correo duplicado (Criterio 4)
-          if (errorMsg.includes('ya existe') || errorMsg.includes('email')) {
-            this.serverError = 'El correo ya está registrado';
-          } else {
-            this.serverError = errorMsg;
-          }
+        if (error.status === 400) {
+          this.errorMessage = error.error?.msg || 'Error en el registro. Por favor, verifica los datos.';
         } else {
-          this.serverError = 'Error al crear la cuenta. Por favor, intenta nuevamente.';
+          this.errorMessage = 'Error en el servidor. Por favor, intenta más tarde.';
         }
       }
     });
   }
 
-  /**
-   * Navegar a la página de login
-   */
-  goToLogin(event: Event): void {
-    event.preventDefault();
-    this.router.navigate(['/login']);
-  }
-
-  /**
-   * Volver al inicio
-   */
   volver(): void {
     this.router.navigate(['/']);
   }
