@@ -11,8 +11,25 @@ import { FormsModule } from '@angular/forms';
 })
 export class HabitacionesEditorComponent {
   @Input() habitaciones: any[] = [];
+  @Input() mostrarEditor: boolean = false;
+  @Input() hoteles: any[] = [];
   @Output() habitacionesChange = new EventEmitter<any[]>();
-  serviciosDisponibles: string[] = ['WiFi', 'TV', 'Aire acondicionado', 'Baño privado', 'Desayuno', 'Caja fuerte'];
+  serviciosDisponibles: string[] = [
+    'WiFi',
+    'Aire acondicionado',
+    'Desayuno',
+    'TV',
+    'Piscina',
+    'Gimnasio',
+    'Mascotas',
+    'Restaurante',
+    'Bar',
+    'Spa',
+    'Parqueadero',
+    'Lavandería',
+    'Baño privado',
+    'Caja fuerte'
+  ];
 
   mostrarTodas = false;
 
@@ -26,11 +43,13 @@ export class HabitacionesEditorComponent {
     }
     this.habitaciones.push({
       numero: nuevoNumero,
-      servicios: [],
       tipo: 'estándar',
       capacidad: 1,
       precio: 100000,
-      disponible: true
+      servicios: [],
+      disponible: true,
+      descripcion: '',
+      fotos: []
     });
     this.emitirCambio();
   }
@@ -60,6 +79,27 @@ export class HabitacionesEditorComponent {
   }
 
   emitirCambio() {
-    this.habitacionesChange.emit(this.habitaciones);
+    // Normaliza todos los campos antes de emitir, conservando _id si existe
+    const habitacionesCompletas = this.habitaciones.map(h => ({
+      _id: h._id,
+      numero: h.numero,
+      tipo: h.tipo,
+      capacidad: h.capacidad,
+      precio: h.precio,
+      servicios: Array.isArray(h.servicios) ? h.servicios : [],
+      disponible: h.disponible !== undefined ? h.disponible : true,
+      descripcion: h.descripcion || '',
+      fotos: Array.isArray(h.fotos) ? h.fotos.filter((f: any) => !!f) : []
+    }));
+    this.habitacionesChange.emit(habitacionesCompletas);
+  }
+
+  guardarConAlerta() {
+    this.emitirCambio();
+    setTimeout(() => {
+      if (window.confirm('¡Habitaciones y servicios guardados correctamente!\n\n¿Deseas recargar la página para ver los cambios?')) {
+        window.location.reload();
+      }
+    }, 100);
   }
 }

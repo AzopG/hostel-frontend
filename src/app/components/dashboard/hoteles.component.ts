@@ -41,12 +41,18 @@ export class HotelesComponent implements OnInit {
     if (!this.hotelHabitaciones || !this.habitacionesValidas) return;
     this.cargando = true;
     // Actualiza la cantidad de habitaciones en el backend
-      const habitacionesPayload = this.habitacionesEdit.map((h: any) => ({
-        _id: h._id,
-        numero: h.numero,
-        servicios: h.servicios
-      }));
-      this.hotelService.editarHotel(this.hotelHabitaciones._id, { habitaciones: habitacionesPayload }).subscribe({
+    const habitacionesPayload = this.habitacionesEdit.map((h: any) => ({
+      _id: h._id,
+      numero: h.numero,
+      tipo: h.tipo,
+      capacidad: h.capacidad,
+      precio: h.precio,
+      servicios: h.servicios,
+      disponible: h.disponible,
+      descripcion: h.descripcion,
+      fotos: h.fotos
+    }));
+    this.hotelService.editarHotel(this.hotelHabitaciones._id, { habitaciones: habitacionesPayload }).subscribe({
       next: (hotelActualizado) => {
         this.hotelService.getHoteles().subscribe({
           next: (hoteles) => {
@@ -55,11 +61,13 @@ export class HotelesComponent implements OnInit {
             this.cargando = false;
             window.alert('¡Habitaciones y servicios guardados correctamente!');
             this.cerrarModalHabitaciones();
+            window.location.reload();
           },
           error: () => {
             this.cargando = false;
             window.alert('¡Habitaciones y servicios guardados correctamente!');
             this.cerrarModalHabitaciones();
+            window.location.reload();
           }
         });
       },

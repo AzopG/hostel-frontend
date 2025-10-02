@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -81,6 +81,50 @@ export class HabitacionService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Buscar habitaciones por filtros y obtener detalles del hotel y disponibilidad
+   * @param filtros { tipo, capacidad, precioMin, precioMax, disponible, hotelId }
+   */
+  buscarHabitacionesFiltradas(filtros: {
+    tipo?: string;
+    capacidad?: number;
+    precioMin?: number;
+    precioMax?: number;
+    disponible?: boolean;
+    hotelId?: string;
+    servicios?: string[];
+  }): Observable<DetalleHabitacion[]> {
+    let params = new HttpParams();
+    if (filtros.tipo) params = params.set('tipo', filtros.tipo);
+    if (filtros.capacidad) params = params.set('capacidad', filtros.capacidad.toString());
+    if (filtros.precioMin) params = params.set('precioMin', filtros.precioMin.toString());
+    if (filtros.precioMax) params = params.set('precioMax', filtros.precioMax.toString());
+    if (filtros.disponible !== undefined) params = params.set('disponible', filtros.disponible ? 'true' : 'false');
+    if (filtros.hotelId) params = params.set('hotelId', filtros.hotelId);
+    if (filtros.servicios && filtros.servicios.length > 0) {
+      filtros.servicios.forEach(servicio => {
+        params = params.append('servicios', servicio);
+      });
+    }
+    return this.http.get<DetalleHabitacion[]>(`${this.apiUrl}/buscar`, { params });
+  }
+  crearHabitacion(habitacion: any) {
+    return this.http.post(`${this.apiUrl}`, habitacion);
+  }
+
+  actualizarHabitacion(id: string, habitacion: any) {
+    return this.http.put(`${this.apiUrl}/${id}`, habitacion);
+  }
+
+  obtenerHabitaciones(params?: any) {
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach(key => {
+        httpParams = httpParams.set(key, params[key]);
+      });
+    }
+    return this.http.get(`${this.apiUrl}`, { params: httpParams });
+  }
   /**
    * HU07 CA1: Obtener detalle completo de una habitación
    */
