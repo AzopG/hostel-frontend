@@ -88,13 +88,25 @@ export class FiltrosService {
    * Helper: Validar que fecha fin sea posterior a fecha inicio (CA2)
    */
   validarFechas(fechaInicio: string, fechaFin: string): { valido: boolean; error?: string } {
-    const inicio = new Date(fechaInicio);
-    const fin = new Date(fechaFin);
+    // Parse dates as local dates at midnight to avoid timezone issues
+    const inicio = new Date(fechaInicio + 'T00:00:00');
+    const fin = new Date(fechaFin + 'T00:00:00');
 
     if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) {
       return {
         valido: false,
         error: 'Formato de fecha inválido'
+      };
+    }
+
+    // Hoy a medianoche
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    if (inicio < hoy) {
+      return {
+        valido: false,
+        error: 'La fecha de inicio no puede ser anterior a hoy'
       };
     }
 
