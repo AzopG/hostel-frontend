@@ -172,6 +172,15 @@ import { HotelService } from '../../services/hotel.service';
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
+                    <label>Hotel*</label>
+                    <select class="form-control" [(ngModel)]="formularioPaquete.hotel" name="hotel" required>
+                      <option value="">-- Selecciona --</option>
+                      <option *ngFor="let hotel of hoteles" [value]="hotel._id">{{ hotel.nombre }} - {{ hotel.ciudad }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
                     <label>Nombre del Paquete*</label>
                     <input 
                       type="text" 
@@ -764,6 +773,20 @@ export class PaquetesComponent implements OnInit {
   }
 
   /**
+        guardarPaquete() {
+          if (!this.hotelSeleccionado) {
+            this.mensajeError = 'Debes seleccionar un hotel antes de guardar el paquete.';
+            return;
+          }
+          if (!this.formularioPaquete.nombre || !this.formularioPaquete.descripcion || !this.formularioPaquete.precioBase) {
+            this.mensajeError = 'Completa todos los campos obligatorios.';
+            return;
+          }
+          this.mensajeError = '';
+          // Aquí iría la lógica para guardar el paquete, incluyendo el hotel seleccionado
+          // const datos = { ...this.formularioPaquete, hotel: this.hotelSeleccionado };
+          // this.paqueteAdminService.guardarPaquete(datos).subscribe(...)
+        }
    * Métodos para manejar servicios
    */
   agregarServicio(): void {
@@ -898,11 +921,19 @@ export class PaquetesComponent implements OnInit {
       return;
     }
 
+    // Validar que el hotel sea un ObjectId válido (24 caracteres hex)
+    const hotelId = this.formularioPaquete.hotel;
+    const objectIdRegex = /^[a-fA-F0-9]{24}$/;
+    if (!hotelId || typeof hotelId !== 'string' || !objectIdRegex.test(hotelId)) {
+      alert('Selecciona un hotel válido antes de guardar el paquete.');
+      return;
+    }
+
     // Crear el objeto de datos con la estructura correcta para el backend
     const paqueteData: any = {
       nombre: this.formularioPaquete.nombre,
       descripcion: this.formularioPaquete.descripcion,
-      hotel: this.hotelSeleccionado,
+      hotel: hotelId,
       tipo: this.formularioPaquete.tipo || 'evento_corporativo',
       capacidadMinima: this.formularioPaquete.capacidadMinima || 1,
       capacidadMaxima: this.formularioPaquete.capacidadMaxima || 100,

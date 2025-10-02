@@ -1,0 +1,23 @@
+<div class="hotel-select-container">
+  <label for="hotelSelect">Selecciona un hotel:</label>
+  <select id="hotelSelect" [(ngModel)]="hotelSeleccionado" (change)="onHotelChange()" class="form-select">
+    <option value="">-- Selecciona --</option>
+    <option *ngFor="let hotel of hoteles" [value]="hotel._id">{{ hotel.nombre }} - {{ hotel.ciudad }}</option>
+  </select>
+</div>
+
+<div *ngIf="modalVisible && (modalTipo === 'crear' || modalTipo === 'editar')" class="modal-paquete-form">
+  <form>
+    <fieldset class="info-basica-fieldset">
+      <legend><i class="fas fa-info-circle"></i> Información Básica</legend>
+      <div class="mb-3">
+        <label for="modalHotelSelect" class="form-label">Hotel</label>
+        <select id="modalHotelSelect" [(ngModel)]="formularioPaquete.hotel" name="hotel" class="form-select" required>
+          <option value="">-- Selecciona --</option>
+          <option *ngFor="let hotel of hoteles" [value]="hotel._id">{{ hotel.nombre }} - {{ hotel.ciudad }}</option>
+        </select>
+      </div>
+      <!-- ...otros campos del formulario... -->
+    </fieldset>
+  </form>
+</div>
