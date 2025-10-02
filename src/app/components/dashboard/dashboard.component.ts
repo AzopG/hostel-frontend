@@ -116,6 +116,13 @@ export class DashboardComponent implements OnInit {
             description: 'Administrar usuarios'
           },
           {
+            id: 'panel-ocupacion',
+            label: 'Ocupación',
+            icon: 'fas fa-chart-pie',
+            route: '/dashboard/panel-ocupacion',
+            description: 'Panel de ocupación consolidada'
+          },
+          {
             id: 'reportes',
             label: 'Reportes',
             icon: 'fas fa-chart-bar',
