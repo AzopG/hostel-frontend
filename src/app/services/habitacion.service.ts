@@ -116,14 +116,32 @@ export class HabitacionService {
     return this.http.put(`${this.apiUrl}/${id}`, habitacion);
   }
 
-  obtenerHabitaciones(params?: any) {
+  obtenerHabitaciones(params?: any): Observable<any> {
     let httpParams = new HttpParams();
     if (params) {
       Object.keys(params).forEach(key => {
         httpParams = httpParams.set(key, params[key]);
       });
     }
-    return this.http.get(`${this.apiUrl}`, { params: httpParams });
+    return this.http.get<any>(`${this.apiUrl}`, { params: httpParams });
+  }
+
+  buscarHabitaciones(filtros: any): Observable<any> {
+    let params = new HttpParams();
+    
+    if (filtros.hotelId) params = params.set('hotelId', filtros.hotelId);
+    if (filtros.tipo) params = params.set('tipo', filtros.tipo);
+    if (filtros.capacidad) params = params.set('capacidad', filtros.capacidad.toString());
+    if (filtros.precioMin) params = params.set('precioMin', filtros.precioMin.toString());
+    if (filtros.precioMax) params = params.set('precioMax', filtros.precioMax.toString());
+    if (filtros.disponible !== undefined) params = params.set('disponible', filtros.disponible ? 'true' : 'false');
+    if (filtros.servicios && filtros.servicios.length > 0) {
+      filtros.servicios.forEach((servicio: string) => {
+        params = params.append('servicios', servicio);
+      });
+    }
+    
+    return this.http.get<any>(`${this.apiUrl}/buscar`, { params });
   }
   /**
    * HU07 CA1: Obtener detalle completo de una habitación
