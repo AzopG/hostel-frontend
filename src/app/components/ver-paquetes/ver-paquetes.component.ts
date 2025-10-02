@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PaquetePublicoService } from '../../services/paquete-publico.service';
@@ -13,10 +13,10 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
       <!-- Navegación -->
       <div class="navigation-header">
         <button (click)="volverADashboard()" class="btn-nav">
-          <i class="fas fa-arrow-left me-2"></i>Volver al Dashboard
+          <i class="fas fa-arrow-left me-2"></i> Volver al Dashboard
         </button>
         <button (click)="irAInicio()" class="btn-nav-secondary">
-          <i class="fas fa-home me-2"></i>Inicio
+          <i class="fas fa-home me-2"></i> Inicio
         </button>
       </div>
 
@@ -132,86 +132,122 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
     </div>
   `,
   styles: [`
-    .navigation-header {
-      background: #f8f9fa;
-      padding: 1rem;
-      margin-bottom: 0;
-      border-bottom: 1px solid #dee2e6;
-      display: flex;
-      gap: 1rem;
+    .container-fluid {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      overflow-y: auto;
+      position: relative;
     }
-    
-    .btn-nav {
+
+    .navigation-header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255,255,255,0.1);
+      padding: 1.5rem 2rem 1rem 2rem;
+      border-radius: 0 0 16px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      margin-bottom: 0;
+    }
+
+    .btn-nav, .btn-nav-secondary {
       background: #667eea;
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      border-radius: 12px;
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       transition: all 0.3s ease;
+      margin-right: 0.5rem;
     }
-    
-    .btn-nav:hover {
-      background: #5a67d8;
-      transform: translateY(-1px);
-    }
-    
     .btn-nav-secondary {
       background: #6c757d;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
     }
-    
-    .btn-nav-secondary:hover {
-      background: #5a6268;
-      transform: translateY(-1px);
+    .btn-nav:hover, .btn-nav-secondary:hover {
+      background: #5a67d8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
     }
-    
+
     .header-section {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 2rem 0;
+      padding: 2rem 0 2rem 0;
       margin-bottom: 2rem;
       border-radius: 0 0 20px 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      text-align: center;
     }
-    
+    .header-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
     .page-title {
       font-size: 2.5rem;
       font-weight: 700;
       margin: 0;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
     }
-    
     .page-subtitle {
       font-size: 1.1rem;
       opacity: 0.9;
       margin: 0.5rem 0 0 0;
+      font-family: 'Crimson Text', serif;
+      font-weight: 500;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
     }
-    
+
+    .filters-section {
+      background: rgba(255,255,255,0.9);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+      margin: 0 2rem 2rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .form-select {
+      border-radius: 8px;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid #ced4da;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 0.5rem;
+    }
+
     .paquetes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 2rem;
+      margin: 0 2rem 2rem 2rem;
     }
-    
     .paquete-card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: rgba(255,255,255,0.95);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.5);
     }
-    
     .paquete-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+      border-color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.98);
     }
-    
     .paquete-header {
       display: flex;
       justify-content: space-between;
@@ -220,76 +256,141 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
       padding-bottom: 1rem;
       border-bottom: 2px solid #f8f9fa;
     }
-    
+    .paquete-header h3 {
+      font-size: 1.3rem;
+      color: #1C2526;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
     .paquete-precio {
       font-size: 1.5rem;
       font-weight: 700;
       color: #28a745;
+      font-family: 'Crimson Text', serif;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
-    
     .paquete-descripcion {
-      color: #6c757d;
+      color: #4A1B2F;
+      line-height: 1.5;
       margin-bottom: 1rem;
+      font-family: 'Crimson Text', serif;
+      font-weight: 500;
     }
-    
     .paquete-detalles {
       margin-bottom: 1rem;
     }
-    
     .detalle-item {
       display: flex;
       align-items: center;
       margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: #495057;
+      font-family: 'Crimson Text', serif;
     }
-    
     .detalle-item i {
       width: 20px;
       margin-right: 0.5rem;
       color: #667eea;
+      font-size: 1.2rem;
     }
-    
     .paquete-incluye h5 {
       color: #495057;
       margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
     }
-    
     .servicios-lista {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
       margin-bottom: 1rem;
     }
-    
     .servicio-tag {
       background: #e3f2fd;
       color: #1976d2;
-      padding: 0.25rem 0.5rem;
+      padding: 0.25rem 0.7rem;
       border-radius: 15px;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
+      font-family: 'Crimson Text', serif;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    
     .paquete-actions {
       display: flex;
       gap: 0.5rem;
+      margin-top: 1rem;
     }
-    
     .paquete-actions .btn {
       flex: 1;
+      font-size: 1rem;
+      border-radius: 8px;
+      font-family: 'Crimson Text', serif;
+      font-weight: 600;
+      padding: 0.6rem 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
     }
-    
-    .filters-section {
+    .paquete-actions .btn-primary {
+      background: #667eea;
+      color: white;
+      border: none;
+    }
+    .paquete-actions .btn-primary:hover {
+      background: #5a67d8;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .paquete-actions .btn-outline-info {
       background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      color: #667eea;
+      border: 2px solid #667eea;
     }
-    
+    .paquete-actions .btn-outline-info:hover {
+      background: #e9ecef;
+      color: #5a67d8;
+      border-color: #5a67d8;
+    }
+
     .no-paquetes, .loading {
       text-align: center;
       padding: 3rem;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.95);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      margin: 2rem;
+      font-family: 'Crimson Text', serif;
+    }
+
+    @media (max-width: 768px) {
+      .container-fluid {
+        padding: 0;
+        min-height: 100vh;
+      }
+      .navigation-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .header-section {
+        padding: 1.2rem 0;
+      }
+      .filters-section {
+        padding: 1rem;
+        margin: 0 0.5rem 1rem 0.5rem;
+      }
+      .paquetes-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 0 0.5rem 1rem 0.5rem;
+      }
+      .paquete-card {
+        padding: 1.2rem;
+      }
+      .no-paquetes, .loading {
+        padding: 1.5rem;
+        margin: 0.5rem;
+      }
     }
   `]
 })

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService, Usuario } from '../../services/auth.service';
-import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
+import { EstadisticasGenerales, EstadisticasService } from '../../services/estadisticas.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -13,7 +13,14 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       <div class="dashboard-content">
         <!-- Header personalizado -->
         <div class="welcome-header">
-          <h1>¡Bienvenido{{ currentUser?.tipo === 'cliente' ? '' : 'a' }}, {{ currentUser?.nombre }}!</h1>
+          <div class="datetime-display">
+            <div class="fecha-hora">
+              <span class="fecha">{{ fechaActual }}</span>
+              <span class="hora">{{ horaActual }}</span>
+              <span class="zona">Bogotá, Colombia</span>
+            </div>
+          </div>
+          <h1>¡Bienvenido{{ currentUser?.tipo === 'cliente' ? '' : '/a' }}, {{ currentUser?.nombre }}!</h1>
           <p class="subtitle" [ngSwitch]="currentUser?.tipo">
             <span *ngSwitchCase="'cliente'">Explora nuestras opciones de alojamiento y haz tu próxima reserva.</span>
             <span *ngSwitchCase="'empresa'">Gestiona tus eventos corporativos y reservas empresariales.</span>
@@ -260,6 +267,53 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       border-radius: 16px;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+    .datetime-display {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .fecha-hora {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .fecha {
+      font-size: 0.9rem;
+      color: #212529;
+      font-weight: 600;
+      font-family: 'Crimson Text', serif;
+      text-transform: capitalize;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+
+    .hora {
+      font-size: 1.1rem;
+      color: #1C2526;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+
+    .zona {
+      font-size: 0.7rem;
+      color: #495057;
+      font-weight: 500;
+      font-family: 'Crimson Text', serif;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .welcome-header h1 {
@@ -516,6 +570,31 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
         font-size: 2rem;
       }
 
+      .datetime-display {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 1rem;
+        display: inline-block;
+      }
+
+      .fecha-hora {
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+
+      .fecha {
+        font-size: 0.8rem;
+      }
+
+      .hora {
+        font-size: 1rem;
+      }
+
+      .zona {
+        font-size: 0.6rem;
+      }
+
       .actions-grid {
         grid-template-columns: 1fr;
       }
@@ -526,11 +605,16 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
     }
   `]
 })
-export class DashboardHomeComponent implements OnInit {
+export class DashboardHomeComponent implements OnInit, OnDestroy {
   currentUser: Usuario | null = null;
   estadisticas: EstadisticasGenerales = {};
   isLoading = true;
   error = '';
+  
+  // Propiedades para fecha y hora
+  fechaActual: string = '';
+  horaActual: string = '';
+  private intervalId: any;
 
   constructor(
     private authService: AuthService,
@@ -545,6 +629,43 @@ export class DashboardHomeComponent implements OnInit {
         this.cargarEstadisticas();
       }
     });
+    
+    // Inicializar fecha y hora
+    this.actualizarFechaHora();
+    // Actualizar cada segundo
+    this.intervalId = setInterval(() => {
+      this.actualizarFechaHora();
+    }, 1000);
+  }
+  
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  private actualizarFechaHora(): void {
+    const now = new Date();
+    
+    // Configurar para zona horaria de Bogotá, Colombia
+    const opciones: Intl.DateTimeFormatOptions = {
+      timeZone: 'America/Bogota',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long'
+    };
+    
+    const opcionesHora: Intl.DateTimeFormatOptions = {
+      timeZone: 'America/Bogota',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    };
+    
+    this.fechaActual = now.toLocaleDateString('es-CO', opciones);
+    this.horaActual = now.toLocaleTimeString('es-CO', opcionesHora);
   }
 
   cargarEstadisticas(): void {
