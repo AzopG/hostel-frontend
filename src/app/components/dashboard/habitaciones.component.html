@@ -1,4 +1,6 @@
 <div class="habitaciones-container">
+  <!-- Ejemplo: Botón para emitir cambios de habitaciones editadas -->
+  <button class="btn-guardar" *ngIf="habitaciones && habitaciones.length" (click)="habitacionesChange.emit(habitaciones)">Guardar cambios</button>
   <div class="filters-section">
     <form class="filters-container" (ngSubmit)="buscarHabitaciones()">
       <div class="filter-group">
