@@ -1,11 +1,11 @@
 .navbar {
   width: 100%;
-  background: linear-gradient(135deg, #1C2526 0%, #0A3161 100%);
-  color: #F8F1E9;
+  background: linear-gradient(135deg, #111111 0%, #0A3161 100%);
+  color: #B89778;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 50px;
+  padding: 3px 22px;
   position: fixed;
   top: 0;
   left: 0;
@@ -151,16 +151,21 @@
   color: #F8F1E9;
   border: 2px solid #B89778;
   border-radius: 30px;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 10px 32px;
+  font-size: 1.1rem;
+  font-weight: 700;
   font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   margin-left: 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(184, 151, 120, 0.3);
+  box-shadow: 0 8px 25px rgba(184, 151, 120, 0.18);
+  background: linear-gradient(135deg, #F8F1E9 0%, #B89778 100%);
+  color: #111111;
+  border-color: #B89778;
+  box-shadow: 0 12px 35px rgba(74, 27, 47, 0.18);
+  transform: scale(1.04);
 }
 
 .register-nav-btn {
@@ -353,7 +358,7 @@
 
 .hero {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1C2526 0%, #0A3161 50%, #4A1B2F 100%);
+  background: linear-gradient(135deg, #111111 0%, #0A3161 60%, #B89778 100%);
   display: flex;
   align-items: center;
   position: relative;
@@ -380,25 +385,25 @@
 .hero-title {
   font-size: 4.5rem;
   font-weight: 900;
-  color: #F8F1E9;
+  color: #111111;
   margin: 0 0 1.5rem 0;
   line-height: 1.1;
   letter-spacing: 3px;
   font-family: 'Playfair Display', serif;
-  text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(184, 151, 120, 0.3);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.16), 0 0 20px rgba(184,151,120,0.2);
   position: relative;
 }
 
 .hero-subtitle {
   font-size: 1.5rem;
-  color: #F8F1E9;
-  margin: 0 0 2.5rem 0;
+  color: #111111;
+  filter: drop-shadow(0 0 4px rgba(17,17,17,0.2));
   line-height: 1.7;
   font-weight: 500;
   letter-spacing: 1.2px;
   font-family: 'Crimson Text', serif;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-  opacity: 0.95;
+  opacity: 1;
 }
 
 .hero-actions {
@@ -424,8 +429,8 @@
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  background: linear-gradient(135deg, #B89778 0%, #4A1B2F 100%);
-  color: #F8F1E9;
+  background: linear-gradient(135deg, #F8F1E9 0%, #B89778 100%);
+  color: #111111;
   backdrop-filter: blur(15px);
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   box-shadow: 0 8px 25px rgba(184, 151, 120, 0.4);
@@ -494,8 +499,8 @@
 
 .btn-icon {
   font-size: 1.4rem;
-  color: #F8F1E9;
-  filter: drop-shadow(0 0 4px rgba(248, 241, 233, 0.3));
+  color: #111111;
+  filter: drop-shadow(0 0 4px rgba(184, 151, 120, 0.2));
 }
 
 .hero-features-icons {
@@ -527,8 +532,8 @@
 
 .feature-circle .feature-icon {
   font-size: 1.8rem;
-  color: #F8F1E9;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  color: #111111;
+  text-shadow: 1px 1px 2px rgba(184,151,120,0.2);
 }
 
 /* Custom Tooltip Styles */
@@ -806,8 +811,9 @@
   font-size: 3rem;
   margin-bottom: 1.2rem;
   display: block;
-  color: #1C2526;
-  text-shadow: none;
+  color: #111111;
+  text-shadow: 0 0 8px rgba(184,151,120,0.2);
+color: #B89778 !important;
 }
 
 .feature-card h3 {

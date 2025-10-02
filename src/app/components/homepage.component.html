@@ -19,23 +19,27 @@
     <li><a href="#servicios" (click)="closeMobileMenu()">Servicios</a></li>
     <li><a href="#contacto" (click)="closeMobileMenu()">Contacto</a></li>
     <li *ngIf="!isAuthenticated">
-      <button class="register-nav-btn" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</button>
+      <!-- <button class="register-nav-btn" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</button> -->
+      <a class="" href="register/" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</a>
     </li>
     <li *ngIf="!isAuthenticated">
-      <button class="login-nav-btn" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</button>
+      <!-- <button class="login-nav-btn" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</button> -->
+      <a class="" href="login/" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</a>
     </li>
+    
     <li *ngIf="isAuthenticated" class="user-menu">
       <div class="notification-bell" (click)="toggleNotifications()">
         <span class="bell-icon"><i class="fas fa-bell"></i></span>
         <span class="notification-count" *ngIf="totalNotifications > 0">{{ totalNotifications }}</span>
       </div>
-      <div class="user-info">
+      <div>
         <span class="user-name">{{ currentUser?.nombre }}</span>
-        <button class="dashboard-btn" (click)="navigateToDashboard(); closeMobileMenu()">Panel de Control</button>
-        <button class="logout-btn" (click)="logout(); closeMobileMenu()">Salir</button>
+        <a class="" href="#panel" (click)="navigateToDashboard(); closeMobileMenu()">Panel de Control</a>
+        <a class="" href="login/" (click)="logout(); closeMobileMenu()">Salir</a>
+     
       </div>
     </li>
-  </ul>
+  </ul> 
 
   <!-- Panel de notificaciones -->
   <div class="notifications-panel" *ngIf="showNotifications && isAuthenticated">
@@ -117,29 +121,35 @@
       <div class="hero-visual">
         <div class="floating-card">
           <div class="card-header">
+            <!-- ___________________________________________________________________________________ -->
             <h3>Panel de Control</h3>
             <div class="status-indicator active"></div>
           </div>
           <div class="stats-grid">
             <div class="stat-item">
-              <div class="stat-number">{{ currentStats.totalHoteles }}</div>
+              <div class="stat-number">{{ statsData.hoteles }}</div>
               <div class="stat-label">Hoteles</div>
             </div>
             <div class="stat-item">
-              <div class="stat-number">{{ currentStats.totalReservas }}</div>
+              <div class="stat-number">{{ statsData.reservas }}</div>
               <div class="stat-label">Reservas</div>
             </div>
             <div class="stat-item">
-              <div class="stat-number">{{ currentStats.totalUsuarios }}</div>
-              <div class="stat-label">Usuarios</div>
+              <div class="stat-number">{{ statsData.clientes }}</div>
+              <div class="stat-label">Clientes</div>
             </div>
             <div class="stat-item">
-              <div class="stat-number">{{ formatRevenue(currentStats.ingresosTotales) }}</div>
+              <div class="stat-number">{{ statsData.ingresos }}</div>
               <div class="stat-label">Ingresos</div>
             </div>
           </div>
         </div>
       </div>
+      
+
+
+
+
     </div>
   </section>
 
