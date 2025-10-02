@@ -46,6 +46,8 @@
     </button>
   </div>
 
+  <div class="mis-reservas-container">
+
   <!-- Filtros y Búsqueda -->
   <div class="filtros-section">
     <!-- Filtros por Estado -->
@@ -61,6 +63,7 @@
         [class.activo]="estadoFiltro === 'confirmada'"
         (click)="cambiarFiltro('confirmada')">
         ✅ Confirmadas ({{ vistaActual === 'habitaciones' ? contarPorEstado('confirmada') : contarPaquetesPorEstado('confirmada') }})
+
       </button>
       <button 
         class="filtro-btn" 
@@ -94,7 +97,7 @@
         class="btn-limpiar" 
         *ngIf="busquedaCodigo"
         (click)="limpiarBusqueda()">
-        ✕
+        <i class="fas fa-times"></i>
       </button>
     </div>
   </div>
@@ -107,10 +110,9 @@
 
   <!-- Error -->
   <div *ngIf="error && !cargando" class="error-message">
-    <p>⚠️ {{ error }}</p>
+    <p><i class="fas fa-exclamation-triangle me-2"></i>{{ error }}</p>
     <button class="btn-reintentar" (click)="recargar()">Reintentar</button>
   </div>
-
   <!-- Lista Vacía - Habitaciones -->
   <div *ngIf="vistaActual === 'habitaciones' && !cargando && !error && reservasFiltradas.length === 0" class="lista-vacia">
     <div class="icono-vacio">📭</div>
@@ -122,8 +124,11 @@
     <p *ngIf="!busquedaCodigo && estadoFiltro === 'todas'">
       Aún no has realizado ninguna reserva de habitación.
     </p>
+    <div class="info-filtro">
+      <small><i class="fas fa-lightbulb me-1"></i>Se muestran solo las reservas más recientes con datos completos</small>
+    </div>
     <button class="btn-buscar-habitaciones" (click)="irABuscar()">
-      🔍 Buscar Habitaciones
+      <i class="fas fa-search me-2"></i>Buscar Habitaciones
     </button>
   </div>
 
@@ -455,6 +460,5 @@
       </div>
     </div>
   </div>
-
-  </div> <!-- Cierre content-wrapper -->
-</div> <!-- Cierre mis-reservas-container -->
+  </div>
+</div>

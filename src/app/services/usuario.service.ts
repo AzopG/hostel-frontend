@@ -7,37 +7,40 @@ export interface Usuario {
   nombre: string;
   email: string;
   tipo: string;
-  empresa?: string; // Nombre comercial (legacy)
-  
-  // HU13: Campos adicionales para empresas
-  razonSocial?: string; // Razón social legal
-  nit?: string; // NIT de la empresa
+
+  // Empresa (legacy + HU13)
+  empresa?: string;
+  razonSocial?: string;
+  nit?: string;
   contactoEmpresa?: {
     nombre: string;
     cargo?: string;
     telefono: string;
   };
-  
+
+  // Cliente individual
+  telefono?: string;
+
   activo?: boolean;
-  telefono?: string; // Para clientes individuales
   createdAt?: string;
   updatedAt?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
-  updateUsuario(id: string, usuario: Partial<Usuario>): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, usuario);
-  }
-
-  deleteUsuario(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
   private apiUrl = '/api/usuarios';
 
   constructor(private http: HttpClient) {}
 
   getUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.apiUrl);
+  }
+
+  updateUsuario(id: string, usuario: Partial<Usuario>): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, usuario);
+  }
+
+  deleteUsuario(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

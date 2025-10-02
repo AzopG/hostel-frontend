@@ -13,13 +13,14 @@ import { AuthService } from '../../services/auth.service';
       <div class="dashboard-header">
         <div class="header-content">
           <div class="welcome-section">
-            <h1>🏨 Dashboard Hotelero</h1>
+            <h1><i class="fas fa-hotel me-3"></i>Dashboard Hotelero</h1>
             <p *ngIf="usuario">Bienvenido, <strong>{{ usuario.nombre }}</strong></p>
             <p class="subtitle">Gestiona tus reservas y servicios hoteleros</p>
           </div>
           <div class="header-actions">
             <button class="btn-logout" (click)="cerrarSesion()">
-              <span>🚪 Cerrar Sesión</span>
+              <i class="fas fa-sign-out-alt me-2"></i>
+              <span>Cerrar Sesión</span>
             </button>
           </div>
         </div>
@@ -27,12 +28,12 @@ import { AuthService } from '../../services/auth.service';
 
       <!-- Tarjetas de acceso rápido -->
       <div class="quick-actions">
-        <h2>🚀 Acceso Rápido</h2>
+        <h2><i class="fas fa-rocket me-2"></i>Acceso Rápido</h2>
         <div class="actions-grid">
           
           <!-- Buscar Habitaciones -->
           <div class="action-card primary" (click)="navegarA('/buscar-habitaciones')">
-            <div class="card-icon">🔍</div>
+            <div class="card-icon"><i class="fas fa-search"></i></div>
             <h3>Buscar Habitaciones</h3>
             <p>Encuentra y reserva habitaciones disponibles</p>
             <div class="card-action">Explorar →</div>
@@ -40,7 +41,7 @@ import { AuthService } from '../../services/auth.service';
 
           <!-- Mis Reservas -->
           <div class="action-card success" (click)="navegarA('/mis-reservas')">
-            <div class="card-icon">📋</div>
+            <div class="card-icon"><i class="fas fa-clipboard-list"></i></div>
             <h3>Mis Reservas</h3>
             <p>Ver y gestionar tus reservas activas</p>
             <div class="card-action">Ver Reservas →</div>
@@ -48,7 +49,7 @@ import { AuthService } from '../../services/auth.service';
 
           <!-- Calendario -->
           <div class="action-card info" (click)="navegarA('/calendario')">
-            <div class="card-icon">📅</div>
+            <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
             <h3>Calendario</h3>
             <p>Consultar disponibilidad por fechas</p>
             <div class="card-action">Ver Calendario →</div>
@@ -56,7 +57,7 @@ import { AuthService } from '../../services/auth.service';
 
           <!-- Salones (si es empresa) -->
           <div *ngIf="esEmpresa()" class="action-card warning" (click)="navegarA('/salones')">
-            <div class="card-icon">🏢</div>
+            <div class="card-icon"><i class="fas fa-building"></i></div>
             <h3>Salones de Eventos</h3>
             <p>Reservar salones para eventos corporativos</p>
             <div class="card-action">Ver Salones →</div>
@@ -64,7 +65,7 @@ import { AuthService } from '../../services/auth.service';
 
           <!-- Paquetes Corporativos (si es empresa) -->
           <div *ngIf="esEmpresa()" class="action-card corporate" (click)="navegarA('/paquetes')">
-            <div class="card-icon">📦</div>
+            <div class="card-icon"><i class="fas fa-box"></i></div>
             <h3>Paquetes Corporativos</h3>
             <p>Reservas combinadas de salón + habitaciones</p>
             <div class="card-action">Ver Paquetes →</div>
@@ -75,7 +76,7 @@ import { AuthService } from '../../services/auth.service';
 
       <!-- Información del usuario -->
       <div class="user-info" *ngIf="usuario">
-        <h2>👤 Información de la Cuenta</h2>
+        <h2><i class="fas fa-user me-2"></i>Información de la Cuenta</h2>
         <div class="info-card">
           <div class="info-grid">
             <div class="info-item">
@@ -100,26 +101,26 @@ import { AuthService } from '../../services/auth.service';
 
       <!-- Accesos adicionales -->
       <div class="additional-actions">
-        <h2>🔧 Herramientas Adicionales</h2>
+        <h2><i class="fas fa-tools me-2"></i>Herramientas Adicionales</h2>
         <div class="tools-grid">
           
           <div class="tool-item" (click)="navegarA('/perfil')">
-            <span class="tool-icon">⚙️</span>
+            <span class="tool-icon"><i class="fas fa-cog"></i></span>
             <span class="tool-text">Configurar Perfil</span>
           </div>
           
           <div class="tool-item" (click)="navegarA('/historial')">
-            <span class="tool-icon">📊</span>
+            <span class="tool-icon"><i class="fas fa-chart-bar"></i></span>
             <span class="tool-text">Historial Completo</span>
           </div>
           
           <div class="tool-item" (click)="navegarA('/soporte')">
-            <span class="tool-icon">💬</span>
+            <span class="tool-icon"><i class="fas fa-comments"></i></span>
             <span class="tool-text">Soporte al Cliente</span>
           </div>
           
           <div class="tool-item" (click)="navegarA('/')">
-            <span class="tool-icon">🏠</span>
+            <span class="tool-icon"><i class="fas fa-home"></i></span>
             <span class="tool-text">Página Principal</span>
           </div>
           
@@ -134,15 +135,16 @@ import { AuthService } from '../../services/auth.service';
       margin: 0 auto;
       padding: 20px;
       min-height: 100vh;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
     }
 
     .dashboard-header {
-      background: white;
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
       padding: 30px;
       margin-bottom: 30px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
     .header-content {
@@ -155,6 +157,12 @@ import { AuthService } from '../../services/auth.service';
       margin: 0 0 10px 0;
       color: #2c3e50;
       font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .welcome-section h1 i {
+      color: #3498db;
     }
 
     .welcome-section p {
@@ -181,6 +189,10 @@ import { AuthService } from '../../services/auth.service';
       transition: all 0.3s ease;
     }
 
+    .btn-logout i {
+      color: white;
+    }
+
     .btn-logout:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
@@ -192,6 +204,14 @@ import { AuthService } from '../../services/auth.service';
       margin: 0 0 20px 0;
       color: #2c3e50;
       font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .quick-actions h2 i,
+    .user-info h2 i,
+    .additional-actions h2 i {
+      color: #3498db;
     }
 
     .actions-grid {
@@ -202,19 +222,21 @@ import { AuthService } from '../../services/auth.service';
     }
 
     .action-card {
-      background: white;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
       padding: 25px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       position: relative;
       overflow: hidden;
+      border: none;
     }
 
     .action-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
     }
 
     .action-card.primary {
@@ -240,6 +262,35 @@ import { AuthService } from '../../services/auth.service';
     .card-icon {
       font-size: 2.5rem;
       margin-bottom: 15px;
+      color: #2d3748;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+    }
+
+    .card-icon i {
+      color: #2d3748;
+    }
+
+    .action-card.primary .card-icon i {
+      color: #3498db;
+    }
+
+    .action-card.success .card-icon i {
+      color: #27ae60;
+    }
+
+    .action-card.info .card-icon i {
+      color: #8e44ad;
+    }
+
+    .action-card.warning .card-icon i {
+      color: #f39c12;
+    }
+
+    .action-card.corporate .card-icon i {
+      color: #2c3e50;
     }
 
     .action-card h3 {
@@ -265,10 +316,11 @@ import { AuthService } from '../../services/auth.service';
     }
 
     .info-card {
-      background: white;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
       padding: 25px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
     .info-grid {
@@ -327,24 +379,36 @@ import { AuthService } from '../../services/auth.service';
     }
 
     .tool-item {
-      background: white;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
       padding: 20px;
       display: flex;
       align-items: center;
       gap: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .tool-item:hover {
-      background: #f8f9fa;
+      background: rgba(248, 249, 250, 0.98);
       transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     }
 
     .tool-icon {
       font-size: 1.5rem;
+      color: #2d3748;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .tool-icon i {
+      color: #3498db;
     }
 
     .tool-text {
