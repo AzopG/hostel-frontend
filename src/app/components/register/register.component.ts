@@ -966,8 +966,6 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
         margin-top: auto;
       }
     }
-        padding: 16px 20px;
-        font-size: 1rem;
         letter-spacing: 1px;
       }
     }
