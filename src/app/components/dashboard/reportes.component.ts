@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reportes',
@@ -408,28 +410,104 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class ReportesComponent {
-  totalReservas = 1247;
-  ingresosTotales = 89650;
-  ocupacionPromedio = 78;
-  usuariosActivos = 342;
+export class ReportesComponent implements OnInit {
+  // Propiedades para datos reales
+  estadisticas: EstadisticasGenerales = {};
+  isLoading = true;
+  error = '';
+  currentUser: any = null;
 
-  reservasPorMes = [
-    { nombre: 'Enero', reservas: 89, ingresos: 12400 },
-    { nombre: 'Febrero', reservas: 95, ingresos: 13200 },
-    { nombre: 'Marzo', reservas: 112, ingresos: 15800 },
-    { nombre: 'Abril', reservas: 134, ingresos: 18900 },
-    { nombre: 'Mayo', reservas: 156, ingresos: 21300 },
-    { nombre: 'Junio', reservas: 189, ingresos: 26200 }
-  ];
+  // Datos de reportes
+  totalReservas = 0;
+  ingresosTotales = 0;
+  ocupacionPromedio = 0;
+  usuariosActivos = 0;
 
-  topHoteles = [
-    { nombre: 'Hotel Boutique Central', reservas: 234, rating: 4.8 },
-    { nombre: 'Hotel Plaza Mayor', reservas: 198, rating: 4.6 },
-    { nombre: 'Hotel Ejecutivo', reservas: 167, rating: 4.4 },
-    { nombre: 'Hotel Luxury Suite', reservas: 145, rating: 4.9 },
-    { nombre: 'Hotel Business Center', reservas: 132, rating: 4.3 }
-  ];
+  reservasPorMes: any[] = [];
+  topHoteles: any[] = [];
+
+  constructor(
+    private estadisticasService: EstadisticasService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.currentUser = this.authService.getCurrentUser();
+    this.cargarDatosReportes();
+  }
+
+  cargarDatosReportes(): void {
+    this.isLoading = true;
+    this.error = '';
+    
+    this.estadisticasService.obtenerEstadisticasGenerales().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.estadisticas = response.stats;
+          this.actualizarDatosReportes();
+        } else {
+          this.error = 'Error al cargar datos de reportes';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar datos de reportes:', error);
+        this.error = 'Error de conexi\u00f3n al cargar reportes';
+        this.isLoading = false;
+        this.usarDatosPorDefecto();
+      }
+    });
+  }
+
+  actualizarDatosReportes(): void {
+    this.totalReservas = this.estadisticas.totalReservas || 0;
+    this.ingresosTotales = this.estadisticas.ingresosTotales || 0;
+    this.ocupacionPromedio = this.estadisticas.ocupacionPromedio || 0;
+    this.usuariosActivos = this.estadisticas.totalClientes || 0;
+    
+    // Si hay datos de reservas por mes, usarlos; si no, usar datos por defecto
+    if (this.estadisticas.reservasPorMes && this.estadisticas.reservasPorMes.length > 0) {
+      this.reservasPorMes = this.estadisticas.reservasPorMes.map(item => ({
+        nombre: this.getNombreMes(item._id.month),
+        reservas: item.count,
+        ingresos: item.totalIngresos || 0
+      }));
+    } else {
+      this.usarDatosPorDefectoReservas();
+    }
+  }
+
+  usarDatosPorDefecto(): void {
+    this.totalReservas = 0;
+    this.ingresosTotales = 0;
+    this.ocupacionPromedio = 0;
+    this.usuariosActivos = 0;
+    this.usarDatosPorDefectoReservas();
+    this.usarDatosPorDefectoHoteles();
+  }
+
+  usarDatosPorDefectoReservas(): void {
+    this.reservasPorMes = [
+      { nombre: 'Enero', reservas: 0, ingresos: 0 },
+      { nombre: 'Febrero', reservas: 0, ingresos: 0 },
+      { nombre: 'Marzo', reservas: 0, ingresos: 0 },
+      { nombre: 'Abril', reservas: 0, ingresos: 0 },
+      { nombre: 'Mayo', reservas: 0, ingresos: 0 },
+      { nombre: 'Junio', reservas: 0, ingresos: 0 }
+    ];
+  }
+
+  usarDatosPorDefectoHoteles(): void {
+    this.topHoteles = [];
+  }
+
+  getNombreMes(numeroMes: number): string {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[numeroMes - 1] || 'Mes';
+  }
 
   exportarReporte(): void {
     console.log('Exportando reporte...');
