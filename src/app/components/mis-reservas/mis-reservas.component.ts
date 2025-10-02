@@ -168,6 +168,7 @@ export class MisReservasComponent implements OnInit {
    * Navegar a detalle de reserva
    */
   verDetalle(reserva: ReservaConAcciones): void {
+    // Redirigir a la nueva vista de detalle usando el código de reserva
     this.router.navigate(['/detalle-reserva', reserva.codigoReserva]);
   }
 
@@ -186,7 +187,8 @@ export class MisReservasComponent implements OnInit {
       alert('No se puede modificar esta reserva en este momento.');
       return;
     }
-    this.router.navigate(['/modificar-reserva', reserva._id]);
+    // Navegar usando el código de reserva
+    this.router.navigate(['/modificar-reserva', reserva.codigoReserva]);
   }
 
   /**

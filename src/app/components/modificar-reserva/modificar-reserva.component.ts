@@ -21,7 +21,7 @@ export class ModificarReservaComponent implements OnInit {
   
   // Datos de la reserva
   reserva: ReservaCreada | null = null;
-  reservaId = '';
+  reservaCodigo = '';
   
   // HU09 CA1 + CA4: Verificación de modificabilidad
   puedeModificar = false;
@@ -54,15 +54,13 @@ export class ModificarReservaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reservaId = this.route.snapshot.paramMap.get('id') || '';
-    
-    if (!this.reservaId) {
-      this.error = 'ID de reserva inválido';
+    this.reservaCodigo = this.route.snapshot.paramMap.get('id') || '';
+    if (!this.reservaCodigo) {
+      this.error = 'Código de reserva inválido';
       this.pasoActual = 'error';
       this.cargando = false;
       return;
     }
-
     this.cargarReserva();
   }
 
@@ -91,19 +89,16 @@ export class ModificarReservaComponent implements OnInit {
    */
   private cargarReserva(): void {
     this.cargando = true;
-
-    // Primero obtener datos de la reserva
-    this.reservaService.obtenerReservaPorCodigo(this.reservaId).subscribe({
+    // Obtener datos de la reserva por código
+    this.reservaService.obtenerReservaPorCodigo(this.reservaCodigo).subscribe({
       next: (response) => {
         if (response.success && response.reserva) {
           this.reserva = response.reserva;
-          
           // Pre-llenar formulario con fechas actuales
           this.fechasForm.patchValue({
             fechaInicio: this.formatearFecha(new Date(this.reserva.fechaInicio)),
             fechaFin: this.formatearFecha(new Date(this.reserva.fechaFin))
           });
-
           // HU09 CA1 + CA4: Verificar si puede modificarse
           this.verificarModificabilidad();
         }
@@ -227,7 +222,7 @@ export class ModificarReservaComponent implements OnInit {
       fechaFinNueva: this.fechasForm.value.fechaFin
     };
 
-    this.reservaService.modificarFechasReserva(this.reserva._id, datos).subscribe({
+  this.reservaService.modificarFechasReservaPorCodigo(this.reserva!.codigoReserva, datos).subscribe({
       next: (response) => {
         if (response.success && response.reserva) {
           // CA2: Modificación exitosa
