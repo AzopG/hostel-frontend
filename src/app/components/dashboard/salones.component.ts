@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SalonService, Salon } from '../../services/salon.service';
+import { SalonService, Salon, SalonCreateUpdate } from '../../services/salon.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -1000,9 +1000,9 @@ export class SalonesComponent implements OnInit {
   }
 
   guardarSalon(): void {
-    const datosParaGuardar = {
+    const datosParaGuardar: SalonCreateUpdate = {
       ...this.formularioSalon,
-      hotelId: this.hotelId,
+      hotel: this.hotelId, // Cambiar hotelId por hotel para que coincida con el modelo
       equipamiento: this.formularioSalon.equipamiento.split(',').map(e => e.trim()).filter(e => e),
       serviciosIncluidos: this.formularioSalon.serviciosIncluidos.split(',').map(s => s.trim()).filter(s => s)
     };
