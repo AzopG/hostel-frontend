@@ -8,6 +8,11 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
+    <!-- Debug Modal Estado -->
+    <div style="position: fixed; top: 10px; right: 10px; background: red; color: white; padding: 10px; z-index: 9999;" *ngIf="modalVisible">
+      Modal Visible: {{modalTipo}} - Paquete: {{!!reservaPaqueteSeleccionada}} - Habitación: {{!!reservaSeleccionada}}
+    </div>
+    
     <!-- Modal para confirmación/rechazo -->
     <div *ngIf="modalVisible" class="modal-backdrop" (click)="cerrarModal()"></div>
     <div *ngIf="modalVisible" class="modal-container">
@@ -74,6 +79,61 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
               <span class="detail-value">{{ reservaSeleccionada.notas }}</span>
             </div>
           </div>
+          
+          <!-- Detalles de reserva de paquete -->
+          <div class="reservation-details" *ngIf="reservaPaqueteSeleccionada">
+            <div class="detail-row">
+              <span class="detail-label">Número Reserva:</span>
+              <span class="detail-value code">{{ reservaPaqueteSeleccionada.numeroReserva }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Empresa:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.datosEmpresa?.razonSocial }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">NIT:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.datosEmpresa?.nit }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Email:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.datosEmpresa?.email }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Evento:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.nombreEvento }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Tipo de Evento:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.tipoEvento | titlecase }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Paquete:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.paquete?.nombre }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Fecha del Evento:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.fechaInicio | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Asistentes:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.numeroAsistentes }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Total:</span>
+              <span class="detail-value total">{{ reservaPaqueteSeleccionada.precios?.total | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Estado:</span>
+              <span class="badge-modern" [ngClass]="getEstadoBadge(reservaPaqueteSeleccionada.estado)">
+                {{ reservaPaqueteSeleccionada.estado | titlecase }}
+              </span>
+            </div>
+            <div class="detail-row" *ngIf="reservaPaqueteSeleccionada.notasHotel">
+              <span class="detail-label">Notas del Hotel:</span>
+              <span class="detail-value">{{ reservaPaqueteSeleccionada.notasHotel }}</span>
+            </div>
+          </div>
+          
           <div class="modal-actions">
             <button class="btn btn-secondary" (click)="cerrarModal()">
               <i class="fas fa-times me-2"></i>Cerrar
@@ -100,11 +160,24 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
               </textarea>
             </div>
           </div>
+          <div class="confirm-message" *ngIf="reservaPaqueteSeleccionada">
+            <p>¿Desea confirmar la reserva de paquete <strong>{{ reservaPaqueteSeleccionada.numeroReserva }}</strong> de <strong>{{ reservaPaqueteSeleccionada.datosEmpresa?.razonSocial }}</strong>?</p>
+            <div class="form-group">
+              <label for="notasConfirmarPaquete">Notas del hotel (opcional):</label>
+              <textarea 
+                id="notasConfirmarPaquete"
+                class="form-control" 
+                [(ngModel)]="notasHotel" 
+                rows="3" 
+                placeholder="Agregue notas adicionales para la empresa...">
+              </textarea>
+            </div>
+          </div>
           <div class="modal-actions">
             <button class="btn btn-secondary" (click)="cerrarModal()">
               <i class="fas fa-times me-2"></i>Cancelar
             </button>
-            <button class="btn btn-success" (click)="ejecutarConfirmacion()">
+            <button class="btn btn-success" (click)="reservaSeleccionada ? ejecutarConfirmacion() : ejecutarConfirmacionPaquete()">
               <i class="fas fa-check me-2"></i>Confirmar Reserva
             </button>
           </div>
@@ -140,11 +213,35 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
               </textarea>
             </div>
           </div>
+          <div class="reject-message" *ngIf="reservaPaqueteSeleccionada">
+            <p>¿Desea rechazar la reserva de paquete <strong>{{ reservaPaqueteSeleccionada.numeroReserva }}</strong> de <strong>{{ reservaPaqueteSeleccionada.datosEmpresa?.razonSocial }}</strong>?</p>
+            <div class="form-group">
+              <label for="motivoRechazoPaquete">Motivo del rechazo *:</label>
+              <textarea 
+                id="motivoRechazoPaquete"
+                class="form-control" 
+                [(ngModel)]="motivoRechazo" 
+                rows="3" 
+                placeholder="Explique el motivo por el cual se rechaza la reserva de paquete..."
+                required>
+              </textarea>
+            </div>
+            <div class="form-group">
+              <label for="notasRechazarPaquete">Notas adicionales (opcional):</label>
+              <textarea 
+                id="notasRechazarPaquete"
+                class="form-control" 
+                [(ngModel)]="notasHotel" 
+                rows="2" 
+                placeholder="Notas internas del hotel...">
+              </textarea>
+            </div>
+          </div>
           <div class="modal-actions">
             <button class="btn btn-secondary" (click)="cerrarModal()">
               <i class="fas fa-arrow-left me-2"></i>Cancelar
             </button>
-            <button class="btn btn-danger" (click)="ejecutarRechazo()" [disabled]="!motivoRechazo.trim()">
+            <button class="btn btn-danger" (click)="reservaSeleccionada ? ejecutarRechazo() : ejecutarRechazoPaquete()" [disabled]="!motivoRechazo.trim()">
               <i class="fas fa-times me-2"></i>Rechazar Reserva
             </button>
           </div>
@@ -275,13 +372,33 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
         </div>
       </div>
 
-      <!-- Tabla de reservas -->
-      <div class="table-section" *ngIf="!cargando">
+      <!-- Pestañas de navegación -->
+      <div class="tabs-section" *ngIf="!cargando">
+        <div class="tabs-container">
+          <button 
+            class="tab-button" 
+            [class.active]="tabActiva === 'habitaciones'"
+            (click)="cambiarTab('habitaciones')">
+            <i class="fas fa-bed me-2"></i>
+            Reservas de Habitaciones
+          </button>
+          <button 
+            class="tab-button" 
+            [class.active]="tabActiva === 'paquetes'"
+            (click)="cambiarTab('paquetes')">
+            <i class="fas fa-box me-2"></i>
+            Reservas de Paquetes
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla de reservas de habitaciones -->
+      <div class="table-section" *ngIf="!cargando && tabActiva === 'habitaciones'">
         <div class="card table-card">
           <div class="card-header">
             <h5 class="card-title mb-0">
               <i class="fas fa-list me-2"></i>
-              Lista de Reservas ({{ reservasFiltradas.length }})
+              Lista de Reservas de Habitaciones ({{ reservasFiltradas.length }})
             </h5>
           </div>
           <div class="card-body p-0">
@@ -355,6 +472,101 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
                         <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
                         <h5 class="text-muted">No se encontraron reservas</h5>
                         <p class="text-muted">Ajusta los filtros o verifica que haya reservas en el sistema</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de reservas de paquetes -->
+      <div class="table-section" *ngIf="!cargando && tabActiva === 'paquetes'">
+        <div class="card table-card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="fas fa-list me-2"></i>
+              Lista de Reservas de Paquetes ({{ reservasPaquetesFiltradas.length }})
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Número Reserva</th>
+                    <th>Empresa</th>
+                    <th>Evento</th>
+                    <th>Paquete</th>
+                    <th>Fecha Evento</th>
+                    <th>Asistentes</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reserva of reservasPaquetesFiltradas" class="table-row">
+                    <td class="code-cell">{{ reserva.numeroReserva }}</td>
+                    <td>
+                      <div class="client-info">
+                        <strong>{{ reserva.datosEmpresa?.razonSocial }}</strong>
+                        <small class="text-muted d-block">{{ reserva.datosEmpresa?.email }}</small>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="event-info">
+                        <strong>{{ reserva.nombreEvento }}</strong>
+                        <small class="text-muted d-block">{{ reserva.tipoEvento | titlecase }}</small>
+                      </div>
+                    </td>
+                    <td>{{ reserva.paquete?.nombre }}</td>
+                    <td class="date-cell">{{ reserva.fechaInicio | date:'dd/MM/yyyy' }}</td>
+                    <td class="text-center">{{ reserva.numeroAsistentes }}</td>
+                    <td>
+                      <span class="badge-modern" [ngClass]="getEstadoBadge(reserva.estado)">
+                        {{ reserva.estado | titlecase }}
+                      </span>
+                    </td>
+                    <td class="amount-cell">
+                      <strong>{{ reserva.precios?.total | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button 
+                          type="button"
+                          class="btn btn-sm btn-outline-primary" 
+                          (click)="verReservaPaquete(reserva)"
+                          title="Ver detalles">
+                          👁️ Ver
+                        </button>
+                        <button 
+                          *ngIf="reserva.estado === 'pendiente'"
+                          type="button"
+                          class="btn btn-sm btn-success" 
+                          (click)="confirmarReservaPaquete(reserva)"
+                          title="Confirmar reserva">
+                          ✅ Confirmar
+                        </button>
+                        <button 
+                          *ngIf="reserva.estado === 'pendiente'"
+                          type="button"
+                          class="btn btn-sm btn-danger" 
+                          (click)="rechazarReservaPaquete(reserva)"
+                          title="Rechazar reserva">
+                          ❌ Rechazar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="reservasPaquetesFiltradas.length === 0">
+                    <td colspan="9" class="text-center py-5">
+                      <div class="no-data">
+                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No se encontraron reservas de paquetes</h5>
+                        <p class="text-muted">No hay reservas de paquetes con los filtros aplicados</p>
                       </div>
                     </td>
                   </tr>
@@ -674,6 +886,52 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       font-weight: 900;
       margin-right: 0.5rem;
       color: #0A3161;
+    }
+
+    /* Estilos para las pestañas */
+    .tabs-section {
+      margin: 2rem 0 1rem 0;
+    }
+
+    .tabs-container {
+      display: flex;
+      background: white;
+      border-radius: 15px;
+      padding: 0.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      gap: 0.5rem;
+    }
+
+    .tab-button {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #64748b;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tab-button:hover {
+      background: rgba(99, 102, 241, 0.1);
+      color: #6366f1;
+      transform: translateY(-2px);
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .tab-button.active:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
     }
     
     .table {
@@ -1132,6 +1390,158 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
         gap: 0.25rem;
       }
     }
+
+    /* Estilos del Modal */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1040;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1050;
+      padding: 1rem;
+    }
+
+    .modal-content-custom {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalShow 0.3s ease-out;
+    }
+
+    @keyframes modalShow {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2d3748;
+      margin: 0 0 1.5rem 0;
+      padding: 2rem 2rem 0 2rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .modal-view {
+      padding: 0 2rem 2rem 2rem;
+    }
+
+    .modal-confirm {
+      padding: 2rem;
+    }
+
+    .modal-reject {
+      padding: 2rem;
+    }
+
+    .reservation-details {
+      background: #f8fafc;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: #4a5568;
+      font-size: 0.875rem;
+    }
+
+    .detail-value {
+      color: #2d3748;
+      font-weight: 500;
+    }
+
+    .detail-value.code {
+      font-family: 'Courier New', monospace;
+      background: #e2e8f0;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+    }
+
+    .detail-value.total {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #059669;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .confirm-message, .reject-message {
+      margin: 1rem 0;
+    }
+
+    .form-group {
+      margin: 1rem 0;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      outline: none;
+    }
   `]
 })
 export class ReservasComponent implements OnInit {
@@ -1151,10 +1561,19 @@ export class ReservasComponent implements OnInit {
   reservas: ReservaParaHotel[] = [];
   reservasFiltradas: ReservaParaHotel[] = [];
 
+  // Reservas de paquetes
+  reservasPaquetes: any[] = [];
+  reservasPaquetesFiltradas: any[] = [];
+  cargandoPaquetes = false;
+  
+  // Pestañas
+  tabActiva: 'habitaciones' | 'paquetes' = 'habitaciones';
+
   // Modal para confirmación/rechazo
   modalVisible = false;
   modalTipo: 'confirmar' | 'rechazar' | 'ver' = 'ver';
   reservaSeleccionada: ReservaParaHotel | null = null;
+  reservaPaqueteSeleccionada: any = null;
   motivoRechazo = '';
   notasHotel = '';
 
@@ -1162,6 +1581,7 @@ export class ReservasComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarReservas();
+    this.cargarReservasPaquetes();
     this.configurarFechasPorDefecto();
   }
 
@@ -1237,6 +1657,59 @@ export class ReservasComponent implements OnInit {
                    r.fechaCreacion >= primerDiaDelMes && 
                    r.fechaCreacion <= ultimoDiaDelMes)
       .reduce((total, r) => total + r.total, 0);
+  }
+
+  // =====================================================
+  // GESTIÓN DE RESERVAS DE PAQUETES
+  // =====================================================
+
+  cargarReservasPaquetes(): void {
+    this.cargandoPaquetes = true;
+    this.reservaService.obtenerReservasPaquetesHotel().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.reservasPaquetes = response.reservas;
+          this.aplicarFiltrosPaquetes();
+          console.log('📦 Reservas de paquetes cargadas:', this.reservasPaquetes.length);
+        } else {
+          console.error('Error en la respuesta:', response);
+          this.error = 'Error al cargar reservas de paquetes';
+        }
+        this.cargandoPaquetes = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar reservas de paquetes:', error);
+        this.error = 'Error al cargar reservas de paquetes';
+        this.cargandoPaquetes = false;
+      }
+    });
+  }
+
+  aplicarFiltrosPaquetes(): void {
+    let filtradas = [...this.reservasPaquetes];
+    
+    // Filtrar por estado
+    if (this.estadoFiltro) {
+      filtradas = filtradas.filter(r => r.estado === this.estadoFiltro);
+    }
+    
+    // Filtrar por fechas
+    if (this.fechaDesde) {
+      const fechaDesdeObj = new Date(this.fechaDesde);
+      filtradas = filtradas.filter(r => new Date(r.fechaInicio) >= fechaDesdeObj);
+    }
+    
+    if (this.fechaHasta) {
+      const fechaHastaObj = new Date(this.fechaHasta);
+      filtradas = filtradas.filter(r => new Date(r.fechaInicio) <= fechaHastaObj);
+    }
+    
+    this.reservasPaquetesFiltradas = filtradas;
+  }
+
+  cambiarTab(tab: 'habitaciones' | 'paquetes'): void {
+    this.tabActiva = tab;
+    this.cerrarModal();
   }
 
   filtrarReservas(): void {
@@ -1345,15 +1818,118 @@ export class ReservasComponent implements OnInit {
     });
   }
 
+  // =====================================================
+  // GESTIÓN DE MODALES PARA RESERVAS DE PAQUETES
+  // =====================================================
+
+  verReservaPaquete(reserva: any): void {
+    alert('Ver reserva de paquete: ' + reserva.numeroReserva);
+    console.log('👁️ Ver reserva de paquete:', reserva);
+    this.reservaPaqueteSeleccionada = reserva;
+    this.reservaSeleccionada = null;
+    this.modalTipo = 'ver';
+    this.modalVisible = true;
+  }
+
+  confirmarReservaPaquete(reserva: any): void {
+    alert('Confirmar reserva de paquete: ' + reserva.numeroReserva);
+    console.log('🔄 Confirmando reserva de paquete:', reserva);
+    this.reservaPaqueteSeleccionada = reserva;
+    this.reservaSeleccionada = null;
+    this.modalTipo = 'confirmar';
+    this.notasHotel = '';
+    this.modalVisible = true;
+    
+    // Debug
+    console.log('📋 Estado después de confirmar:', {
+      modalVisible: this.modalVisible,
+      modalTipo: this.modalTipo,
+      reservaPaqueteSeleccionada: !!this.reservaPaqueteSeleccionada,
+      reservaSeleccionada: !!this.reservaSeleccionada
+    });
+    
+    // Forzar detección de cambios
+    setTimeout(() => {
+      console.log('⏰ Estado después de timeout:', {
+        modalVisible: this.modalVisible,
+        modalTipo: this.modalTipo
+      });
+    }, 100);
+  }
+
+  rechazarReservaPaquete(reserva: any): void {
+    alert('Rechazar reserva de paquete: ' + reserva.numeroReserva);
+    console.log('❌ Rechazar reserva de paquete:', reserva);
+    this.reservaPaqueteSeleccionada = reserva;
+    this.reservaSeleccionada = null;
+    this.modalTipo = 'rechazar';
+    this.motivoRechazo = '';
+    this.notasHotel = '';
+    this.modalVisible = true;
+  }
+
+  ejecutarConfirmacionPaquete(): void {
+    console.log('✅ Ejecutando confirmación de paquete:', this.reservaPaqueteSeleccionada);
+    if (!this.reservaPaqueteSeleccionada) {
+      console.error('❌ No hay reserva de paquete seleccionada');
+      return;
+    }
+    
+    console.log('🌐 Llamando al servicio para confirmar:', this.reservaPaqueteSeleccionada._id);
+    this.reservaService.confirmarReservaPaquete(this.reservaPaqueteSeleccionada._id, this.notasHotel)
+      .subscribe({
+        next: (response) => {
+          console.log('📥 Respuesta del servidor:', response);
+          if (response.success) {
+            alert('Reserva de paquete confirmada exitosamente');
+            this.cerrarModal();
+            this.cargarReservasPaquetes();
+          } else {
+            alert(response.message || 'Error al confirmar la reserva de paquete');
+          }
+        },
+        error: (err) => {
+          console.error('💥 Error al confirmar reserva de paquete:', err);
+          alert('Error de conexión al confirmar la reserva de paquete');
+        }
+      });
+  }
+
+  ejecutarRechazoPaquete(): void {
+    if (!this.reservaPaqueteSeleccionada || !this.motivoRechazo.trim()) {
+      alert('Por favor, ingrese el motivo del rechazo');
+      return;
+    }
+    
+    this.reservaService.rechazarReservaPaquete(this.reservaPaqueteSeleccionada._id, this.motivoRechazo, this.notasHotel)
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            alert('Reserva de paquete rechazada exitosamente');
+            this.cerrarModal();
+            this.cargarReservasPaquetes();
+          } else {
+            alert(response.message || 'Error al rechazar la reserva de paquete');
+          }
+        },
+        error: (err) => {
+          console.error('Error al rechazar reserva de paquete:', err);
+          alert('Error de conexión al rechazar la reserva de paquete');
+        }
+      });
+  }
+
   cerrarModal(): void {
     this.modalVisible = false;
     this.reservaSeleccionada = null;
+    this.reservaPaqueteSeleccionada = null;
     this.motivoRechazo = '';
     this.notasHotel = '';
   }
 
   actualizarFiltros(): void {
     this.filtrarReservas();
+    this.aplicarFiltrosPaquetes();
   }
 
   limpiarFiltros(): void {
@@ -1362,5 +1938,6 @@ export class ReservasComponent implements OnInit {
     this.estadoFiltro = '';
     this.configurarFechasPorDefecto();
     this.filtrarReservas();
+    this.aplicarFiltrosPaquetes();
   }
 }

@@ -1,8 +1,35 @@
-<div class="container-fluid">
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="position: relative;">
-    <h1 class="h2"><i class="fas fa-clipboard-list me-3"></i>Mis Reservas</h1>
-    <button class="btn btn-success" (click)="recargar()" [disabled]="cargando" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);">
-      <i class="fas fa-sync-alt me-2"></i>{{ cargando ? 'Cargando...' : 'Actualizar' }}
+<div class="navigation-header">
+  <button (click)="irAInicio()" class="btn-home-nav">
+    🏠 Inicio
+  </button>
+  <button (click)="irABuscar()" class="btn-search-nav">
+    🔍 Buscar Habitaciones
+  </button>
+</div>
+
+<div class="mis-reservas-container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>📋 Mis Reservas</h1>
+    <button class="btn-recargar" (click)="recargar()" [disabled]="cargando || cargandoPaquetes">
+      🔄 {{ (cargando || cargandoPaquetes) ? 'Cargando...' : 'Actualizar' }}
+    </button>
+  </div>
+
+  <!-- Pestañas de tipo de reserva -->
+  <div class="tabs-section">
+    <button 
+      class="tab-btn" 
+      [class.activo]="vistaActual === 'habitaciones'"
+      (click)="cambiarVista('habitaciones')">
+      🏨 Habitaciones ({{ reservas.length }})
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.activo]="vistaActual === 'paquetes'"
+      (click)="cambiarVista('paquetes')">
+      📦 Paquetes Corporativos ({{ reservasPaquetes.length }})
     </button>
   </div>
 
@@ -16,31 +43,32 @@
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'todas'"
         (click)="cambiarFiltro('todas')">
-        Todas ({{ contarPorEstado('todas') }})
+        Todas ({{ vistaActual === 'habitaciones' ? contarPorEstado('todas') : contarPaquetesPorEstado('todas') }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'confirmada'"
         (click)="cambiarFiltro('confirmada')">
-        <i class="fas fa-check-circle me-1"></i> Confirmadas ({{ contarPorEstado('confirmada') }})
+        ✅ Confirmadas ({{ vistaActual === 'habitaciones' ? contarPorEstado('confirmada') : contarPaquetesPorEstado('confirmada') }})
+
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'pendiente'"
         (click)="cambiarFiltro('pendiente')">
-        <i class="fas fa-clock me-1"></i> Pendientes ({{ contarPorEstado('pendiente') }})
+        ⏳ Pendientes ({{ vistaActual === 'habitaciones' ? contarPorEstado('pendiente') : contarPaquetesPorEstado('pendiente') }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'cancelada'"
         (click)="cambiarFiltro('cancelada')">
-        <i class="fas fa-times-circle me-1"></i> Canceladas ({{ contarPorEstado('cancelada') }})
+        ❌ Canceladas ({{ vistaActual === 'habitaciones' ? contarPorEstado('cancelada') : contarPaquetesPorEstado('cancelada') }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'completada'"
         (click)="cambiarFiltro('completada')">
-        <i class="fas fa-check-double me-1"></i> Completadas ({{ contarPorEstado('completada') }})
+        ✔️ Completadas ({{ vistaActual === 'habitaciones' ? contarPorEstado('completada') : contarPaquetesPorEstado('completada') }})
       </button>
     </div>
 
@@ -72,17 +100,16 @@
     <p><i class="fas fa-exclamation-triangle me-2"></i>{{ error }}</p>
     <button class="btn-reintentar" (click)="recargar()">Reintentar</button>
   </div>
-
-  <!-- Lista Vacía -->
-  <div *ngIf="!cargando && !error && reservasFiltradas.length === 0" class="lista-vacia">
-    <div class="icono-vacio"><i class="fas fa-inbox fa-3x"></i></div>
-    <h3>No hay reservas</h3>
+  <!-- Lista Vacía - Habitaciones -->
+  <div *ngIf="vistaActual === 'habitaciones' && !cargando && !error && reservasFiltradas.length === 0" class="lista-vacia">
+    <div class="icono-vacio">📭</div>
+    <h3>No hay reservas de habitaciones</h3>
     <p *ngIf="busquedaCodigo">No se encontraron resultados para "{{ busquedaCodigo }}"</p>
     <p *ngIf="!busquedaCodigo && estadoFiltro !== 'todas'">
-      No tienes reservas en estado "{{ estadoFiltro }}"
+      No tienes reservas de habitaciones en estado "{{ estadoFiltro }}"
     </p>
     <p *ngIf="!busquedaCodigo && estadoFiltro === 'todas'">
-      Aún no has realizado ninguna reserva o no se encontraron reservas recientes.
+      Aún no has realizado ninguna reserva de habitación.
     </p>
     <div class="info-filtro">
       <small><i class="fas fa-lightbulb me-1"></i>Se muestran solo las reservas más recientes con datos completos</small>
@@ -92,8 +119,24 @@
     </button>
   </div>
 
-  <!-- Lista de Reservas -->
-  <div *ngIf="!cargando && !error && reservasFiltradas.length > 0" class="reservas-grid">
+  <!-- Lista Vacía - Paquetes -->
+  <div *ngIf="vistaActual === 'paquetes' && !cargandoPaquetes && !error && reservasPaquetesFiltradas.length === 0" class="lista-vacia">
+    <div class="icono-vacio">📦</div>
+    <h3>No hay reservas de paquetes</h3>
+    <p *ngIf="busquedaCodigo">No se encontraron resultados para "{{ busquedaCodigo }}"</p>
+    <p *ngIf="!busquedaCodigo && estadoFiltro !== 'todas'">
+      No tienes reservas de paquetes en estado "{{ estadoFiltro }}"
+    </p>
+    <p *ngIf="!busquedaCodigo && estadoFiltro === 'todas'">
+      Aún no has realizado ninguna reserva de paquete corporativo.
+    </p>
+    <button class="btn-buscar-habitaciones" (click)="router.navigate(['/ver-paquetes'])">
+      � Ver Paquetes Disponibles
+    </button>
+  </div>
+
+  <!-- Lista de Reservas de Habitaciones -->
+  <div *ngIf="vistaActual === 'habitaciones' && !cargando && !error && reservasFiltradas.length > 0" class="reservas-grid">
     <div *ngFor="let reserva of reservasFiltradas" class="reserva-card">
       <!-- Header de Card -->
       <div class="card-header">
@@ -194,6 +237,87 @@
         <span class="sin-acciones" *ngIf="reserva.estado !== 'confirmada' && reserva.estado !== 'completada'">
           {{ reserva.estado === 'cancelada' ? 'Reserva cancelada' : 'Reserva en proceso' }}
         </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Reservas de Paquetes -->
+  <div *ngIf="vistaActual === 'paquetes' && !cargandoPaquetes && !error && reservasPaquetesFiltradas.length > 0" class="reservas-grid">
+    <div *ngFor="let reserva of reservasPaquetesFiltradas" class="reserva-card paquete-card">
+      <!-- Header de Card -->
+      <div class="card-header">
+        <div class="codigo-estado">
+          <span class="codigo">{{ reserva.numeroReserva }}</span>
+          <span class="estado-badge" [ngClass]="getEstadoClase(reserva.estado)">
+            {{ getEstadoIcono(reserva.estado) }} {{ reserva.estado }}
+          </span>
+        </div>
+        <div class="tipo-evento">
+          📋 {{ reserva.tipoEvento }}
+        </div>
+      </div>
+
+      <!-- Información Principal -->
+      <div class="card-body">
+        <!-- Evento y Empresa -->
+        <div class="info-principal">
+          <h3 class="evento-nombre">🎯 {{ reserva.nombreEvento }}</h3>
+          <p class="empresa-nombre">🏢 {{ reserva.datosEmpresa?.razonSocial }}</p>
+          <p class="hotel-ubicacion">📍 Hotel: {{ reserva.paquete?.hotel?.nombre }} - {{ reserva.paquete?.hotel?.ciudad }}</p>
+        </div>
+
+        <!-- Fechas -->
+        <div class="info-fechas">
+          <div class="fecha-item">
+            <span class="fecha-label">📅 Fecha del Evento:</span>
+            <span class="fecha-valor">{{ formatearFecha(reserva.fechaInicio) }}</span>
+          </div>
+          <div class="fecha-item">
+            <span class="fecha-label">👥 Asistentes:</span>
+            <span class="fecha-valor">{{ reserva.numeroAsistentes }} personas</span>
+          </div>
+        </div>
+
+        <!-- Información Adicional -->
+        <div class="info-adicional">
+          <div class="info-item">
+            <span class="info-label">📧 Email:</span>
+            <span class="info-valor">{{ reserva.datosEmpresa?.email }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">📞 Teléfono:</span>
+            <span class="info-valor">{{ reserva.datosEmpresa?.telefono }}</span>
+          </div>
+        </div>
+
+        <!-- Precio Total -->
+        <div class="precio-total" *ngIf="reserva.precios?.total">
+          <span class="precio-label">Total:</span>
+          <span class="precio-valor">{{ formatearPrecio(reserva.precios.total) }}</span>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="card-actions">
+        <button 
+          class="btn btn-outline-primary btn-sm"
+          [title]="'Ver detalles completos de la reserva ' + reserva.numeroReserva">
+          👁️ Ver Detalles
+        </button>
+        
+        <button 
+          *ngIf="reserva.estado === 'confirmada'"
+          class="btn btn-outline-warning btn-sm"
+          [title]="'Modificar reserva ' + reserva.numeroReserva">
+          ✏️ Modificar
+        </button>
+        
+        <button 
+          *ngIf="reserva.estado === 'confirmada'"
+          class="btn btn-outline-danger btn-sm"
+          [title]="'Cancelar reserva ' + reserva.numeroReserva">
+          ❌ Cancelar
+        </button>
       </div>
     </div>
   </div>

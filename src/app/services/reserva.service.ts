@@ -318,112 +318,87 @@ export interface CancelarReservaRequest {
   confirmacionPenalizacion?: boolean; // CA2: Confirmar que acepta penalización
 }
 
+export interface OcupacionPorHotel {
+  hotel: string;
+  hotelId: string;
+  totalHabitaciones: number;
+  ocupadas: number;
+  porcentaje: number;
+}
+
+export interface OcupacionHotel {
+  hotelId: string;
+  nombre: string;
+  ciudad: string;
+  habitacionesTotales: number;
+  habitacionesOcupadas: number;
+  porcentajeOcupacion: number;
+}
+
+export interface ObtenerOcupacionHotelResponse {
+  success: boolean;
+  ocupacion: OcupacionHotel[];
+}
 @Injectable({
   providedIn: 'root'
 })
+
 export class ReservaService {
   private readonly apiUrl = `${environment.apiUrl}/reservas`;
-
   constructor(private http: HttpClient) {}
 
-  /**
-   * HU08 CA1 + CA2: Crear una nueva reserva
-   */
   crearReserva(datos: CrearReservaRequest): Observable<CrearReservaResponse> {
     return this.http.post<CrearReservaResponse>(this.apiUrl, datos);
   }
 
-  /**
-   * HU08: Obtener reserva por código
-   */
   obtenerReservaPorCodigo(codigo: string): Observable<ObtenerReservaResponse> {
     return this.http.get<ObtenerReservaResponse>(`${this.apiUrl}/codigo/${codigo}`);
   }
 
-  /**
-   * Obtener todas las reservas (en producción: filtrar por usuario autenticado)
-   */
   obtenerTodasReservas(): Observable<ObtenerReservasResponse> {
     return this.http.get<ObtenerReservasResponse>(this.apiUrl);
   }
 
-  /**
-   * Obtener reservas del usuario actual (filtradas)
-   */
   obtenerMisReservas(): Observable<ObtenerReservasResponse> {
-    // En desarrollo: filtrar por email o datos del huésped
-    // En producción: usar token de autenticación
     return this.http.get<ObtenerReservasResponse>(`${this.apiUrl}/mis-reservas`);
   }
 
-  /**
-   * Obtener reserva por ID
-   */
   obtenerReservaPorId(id: string): Observable<ObtenerReservaResponse> {
     return this.http.get<ObtenerReservaResponse>(`${this.apiUrl}/${id}`);
   }
 
-  /**
-   * HU10 CA2: Verificar políticas de cancelación antes de cancelar
-   */
   verificarPoliticasCancelacion(id: string): Observable<VerificarCancelacionResponse> {
     return this.http.get<VerificarCancelacionResponse>(`${this.apiUrl}/cancelar/${id}/verificar`);
   }
 
-  /**
-   * HU10: Cancelar reserva con cálculo de penalización (CA1 + CA2 + CA3 + CA4)
-   */
   cancelarReserva(id: string, datos: CancelarReservaRequest): Observable<CancelarReservaResponse> {
     return this.http.put<CancelarReservaResponse>(`${this.apiUrl}/cancelar/${id}`, datos);
   }
 
-  /**
-   * HU09 CA1 + CA4: Verificar si una reserva puede ser modificada
-   */
   verificarPuedeModificar(id: string): Observable<VerificarModificacionResponse> {
     return this.http.get<VerificarModificacionResponse>(`${this.apiUrl}/${id}/puede-modificar`);
   }
 
-  /**
-   * HU09 CA1 + CA2 + CA3: Modificar fechas de una reserva
-   */
   modificarFechasReserva(id: string, datos: ModificarFechasRequest): Observable<ModificarFechasResponse> {
     return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/${id}/modificar-fechas`, datos);
   }
 
-  // Nuevo método para modificar por código
   modificarFechasReservaPorCodigo(codigo: string, datos: ModificarFechasRequest): Observable<ModificarFechasResponse> {
     return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/codigo/${codigo}/modificar-fechas`, datos);
   }
 
-  // =====================================================
-  // HU17: RESERVAR UN SALÓN
-  // =====================================================
-
-  /**
-   * HU17 CA1: Iniciar reserva de salón - Obtener resumen y formulario
-   */
   iniciarReservaSalon(salonId: string, datos: IniciarReservaSalonRequest): Observable<IniciarReservaSalonResponse> {
     return this.http.post<IniciarReservaSalonResponse>(`${this.apiUrl}/salones/${salonId}/iniciar`, datos);
   }
 
-  /**
-   * HU17 CA2: Verificar disponibilidad en tiempo real (prevenir conflictos)
-   */
   verificarDisponibilidadSalonTiempoReal(salonId: string, datos: VerificarDisponibilidadSalonRequest): Observable<VerificarDisponibilidadSalonResponse> {
     return this.http.post<VerificarDisponibilidadSalonResponse>(`${this.apiUrl}/salones/${salonId}/verificar-disponibilidad`, datos);
   }
 
-  /**
-   * HU17 CA3: Confirmar reserva de salón (genera código y bloquea horario)
-   */
   confirmarReservaSalon(salonId: string, datos: ConfirmarReservaSalonRequest): Observable<ConfirmarReservaSalonResponse> {
     return this.http.post<ConfirmarReservaSalonResponse>(`${this.apiUrl}/salones/${salonId}/confirmar`, datos);
   }
 
-  /**
-   * HU17 CA4: Obtener políticas de reserva de salones
-   */
   obtenerPoliticasReservaSalon(hotelId?: string): Observable<ObtenerPoliticasSalonResponse> {
     const url = hotelId 
       ? `${this.apiUrl}/salones/politicas/${hotelId}`
@@ -431,51 +406,68 @@ export class ReservaService {
     return this.http.get<ObtenerPoliticasSalonResponse>(url);
   }
 
-  /**
-   * HU11: Obtener recibo de una reserva
-   */
   obtenerReciboReserva(reservaId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${reservaId}/recibo`);
   }
 
-  /**
-   * HU11: Descargar recibo en PDF
-   */
   descargarReciboPDF(reservaId: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${reservaId}/recibo/pdf`, {
       responseType: 'blob'
     });
   }
 
-  /**
-   * HU11: Enviar recibo por email
-   */
   enviarReciboPorEmail(reservaId: string, email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${reservaId}/recibo/enviar`, { email });
   }
 
-  // =====================================================
-  // GESTIÓN DE RESERVAS PARA HOTELES
-  // =====================================================
-
-  /**
-   * Confirmar una reserva pendiente (para administradores de hotel)
-   */
   confirmarReservaPendiente(reservaId: string, notas?: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${reservaId}/confirmar`, { notas });
   }
 
-  /**
-   * Rechazar una reserva pendiente (para administradores de hotel)
-   */
   rechazarReservaPendiente(reservaId: string, motivo: string, notas?: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${reservaId}/rechazar`, { motivo, notas });
   }
 
-  /**
-   * Actualizar estado de una reserva (para administradores de hotel)
-   */
   actualizarEstadoReserva(reservaId: string, estado: string, notas?: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${reservaId}/estado`, { estado, notas });
   }
+
+  // =====================================================
+  // GESTIÓN DE RESERVAS DE PAQUETES PARA HOTELES
+  // =====================================================
+
+  /**
+   * Obtener todas las reservas de paquetes del hotel
+   */
+  obtenerReservasPaquetesHotel(estado?: string, limit?: number, offset?: number): Observable<any> {
+    let params = new URLSearchParams();
+    if (estado) params.append('estado', estado);
+    if (limit) params.append('limit', limit.toString());
+    if (offset) params.append('offset', offset.toString());
+    
+    const queryString = params.toString();
+    const url = queryString ? `${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/hotel/todas?${queryString}` : `${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/hotel/todas`;
+    
+    return this.http.get(url);
+  }
+
+  /**
+   * Confirmar una reserva de paquete pendiente
+   */
+  confirmarReservaPaquete(reservaId: string, notasHotel?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/${reservaId}/confirmar`, { notasHotel });
+  }
+
+  /**
+   * Rechazar una reserva de paquete pendiente
+   */
+  rechazarReservaPaquete(reservaId: string, motivoRechazo: string, notasHotel?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl.replace('/reservas', '/reservas-paquetes')}/${reservaId}/rechazar`, { motivoRechazo, notasHotel });
+  }
+  obtenerOcupacionPorHotel(fechaInicio: string, fechaFin: string): Observable<ObtenerOcupacionHotelResponse> {
+    return this.http.get<ObtenerOcupacionHotelResponse>(`${this.apiUrl}/ocupacion-hotel`, {
+      params: { fechaInicio, fechaFin }
+    });
+  }
+  
 }

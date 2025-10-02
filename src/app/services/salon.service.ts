@@ -11,6 +11,20 @@ export interface Layout {
   imagen?: string;
 }
 
+// Tipo específico para crear/actualizar salones (solo necesita el ID del hotel)
+export interface SalonCreateUpdate {
+  hotel?: string; // Solo el ID del hotel
+  nombre?: string;
+  capacidad?: number;
+  equipamiento?: string[];
+  disponible?: boolean;
+  descripcion?: string;
+  precioPorDia?: number;
+  serviciosIncluidos?: string[];
+  fotos?: string[];
+  layouts?: Layout[];
+}
+
 export interface Salon {
   _id: string;
   hotel: {
@@ -158,16 +172,23 @@ export class SalonService {
   }
 
   /**
+   * Listar todos los salones disponibles (para empresas y búsqueda general)
+   */
+  listarTodosSalones(): Observable<{ success: boolean; salones: Salon[]; total: number }> {
+    return this.http.get<{ success: boolean; salones: Salon[]; total: number }>(`${this.apiUrl}`);
+  }
+
+  /**
    * Crear un nuevo salón (solo admin)
    */
-  crearSalon(salon: Partial<Salon>): Observable<{ success: boolean; message: string; salon: Salon }> {
+  crearSalon(salon: SalonCreateUpdate): Observable<{ success: boolean; message: string; salon: Salon }> {
     return this.http.post<{ success: boolean; message: string; salon: Salon }>(this.apiUrl, salon);
   }
 
   /**
    * Actualizar salón (solo admin)
    */
-  actualizarSalon(salonId: string, datos: Partial<Salon>): Observable<{ success: boolean; message: string; salon: Salon }> {
+  actualizarSalon(salonId: string, datos: SalonCreateUpdate): Observable<{ success: boolean; message: string; salon: Salon }> {
     return this.http.put<{ success: boolean; message: string; salon: Salon }>(`${this.apiUrl}/${salonId}`, datos);
   }
 }

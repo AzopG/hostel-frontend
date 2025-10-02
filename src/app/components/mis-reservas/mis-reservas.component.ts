@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReservaService, ReservaCreada } from '../../services/reserva.service';
+import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
 
 type EstadoFiltro = 'todas' | 'confirmada' | 'cancelada' | 'completada' | 'pendiente';
+type TipoVista = 'habitaciones' | 'paquetes';
 
 interface ReservaConAcciones extends ReservaCreada {
   puedeModificar?: boolean;
@@ -20,8 +22,16 @@ interface ReservaConAcciones extends ReservaCreada {
   styleUrl: './mis-reservas.component.css'
 })
 export class MisReservasComponent implements OnInit {
+  // Tipo de vista actual
+  vistaActual: TipoVista = 'habitaciones';
+  
+  // Reservas de habitaciones
   reservas: ReservaConAcciones[] = [];
   reservasFiltradas: ReservaConAcciones[] = [];
+  
+  // Reservas de paquetes
+  reservasPaquetes: any[] = [];
+  reservasPaquetesFiltradas: any[] = [];
   
   // Filtros
   estadoFiltro: EstadoFiltro = 'todas';
@@ -29,6 +39,7 @@ export class MisReservasComponent implements OnInit {
   
   // Estados de carga
   cargando = true;
+  cargandoPaquetes = false;
   error = '';
   
   // Modal de cancelación (HU10)
@@ -44,11 +55,13 @@ export class MisReservasComponent implements OnInit {
 
   constructor(
     private reservaService: ReservaService,
+    private reservaPaqueteService: ReservaPaqueteService,
     public router: Router
   ) {}
 
   ngOnInit(): void {
     this.cargarReservas();
+    this.cargarReservasPaquetes();
   }
 
   /**
@@ -91,6 +104,30 @@ export class MisReservasComponent implements OnInit {
   }
 
   /**
+   * Cargar reservas de paquetes del usuario
+   */
+  cargarReservasPaquetes(): void {
+    this.cargandoPaquetes = true;
+    this.reservaPaqueteService.listarMisReservasPaquetes().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.reservasPaquetes = response.reservas;
+          this.aplicarFiltrosPaquetes();
+        } else {
+          console.error('Error en la respuesta:', response);
+          this.error = 'Error al cargar reservas de paquetes';
+        }
+        this.cargandoPaquetes = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar reservas de paquetes:', error);
+        this.error = 'No se pudieron cargar las reservas de paquetes. Por favor, intenta de nuevo.';
+        this.cargandoPaquetes = false;
+      }
+    });
+  }
+
+  /**
    * Verificar qué acciones puede realizar sobre la reserva
    */
   private verificarAccionesDisponibles(reserva: ReservaConAcciones): void {
@@ -116,6 +153,17 @@ export class MisReservasComponent implements OnInit {
    * Aplicar filtros de estado y búsqueda
    */
   aplicarFiltros(): void {
+    if (this.vistaActual === 'habitaciones') {
+      this.aplicarFiltrosHabitaciones();
+    } else {
+      this.aplicarFiltrosPaquetes();
+    }
+  }
+
+  /**
+   * Aplicar filtros para habitaciones
+   */
+  aplicarFiltrosHabitaciones(): void {
     let resultado = [...this.reservas];
 
     // Filtro por estado
@@ -135,7 +183,9 @@ export class MisReservasComponent implements OnInit {
 
     // Ordenar por fecha de check-in (más reciente primero)
     resultado.sort((a, b) => {
-      return new Date(b.fechaInicio).getTime() - new Date(a.fechaInicio).getTime();
+      const fechaA = new Date(a.fechaInicio).getTime();
+      const fechaB = new Date(b.fechaInicio).getTime();
+      return fechaB - fechaA;
     });
 
     this.reservasFiltradas = resultado;
@@ -378,7 +428,63 @@ export class MisReservasComponent implements OnInit {
    * Recargar reservas
    */
   recargar(): void {
-    this.cargarReservas();
+    if (this.vistaActual === 'habitaciones') {
+      this.cargarReservas();
+    } else {
+      this.cargarReservasPaquetes();
+    }
+  }
+
+  /**
+   * Cambiar entre vista de habitaciones y paquetes
+   */
+  cambiarVista(vista: TipoVista): void {
+    this.vistaActual = vista;
+    this.estadoFiltro = 'todas';
+    this.busquedaCodigo = '';
+    
+    if (vista === 'paquetes' && this.reservasPaquetes.length === 0) {
+      this.cargarReservasPaquetes();
+    }
+  }
+
+  /**
+   * Aplicar filtros para paquetes
+   */
+  aplicarFiltrosPaquetes(): void {
+    let resultado = [...this.reservasPaquetes];
+
+    // Filtro por estado
+    if (this.estadoFiltro !== 'todas') {
+      resultado = resultado.filter(r => r.estado === this.estadoFiltro);
+    }
+
+    // Filtro por código (búsqueda)
+    if (this.busquedaCodigo.trim()) {
+      const busqueda = this.busquedaCodigo.trim().toLowerCase();
+      resultado = resultado.filter(r => 
+        r.numeroReserva?.toLowerCase().includes(busqueda) ||
+        r.nombreEvento?.toLowerCase().includes(busqueda) ||
+        r.datosEmpresa?.razonSocial?.toLowerCase().includes(busqueda)
+      );
+    }
+
+    // Ordenar por fecha de inicio (más reciente primero)
+    resultado.sort((a, b) => {
+      const fechaA = new Date(a.fechaInicio).getTime();
+      const fechaB = new Date(b.fechaInicio).getTime();
+      return fechaB - fechaA;
+    });
+
+    this.reservasPaquetesFiltradas = resultado;
+  }
+
+  /**
+   * Contar paquetes por estado
+   */
+  contarPaquetesPorEstado(estado: EstadoFiltro): number {
+    if (estado === 'todas') return this.reservasPaquetes.length;
+    return this.reservasPaquetes.filter(r => r.estado === estado).length;
   }
 
   /**

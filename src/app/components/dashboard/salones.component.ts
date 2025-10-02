@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SalonService, Salon } from '../../services/salon.service';
+import { SalonService, Salon, SalonCreateUpdate } from '../../services/salon.service';
 import { AuthService } from '../../services/auth.service';
+import { HotelService } from '../../services/hotel.service';
 
 @Component({
   selector: 'app-salones',
@@ -68,6 +69,20 @@ import { AuthService } from '../../services/auth.service';
           </h3>
           <form (ngSubmit)="guardarSalon()" class="salon-form">
             <div class="form-group">
+              <label for="hotel">Hotel *:</label>
+              <select 
+                id="hotel"
+                class="form-control" 
+                [(ngModel)]="formularioSalon.hotel" 
+                name="hotel"
+                required>
+                <option value="">Seleccione un hotel</option>
+                <option *ngFor="let hotel of hoteles" [value]="hotel._id">
+                  {{ hotel.nombre }} - {{ hotel.ciudad }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="nombre">Nombre *:</label>
               <input 
                 id="nombre"
@@ -109,24 +124,34 @@ import { AuthService } from '../../services/auth.service';
                 rows="3"></textarea>
             </div>
             <div class="form-group">
-              <label for="equipamiento">Equipamiento (separado por comas):</label>
-              <input 
-                id="equipamiento"
-                type="text" 
-                class="form-control" 
-                [(ngModel)]="formularioSalon.equipamiento" 
-                name="equipamiento"
-                placeholder="Proyector, Sistema de Audio, WiFi">
+              <label for="equipamiento">Equipamiento:</label>
+              <div class="checkbox-grid">
+                <div *ngFor="let equipo of equipamientosDisponibles" class="checkbox-item">
+                  <input 
+                    type="checkbox" 
+                    [id]="'equip-' + equipo"
+                    [value]="equipo"
+                    [checked]="formularioSalon.equipamientoSeleccionado.includes(equipo)"
+                    (change)="toggleEquipamiento(equipo)"
+                    class="form-check-input">
+                  <label [for]="'equip-' + equipo" class="form-check-label">{{ equipo }}</label>
+                </div>
+              </div>
             </div>
             <div class="form-group">
-              <label for="servicios">Servicios incluidos (separado por comas):</label>
-              <input 
-                id="servicios"
-                type="text" 
-                class="form-control" 
-                [(ngModel)]="formularioSalon.serviciosIncluidos" 
-                name="servicios"
-                placeholder="Catering, Limpieza, Seguridad">
+              <label for="servicios">Servicios incluidos:</label>
+              <div class="checkbox-grid">
+                <div *ngFor="let servicio of serviciosDisponibles" class="checkbox-item">
+                  <input 
+                    type="checkbox" 
+                    [id]="'serv-' + servicio"
+                    [value]="servicio"
+                    [checked]="formularioSalon.serviciosSeleccionados.includes(servicio)"
+                    (change)="toggleServicio(servicio)"
+                    class="form-check-input">
+                  <label [for]="'serv-' + servicio" class="form-check-label">{{ servicio }}</label>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <div class="form-check">
@@ -193,6 +218,7 @@ import { AuthService } from '../../services/auth.service';
 
       <!-- Filtros -->
       <div class="filters-section" *ngIf="!cargando">
+
         <div class="filters-container">
           <!-- Barra de búsqueda -->
           <div class="search-bar">
@@ -237,6 +263,24 @@ import { AuthService } from '../../services/auth.service';
             </div>
           </div>
         </div>
+        
+        <!-- Filtros de equipamiento -->
+        <div class="row mt-3">
+          <div class="col-12">
+            <label class="form-label">Filtrar por equipamiento</label>
+            <div class="equipamiento-filters">
+              <div *ngFor="let equipo of equipamientosDisponibles" class="filter-checkbox">
+                <input 
+                  type="checkbox" 
+                  [id]="'filter-' + equipo"
+                  [checked]="equipamientoSeleccionado.includes(equipo)"
+                  (change)="toggleFiltroEquipamiento(equipo)"
+                  class="form-check-input">
+                <label [for]="'filter-' + equipo" class="form-check-label">{{ equipo }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Lista de salones -->
@@ -247,6 +291,13 @@ import { AuthService } from '../../services/auth.service';
             <span class="badge-modern" [ngClass]="getEstadoBadge(salon.disponible)">
               {{ getEstadoTexto(salon.disponible) }}
             </span>
+          </div>
+          
+          <!-- Información del hotel -->
+          <div class="hotel-info">
+            <i class="fas fa-building text-info"></i>
+            <span class="hotel-name">{{ salon.hotel.nombre }}</span>
+            <span *ngIf="salon.hotel.ciudad" class="hotel-city">- {{ salon.hotel.ciudad }}</span>
           </div>
           
           <div class="salon-info">
@@ -402,6 +453,85 @@ import { AuthService } from '../../services/auth.service';
       border-radius: 8px;
       font-size: 0.95rem;
       transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      outline: none;
+    }
+
+    select.form-control {
+      background-color: white;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+    }
+
+    /* Estilos para checkboxes */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background: #f8f9fa;
+      transition: all 0.2s ease;
+    }
+
+    .checkbox-item:hover {
+      background: #e9ecef;
+      border-color: #667eea;
+    }
+
+    .form-check-input {
+      margin: 0;
+    }
+
+    .form-check-label {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #495057;
+      cursor: pointer;
+    }
+
+    /* Filtros de equipamiento */
+    .equipamiento-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid #dee2e6;
+      border-radius: 15px;
+      background: white;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .filter-checkbox:hover {
+      border-color: #667eea;
+      background: #f8f9ff;
+    }
+
+    .filter-checkbox input:checked + label {
+      color: #667eea;
+      font-weight: 600;
     }
 
     .container-fluid {
@@ -623,6 +753,24 @@ import { AuthService } from '../../services/auth.service';
       margin: 0;
     }
 
+    .hotel-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: #4a5568;
+      font-size: 0.9rem;
+    }
+
+    .hotel-name {
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .hotel-city {
+      color: #718096;
+    }
+
     .salon-info {
       margin-bottom: 1rem;
     }
@@ -840,10 +988,45 @@ export class SalonesComponent implements OnInit {
   error = '';
   hotelId = '';
   
+  // Lista de hoteles para el selector
+  hoteles: any[] = [];
+  cargandoHoteles = false;
+  
+  // Lista predefinida de equipamiento
+  equipamientosDisponibles = [
+    'Proyector',
+    'Sistema de audio',
+    'Micrófono inalámbrico',
+    'WiFi',
+    'Aire acondicionado',
+    'Escenario',
+    'Iluminación profesional',
+    'Pantalla LED',
+    'Sistema de videoconferencia',
+    'Pizarra interactiva',
+    'Catering',
+    'Estacionamiento',
+    'Seguridad',
+    'Accesibilidad'
+  ];
+  
+  // Lista predefinida de servicios
+  serviciosDisponibles = [
+    'Servicio de café',
+    'Catering completo',
+    'Limpieza',
+    'Seguridad 24/7',
+    'Estacionamiento gratuito',
+    'Recepción de invitados',
+    'Soporte técnico',
+    'Decoración personalizada'
+  ];
+  
   // Filtros
   filtroEstado = '';
   filtroTipo = '';
   filtroBusqueda = '';
+  equipamientoSeleccionado: string[] = [];
   
   // Modal
   modalVisible = false;
@@ -852,23 +1035,26 @@ export class SalonesComponent implements OnInit {
   
   // Formulario para crear/editar salón
   formularioSalon = {
+    hotel: '', // Hotel obligatorio
     nombre: '',
     capacidad: 0,
     precioPorDia: 0,
     descripcion: '',
-    equipamiento: '',
-    serviciosIncluidos: '',
+    equipamientoSeleccionado: [] as string[],
+    serviciosSeleccionados: [] as string[],
     disponible: true
   };
 
   constructor(
     private router: Router,
     private salonService: SalonService,
-    private authService: AuthService
+    private authService: AuthService,
+    private hotelService: HotelService
   ) {}
 
   ngOnInit(): void {
     this.obtenerHotelId();
+    this.cargarHoteles();
     this.cargarSalones();
   }
 
@@ -884,23 +1070,18 @@ export class SalonesComponent implements OnInit {
   }
 
   cargarSalones(): void {
-    if (!this.hotelId) {
-      this.error = 'No se pudo determinar el hotel asociado';
-      this.cargando = false;
-      return;
-    }
-
     this.cargando = true;
     this.error = '';
     
-    this.salonService.listarSalonesHotel(this.hotelId).subscribe({
+    // Cargar todos los salones para que el admin pueda ver y gestionar salones de todos los hoteles
+    this.salonService.listarTodosSalones().subscribe({
       next: (response) => {
         if (response.success && response.salones) {
           this.salones = response.salones;
           this.salonesOriginales = [...response.salones];
         } else {
           this.salones = [];
-          this.error = 'No se encontraron salones para este hotel';
+          this.error = 'No se encontraron salones';
         }
         this.cargando = false;
       },
@@ -910,6 +1091,25 @@ export class SalonesComponent implements OnInit {
         this.cargando = false;
         // Usar datos de prueba si hay error
         this.usarDatosPrueba();
+      }
+    });
+  }
+
+  cargarHoteles(): void {
+    this.cargandoHoteles = true;
+    this.hotelService.getHoteles().subscribe({
+      next: (hoteles: any) => {
+        this.hoteles = hoteles || [];
+        this.cargandoHoteles = false;
+      },
+      error: (err: any) => {
+        console.error('Error al cargar hoteles:', err);
+        this.cargandoHoteles = false;
+        // Usar datos de prueba
+        this.hoteles = [
+          { _id: '1', nombre: 'Hotel Business Center', ciudad: 'Bogotá' },
+          { _id: '2', nombre: 'Hotel Boutique Plaza', ciudad: 'Medellín' }
+        ];
       }
     });
   }
@@ -966,6 +1166,15 @@ export class SalonesComponent implements OnInit {
       salonesFiltered = salonesFiltered.filter(salon => salon.disponible === disponible);
     }
     
+    // Filtro por equipamiento
+    if (this.equipamientoSeleccionado.length > 0) {
+      salonesFiltered = salonesFiltered.filter(salon => 
+        this.equipamientoSeleccionado.every(equipo => 
+          salon.equipamiento.includes(equipo)
+        )
+      );
+    }
+    
     this.salones = salonesFiltered;
   }
 
@@ -973,6 +1182,7 @@ export class SalonesComponent implements OnInit {
     this.filtroEstado = '';
     this.filtroTipo = '';
     this.filtroBusqueda = '';
+    this.equipamientoSeleccionado = [];
     this.salones = [...this.salonesOriginales];
   }
 
@@ -1003,12 +1213,13 @@ export class SalonesComponent implements OnInit {
 
   agregarSalon(): void {
     this.formularioSalon = {
+      hotel: '', // Dejar vacío para que el usuario seleccione
       nombre: '',
       capacidad: 0,
       precioPorDia: 0,
       descripcion: '',
-      equipamiento: '',
-      serviciosIncluidos: '',
+      equipamientoSeleccionado: [],
+      serviciosSeleccionados: [],
       disponible: true
     };
     this.modalTipo = 'crear';
@@ -1024,12 +1235,13 @@ export class SalonesComponent implements OnInit {
   editarSalon(salon: Salon): void {
     this.salonSeleccionado = salon;
     this.formularioSalon = {
+      hotel: salon.hotel._id,
       nombre: salon.nombre,
       capacidad: salon.capacidad,
       precioPorDia: salon.precioPorDia,
       descripcion: salon.descripcion || '',
-      equipamiento: salon.equipamiento.join(', '),
-      serviciosIncluidos: salon.serviciosIncluidos?.join(', ') || '',
+      equipamientoSeleccionado: [...(salon.equipamiento || [])],
+      serviciosSeleccionados: [...(salon.serviciosIncluidos || [])],
       disponible: salon.disponible
     };
     this.modalTipo = 'editar';
@@ -1037,11 +1249,16 @@ export class SalonesComponent implements OnInit {
   }
 
   guardarSalon(): void {
-    const datosParaGuardar = {
+    if (!this.formularioSalon.hotel) {
+      alert('Por favor seleccione un hotel');
+      return;
+    }
+
+    const datosParaGuardar: SalonCreateUpdate = {
       ...this.formularioSalon,
-      hotelId: this.hotelId,
-      equipamiento: this.formularioSalon.equipamiento.split(',').map(e => e.trim()).filter(e => e),
-      serviciosIncluidos: this.formularioSalon.serviciosIncluidos.split(',').map(s => s.trim()).filter(s => s)
+      hotel: this.formularioSalon.hotel, // Usar el hotel seleccionado
+      equipamiento: this.formularioSalon.equipamientoSeleccionado,
+      serviciosIncluidos: this.formularioSalon.serviciosSeleccionados
     };
 
     if (this.modalTipo === 'crear') {
@@ -1089,5 +1306,35 @@ export class SalonesComponent implements OnInit {
   cerrarModal(): void {
     this.modalVisible = false;
     this.salonSeleccionado = null;
+  }
+
+  // Métodos para manejar checkboxes de equipamiento
+  toggleEquipamiento(equipo: string): void {
+    const index = this.formularioSalon.equipamientoSeleccionado.indexOf(equipo);
+    if (index > -1) {
+      this.formularioSalon.equipamientoSeleccionado.splice(index, 1);
+    } else {
+      this.formularioSalon.equipamientoSeleccionado.push(equipo);
+    }
+  }
+
+  toggleServicio(servicio: string): void {
+    const index = this.formularioSalon.serviciosSeleccionados.indexOf(servicio);
+    if (index > -1) {
+      this.formularioSalon.serviciosSeleccionados.splice(index, 1);
+    } else {
+      this.formularioSalon.serviciosSeleccionados.push(servicio);
+    }
+  }
+
+  // Método para manejar filtros de equipamiento
+  toggleFiltroEquipamiento(equipo: string): void {
+    const index = this.equipamientoSeleccionado.indexOf(equipo);
+    if (index > -1) {
+      this.equipamientoSeleccionado.splice(index, 1);
+    } else {
+      this.equipamientoSeleccionado.push(equipo);
+    }
+    this.aplicarFiltros();
   }
 }

@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -1020,5 +1019,4 @@ export class UsuariosComponent {
     this.modalModo = 'ver';
     this.mostrarPassword = false;
   }
-
 }

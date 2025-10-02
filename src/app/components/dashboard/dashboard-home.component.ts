@@ -90,6 +90,13 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
             <div class="card-arrow">→</div>
           </div>
           
+          <div class="action-card" routerLink="/dashboard/paquetes">
+            <div class="card-icon">📦</div>
+            <h3>Gestionar Paquetes</h3>
+            <p>Crea y administra paquetes corporativos</p>
+            <div class="card-arrow">→</div>
+          </div>
+          
           <div class="action-card" routerLink="/dashboard/reservas">
             <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
             <h3>Ver Reservas</h3>
@@ -437,9 +444,6 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       margin-bottom: 0.5rem;
       font-family: 'Crimson Text', serif;
       line-height: 1.6;
-    }
-      line-height: 1.6;
-      font-family: 'Crimson Text', serif;
       font-weight: 500;
     }
 

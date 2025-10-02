@@ -1115,3 +1115,104 @@
     padding: 1rem;
   }
 }
+
+/* ========== PESTAÑAS DE VISTA ========== */
+.tabs-section {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  margin: 0 auto 1.5rem auto;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.tab-btn.activo {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* ========== TARJETAS DE PAQUETES ========== */
+.paquete-card {
+  border-left: 4px solid #764ba2;
+}
+
+.paquete-card .card-header {
+  background: linear-gradient(135deg, rgba(118, 75, 162, 0.1), rgba(102, 126, 234, 0.1));
+}
+
+.evento-nombre {
+  color: #764ba2;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.empresa-nombre {
+  color: #6c757d;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+}
+
+.tipo-evento {
+  background: rgba(118, 75, 162, 0.1);
+  color: #764ba2;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.info-principal .hotel-ubicacion {
+  color: #495057;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Responsive para pestañas */
+@media (max-width: 768px) {
+  .tabs-section {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .tab-btn {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .evento-nombre {
+    font-size: 1.1rem;
+  }
+}

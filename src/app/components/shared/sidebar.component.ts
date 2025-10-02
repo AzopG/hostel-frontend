@@ -608,6 +608,12 @@ export class SidebarComponent implements OnInit {
       roles: ['admin_central', 'admin_hotel', 'cliente', 'empresa']
     },
     {
+      label: 'Buscar Salones',
+      icon: 'fas fa-search',
+      route: '/busqueda-salones',
+      roles: ['empresa', 'cliente']
+    },
+    {
       label: 'Gestión',
       icon: 'fas fa-cogs',
       route: '#',
@@ -626,6 +632,13 @@ export class SidebarComponent implements OnInit {
           route: '/dashboard/salones',
           roles: ['admin_central', 'admin_hotel']
         },
+        {
+          label: 'Paquetes',
+          icon: 'fas fa-cubes',
+          route: '/dashboard/paquetes',
+          roles: ['admin_central', 'admin_hotel']
+        },
+
         {
           label: 'Hoteles',
           icon: 'fas fa-building',

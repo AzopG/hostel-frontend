@@ -139,21 +139,113 @@
             </div>
           </div>
 
-          <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'empresa'">
-            <label for="empresa">Nombre de la empresa <span class="required">*</span></label>
+          <!-- HU13: Campos específicos para empresas -->
+          <ng-container *ngIf="registerForm.get('tipo')?.value === 'empresa'">
+            <div class="form-group">
+              <label for="razonSocial">Razón Social <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-building"></i></span>
+                <input
+                  id="razonSocial"
+                  type="text"
+                  formControlName="razonSocial"
+                  placeholder="Ingresa la razón social de tu empresa"
+                  [class.error]="registerForm.get('razonSocial')?.invalid && registerForm.get('razonSocial')?.touched"
+                  [attr.aria-invalid]="registerForm.get('razonSocial')?.invalid"
+                />
+              </div>
+              <div class="error-message" *ngIf="registerForm.get('razonSocial')?.invalid && registerForm.get('razonSocial')?.touched">
+                <span *ngIf="registerForm.get('razonSocial')?.errors?.['required']">La razón social es requerida</span>
+                <span *ngIf="registerForm.get('razonSocial')?.errors?.['minlength']">La razón social debe tener al menos 3 caracteres</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="nit">NIT <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                <input
+                  id="nit"
+                  type="text"
+                  formControlName="nit"
+                  placeholder="900.123.456-1"
+                  [class.error]="registerForm.get('nit')?.invalid && registerForm.get('nit')?.touched"
+                  [attr.aria-invalid]="registerForm.get('nit')?.invalid"
+                  (input)="onNitInput($event)"
+                />
+              </div>
+              <div class="error-message" *ngIf="registerForm.get('nit')?.invalid && registerForm.get('nit')?.touched">
+                <span *ngIf="registerForm.get('nit')?.errors?.['required']">El NIT es requerido</span>
+                <span *ngIf="registerForm.get('nit')?.errors?.['pattern']">Solo números, puntos y guiones permitidos</span>
+              </div>
+              <div class="help-text">
+                <small>Formato válido: 900.123.456-1 o 900123456</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactoNombre">Nombre del Contacto <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-user-tie"></i></span>
+                <input
+                  id="contactoNombre"
+                  type="text"
+                  formControlName="contactoNombre"
+                  placeholder="Nombre de la persona de contacto"
+                  [class.error]="registerForm.get('contactoNombre')?.invalid && registerForm.get('contactoNombre')?.touched"
+                  [attr.aria-invalid]="registerForm.get('contactoNombre')?.invalid"
+                />
+              </div>
+              <div class="error-message" *ngIf="registerForm.get('contactoNombre')?.invalid && registerForm.get('contactoNombre')?.touched">
+                <span *ngIf="registerForm.get('contactoNombre')?.errors?.['required']">El nombre del contacto es requerido</span>
+                <span *ngIf="registerForm.get('contactoNombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactoCargo">Cargo del Contacto</label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-briefcase"></i></span>
+                <input
+                  id="contactoCargo"
+                  type="text"
+                  formControlName="contactoCargo"
+                  placeholder="Ej: Gerente General, Representante Legal"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactoTelefono">Teléfono de Contacto <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-phone"></i></span>
+                <input
+                  id="contactoTelefono"
+                  type="tel"
+                  formControlName="contactoTelefono"
+                  placeholder="+57 300 123 4567"
+                  [class.error]="registerForm.get('contactoTelefono')?.invalid && registerForm.get('contactoTelefono')?.touched"
+                  [attr.aria-invalid]="registerForm.get('contactoTelefono')?.invalid"
+                />
+              </div>
+              <div class="error-message" *ngIf="registerForm.get('contactoTelefono')?.invalid && registerForm.get('contactoTelefono')?.touched">
+                <span *ngIf="registerForm.get('contactoTelefono')?.errors?.['required']">El teléfono de contacto es requerido</span>
+                <span *ngIf="registerForm.get('contactoTelefono')?.errors?.['pattern']">Formato de teléfono inválido</span>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Campo básico de empresa (legacy - solo para clientes que pongan nombre de empresa) -->
+          <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'cliente'">
+            <label for="empresa">Nombre de la empresa (opcional)</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fas fa-building"></i></span>
               <input
                 id="empresa"
                 type="text"
                 formControlName="empresa"
-                placeholder="Ingresa el nombre de tu empresa"
-                [class.error]="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched"
-                [attr.aria-invalid]="registerForm.get('empresa')?.invalid"
+                placeholder="Si trabajas para una empresa, ingrésala aquí"
               />
-            </div>
-            <div class="error-message" *ngIf="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched">
-              <span *ngIf="registerForm.get('empresa')?.errors?.['required']">El nombre de la empresa es requerido</span>
             </div>
           </div>
 

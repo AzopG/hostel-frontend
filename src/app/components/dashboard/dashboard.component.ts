@@ -116,6 +116,13 @@ export class DashboardComponent implements OnInit {
             description: 'Administrar usuarios'
           },
           {
+            id: 'panel-ocupacion',
+            label: 'Ocupación',
+            icon: 'fas fa-chart-pie',
+            route: '/dashboard/panel-ocupacion',
+            description: 'Panel de ocupación consolidada'
+          },
+          {
             id: 'reportes',
             label: 'Reportes',
             icon: 'fas fa-chart-bar',
@@ -148,10 +155,45 @@ export class DashboardComponent implements OnInit {
             icon: 'fas fa-glass-cheers',
             route: '/dashboard/salones',
             description: 'Gestión de salones'
+          },
+          {
+            id: 'paquetes',
+            label: 'Paquetes',
+            icon: 'fas fa-cubes',
+            route: '/dashboard/paquetes',
+            description: 'Gestión de paquetes corporativos'
           }
         ];
         break;
         
+      case 'empresa':
+        this.menuItems = [
+          ...baseItems,
+          {
+            id: 'mis-reservas',
+            label: 'Mis Reservas',
+            icon: 'fas fa-calendar',
+            route: '/mis-reservas',
+            description: 'Ver mis reservas'
+          },
+          {
+            id: 'ver-paquetes',
+            label: 'Paquetes Corporativos',
+            icon: 'fas fa-cube',
+            route: '/ver-paquetes',
+            description: 'Ver y reservar paquetes empresariales'
+          },
+          {
+            id: 'salones',
+            label: 'Salones',
+            icon: 'fas fa-glass-cheers',
+            route: '/busqueda-salones',
+            description: 'Buscar salones para eventos'
+          }
+        ];
+        break;
+        
+      case 'cliente':
       default:
         this.menuItems = [
           ...baseItems,
@@ -159,7 +201,7 @@ export class DashboardComponent implements OnInit {
             id: 'mis-reservas',
             label: 'Mis Reservas',
             icon: 'fas fa-calendar',
-            route: '/dashboard/mis-reservas',
+            route: '/mis-reservas',
             description: 'Ver mis reservas'
           }
         ];
@@ -303,9 +345,5 @@ export class DashboardComponent implements OnInit {
       clientes: 0,
       ingresos: '0'
     };
-  }
-
-  goToHome(): void {
-    this.router.navigate(['/']);
   }
 }

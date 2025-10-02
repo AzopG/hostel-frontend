@@ -1,12 +1,7 @@
-  // HU08: Ver detalle de reserva (acceso público)
- import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CalendarioDisponibilidadComponent } from './components/calendario-disponibilidad/calendario-disponibilidad.component';
-import { BuscarHabitacionesComponent } from './components/buscar-habitaciones/buscar-habitaciones.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -16,83 +11,91 @@ export const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'forgot-password', component: ResetPasswordComponent },
-  { path: 'reset-password/:token', component: ResetPasswordComponent },
-  // HU04: Calendario de disponibilidad por ciudad (acceso público)
-  { path: 'disponibilidad-ciudad', component: CalendarioDisponibilidadComponent },
-  // HU05: Buscar habitaciones por fechas y huéspedes (acceso público)
-  { path: 'buscar-habitaciones', component: BuscarHabitacionesComponent },
-  // HU07: Ver detalle de una habitación (acceso público)
+  // HU13: Registro de cuenta empresarial
   { 
-    path: 'habitacion/:id', 
-    loadComponent: () => import('./components/detalle-habitacion/detalle-habitacion.component').then(m => m.DetalleHabitacionComponent)
+    path: 'registro-empresa', 
+    loadComponent: () => import('./components/registro-empresa/registro-empresa.component').then(m => m.RegistroEmpresaComponent)
   },
-  // HU08: Reservar una habitación (acceso público)
+  // Rutas públicas del sistema
   { 
-    path: 'reservar/:id', 
-    loadComponent: () => import('./components/reservar-habitacion/reservar-habitacion.component').then(m => m.ReservarHabitacionComponent)
+    path: 'buscar-habitaciones', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/buscar-habitaciones/buscar-habitaciones.component').then(m => m.BuscarHabitacionesComponent) 
   },
-  // HU09: Modificar fechas de reserva (acceso público)
   { 
-    path: 'modificar-reserva/:id', 
-    loadComponent: () => import('./components/modificar-reserva/modificar-reserva.component').then(m => m.ModificarReservaComponent)
+    path: 'mis-reservas', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent) 
   },
-  {
-    path: 'detalle-reserva/:codigo',
-    loadComponent: () => import('./components/detalle-reserva/detalle-reserva.component').then(m => m.DetalleReservaComponent)
-  },
-  // HU11: Ver recibo de reserva (acceso público)
-  { 
-    path: 'recibo/:id', 
-    loadComponent: () => import('./components/recibo-reserva/recibo-reserva.component').then(m => m.ReciboReservaComponent)
-  },
-  // HU14: Búsqueda de salones para eventos (acceso público)
   { 
     path: 'busqueda-salones', 
-    loadComponent: () => import('./components/busqueda-salones/busqueda-salones.component').then(m => m.BusquedaSalonesComponent)
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/busqueda-salones/busqueda-salones.component').then(m => m.BusquedaSalonesComponent) 
   },
-  // HU16: Ver detalle de un salón (acceso público)
+  { 
+    path: 'disponibilidad-ciudad', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/calendario-disponibilidad/calendario-disponibilidad.component').then(m => m.CalendarioDisponibilidadComponent) 
+  },
+  // Rutas de detalle y reserva
+  { 
+    path: 'habitacion/:id', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/detalle-habitacion/detalle-habitacion.component').then(m => m.DetalleHabitacionComponent) 
+  },
   { 
     path: 'salon/:id', 
-    loadComponent: () => import('./components/detalle-salon/detalle-salon.component').then(m => m.DetalleSalonComponent)
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/detalle-salon/detalle-salon.component').then(m => m.DetalleSalonComponent) 
   },
-  // HU17: Reservar un salón (acceso público)
+  { 
+    path: 'reservar/:id', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/reservar-habitacion/reservar-habitacion.component').then(m => m.ReservarHabitacionComponent) 
+  },
   { 
     path: 'reservar-salon/:id', 
-    loadComponent: () => import('./components/reservar-salon/reservar-salon.component').then(m => m.ReservarSalonComponent)
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/reservar-salon/reservar-salon.component').then(m => m.ReservarSalonComponent) 
   },
-  // HU18: Reservar un paquete corporativo (acceso público)
   { 
-    path: 'reservar-paquete/:hotelId', 
-    loadComponent: () => import('./components/reservar-paquete/reservar-paquete.component').then(m => m.ReservarPaqueteComponent)
+    path: 'detalle-reserva/:codigo', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/detalle-reserva/detalle-reserva.component').then(m => m.DetalleReservaComponent) 
   },
-  // HU19: Gestionar lista de asistentes (acceso público)
   { 
-    path: 'gestionar-asistentes/:reservaId', 
-    loadComponent: () => import('./components/gestionar-asistentes/gestionar-asistentes.component').then(m => m.GestionarAsistentesComponent)
+    path: 'recibo/:id', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/recibo-reserva/recibo-reserva.component').then(m => m.ReciboReservaComponent) 
+  },
+  // Rutas de paquetes empresariales
+  { 
+    path: 'ver-paquetes', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/ver-paquetes/ver-paquetes.component').then(m => m.VerPaquetesComponent) 
+  },
+  { 
+    path: 'reservar-paquete/:id', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/paquetes/reservar-paquete.component').then(m => m.ReservarPaqueteComponent) 
+  },
+  { 
+    path: 'reservar-paquete-simple/:id', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./components/reservar-paquete-simple/reservar-paquete-simple.component').then(m => m.ReservarPaqueteSimpleComponent) 
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard],
     children: [
-      // Ruta por defecto del dashboard - página de bienvenida
       { 
         path: 'home', 
         loadComponent: () => import('./components/dashboard/dashboard-home.component').then(m => m.DashboardHomeComponent) 
       },
-      // Rutas administrativas
-      { 
-        path: 'hoteles', 
-        loadComponent: () => import('./components/dashboard/hoteles.component').then(m => m.HotelesComponent) 
-      },
       { 
         path: 'usuarios', 
         loadComponent: () => import('./components/dashboard/usuarios.component').then(m => m.UsuariosComponent) 
-      },
-      { 
-        path: 'reportes', 
-        loadComponent: () => import('./components/dashboard/reportes.component').then(m => m.ReportesComponent) 
       },
       { 
         path: 'habitaciones', 
@@ -106,13 +109,24 @@ export const routes: Routes = [
         path: 'reservas', 
         loadComponent: () => import('./components/dashboard/reservas.component').then(m => m.ReservasComponent) 
       },
-      // Mis Reservas para clientes
       { 
-        path: 'mis-reservas', 
-        loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent)
+        path: 'hoteles', 
+        loadComponent: () => import('./components/dashboard/hoteles.component').then(m => m.HotelesComponent) 
+      },
+      { 
+        path: 'reportes', 
+        loadComponent: () => import('./components/dashboard/reportes.component').then(m => m.ReportesComponent) 
+      },
+      { 
+        path: 'paquetes', 
+        loadComponent: () => import('./components/dashboard/paquetes.component').then(m => m.PaquetesComponent) 
+      },
+      {
+        path: 'panel-ocupacion',
+        loadComponent: () => import('./components/dashboard/panel-ocupacion-dashboard.component').then(m => m.PanelOcupacionDashboardComponent)
       },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
-  { path: '**', redirectTo: '' }
+  { path: '', redirectTo: '' }
 ];

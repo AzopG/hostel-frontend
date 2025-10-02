@@ -1,0 +1,21 @@
+<div class="panel-ocupacion">
+  <h2>Ocupación por Sede</h2>
+  <div class="filtros-fecha">
+    <label>Desde:
+      <input type="date" [(ngModel)]="fechaInicio" (change)="onFechaChange()" />
+    </label>
+    <label>Hasta:
+      <input type="date" [(ngModel)]="fechaFin" (change)="onFechaChange()" />
+    </label>
+  </div>
+  <div *ngIf="cargando" class="cargando">Cargando datos...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div class="tarjetas-ciudad">
+    <div *ngFor="let hotel of ocupacion" class="tarjeta-ciudad">
+      <h3>{{ hotel.nombre }}</h3>
+      <div class="porcentaje">{{ hotel.porcentajeOcupacion | number:'1.0-2' }}%</div>
+      <div class="detalle">{{ hotel.habitacionesOcupadas }} / {{ hotel.habitacionesTotales }} habitaciones ocupadas</div>
+      <div class="ciudad">{{ hotel.ciudad }}</div>
+    </div>
+  </div>
+</div>
