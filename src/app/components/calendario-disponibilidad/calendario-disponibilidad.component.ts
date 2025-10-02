@@ -868,7 +868,7 @@ export class CalendarioDisponibilidadComponent implements OnInit {
       return 'Fecha pasada';
     }
     if (dia.disponible) {
-      return dia.habitacionesDisponibles + ' habitación(es) disponible(s) de ' + dia.totalHabitaciones;
+      return `${dia.habitacionesDisponibles} habitación(es) disponible(s) de ${dia.totalHabitaciones}`;
     }
     return 'Sin disponibilidad';
   }
