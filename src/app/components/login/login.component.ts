@@ -72,8 +72,11 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
+          
           if (error.status === 401) {
-            this.errorMessage = 'Credenciales inválidas';
+            this.errorMessage = 'Su sesión ha expirado. Por favor, inicie sesión nuevamente.';
+          } else if (error.status === 0) {
+            this.errorMessage = 'Error de conexión. Verifica tu conexión a internet.';
           } else {
             this.errorMessage = error.error?.msg || 'Error al iniciar sesión. Intenta nuevamente.';
           }

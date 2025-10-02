@@ -437,10 +437,18 @@ import { AuthService } from '../../services/auth.service';
       transition: all 0.3s ease;
     }
 
-    .form-control:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    .container-fluid {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
+      min-height: calc(100vh - 70px);
+      margin: 0;
+      padding: 2rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
+
     }
 
     .modal-actions {
