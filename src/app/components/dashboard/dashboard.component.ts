@@ -272,6 +272,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  goToHome(): void {
+    this.router.navigate(['/']);
+  }
+
   trackByMenuId(index: number, item: any): any {
     return item.id || index;
   }
