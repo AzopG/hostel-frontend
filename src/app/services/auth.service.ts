@@ -119,7 +119,6 @@ export class AuthService {
    * CA4: Verifica tanto localStorage como sessionStorage
    */
   private checkStoredToken(): void {
-
     if (isPlatformBrowser(this.platformId)) {
       const token = this.getToken();
       const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
@@ -127,46 +126,23 @@ export class AuthService {
       if (token && userStr) {
         try {
           const user = JSON.parse(userStr);
-          this.isAuthenticatedSubject.next(true);
-          this.currentUserSubject.next(user);
+          // Validar que el token no esté expirado antes de hacer la verificación
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const currentTime = Math.floor(Date.now() / 1000);
+          
+          if (payload.exp && payload.exp > currentTime) {
+            // Token no expirado, usar datos del storage
+            this.isAuthenticatedSubject.next(true);
+            this.currentUserSubject.next(user);
+          } else {
+            // Token expirado
+            this.logout();
+          }
         } catch (error) {
-          // Error al parsear el usuario, limpiar storage
+          // Error al parsear el usuario o token, limpiar storage
+          console.warn('Invalid token or user data:', error);
           this.logout();
         }
-
-    const token = this.getToken();
-    if (token) {
-      // Validar que el token no esté expirado antes de hacer la verificación
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const currentTime = Math.floor(Date.now() / 1000);
-        
-        if (payload.exp && payload.exp > currentTime) {
-          // Token no expirado, intentar verificar
-          this.verifyToken().subscribe({
-            next: (response) => {
-              if (response && response.usuario) {
-                this.isAuthenticatedSubject.next(true);
-                this.currentUserSubject.next(response.usuario);
-              } else {
-                // No hacer logout automático si la verificación falla
-                // Solo mantener el estado actual del token hasta que sea explícitamente inválido
-                console.warn('Token verification returned null, maintaining current session');
-              }
-            },
-            error: (error) => {
-              console.warn('Token verification failed, but maintaining session:', error);
-              // No hacer logout automático en errores de verificación
-            }
-          });
-        } else {
-          // Token expirado
-          this.logout();
-        }
-      } catch (error) {
-        console.warn('Invalid token format:', error);
-        this.logout();
-
       }
     }
   }
@@ -283,15 +259,11 @@ export class AuthService {
     const headers = this.getAuthHeaders();
     return this.http.get<{ usuario: Usuario }>(`${this.API_URL}/verify`, { headers })
       .pipe(
-
-        catchError(this.handleError<{ usuario: Usuario }>('verifyToken'))
-
         catchError((error) => {
           console.warn('Token verification endpoint not available:', error);
           // En lugar de fallar, devolver un observable vacío que cause logout
           return of(null as any);
         })
-
       );
   }
 
@@ -412,4 +384,4 @@ export class AuthService {
       return of(result as T);
     };
   }
-
+}

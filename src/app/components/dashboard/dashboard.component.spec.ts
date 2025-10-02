@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { DashboardComponent } from './dashboard.component';
 import { AuthService, Usuario } from '../../services/auth.service';
+import { EstadisticasService } from '../../services/estadisticas.service';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component } from '@angular/core';
@@ -20,6 +21,7 @@ describe('DashboardComponent', () => {
   let authService: jasmine.SpyObj<AuthService>;
   let router: jasmine.SpyObj<Router>;
   let store: jasmine.SpyObj<Store>;
+  let estadisticasService: jasmine.SpyObj<EstadisticasService>;
 
   const mockUser: Usuario = {
     _id: '123',
@@ -30,11 +32,23 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['logout', 'getCurrentUser'], {
-      currentUser$: of(mockUser)
+      currentUser$: of(mockUser),
+      isAuthenticated$: of(true)
     });
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const storeSpy = jasmine.createSpyObj('Store', ['dispatch', 'select']);
+    const estadisticasServiceSpy = jasmine.createSpyObj('EstadisticasService', ['obtenerEstadisticasGenerales']);
+    
     storeSpy.select.and.returnValue(of([])); // Mock para hoteles$
+    estadisticasServiceSpy.obtenerEstadisticasGenerales.and.returnValue(of({
+      success: true,
+      stats: {
+        totalHoteles: 12,
+        totalReservas: 1250,
+        totalClientes: 3800,
+        ingresosTotales: 2400000
+      }
+    }));
 
     await TestBed.configureTestingModule({
       imports: [
@@ -54,6 +68,7 @@ describe('DashboardComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: Store, useValue: storeSpy },
+        { provide: EstadisticasService, useValue: estadisticasServiceSpy },
         provideNoopAnimations()
       ],
       declarations: [DummyComponent]
@@ -64,14 +79,15 @@ describe('DashboardComponent', () => {
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     store = TestBed.inject(Store) as jasmine.SpyObj<Store>;
+    estadisticasService = TestBed.inject(EstadisticasService) as jasmine.SpyObj<EstadisticasService>;
     
     // Spy on router.navigate method
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
   });
 
   beforeEach(() => {
-    // Mock the getCurrentUser method before detectChanges
-    authService.getCurrentUser = jasmine.createSpy('getCurrentUser').and.returnValue(mockUser);
+    // Configure the spy methods
+    (authService as any).getCurrentUser.and.returnValue(mockUser);
     fixture.detectChanges();
   });
 
@@ -81,7 +97,7 @@ describe('DashboardComponent', () => {
 
   it('should initialize with current user', () => {
     component.ngOnInit();
-    expect(authService.getCurrentUser).toHaveBeenCalled();
+    expect((authService as any).getCurrentUser).toHaveBeenCalled();
     expect(component.currentUser).toEqual(mockUser);
   });
 
@@ -93,7 +109,7 @@ describe('DashboardComponent', () => {
   it('should logout and redirect to login', () => {
     component.logout();
     
-    expect(authService.logout).toHaveBeenCalled();
+    expect((authService as any).logout).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
