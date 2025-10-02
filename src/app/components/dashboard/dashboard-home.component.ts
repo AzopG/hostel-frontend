@@ -422,9 +422,6 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
       margin-bottom: 0.5rem;
       font-family: 'Crimson Text', serif;
       line-height: 1.6;
-    }
-      line-height: 1.6;
-      font-family: 'Crimson Text', serif;
       font-weight: 500;
     }
 

@@ -125,8 +125,8 @@
               <select
                 id="tipo"
                 formControlName="tipo"
-                [class.error]="hasError('tipo')"
-                [attr.aria-invalid]="hasError('tipo')"
+                [class.error]="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched"
+                [attr.aria-invalid]="registerForm.get('tipo')?.invalid"
               >
                 <option value="">Selecciona un tipo</option>
                 <option value="cliente">Cliente</option>
@@ -134,8 +134,8 @@
               </select>
               <span class="select-arrow">▼</span>
             </div>
-            <div class="error-message" *ngIf="hasError('tipo')">
-              <span>{{ getErrorMessage('tipo') }}</span>
+            <div class="error-message" *ngIf="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched">
+              <span *ngIf="registerForm.get('tipo')?.errors?.['required']">Debes seleccionar un tipo de cuenta</span>
             </div>
           </div>
 
@@ -150,12 +150,13 @@
                   type="text"
                   formControlName="razonSocial"
                   placeholder="Ingresa la razón social de tu empresa"
-                  [class.error]="hasError('razonSocial')"
-                  [attr.aria-invalid]="hasError('razonSocial')"
+                  [class.error]="registerForm.get('razonSocial')?.invalid && registerForm.get('razonSocial')?.touched"
+                  [attr.aria-invalid]="registerForm.get('razonSocial')?.invalid"
                 />
               </div>
-              <div class="error-message" *ngIf="hasError('razonSocial')">
-                <span>{{ getErrorMessage('razonSocial') }}</span>
+              <div class="error-message" *ngIf="registerForm.get('razonSocial')?.invalid && registerForm.get('razonSocial')?.touched">
+                <span *ngIf="registerForm.get('razonSocial')?.errors?.['required']">La razón social es requerida</span>
+                <span *ngIf="registerForm.get('razonSocial')?.errors?.['minlength']">La razón social debe tener al menos 3 caracteres</span>
               </div>
             </div>
 
@@ -168,13 +169,14 @@
                   type="text"
                   formControlName="nit"
                   placeholder="900.123.456-1"
-                  [class.error]="hasError('nit')"
-                  [attr.aria-invalid]="hasError('nit')"
+                  [class.error]="registerForm.get('nit')?.invalid && registerForm.get('nit')?.touched"
+                  [attr.aria-invalid]="registerForm.get('nit')?.invalid"
                   (input)="onNitInput($event)"
                 />
               </div>
-              <div class="error-message" *ngIf="hasError('nit')">
-                <span>{{ getErrorMessage('nit') }}</span>
+              <div class="error-message" *ngIf="registerForm.get('nit')?.invalid && registerForm.get('nit')?.touched">
+                <span *ngIf="registerForm.get('nit')?.errors?.['required']">El NIT es requerido</span>
+                <span *ngIf="registerForm.get('nit')?.errors?.['pattern']">Solo números, puntos y guiones permitidos</span>
               </div>
               <div class="help-text">
                 <small>Formato válido: 900.123.456-1 o 900123456</small>
@@ -190,12 +192,13 @@
                   type="text"
                   formControlName="contactoNombre"
                   placeholder="Nombre de la persona de contacto"
-                  [class.error]="hasError('contactoNombre')"
-                  [attr.aria-invalid]="hasError('contactoNombre')"
+                  [class.error]="registerForm.get('contactoNombre')?.invalid && registerForm.get('contactoNombre')?.touched"
+                  [attr.aria-invalid]="registerForm.get('contactoNombre')?.invalid"
                 />
               </div>
-              <div class="error-message" *ngIf="hasError('contactoNombre')">
-                <span>{{ getErrorMessage('contactoNombre') }}</span>
+              <div class="error-message" *ngIf="registerForm.get('contactoNombre')?.invalid && registerForm.get('contactoNombre')?.touched">
+                <span *ngIf="registerForm.get('contactoNombre')?.errors?.['required']">El nombre del contacto es requerido</span>
+                <span *ngIf="registerForm.get('contactoNombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</span>
               </div>
             </div>
 
@@ -221,12 +224,13 @@
                   type="tel"
                   formControlName="contactoTelefono"
                   placeholder="+57 300 123 4567"
-                  [class.error]="hasError('contactoTelefono')"
-                  [attr.aria-invalid]="hasError('contactoTelefono')"
+                  [class.error]="registerForm.get('contactoTelefono')?.invalid && registerForm.get('contactoTelefono')?.touched"
+                  [attr.aria-invalid]="registerForm.get('contactoTelefono')?.invalid"
                 />
               </div>
-              <div class="error-message" *ngIf="hasError('contactoTelefono')">
-                <span>{{ getErrorMessage('contactoTelefono') }}</span>
+              <div class="error-message" *ngIf="registerForm.get('contactoTelefono')?.invalid && registerForm.get('contactoTelefono')?.touched">
+                <span *ngIf="registerForm.get('contactoTelefono')?.errors?.['required']">El teléfono de contacto es requerido</span>
+                <span *ngIf="registerForm.get('contactoTelefono')?.errors?.['pattern']">Formato de teléfono inválido</span>
               </div>
             </div>
           </ng-container>

@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  passwordMatchValidator(group: FormGroup) {
+  passwordMatchValidator(group: FormGroup): ValidationErrors | null {
     const password = group.get('password');
     const confirmPassword = group.get('confirmPassword');
     
