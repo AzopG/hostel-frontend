@@ -632,6 +632,7 @@ export class SidebarComponent implements OnInit {
           route: '/dashboard/salones',
           roles: ['admin_central', 'admin_hotel']
         },
+
         {
           label: 'Hoteles',
           icon: 'fas fa-building',

@@ -152,6 +152,27 @@ export class DashboardComponent implements OnInit {
         ];
         break;
         
+      case 'empresa':
+        this.menuItems = [
+          ...baseItems,
+          {
+            id: 'mis-reservas',
+            label: 'Mis Reservas',
+            icon: 'fas fa-calendar',
+            route: '/mis-reservas',
+            description: 'Ver mis reservas'
+          },
+          {
+            id: 'salones',
+            label: 'Salones',
+            icon: 'fas fa-glass-cheers',
+            route: '/busqueda-salones',
+            description: 'Buscar salones para eventos'
+          }
+        ];
+        break;
+        
+      case 'cliente':
       default:
         this.menuItems = [
           ...baseItems,
