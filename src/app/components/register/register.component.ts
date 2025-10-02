@@ -966,9 +966,6 @@ import { AuthService, RegisterRequest, LoginRequest } from '../../services/auth.
         margin-top: auto;
       }
     }
-        letter-spacing: 1px;
-      }
-    }
 
     @media (max-width: 480px) {
       .image-section {
