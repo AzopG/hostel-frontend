@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService, LoginRequest } from '../../services/auth.service';
 
 @Component({
@@ -106,4 +106,19 @@ export class LoginComponent implements OnInit {
   volver(): void {
     this.router.navigate(['/']);
   }
+
+  fillTestCredentials(type: string): void {
+    const credentials = {
+      admin: { email: 'admin@hotelchain.com', password: 'admin123' },
+      cliente: { email: 'cliente@email.com', password: 'cliente123' },
+      empresa: { email: 'maria@empresa.com', password: 'empresa123' },
+      hotel: { email: 'admin@hotelplaza.com', password: 'hotel123' }
+    };
+
+    const cred = credentials[type as keyof typeof credentials];
+    if (cred) {
+      this.loginForm.patchValue(cred);
+    }
+  }
+
 }
