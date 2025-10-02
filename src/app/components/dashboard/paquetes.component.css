@@ -1,9 +1,17 @@
 /* Estilos para la gestión de paquetes corporativos */
 
+/* Scroll suave global */
+* {
+  scroll-behavior: smooth;
+}
+
 .container-fluid {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
+  height: 100vh;
   padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Navegación */
@@ -142,6 +150,8 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 2rem;
   padding: 0 2rem 2rem 2rem;
+  max-height: none;
+  overflow: visible;
 }
 
 .paquete-card {
@@ -1011,6 +1021,28 @@
 
 .modal-body-custom::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+/* Scroll para contenedor principal */
+.container-fluid::-webkit-scrollbar {
+  width: 12px;
+}
+
+.container-fluid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.container-fluid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.container-fluid::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+  background-clip: content-box;
 }
 
 /* Campos de entrada mejorados */

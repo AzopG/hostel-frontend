@@ -10,6 +10,23 @@ import { ReservaPaqueteService, ReservaPaquete } from '../../services/reserva-pa
   imports: [CommonModule, FormsModule],
   template: `
     <div class="mis-reservas-container">
+      <!-- Navegación Principal -->
+      <div class="navigation-header">
+        <div class="container">
+          <div class="nav-buttons">
+            <button class="btn-nav-home" (click)="irAInicio()">
+              <i class="fas fa-home me-2"></i>Inicio
+            </button>
+            <button class="btn-nav-dashboard" (click)="irADashboard()">
+              <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+            </button>
+            <button class="btn-nav-paquetes" (click)="buscarPaquetes()">
+              <i class="fas fa-search me-2"></i>Buscar Paquetes
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Header -->
       <div class="header-section">
         <div class="container">
@@ -25,8 +42,8 @@ import { ReservaPaqueteService, ReservaPaquete } from '../../services/reserva-pa
               <button class="btn btn-primary me-2" (click)="buscarPaquetes()">
                 <i class="fas fa-plus me-2"></i>Nueva Reserva
               </button>
-              <button class="btn btn-secondary" (click)="irAInicio()">
-                <i class="fas fa-home me-2"></i>Inicio
+              <button class="btn btn-secondary" (click)="actualizarReservas()">
+                <i class="fas fa-sync me-2"></i>Actualizar
               </button>
             </div>
           </div>
@@ -566,5 +583,13 @@ export class MisReservasPaquetesComponent implements OnInit {
 
   irAInicio(): void {
     this.router.navigate(['/']);
+  }
+
+  irADashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  actualizarReservas(): void {
+    this.cargarReservas();
   }
 }

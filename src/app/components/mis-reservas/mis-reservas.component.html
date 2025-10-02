@@ -1,13 +1,26 @@
-<div class="navigation-header">
-  <button (click)="irAInicio()" class="btn-home-nav">
-    🏠 Inicio
-  </button>
-  <button (click)="irABuscar()" class="btn-search-nav">
-    🔍 Buscar Habitaciones
-  </button>
-</div>
-
 <div class="mis-reservas-container">
+  <!-- Navegación -->
+  <div class="navigation-header">
+    <div class="nav-buttons-left">
+      <button (click)="irAInicio()" class="btn-nav btn-home">
+        <i class="fas fa-home me-2"></i>Inicio
+      </button>
+      <button (click)="irADashboard()" class="btn-nav btn-dashboard">
+        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+      </button>
+    </div>
+    <div class="nav-buttons-right">
+      <button (click)="irABuscar()" class="btn-nav btn-search">
+        <i class="fas fa-search me-2"></i>Buscar Habitaciones
+      </button>
+      <button (click)="irAPaquetes()" class="btn-nav btn-packages">
+        <i class="fas fa-cube me-2"></i>Ver Paquetes
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido -->
+  <div class="content-wrapper">
 
   <!-- Header -->
   <div class="header">
@@ -442,4 +455,6 @@
       </div>
     </div>
   </div>
-</div>
+
+  </div> <!-- Cierre content-wrapper -->
+</div> <!-- Cierre mis-reservas-container -->

@@ -914,7 +914,9 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
 
     .table-responsive {
       border-radius: 0 0 20px 20px;
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: visible;
+      max-height: none;
     }
 
     /* Animaciones de entrada */
@@ -982,9 +984,10 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
         margin-right: 0;
       }
 
-      .table-responsive {
-        border-radius: 0;
-      }
+    .table-responsive {
+      border-radius: 0 0 20px 20px;
+      overflow-x: auto;
+    }
 
       .btn-group .btn {
         width: 35px;

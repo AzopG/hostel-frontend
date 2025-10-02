@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService, Usuario } from '../../services/auth.service';
 import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
 
@@ -90,7 +90,7 @@ import { EstadisticasService, EstadisticasGenerales } from '../../services/estad
             <div class="card-arrow">→</div>
           </div>
           
-          <div class="action-card" routerLink="/dashboard/paquetes">
+          <div class="action-card" (click)="navegarA('/dashboard/paquetes')">
             <div class="card-icon">📦</div>
             <h3>Gestionar Paquetes</h3>
             <p>Crea y administra paquetes corporativos</p>
@@ -515,7 +515,8 @@ export class DashboardHomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private estadisticasService: EstadisticasService
+    private estadisticasService: EstadisticasService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -610,5 +611,18 @@ export class DashboardHomeComponent implements OnInit {
       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
     return months[new Date().getMonth()];
+  }
+
+  navegarA(ruta: string): void {
+    console.log('🔄 Navegando a:', ruta);
+    this.router.navigate([ruta]).then(success => {
+      if (success) {
+        console.log('✅ Navegación exitosa a:', ruta);
+      } else {
+        console.error('❌ Error en navegación a:', ruta);
+      }
+    }).catch(error => {
+      console.error('💥 Error en navegación:', error);
+    });
   }
 }

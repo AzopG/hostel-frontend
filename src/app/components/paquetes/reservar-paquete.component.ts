@@ -295,7 +295,7 @@ import { AuthService } from '../../services/auth.service';
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Forma de Pago*</label>
-                        <select class="form-control" [(ngModel)]="reservaData.metodoPago.tipo" name="metodoPago" required>
+                        <select class="form-control" [(ngModel)]="reservaData.metodoPago!.tipo" name="metodoPago" required>
                           <option value="transferencia">Transferencia Bancaria</option>
                           <option value="tarjeta_credito">Tarjeta de Crédito</option>
                           <option value="cheque">Cheque</option>
@@ -307,7 +307,7 @@ import { AuthService } from '../../services/auth.service';
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Porcentaje de Anticipo*</label>
-                        <select class="form-control" [(ngModel)]="reservaData.metodoPago.anticipoPorcentaje" name="anticipoPorcentaje" required>
+                        <select class="form-control" [(ngModel)]="reservaData.metodoPago!.anticipoPorcentaje" name="anticipoPorcentaje" required>
                           <option value="30">30%</option>
                           <option value="50">50%</option>
                           <option value="70">70%</option>
@@ -347,7 +347,7 @@ import { AuthService } from '../../services/auth.service';
                       <span><strong>\${{ formatearPrecio(calcularTotal()) }}</strong></span>
                     </div>
                     <div class="precio-item anticipo">
-                      <span>Anticipo ({{ reservaData.metodoPago.anticipoPorcentaje }}%):</span>
+                      <span>Anticipo ({{ reservaData.metodoPago?.anticipoPorcentaje || 50 }}%):</span>
                       <span>\${{ formatearPrecio(calcularAnticipo()) }}</span>
                     </div>
                   </div>
@@ -525,7 +525,8 @@ export class ReservarPaqueteComponent implements OnInit {
    * Calcular anticipo
    */
   calcularAnticipo(): number {
-    return this.calcularTotal() * (this.reservaData.metodoPago.anticipoPorcentaje / 100);
+    const porcentaje = this.reservaData.metodoPago?.anticipoPorcentaje || 50;
+    return this.calcularTotal() * (porcentaje / 100);
   }
 
   /**

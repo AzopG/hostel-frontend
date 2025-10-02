@@ -500,4 +500,18 @@ export class MisReservasComponent implements OnInit {
   irABuscar(): void {
     this.router.navigate(['/buscar-habitaciones']);
   }
+
+  /**
+   * Navegar al dashboard
+   */
+  irADashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  /**
+   * Navegar a paquetes corporativos
+   */
+  irAPaquetes(): void {
+    this.router.navigate(['/ver-paquetes']);
+  }
 }

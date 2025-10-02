@@ -1,93 +1,462 @@
+/* Estilos modernos para reserva de paquetes */
+
+/* Contenedor principal */
+.container-fluid {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Navegación moderna */
 .navigation-header {
-  background: #f8f9fa;
-  padding: 1rem;
-  margin-bottom: 0;
-  border-bottom: 1px solid #dee2e6;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
   display: flex;
   gap: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.btn-nav {
-  background: #667eea;
+.btn-nav, .btn-nav-secondary {
+  background: rgba(255, 255, 255, 0.2);
   color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
   transition: all 0.3s ease;
-}
-
-.btn-nav:hover {
-  background: #5a67d8;
-  transform: translateY(-1px);
-}
-
-.btn-nav-secondary {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn-nav-secondary:hover {
-  background: #5a6268;
-  transform: translateY(-1px);
+.btn-nav:hover, .btn-nav-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* Header elegante */
 .header-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(15px);
+  padding: 3rem 2rem;
+  margin: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.page-title {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-subtitle {
+  color: #666;
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.page-subtitle::before {
+  content: "📍";
+  font-size: 1.1rem;
+}
+
+/* Tarjetas principales */
+.info-card, .reserva-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(15px);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  margin: 0 1rem 2rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.info-card:hover, .reserva-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.info-card h3, .reserva-card h3 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #667eea;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-card h3::before {
+  content: "📋";
+  font-size: 1.5rem;
+}
+
+.reserva-card h3::before {
+  content: "✏️";
+  font-size: 1.5rem;
+}
+
+/* Información del paquete */
+.paquete-info {
+  margin-bottom: 2rem;
+}
+
+.paquete-info p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.paquete-info strong {
+  color: #2c3e50;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+/* Servicios incluidos */
+.servicios-incluidos {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 1.5rem;
+  border-radius: 15px;
+  border: 1px solid #dee2e6;
+}
+
+.servicios-incluidos h5 {
+  color: #2c3e50;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.servicios-incluidos h5::before {
+  content: "⭐";
+  font-size: 1.2rem;
+}
+
+.servicios-incluidos ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.servicios-incluidos li {
+  background: white;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  border-left: 3px solid #28a745;
+}
+
+.servicios-incluidos li::before {
+  content: "✅";
+  font-size: 1rem;
+}
+
+.servicios-incluidos li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* Secciones del formulario */
+.form-section {
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 15px;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-section h5 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.form-section:nth-child(1) h5::before {
+  content: "🎯";
+  font-size: 1.2rem;
+}
+
+.form-section:nth-child(2) h5::before {
+  content: "🏢";
+  font-size: 1.2rem;
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  border: 2px solid #e1e8ed;
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.form-control:hover {
+  border-color: #b8daff;
+}
+
+/* Resumen de precios elegante */
+.precio-resumen {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 2rem;
-  margin-bottom: 2rem;
+  border-radius: 20px;
+  margin: 2rem 0;
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-.info-card, .reserva-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+.precio-resumen::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: rotate(45deg);
 }
 
-.form-section {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
+.precio-resumen h5 {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.precio-resumen {
-  background: #f8f9fa;
-  padding: 1rem;
-  border-radius: 10px;
-  margin: 1rem 0;
+.precio-resumen h5::before {
+  content: "💰";
+  font-size: 1.3rem;
 }
 
 .precio-linea {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .precio-total {
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #dee2e6;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding: 1rem 0 0 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  margin-top: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
+/* Acciones del formulario */
 .form-actions {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #eee;
+}
+
+.btn {
+  padding: 0.875rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Spinner de carga */
+.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-section {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .info-card, .reserva-card {
+    margin: 0 0.5rem 1.5rem 0.5rem;
+    padding: 1.5rem;
+  }
+
+  .form-section {
+    padding: 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .navigation-header {
+    padding: 1rem;
+  }
+
+  .btn-nav, .btn-nav-secondary {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Efectos adicionales */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-card, .reserva-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.form-section:nth-child(1) {
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+.form-section:nth-child(2) {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.precio-resumen {
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+/* Mejoras para accesibilidad */
+.form-control:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.btn:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
 }
