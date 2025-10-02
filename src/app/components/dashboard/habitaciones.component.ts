@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HabitacionService } from '../../services/habitacion.service';
+import { HotelService } from '../../services/hotel.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-habitaciones',
@@ -16,171 +19,409 @@ import { FormsModule } from '@angular/forms';
               <span class="title-icon">🛏️</span>
               Gestión de Habitaciones
             </h1>
-            <p class="page-subtitle">Administra habitaciones, disponibilidad y configuraciones</p>
+            <p class="page-subtitle">Administra las habitaciones de los hoteles</p>
           </div>
-          <button class="btn-add-room" (click)="agregarHabitacion()">
-            <span class="btn-icon">➕</span>
-            Agregar Habitación
-          </button>
-        </div>
-      </div>
-
-      <!-- Filtros mejorados -->
-      <div class="filters-section">
-        <div class="filters-container">
-          <div class="filter-group">
-            <label class="filter-label">🏨 Hotel</label>
-            <select class="filter-select" [(ngModel)]="filtroHotel">
-              <option value="">Todos los hoteles</option>
-              <option *ngFor="let hotel of hoteles" [value]="hotel.id">{{ hotel.nombre }}</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label class="filter-label">🏠 Tipo</label>
-            <select class="filter-select" [(ngModel)]="filtroTipo">
-              <option value="">Todos los tipos</option>
-              <option value="individual">Individual</option>
-              <option value="doble">Doble</option>
-              <option value="suite">Suite</option>
-              <option value="presidencial">Presidencial</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label class="filter-label">🚦 Estado</label>
-            <select class="filter-select" [(ngModel)]="filtroEstado">
-              <option value="">Todos los estados</option>
-              <option value="disponible">Disponible</option>
-              <option value="ocupada">Ocupada</option>
-              <option value="mantenimiento">Mantenimiento</option>
-            </select>
-          </div>
-          <div class="filter-actions">
-            <button class="btn-filter-clear" (click)="limpiarFiltros()">
-              🔄 Limpiar
+          <div class="action-section">
+            <button class="btn-primary" (click)="abrirModalAgregar()">
+              <span class="btn-icon">➕</span>
+              Nueva Habitación
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Tabla moderna -->
-      <div class="rooms-table-section">
-        <div class="table-header">
-          <h3 class="table-title">Lista de Habitaciones</h3>
-          <div class="table-stats">
-            <span class="stat-chip">Total: {{ habitacionesFiltradas.length }}</span>
-            <span class="stat-chip disponible">Disponibles: {{ getDisponibles() }}</span>
-            <span class="stat-chip ocupada">Ocupadas: {{ getOcupadas() }}</span>
-          </div>
+      <!-- Filtros avanzados -->
+      <div class="filters-card">
+        <div class="filters-header">
+          <h3>
+            <span class="filter-icon">🔍</span>
+            Filtros de Búsqueda
+          </h3>
+          <button class="btn-link" (click)="limpiarFiltros()">
+            Limpiar filtros
+          </button>
         </div>
         
-        <div class="modern-table-container">
-          <div class="table-wrapper">
-            <table class="modern-table">
-              <thead>
-                <tr>
-                  <th class="number-col">
-                    <span class="header-icon">🏠</span>
-                    Número
-                  </th>
-                  <th class="hotel-col">
-                    <span class="header-icon">🏨</span>
-                    Hotel
-                  </th>
-                  <th class="type-col">
-                    <span class="header-icon">🛏️</span>
-                    Tipo
-                  </th>
-                  <th class="capacity-col">
-                    <span class="header-icon">👥</span>
-                    Capacidad
-                  </th>
-                  <th class="price-col">
-                    <span class="header-icon">💰</span>
-                    Precio/Noche
-                  </th>
-                  <th class="status-col">
-                    <span class="header-icon">🚦</span>
-                    Estado
-                  </th>
-                  <th class="actions-col">
-                    <span class="header-icon">⚙️</span>
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let habitacion of habitacionesFiltradas; trackBy: trackByRoomId" class="room-row">
-                  <td class="room-number">
-                    <div class="number-badge">{{ habitacion.numero }}</div>
-                  </td>
-                  <td class="hotel-name">{{ habitacion.hotel }}</td>
-                  <td class="room-type">
-                    <span class="type-badge" [ngClass]="getTipoBadge(habitacion.tipo)">
-                      {{ getRoomTypeIcon(habitacion.tipo) }} {{ habitacion.tipo | titlecase }}
-                    </span>
-                  </td>
-                  <td class="capacity">
-                    <span class="capacity-text">{{ habitacion.capacidad }} personas</span>
-                  </td>
-                  <td class="price">
-                    <span class="price-amount">\${{ habitacion.precio }}</span>
-                  </td>
-                  <td class="status">
-                    <span class="status-badge" [ngClass]="getEstadoBadge(habitacion.estado)">
-                      {{ getStatusIcon(habitacion.estado) }} {{ habitacion.estado | titlecase }}
-                    </span>
-                  </td>
-                  <td class="actions">
-                    <div class="action-buttons">
-                      <button class="action-btn view" 
-                              (click)="verHabitacion(habitacion)"
-                              title="Ver detalles">
-                        👁️ Ver
-                      </button>
-                      <button class="action-btn edit" 
-                              (click)="editarHabitacion(habitacion)"
-                              title="Editar habitación">
-                        ✏️ Editar
-                      </button>
-                      <button class="action-btn delete" 
-                              (click)="eliminarHabitacion(habitacion)"
-                              title="Eliminar habitación">
-                        🗑️ Eliminar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label>Hotel</label>
+            <select [(ngModel)]="filtroHotel" class="form-select">
+              <option value="">Todos los hoteles</option>
+              <option *ngFor="let hotel of hoteles" [value]="hotel.nombre">
+                {{hotel.nombre}}
+              </option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label>Tipo de Habitación</label>
+            <select [(ngModel)]="filtroTipo" class="form-select">
+              <option value="">Todos los tipos</option>
+              <option *ngFor="let tipo of tiposHabitacion" [value]="tipo.value">
+                {{tipo.label}}
+              </option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label>Estado</label>
+            <select [(ngModel)]="filtroEstado" class="form-select">
+              <option value="">Todos los estados</option>
+              <option *ngFor="let estado of estadosHabitacion" [value]="estado.value">
+                {{estado.label}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="error" class="alert alert-error">
+        <span class="alert-icon">⚠️</span>
+        {{error}}
+        <button class="alert-close" (click)="error = ''">×</button>
+      </div>
+
+      <!-- Loading state -->
+      <div *ngIf="isLoading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Cargando habitaciones...</p>
+      </div>
+
+      <!-- Lista de habitaciones -->
+      <div *ngIf="!isLoading" class="habitaciones-grid">
+        <div *ngFor="let habitacion of habitacionesFiltradas" 
+             class="habitacion-card" 
+             [class.ocupada]="habitacion.estado === 'ocupada'"
+             [class.mantenimiento]="habitacion.estado === 'mantenimiento'">
+          
+          <div class="card-header">
+            <div class="room-info">
+              <h3 class="room-number">
+                {{getTipoIcon(habitacion.tipo)}} 
+                Habitación {{habitacion.numero}}
+              </h3>
+              <span class="hotel-name">{{habitacion.hotel?.nombre || 'Hotel no especificado'}}</span>
+            </div>
+            <div class="status-badge" [class]="'status-' + habitacion.estado">
+              {{getStatusIcon(habitacion.estado)}} 
+              {{getStatusLabel(habitacion.estado)}}
+            </div>
+          </div>
+
+          <div class="card-content">
+            <div class="room-details">
+              <div class="detail-item">
+                <span class="detail-label">Tipo:</span>
+                <span class="detail-value">{{getTipoLabel(habitacion.tipo)}}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Capacidad:</span>
+                <span class="detail-value">{{habitacion.capacidad}} personas</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Precio:</span>
+                <span class="detail-value precio">\${{habitacion.precio}}/noche</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn-outline btn-sm" (click)="verHabitacion(habitacion)">
+              <span class="btn-icon">👁️</span>
+              Ver Detalles
+            </button>
+            <button class="btn-outline btn-sm" (click)="abrirModalEditar(habitacion)">
+              <span class="btn-icon">✏️</span>
+              Editar
+            </button>
+            <button class="btn-danger btn-sm" (click)="eliminarHabitacion(habitacion._id)">
+              <span class="btn-icon">🗑️</span>
+              Eliminar
+            </button>
+          </div>
+        </div>
+
+        <!-- Estado vacío -->
+        <div *ngIf="habitacionesFiltradas.length === 0" class="empty-state">
+          <div class="empty-icon">🛏️</div>
+          <h3>No hay habitaciones</h3>
+          <p>No se encontraron habitaciones que coincidan con los filtros seleccionados.</p>
+          <button class="btn-primary" (click)="abrirModalAgregar()">
+            Crear primera habitación
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Agregar Habitación -->
+      <div *ngIf="showModalAgregar" class="modal-overlay" (click)="cerrarModalAgregar()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Nueva Habitación</h2>
+            <button class="modal-close" (click)="cerrarModalAgregar()">×</button>
+          </div>
+          
+          <div class="modal-body">
+            <form class="habitacion-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Número de Habitación *</label>
+                  <input type="text" 
+                         [(ngModel)]="nuevaHabitacion.numero" 
+                         name="numero"
+                         class="form-input" 
+                         placeholder="Ej: 101, A-25">
+                </div>
+                
+                <div class="form-group">
+                  <label>Hotel *</label>
+                  <select [(ngModel)]="nuevaHabitacion.hotelId" 
+                          name="hotelId"
+                          class="form-select">
+                    <option value="">Seleccionar hotel</option>
+                    <option *ngFor="let hotel of hoteles" [value]="hotel._id">
+                      {{hotel.nombre}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Tipo de Habitación *</label>
+                  <select [(ngModel)]="nuevaHabitacion.tipo" 
+                          name="tipo"
+                          class="form-select">
+                    <option *ngFor="let tipo of tiposHabitacion" [value]="tipo.value">
+                      {{tipo.label}}
+                    </option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label>Capacidad *</label>
+                  <input type="number" 
+                         [(ngModel)]="nuevaHabitacion.capacidad" 
+                         name="capacidad"
+                         class="form-input" 
+                         min="1" max="10">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Precio por Noche *</label>
+                  <input type="number" 
+                         [(ngModel)]="nuevaHabitacion.precio" 
+                         name="precio"
+                         class="form-input" 
+                         min="0" step="0.01"
+                         placeholder="0.00">
+                </div>
+                
+                <div class="form-group">
+                  <label>Estado</label>
+                  <select [(ngModel)]="nuevaHabitacion.estado" 
+                          name="estado"
+                          class="form-select">
+                    <option *ngFor="let estado of estadosHabitacion" [value]="estado.value">
+                      {{estado.label}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Descripción</label>
+                <textarea [(ngModel)]="nuevaHabitacion.descripcion" 
+                          name="descripcion"
+                          class="form-textarea" 
+                          rows="3"
+                          placeholder="Descripción opcional de la habitación..."></textarea>
+              </div>
+            </form>
+          </div>
+          
+          <div class="modal-footer">
+            <button class="btn-outline" (click)="cerrarModalAgregar()">
+              Cancelar
+            </button>
+            <button class="btn-primary" 
+                    (click)="agregarHabitacion()"
+                    [disabled]="isLoading">
+              <span *ngIf="isLoading" class="btn-spinner"></span>
+              {{isLoading ? 'Creando...' : 'Crear Habitación'}}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Editar Habitación -->
+      <div *ngIf="showModalEditar && habitacionSeleccionada" class="modal-overlay" (click)="cerrarModalEditar()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Editar Habitación {{habitacionSeleccionada.numero}}</h2>
+            <button class="modal-close" (click)="cerrarModalEditar()">×</button>
+          </div>
+          
+          <div class="modal-body">
+            <form class="habitacion-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Número de Habitación *</label>
+                  <input type="text" 
+                         [(ngModel)]="habitacionSeleccionada.numero" 
+                         name="numero"
+                         class="form-input">
+                </div>
+                
+                <div class="form-group">
+                  <label>Tipo de Habitación *</label>
+                  <select [(ngModel)]="habitacionSeleccionada.tipo" 
+                          name="tipo"
+                          class="form-select">
+                    <option *ngFor="let tipo of tiposHabitacion" [value]="tipo.value">
+                      {{tipo.label}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Capacidad *</label>
+                  <input type="number" 
+                         [(ngModel)]="habitacionSeleccionada.capacidad" 
+                         name="capacidad"
+                         class="form-input" 
+                         min="1" max="10">
+                </div>
+                
+                <div class="form-group">
+                  <label>Precio por Noche *</label>
+                  <input type="number" 
+                         [(ngModel)]="habitacionSeleccionada.precio" 
+                         name="precio"
+                         class="form-input" 
+                         min="0" step="0.01">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Estado</label>
+                <select [(ngModel)]="habitacionSeleccionada.estado" 
+                        name="estado"
+                        class="form-select">
+                  <option *ngFor="let estado of estadosHabitacion" [value]="estado.value">
+                    {{estado.label}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Descripción</label>
+                <textarea [(ngModel)]="habitacionSeleccionada.descripcion" 
+                          name="descripcion"
+                          class="form-textarea" 
+                          rows="3"></textarea>
+              </div>
+            </form>
+          </div>
+          
+          <div class="modal-footer">
+            <button class="btn-outline" (click)="cerrarModalEditar()">
+              Cancelar
+            </button>
+            <button class="btn-primary" 
+                    (click)="guardarEdicion()"
+                    [disabled]="isLoading">
+              <span *ngIf="isLoading" class="btn-spinner"></span>
+              {{isLoading ? 'Guardando...' : 'Guardar Cambios'}}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Detalle Habitación -->
+      <div *ngIf="showModalDetalle && habitacionSeleccionada" class="modal-overlay" (click)="cerrarModalDetalle()">
+        <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Detalles de Habitación {{habitacionSeleccionada.numero}}</h2>
+            <button class="modal-close" (click)="cerrarModalDetalle()">×</button>
+          </div>
+          
+          <div class="modal-body">
+            <div class="detalle-grid">
+              <div class="detalle-section">
+                <h3>Información General</h3>
+                <div class="detalle-item">
+                  <span class="detalle-label">Número:</span>
+                  <span class="detalle-value">{{habitacionSeleccionada.numero}}</span>
+                </div>
+                <div class="detalle-item">
+                  <span class="detalle-label">Hotel:</span>
+                  <span class="detalle-value">{{habitacionSeleccionada.hotel?.nombre || 'No especificado'}}</span>
+                </div>
+                <div class="detalle-item">
+                  <span class="detalle-label">Tipo:</span>
+                  <span class="detalle-value">{{getTipoLabel(habitacionSeleccionada.tipo)}}</span>
+                </div>
+                <div class="detalle-item">
+                  <span class="detalle-label">Capacidad:</span>
+                  <span class="detalle-value">{{habitacionSeleccionada.capacidad}} personas</span>
+                </div>
+                <div class="detalle-item">
+                  <span class="detalle-label">Estado:</span>
+                  <span class="detalle-value status-badge" [class]="'status-' + habitacionSeleccionada.estado">
+                    {{getStatusIcon(habitacionSeleccionada.estado)}} {{getStatusLabel(habitacionSeleccionada.estado)}}
+                  </span>
+                </div>
+                <div class="detalle-item">
+                  <span class="detalle-label">Precio:</span>
+                  <span class="detalle-value precio">\${{habitacionSeleccionada.precio}}/noche</span>
+                </div>
+              </div>
+
+              <div class="detalle-section" *ngIf="habitacionSeleccionada.descripcion">
+                <h3>Descripción</h3>
+                <p class="descripcion-text">{{habitacionSeleccionada.descripcion}}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button class="btn-outline" (click)="cerrarModalDetalle()">
+              Cerrar
+            </button>
+            <button class="btn-primary" (click)="abrirModalEditar(habitacionSeleccionada); cerrarModalDetalle()">
+              Editar Habitación
+            </button>
           </div>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    /* Contenedor principal moderno */
     .habitaciones-container {
-      background: transparent;
-      padding: 0;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
-    /* Header principal */
     .page-header {
-      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      padding: 24px 32px;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 1rem;
+      padding: 2rem;
+      color: white;
+      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
     }
 
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
+      gap: 2rem;
     }
 
     .title-section {
@@ -188,80 +429,223 @@ import { FormsModule } from '@angular/forms';
     }
 
     .page-title {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
-      color: #2d3748;
-      margin: 0;
+      margin: 0 0 0.5rem 0;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 1rem;
     }
 
     .title-icon {
-      font-size: 2.2rem;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 3rem;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     }
 
     .page-subtitle {
-      color: #718096;
-      font-size: 1rem;
-      margin: 4px 0 0 0;
-      font-weight: 500;
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin: 0;
     }
 
-    .btn-add-room {
+    .action-section {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .filters-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid #e5e7eb;
+    }
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .filters-header h3 {
+      margin: 0;
+      color: #374151;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 14px 24px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 12px;
+      gap: 0.5rem;
+    }
+
+    .filter-icon {
+      font-size: 1.2rem;
+    }
+
+    .filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
       font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
+      color: #374151;
+      font-size: 0.9rem;
+    }
+
+    .habitaciones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 2rem;
+    }
+
+    .habitacion-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid #e5e7eb;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn-add-room:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    .habitacion-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
     }
 
-    .btn-icon {
+    .habitacion-card.ocupada::before {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    .habitacion-card.mantenimiento::before {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .habitacion-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .room-info h3 {
+      margin: 0 0 0.25rem 0;
+      color: #1f2937;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .hotel-name {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-disponible {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-ocupada {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-mantenimiento {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-fuera_servicio {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .card-content {
+      margin-bottom: 1.5rem;
+    }
+
+    .room-details {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .detail-label {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .detail-value {
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .detail-value.precio {
+      color: #059669;
       font-size: 1.1rem;
     }
 
-    .h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #2d3748;
-      margin: 0;
+    .card-actions {
       display: flex;
-      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
-    .h2::before {
-      content: '🏨';
-      margin-right: 1rem;
-      font-size: 2rem;
+    /* Botones */
+    .btn-primary, .btn-outline, .btn-danger, .btn-link {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
     }
 
     .btn-primary {
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border: none;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
     }
 
     .btn-primary:hover {
@@ -269,704 +653,538 @@ import { FormsModule } from '@angular/forms';
       box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
     }
 
-    /* Sección de filtros */
-    .filters-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .filters-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      align-items: end;
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .filter-label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #4a5568;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .filter-select {
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
+    .btn-outline {
       background: white;
-      font-size: 0.95rem;
-      color: #2d3748;
-      transition: all 0.3s ease;
-      cursor: pointer;
+      color: #667eea;
+      border: 2px solid #667eea;
     }
 
-    .filter-select:focus {
+    .btn-outline:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+    }
+
+    .btn-link {
+      background: none;
+      color: #667eea;
+      padding: 0.5rem;
+    }
+
+    .btn-link:hover {
+      color: #764ba2;
+    }
+
+    .btn-icon {
+      font-size: 1rem;
+    }
+
+    .btn-spinner {
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    /* Forms */
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
       outline: none;
       border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
-    .filter-actions {
+    .form-group {
       display: flex;
-      align-items: end;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
-    .btn-filter-clear {
-      padding: 12px 20px;
-      background: #f7fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      color: #4a5568;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn-filter-clear:hover {
-      background: #edf2f7;
-      border-color: #cbd5e0;
-    }
-
-    .form-select {
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      height: 48px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      background: white;
-    }
-
-    .form-select:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    /* Sección de tabla */
-    .rooms-table-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .table-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 32px;
-      background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
-      border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-    }
-
-    .table-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #2d3748;
-      margin: 0;
-    }
-
-    .table-stats {
-      display: flex;
-      gap: 12px;
-    }
-
-    .stat-chip {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+    .form-group label {
       font-weight: 600;
-      background: #e2e8f0;
-      color: #4a5568;
-    }
-
-    .stat-chip.disponible {
-      background: #c6f6d5;
-      color: #22543d;
-    }
-
-    .stat-chip.ocupada {
-      background: #fed7d7;
-      color: #742a2a;
-    }
-
-    .modern-table-container {
-      overflow: hidden;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-    }
-
-    .modern-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-
-    .modern-table th {
-      background: #f7fafc;
-      padding: 16px 20px;
-      text-align: left;
-      font-weight: 600;
-      color: #4a5568;
+      color: #374151;
       font-size: 0.9rem;
-      border-bottom: 2px solid #e2e8f0;
-      white-space: nowrap;
     }
 
-    .header-icon {
-      margin-right: 6px;
-      font-size: 1rem;
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
     }
 
-    .modern-table td {
-      padding: 16px 20px;
-      border-bottom: 1px solid #f1f5f9;
-      vertical-align: middle;
+    .habitacion-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
 
-    .room-row {
-      transition: all 0.3s ease;
-    }
-
-    .room-row:hover {
-      background: #f8fafc;
-      transform: translateX(2px);
-    }
-
-    .number-badge {
-      display: inline-flex;
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 45px;
-      height: 35px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    .hotel-name {
-      font-weight: 500;
-      color: #2d3748;
-    }
-
-    .type-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .type-badge.bg-secondary { background: #edf2f7; color: #4a5568; }
-    .type-badge.bg-primary { background: #bee3f8; color: #2a4365; }
-    .type-badge.bg-info { background: #b8f5ff; color: #065666; }
-    .type-badge.bg-warning { background: #fef5e7; color: #744210; }
-
-    .capacity-text {
-      color: #718096;
-      font-size: 0.9rem;
-    }
-
-    .price-amount {
-      font-weight: 700;
-      color: #2d3748;
-      font-size: 1rem;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .status-badge.bg-success { background: #c6f6d5; color: #22543d; }
-    .status-badge.bg-danger { background: #fed7d7; color: #742a2a; }
-    .status-badge.bg-warning { background: #fef5e7; color: #744210; }
-
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-    .action-btn {
-      padding: 8px 14px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .action-btn.view {
-      background: #bee3f8;
-      color: #2a4365;
-    }
-
-    .action-btn.edit {
-      background: #fef5e7;
-      color: #744210;
-    }
-
-    .action-btn.delete {
-      background: #fed7d7;
-      color: #742a2a;
-    }
-
-    .action-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-header {
-      background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-      border-bottom: 1px solid #e2e8f0;
+      z-index: 1000;
       padding: 2rem;
     }
 
-    .card-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #2d3748;
-      margin: 0;
+    .modal-content {
+      background: white;
+      border-radius: 1rem;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .modal-large {
+      max-width: 800px;
+    }
+
+    .modal-header {
+      padding: 2rem 2rem 1rem 2rem;
+      border-bottom: 1px solid #e5e7eb;
       display: flex;
+      justify-content: space-between;
       align-items: center;
     }
 
-    .card-title::before {
-      content: '🛏️';
-      margin-right: 0.5rem;
-    }
-    
-    .table {
+    .modal-header h2 {
       margin: 0;
+      color: #1f2937;
+      font-size: 1.5rem;
     }
-    
-    .table th {
-      background: #f8fafc;
+
+    .modal-close {
+      background: none;
       border: none;
-      padding: 1.5rem 1rem;
-      font-weight: 600;
-      color: #4a5568;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .table td {
-      padding: 1.5rem 1rem;
-      border: none;
-      border-bottom: 1px solid #e2e8f0;
-      vertical-align: middle;
-    }
-
-    .table tbody tr:hover {
-      background: linear-gradient(90deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-      transform: scale(1.01);
-      transition: all 0.3s ease;
-    }
-    
-    .badge {
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .bg-secondary {
-      background: linear-gradient(135deg, #a0aec0, #718096) !important;
-      color: white;
-    }
-
-    .bg-primary {
-      background: linear-gradient(135deg, #667eea, #5a6fd8) !important;
-      color: white;
-    }
-
-    .bg-info {
-      background: linear-gradient(135deg, #4299e1, #3182ce) !important;
-      color: white;
-    }
-
-    .bg-warning {
-      background: linear-gradient(135deg, #ed8936, #dd6b20) !important;
-      color: white;
-    }
-
-    .bg-success {
-      background: linear-gradient(135deg, #48bb78, #38a169) !important;
-      color: white;
-    }
-
-    .bg-danger {
-      background: linear-gradient(135deg, #f56565, #e53e3e) !important;
-      color: white;
-    }
-    
-    .btn-sm {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #6b7280;
+      padding: 0;
+      width: 2rem;
+      height: 2rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
-      font-size: 0.875rem;
-      margin: 0 2px;
     }
 
-    .btn-outline-primary {
-      background: rgba(102, 126, 234, 0.1);
-      color: #667eea;
-      border: none;
+    .modal-close:hover {
+      color: #374151;
     }
 
-    .btn-outline-primary:hover {
-      background: rgba(102, 126, 234, 0.2);
-      transform: scale(1.1);
-      color: #5a6fd8;
+    .modal-body {
+      padding: 2rem;
     }
 
-    .btn-outline-warning {
-      background: rgba(237, 137, 54, 0.1);
-      color: #ed8936;
-      border: none;
+    .modal-footer {
+      padding: 1rem 2rem 2rem 2rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
     }
 
-    .btn-outline-warning:hover {
-      background: rgba(237, 137, 54, 0.2);
-      transform: scale(1.1);
-      color: #dd6b20;
+    /* Detalle */
+    .detalle-grid {
+      display: grid;
+      gap: 2rem;
     }
 
-    .btn-outline-danger {
-      background: rgba(245, 101, 101, 0.1);
-      color: #f56565;
-      border: none;
+    .detalle-section h3 {
+      margin: 0 0 1rem 0;
+      color: #1f2937;
+      font-size: 1.25rem;
+      font-weight: 600;
     }
 
-    .btn-outline-danger:hover {
-      background: rgba(245, 101, 101, 0.2);
-      transform: scale(1.1);
-      color: #e53e3e;
+    .detalle-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f3f4f6;
     }
 
-    td strong {
-      color: #2d3748;
+    .detalle-item:last-child {
+      border-bottom: none;
+    }
+
+    .detalle-label {
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .detalle-value {
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .descripcion-text {
+      color: #4b5563;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Estados */
+    .loading-container {
+      text-align: center;
+      padding: 4rem;
+    }
+
+    .loading-spinner {
+      width: 3rem;
+      height: 3rem;
+      border: 4px solid #e5e7eb;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem auto;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem;
+      color: #6b7280;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 0.5rem 0;
+      color: #374151;
+    }
+
+    .empty-state p {
+      margin: 0 0 2rem 0;
       font-size: 1.1rem;
     }
 
-    .table-responsive {
-      border-radius: 0 0 20px 20px;
-      overflow: hidden;
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
-    /* Animaciones de entrada */
-    .card {
-      animation: slideInUp 0.6s ease-out forwards;
-      opacity: 0;
-      transform: translateY(30px);
+    .alert-error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
     }
 
-    @keyframes slideInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .alert-close {
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-left: auto;
+      padding: 0;
     }
 
-    /* Efectos para los números de habitación */
-    td strong {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: 800;
-    }
-
-    /* Responsive design */
-    @media (max-width: 1024px) {
-      .filters-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .table-header {
-        flex-direction: column;
-        gap: 16px;
-        align-items: stretch;
-      }
-      
-      .table-stats {
-        justify-content: center;
-      }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     @media (max-width: 768px) {
+      .habitaciones-container {
+        padding: 1rem;
+      }
+      
       .header-content {
         flex-direction: column;
-        gap: 16px;
-        text-align: center;
+        align-items: flex-start;
+        gap: 1rem;
       }
-
+      
       .page-title {
-        font-size: 1.7rem;
+        font-size: 2rem;
       }
-
-      .filters-container {
+      
+      .habitaciones-grid {
         grid-template-columns: 1fr;
       }
       
-      .table-header {
-        padding: 20px;
+      .filters-grid {
+        grid-template-columns: 1fr;
       }
       
-      .modern-table th,
-      .modern-table td {
-        padding: 12px 16px;
-        font-size: 0.9rem;
+      .form-row {
+        grid-template-columns: 1fr;
       }
       
-      .action-buttons {
+      .card-actions {
         flex-direction: column;
-        gap: 6px;
       }
       
-      .action-btn {
-        padding: 10px;
-        font-size: 0.8rem;
-      }
-    }
-
-    @media (max-width: 576px) {
-      .page-header,
-      .filters-section,
-      .rooms-table-section {
-        margin-left: -8px;
-        margin-right: -8px;
-        border-radius: 12px;
-      }
-      
-      .number-badge {
-        width: 35px;
-        height: 30px;
-        font-size: 0.9rem;
-      }
-      
-      .stat-chip {
-        padding: 4px 10px;
-        font-size: 0.8rem;
-      }
-    }
-
-    @media (max-width: 576px) {
-      .form-select {
-        margin-bottom: 1rem;
-      }
-
-      .table th, .table td {
-        padding: 1rem 0.5rem;
-        font-size: 0.875rem;
-      }
-    }
-
-    /* Animaciones suaves */
-    .rooms-table-section {
-      animation: slideInUp 0.6s ease-out;
-    }
-
-    .room-row {
-      animation: fadeInRow 0.5s ease-out;
-      animation-fill-mode: both;
-    }
-
-    .room-row:nth-child(1) { animation-delay: 0.1s; }
-    .room-row:nth-child(2) { animation-delay: 0.15s; }
-    .room-row:nth-child(3) { animation-delay: 0.2s; }
-    .room-row:nth-child(4) { animation-delay: 0.25s; }
-    .room-row:nth-child(5) { animation-delay: 0.3s; }
-
-    @keyframes fadeInRow {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .modal-overlay {
+        padding: 1rem;
       }
     }
   `]
 })
-export class HabitacionesComponent {
+export class HabitacionesComponent implements OnInit {
   filtroHotel = '';
   filtroTipo = '';
   filtroEstado = '';
+  currentUser: any = null;
+  isLoading = false;
+  error = '';
 
-  hoteles = [
-    { id: 1, nombre: 'Hotel Boutique Central' },
-    { id: 2, nombre: 'Hotel Plaza Mayor' },
-    { id: 3, nombre: 'Hotel Ejecutivo' }
+  hoteles: any[] = [];
+  habitaciones: any[] = [];
+
+  // Modal states
+  showModalAgregar = false;
+  showModalEditar = false;
+  showModalDetalle = false;
+  habitacionSeleccionada: any = null;
+
+  // Nueva habitación form
+  nuevaHabitacion = {
+    numero: '',
+    hotelId: '',
+    tipo: 'individual',
+    capacidad: 1,
+    precio: 0,
+    descripcion: '',
+    comodidades: [],
+    estado: 'disponible'
+  };
+
+  tiposHabitacion = [
+    { value: 'individual', label: 'Individual' },
+    { value: 'doble', label: 'Doble' },
+    { value: 'triple', label: 'Triple' },
+    { value: 'suite', label: 'Suite' },
+    { value: 'presidencial', label: 'Presidencial' }
   ];
 
-  habitaciones = [
-    {
-      id: 1,
-      numero: '101',
-      hotel: 'Hotel Boutique Central',
-      tipo: 'individual',
-      capacidad: 1,
-      precio: 120,
-      estado: 'disponible'
-    },
-    {
-      id: 2,
-      numero: '102',
-      hotel: 'Hotel Boutique Central',
-      tipo: 'doble',
-      capacidad: 2,
-      precio: 180,
-      estado: 'ocupada'
-    },
-    {
-      id: 3,
-      numero: '201',
-      hotel: 'Hotel Plaza Mayor',
-      tipo: 'suite',
-      capacidad: 4,
-      precio: 350,
-      estado: 'disponible'
-    },
-    {
-      id: 4,
-      numero: '301',
-      hotel: 'Hotel Ejecutivo',
-      tipo: 'presidencial',
-      capacidad: 6,
-      precio: 500,
-      estado: 'mantenimiento'
-    }
+  estadosHabitacion = [
+    { value: 'disponible', label: 'Disponible' },
+    { value: 'ocupada', label: 'Ocupada' },
+    { value: 'mantenimiento', label: 'Mantenimiento' },
+    { value: 'fuera_servicio', label: 'Fuera de Servicio' }
   ];
 
-  get habitacionesFiltradas() {
-    return this.habitaciones.filter(habitacion => {
-      const coincideHotel = !this.filtroHotel || habitacion.hotel.includes(this.filtroHotel);
-      const coincideTipo = !this.filtroTipo || habitacion.tipo === this.filtroTipo;
-      const coincideEstado = !this.filtroEstado || habitacion.estado === this.filtroEstado;
-      return coincideHotel && coincideTipo && coincideEstado;
+  constructor(
+    private habitacionService: HabitacionService,
+    private hotelService: HotelService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.currentUser = this.authService.getCurrentUser();
+    this.cargarHoteles();
+    this.cargarHabitaciones();
+  }
+
+  cargarHoteles(): void {
+    this.hotelService.getHoteles().subscribe({
+      next: (hoteles: any[]) => {
+        if (this.currentUser?.rol === 'admin_hotel') {
+          // Si es admin de hotel, solo mostrar su hotel
+          this.hoteles = hoteles.filter((hotel: any) => hotel.admin === this.currentUser.id);
+        } else {
+          // Si es admin central, mostrar todos los hoteles
+          this.hoteles = hoteles;
+        }
+      },
+      error: (error: any) => {
+        console.error('Error al cargar hoteles:', error);
+        this.error = 'Error al cargar la lista de hoteles';
+      }
     });
   }
 
-  getTipoBadge(tipo: string): string {
-    switch (tipo) {
-      case 'individual': return 'bg-secondary';
-      case 'doble': return 'bg-primary';
-      case 'suite': return 'bg-info';
-      case 'presidencial': return 'bg-warning';
-      default: return 'bg-light';
-    }
+  cargarHabitaciones(): void {
+    this.isLoading = true;
+    this.error = '';
+
+    this.habitacionService.obtenerHabitaciones().subscribe({
+      next: (habitaciones: any[]) => {
+        if (this.currentUser?.rol === 'admin_hotel') {
+          // Filtrar habitaciones del hotel del usuario
+          const hotelAdmin = this.hoteles.find((hotel: any) => hotel.admin === this.currentUser.id);
+          if (hotelAdmin) {
+            this.habitaciones = habitaciones.filter((hab: any) => hab.hotelId === hotelAdmin._id);
+          }
+        } else {
+          this.habitaciones = habitaciones;
+        }
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error al cargar habitaciones:', error);
+        this.error = 'Error al cargar las habitaciones';
+        this.isLoading = false;
+      }
+    });
   }
 
-  getEstadoBadge(estado: string): string {
-    switch (estado) {
-      case 'disponible': return 'bg-success';
-      case 'ocupada': return 'bg-danger';
-      case 'mantenimiento': return 'bg-warning';
-      default: return 'bg-secondary';
-    }
+  get habitacionesFiltradas() {
+    return this.habitaciones.filter(habitacion => {
+      const cumpleFiltroHotel = !this.filtroHotel || 
+        habitacion.hotel?.nombre?.toLowerCase().includes(this.filtroHotel.toLowerCase());
+      const cumpleFiltroTipo = !this.filtroTipo || habitacion.tipo === this.filtroTipo;
+      const cumpleFiltroEstado = !this.filtroEstado || habitacion.estado === this.filtroEstado;
+      
+      return cumpleFiltroHotel && cumpleFiltroTipo && cumpleFiltroEstado;
+    });
+  }
+
+  abrirModalAgregar(): void {
+    this.nuevaHabitacion = {
+      numero: '',
+      hotelId: '',
+      tipo: 'individual',
+      capacidad: 1,
+      precio: 0,
+      descripcion: '',
+      comodidades: [],
+      estado: 'disponible'
+    };
+    this.showModalAgregar = true;
+  }
+
+  cerrarModalAgregar(): void {
+    this.showModalAgregar = false;
   }
 
   agregarHabitacion(): void {
-    console.log('Agregar nueva habitación');
+    if (!this.nuevaHabitacion.numero || !this.nuevaHabitacion.hotelId || !this.nuevaHabitacion.precio) {
+      this.error = 'Todos los campos obligatorios deben estar completos';
+      return;
+    }
+
+    this.isLoading = true;
+    this.habitacionService.crearHabitacion(this.nuevaHabitacion).subscribe({
+      next: (response: any) => {
+        console.log('Habitación creada exitosamente');
+        this.cargarHabitaciones();
+        this.cerrarModalAgregar();
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error al crear habitación:', error);
+        this.error = 'Error al crear la habitación';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  abrirModalEditar(habitacion: any): void {
+    this.habitacionSeleccionada = { ...habitacion };
+    this.showModalEditar = true;
+  }
+
+  cerrarModalEditar(): void {
+    this.showModalEditar = false;
+    this.habitacionSeleccionada = null;
+  }
+
+  guardarEdicion(): void {
+    if (!this.habitacionSeleccionada) return;
+
+    this.isLoading = true;
+    this.habitacionService.actualizarHabitacion(this.habitacionSeleccionada._id, this.habitacionSeleccionada).subscribe({
+      next: (response: any) => {
+        console.log('Habitación actualizada exitosamente');
+        this.cargarHabitaciones();
+        this.cerrarModalEditar();
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error al actualizar habitación:', error);
+        this.error = 'Error al actualizar la habitación';
+        this.isLoading = false;
+      }
+    });
   }
 
   verHabitacion(habitacion: any): void {
-    console.log('Ver habitación:', habitacion);
+    this.habitacionSeleccionada = habitacion;
+    this.showModalDetalle = true;
   }
 
-  editarHabitacion(habitacion: any): void {
-    console.log('Editar habitación:', habitacion);
+  cerrarModalDetalle(): void {
+    this.showModalDetalle = false;
+    this.habitacionSeleccionada = null;
   }
 
-  eliminarHabitacion(habitacion: any): void {
-    console.log('Eliminar habitación:', habitacion);
+  eliminarHabitacion(id: string): void {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta habitación?')) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.habitacionService.eliminarHabitacion(id).subscribe({
+      next: () => {
+        console.log('Habitación eliminada exitosamente');
+        this.cargarHabitaciones();
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error al eliminar habitación:', error);
+        this.error = 'Error al eliminar la habitación';
+        this.isLoading = false;
+      }
+    });
   }
 
-  // Métodos adicionales para la nueva UI
   limpiarFiltros(): void {
     this.filtroHotel = '';
     this.filtroTipo = '';
     this.filtroEstado = '';
   }
 
-  getDisponibles(): number {
-    return this.habitacionesFiltradas.filter(h => h.estado === 'disponible').length;
-  }
-
-  getOcupadas(): number {
-    return this.habitacionesFiltradas.filter(h => h.estado === 'ocupada').length;
-  }
-
-  trackByRoomId(index: number, item: any): any {
-    return item.id;
-  }
-
-  getRoomTypeIcon(tipo: string): string {
+  getTipoIcon(tipo: string): string {
     switch (tipo) {
       case 'individual': return '🛏️';
       case 'doble': return '🛏️🛏️';
-      case 'suite': return '🏠';
+      case 'triple': return '🏠';
+      case 'suite': return '🏨';
       case 'presidencial': return '👑';
       default: return '🏠';
     }
+  }
+
+  getTipoLabel(tipo: string): string {
+    const tipoObj = this.tiposHabitacion.find(t => t.value === tipo);
+    return tipoObj ? tipoObj.label : tipo;
   }
 
   getStatusIcon(estado: string): string {
@@ -974,7 +1192,13 @@ export class HabitacionesComponent {
       case 'disponible': return '✅';
       case 'ocupada': return '🔴';
       case 'mantenimiento': return '🔧';
+      case 'fuera_servicio': return '❌';
       default: return '❓';
     }
+  }
+
+  getStatusLabel(estado: string): string {
+    const estadoObj = this.estadosHabitacion.find(e => e.value === estado);
+    return estadoObj ? estadoObj.label : estado;
   }
 }
