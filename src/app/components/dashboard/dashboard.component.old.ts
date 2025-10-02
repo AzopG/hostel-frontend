@@ -985,3 +985,4 @@ export class DashboardComponent implements OnInit {
   trackByMenuId(index: number, item: any): any {
     return item.id || index;
   }
+}
