@@ -1,0 +1,40 @@
+.panel-ocupacion {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.filtros-fecha {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.tarjetas-ciudad {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.tarjeta-ciudad {
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  min-width: 220px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  text-align: center;
+}
+.porcentaje {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2a7be4;
+  margin: 0.5rem 0;
+}
+.detalle {
+  color: #555;
+}
+.cargando, .error {
+  text-align: center;
+  margin-top: 1rem;
+  color: #888;
+}
