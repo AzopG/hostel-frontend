@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { HabitacionService, DetalleHabitacion, TarifaDesglose } from '../../services/habitacion.service';
 import { ReservaService, CrearReservaRequest, ReservaCreada } from '../../services/reserva.service';
+import { AuthService, Usuario } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reservar-habitacion',
@@ -47,7 +48,8 @@ export class ReservarHabitacionComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private habitacionService: HabitacionService,
-    private reservaService: ReservaService
+    private reservaService: ReservaService,
+    private authService: AuthService
   ) {
     this.inicializarFormulario();
   }
@@ -55,7 +57,6 @@ export class ReservarHabitacionComponent implements OnInit {
   ngOnInit(): void {
     // Obtener ID de habitación
     const id = this.route.snapshot.paramMap.get('id');
-    
     if (!id) {
       this.error = 'ID de habitación no proporcionado';
       this.cargando = false;
@@ -63,12 +64,21 @@ export class ReservarHabitacionComponent implements OnInit {
       return;
     }
 
+    // Autocompletar datos del usuario si está logueado
+    const usuario: Usuario | null = this.authService.getCurrentUser();
+    if (usuario) {
+      this.datosForm.patchValue({
+        nombre: usuario.nombre,
+        email: usuario.email
+        // Si tienes apellido y teléfono en el modelo de usuario, agrégalos aquí
+      });
+    }
+
     // Obtener query params (fechas y huéspedes)
     this.route.queryParams.subscribe(params => {
       this.fechaInicio = params['fechaInicio'] || '';
       this.fechaFin = params['fechaFin'] || '';
       this.huespedes = parseInt(params['huespedes']) || 2;
-      
       // Validar que haya fechas
       if (!this.fechaInicio || !this.fechaFin) {
         this.error = 'Debe seleccionar fechas para reservar';
@@ -76,7 +86,6 @@ export class ReservarHabitacionComponent implements OnInit {
         this.pasoActual = 'error';
         return;
       }
-      
       // Cargar datos de la habitación
       this.cargarDatosHabitacion(id);
     });

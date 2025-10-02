@@ -391,6 +391,11 @@ export class ReservaService {
     return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/${id}/modificar-fechas`, datos);
   }
 
+  // Nuevo método para modificar por código
+  modificarFechasReservaPorCodigo(codigo: string, datos: ModificarFechasRequest): Observable<ModificarFechasResponse> {
+    return this.http.put<ModificarFechasResponse>(`${this.apiUrl}/codigo/${codigo}/modificar-fechas`, datos);
+  }
+
   // =====================================================
   // HU17: RESERVAR UN SALÓN
   // =====================================================
