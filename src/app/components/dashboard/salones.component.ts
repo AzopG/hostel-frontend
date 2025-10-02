@@ -154,15 +154,6 @@ import { AuthService } from '../../services/auth.service';
       </div>
     </div>
 
-    <div class="navigation-header">
-      <button (click)="irAInicio()" class="btn-home-nav">
-        🏠 Inicio
-      </button>
-      <button (click)="irADashboard()" class="btn-dashboard-nav">
-        📊 Dashboard
-      </button>
-    </div>
-
     <div class="container-fluid">
       <!-- Header -->
       <div class="header-section">
@@ -202,8 +193,9 @@ import { AuthService } from '../../services/auth.service';
 
       <!-- Filtros -->
       <div class="filters-section" *ngIf="!cargando">
-        <div class="row g-3">
-          <div class="col-md-4">
+        <div class="filters-container">
+          <!-- Barra de búsqueda -->
+          <div class="search-bar">
             <label class="form-label">Buscar salón</label>
             <input 
               type="text" 
@@ -212,34 +204,37 @@ import { AuthService } from '../../services/auth.service';
               (input)="aplicarFiltros()"
               placeholder="Buscar por nombre o descripción...">
           </div>
-          <div class="col-md-3">
-            <label class="form-label">Estado</label>
-            <select 
-              class="form-select" 
-              [(ngModel)]="filtroEstado"
-              (change)="aplicarFiltros()">
-              <option value="">Todos los estados</option>
-              <option value="disponible">Disponible</option>
-              <option value="no_disponible">No disponible</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Tipo</label>
-            <select 
-              class="form-select" 
-              [(ngModel)]="filtroTipo"
-              (change)="aplicarFiltros()">
-              <option value="">Todos los tipos</option>
-              <option value="privado">Privado</option>
-              <option value="conferencia">Conferencia</option>
-              <option value="eventos">Eventos</option>
-              <option value="banquetes">Banquetes</option>
-            </select>
-          </div>
-          <div class="col-md-2 d-flex align-items-end">
-            <button class="btn btn-outline-secondary w-100" (click)="limpiarFiltros()">
-              <i class="fas fa-eraser me-2"></i>Limpiar
-            </button>
+          <!-- Filtros horizontales -->
+          <div class="filters-row">
+            <div class="filter-group">
+              <label class="form-label">Estado</label>
+              <select 
+                class="form-select" 
+                [(ngModel)]="filtroEstado"
+                (change)="aplicarFiltros()">
+                <option value="">Todos los estados</option>
+                <option value="disponible">Disponible</option>
+                <option value="no_disponible">No disponible</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label class="form-label">Tipo</label>
+              <select 
+                class="form-select" 
+                [(ngModel)]="filtroTipo"
+                (change)="aplicarFiltros()">
+                <option value="">Todos los tipos</option>
+                <option value="privado">Privado</option>
+                <option value="conferencia">Conferencia</option>
+                <option value="eventos">Eventos</option>
+                <option value="banquetes">Banquetes</option>
+              </select>
+            </div>
+            <div class="filter-actions">
+              <button class="btn btn-outline-secondary" (click)="limpiarFiltros()">
+                <i class="fas fa-eraser me-2"></i>Limpiar
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -316,34 +311,6 @@ import { AuthService } from '../../services/auth.service';
       min-height: 100vh;
       margin: -20px;
       padding: 20px;
-    }
-
-    /* Navigation Header */
-    .navigation-header {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1000;
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn-home-nav, .btn-dashboard-nav {
-      background: rgba(255, 255, 255, 0.9);
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 25px;
-      padding: 8px 16px;
-      font-weight: 600;
-      color: #4a5568;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-home-nav:hover, .btn-dashboard-nav:hover {
-      background: rgba(102, 126, 234, 0.1);
-      border-color: #667eea;
-      transform: translateY(-2px);
     }
 
     /* Modal Styles */
@@ -545,12 +512,47 @@ import { AuthService } from '../../services/auth.service';
 
     /* Filters Section */
     .filters-section {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .filters-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .search-bar {
+      margin-bottom: 1.5rem;
+    }
+
+    .filters-row {
+      display: flex;
+      align-items: end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: end;
+    }
+
+    .filter-actions .btn {
+      min-width: 120px;
+      height: 48px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
     }
 
     .form-label {
@@ -568,9 +570,19 @@ import { AuthService } from '../../services/auth.service';
       height: 48px;
       font-size: 1rem;
       transition: all 0.3s ease;
+      background: white;
     }
 
-    .form-select:focus {
+    .form-control {
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      height: 48px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .form-select:focus, .form-control:focus {
       border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
@@ -748,6 +760,30 @@ import { AuthService } from '../../services/auth.service';
         font-size: 2rem;
       }
 
+      .filters-container {
+        padding: 1.5rem;
+        margin: 0 -0.5rem;
+      }
+
+      .filters-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .filter-group {
+        min-width: 100%;
+      }
+
+      .filter-actions {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .filter-actions .btn {
+        width: 100%;
+        max-width: 200px;
+      }
+
       .salones-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -758,12 +794,21 @@ import { AuthService } from '../../services/auth.service';
         margin: 1rem;
         max-width: calc(100vw - 2rem);
       }
+    }
 
-      .navigation-header {
-        position: relative;
-        top: auto;
-        left: auto;
-        margin-bottom: 1rem;
+    @media (max-width: 992px) and (min-width: 769px) {
+      .filters-row {
+        flex-wrap: wrap;
+      }
+
+      .filter-group {
+        min-width: calc(50% - 0.75rem);
+      }
+
+      .filter-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
       }
     }
 
@@ -954,14 +999,6 @@ export class SalonesComponent implements OnInit {
     if (capacidad <= 80) return 'Conferencia';
     if (capacidad <= 150) return 'Eventos';
     return 'Banquetes';
-  }
-
-  irAInicio(): void {
-    this.router.navigate(['/']);
-  }
-
-  irADashboard(): void {
-    this.router.navigate(['/dashboard']);
   }
 
   agregarSalon(): void {

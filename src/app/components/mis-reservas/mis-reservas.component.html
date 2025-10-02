@@ -1,21 +1,12 @@
-<div class="navigation-header">
-  <button (click)="irAInicio()" class="btn-home-nav">
-    🏠 Inicio
-  </button>
-  <button (click)="irABuscar()" class="btn-search-nav">
-    🔍 Buscar Habitaciones
-  </button>
-</div>
-
-<div class="mis-reservas-container">
-
-  <!-- Header -->
-  <div class="header">
-    <h1>📋 Mis Reservas</h1>
-    <button class="btn-recargar" (click)="recargar()" [disabled]="cargando">
-      🔄 {{ cargando ? 'Cargando...' : 'Actualizar' }}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="position: relative;">
+    <h1 class="h2"><i class="fas fa-clipboard-list me-3"></i>Mis Reservas</h1>
+    <button class="btn btn-success" (click)="recargar()" [disabled]="cargando" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);">
+      <i class="fas fa-sync-alt me-2"></i>{{ cargando ? 'Cargando...' : 'Actualizar' }}
     </button>
   </div>
+
+  <div class="mis-reservas-container">
 
   <!-- Filtros y Búsqueda -->
   <div class="filtros-section">
@@ -31,25 +22,25 @@
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'confirmada'"
         (click)="cambiarFiltro('confirmada')">
-        ✅ Confirmadas ({{ contarPorEstado('confirmada') }})
+        <i class="fas fa-check-circle me-1"></i> Confirmadas ({{ contarPorEstado('confirmada') }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'pendiente'"
         (click)="cambiarFiltro('pendiente')">
-        ⏳ Pendientes ({{ contarPorEstado('pendiente') }})
+        <i class="fas fa-clock me-1"></i> Pendientes ({{ contarPorEstado('pendiente') }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'cancelada'"
         (click)="cambiarFiltro('cancelada')">
-        ❌ Canceladas ({{ contarPorEstado('cancelada') }})
+        <i class="fas fa-times-circle me-1"></i> Canceladas ({{ contarPorEstado('cancelada') }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'completada'"
         (click)="cambiarFiltro('completada')">
-        ✔️ Completadas ({{ contarPorEstado('completada') }})
+        <i class="fas fa-check-double me-1"></i> Completadas ({{ contarPorEstado('completada') }})
       </button>
     </div>
 
@@ -65,7 +56,7 @@
         class="btn-limpiar" 
         *ngIf="busquedaCodigo"
         (click)="limpiarBusqueda()">
-        ✕
+        <i class="fas fa-times"></i>
       </button>
     </div>
   </div>
@@ -78,13 +69,13 @@
 
   <!-- Error -->
   <div *ngIf="error && !cargando" class="error-message">
-    <p>⚠️ {{ error }}</p>
+    <p><i class="fas fa-exclamation-triangle me-2"></i>{{ error }}</p>
     <button class="btn-reintentar" (click)="recargar()">Reintentar</button>
   </div>
 
   <!-- Lista Vacía -->
   <div *ngIf="!cargando && !error && reservasFiltradas.length === 0" class="lista-vacia">
-    <div class="icono-vacio">📭</div>
+    <div class="icono-vacio"><i class="fas fa-inbox fa-3x"></i></div>
     <h3>No hay reservas</h3>
     <p *ngIf="busquedaCodigo">No se encontraron resultados para "{{ busquedaCodigo }}"</p>
     <p *ngIf="!busquedaCodigo && estadoFiltro !== 'todas'">
@@ -94,10 +85,10 @@
       Aún no has realizado ninguna reserva o no se encontraron reservas recientes.
     </p>
     <div class="info-filtro">
-      <small>💡 Se muestran solo las reservas más recientes con datos completos</small>
+      <small><i class="fas fa-lightbulb me-1"></i>Se muestran solo las reservas más recientes con datos completos</small>
     </div>
     <button class="btn-buscar-habitaciones" (click)="irABuscar()">
-      🔍 Buscar Habitaciones
+      <i class="fas fa-search me-2"></i>Buscar Habitaciones
     </button>
   </div>
 
@@ -331,5 +322,6 @@
         </button>
       </div>
     </div>
+  </div>
   </div>
 </div>

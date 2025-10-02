@@ -159,7 +159,7 @@ export class DashboardComponent implements OnInit {
             id: 'mis-reservas',
             label: 'Mis Reservas',
             icon: 'fas fa-calendar',
-            route: '/mis-reservas',
+            route: '/dashboard/mis-reservas',
             description: 'Ver mis reservas'
           }
         ];
@@ -303,5 +303,9 @@ export class DashboardComponent implements OnInit {
       clientes: 0,
       ingresos: '0'
     };
+  }
+
+  goToHome(): void {
+    this.router.navigate(['/']);
   }
 }

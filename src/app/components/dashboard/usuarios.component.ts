@@ -32,14 +32,14 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 
       <!-- Filtros y búsqueda -->
       <div class="filters-section">
-        <div class="row g-3">
-          <div class="col-md-4">
+        <div class="filters-row">
+          <div class="search-container">
             <div class="search-box">
               <i class="fas fa-search search-icon"></i>
               <input type="text" class="form-control search-input" placeholder="Buscar usuarios...">
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="filter-container">
             <select class="form-select filter-select">
               <option value="">Todos los tipos</option>
               <option value="admin_central">Admin Central</option>
@@ -48,15 +48,15 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               <option value="cliente">Cliente</option>
             </select>
           </div>
-          <div class="col-md-3">
+          <div class="filter-container">
             <select class="form-select filter-select">
               <option value="">Todos los estados</option>
               <option value="activo">Activos</option>
               <option value="inactivo">Inactivos</option>
             </select>
           </div>
-          <div class="col-md-2">
-            <button class="btn btn-outline-secondary w-100">
+          <div class="action-container">
+            <button class="btn btn-filter">
               <i class="fas fa-filter me-2"></i>Filtrar
             </button>
           </div>
@@ -65,50 +65,41 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 
       <!-- Estadísticas rápidas -->
       <div class="stats-section">
-        <div class="row g-3">
-          <div class="col-md-3">
-            <div class="stat-card stat-primary">
-              <div class="stat-icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ usuarios.length }}</h3>
-                <p class="stat-label">Total Usuarios</p>
-              </div>
+        <div class="stats-row">
+          <div class="stat-card stat-primary">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ usuarios.length }}</h3>
+              <p class="stat-label">Total Usuarios</p>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="stat-card stat-success">
-              <div class="stat-icon">
-                <i class="fas fa-user-check"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ getUsuariosActivos() }}</h3>
-                <p class="stat-label">Usuarios Activos</p>
-              </div>
+          <div class="stat-card stat-success">
+            <div class="stat-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ getUsuariosActivos() }}</h3>
+              <p class="stat-label">Usuarios Activos</p>
             </div>
           </div>
-          <div class="col-md-3">
-
-            <div class="stat-card stat-warning">
-              <div class="stat-icon">
-                <i class="fas fa-user-tie"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ getAdministradores() }}</h3>
-                <p class="stat-label">Administradores</p>
-              </div>
+          <div class="stat-card stat-warning">
+            <div class="stat-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ getAdministradores() }}</h3>
+              <p class="stat-label">Administradores</p>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="stat-card stat-info">
-              <div class="stat-icon">
-                <i class="fas fa-building"></i>
-              </div>
-              <div class="stat-content">
-                <h3 class="stat-number">{{ getEmpresas() }}</h3>
-                <p class="stat-label">Empresas</p>
-              </div>
+          <div class="stat-card stat-info">
+            <div class="stat-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">{{ getEmpresas() }}</h3>
+              <p class="stat-label">Empresas</p>
             </div>
           </div>
         </div>
@@ -122,10 +113,10 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               <i class="fas fa-list me-2"></i>Lista de Usuarios
             </h5>
             <div class="card-actions">
-              <button class="btn btn-sm btn-outline-primary me-2">
+              <button class="btn btn-export">
                 <i class="fas fa-download me-1"></i>Exportar
               </button>
-              <button class="btn btn-sm btn-outline-secondary">
+              <button class="btn btn-refresh">
                 <i class="fas fa-sync me-1"></i>Actualizar
               </button>
             </div>
@@ -237,21 +228,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               Mostrando 1-4 de 4 usuarios
             </div>
             <nav aria-label="Paginación de usuarios">
-              <ul class="pagination pagination-modern">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">
-                    <i class="fas fa-chevron-left"></i>
-                  </a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item disabled">
-                  <a class="page-link" href="#">
-                    <i class="fas fa-chevron-right"></i>
-                  </a>
-                </li>
-              </ul>
+              <!-- Paginación eliminada -->
             </nav>
           </div>
   `,
@@ -324,8 +301,30 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
+    .filters-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .search-container {
+      flex: 2;
+      min-width: 250px;
+    }
+
+    .filter-container {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .action-container {
+      flex-shrink: 0;
+    }
+
     .search-box {
       position: relative;
+      width: 100%;
     }
 
     .search-input {
@@ -335,11 +334,13 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       height: 48px;
       font-size: 1rem;
       transition: all 0.3s ease;
+      width: 100%;
     }
 
     .search-input:focus {
       border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      outline: none;
     }
 
     .search-icon {
@@ -349,6 +350,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       transform: translateY(-50%);
       color: #a0aec0;
       z-index: 10;
+      font-size: 1rem;
     }
 
     .filter-select {
@@ -356,20 +358,66 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       border: 2px solid #e2e8f0;
       height: 48px;
       font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+      width: 100%;
+    }
+
+    .filter-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      outline: none;
+    }
+
+    .btn-filter {
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      border: 2px solid #667eea;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn-filter:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      border-color: #5a67d8;
     }
 
     .stats-section {
       margin-bottom: 2rem;
     }
 
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
     .stat-card {
       background: white;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      text-align: center;
+      width: calc(25% - 0.75rem);
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
     }
 
     .stat-card::before {
@@ -378,13 +426,13 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 3px;
       background: linear-gradient(90deg, var(--stat-color), var(--stat-color-light));
     }
 
     .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
 
     .stat-primary {
@@ -408,19 +456,19 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
     }
 
     .stat-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: var(--stat-color);
       background: linear-gradient(135deg, var(--stat-color), var(--stat-color-light));
       background-size: 200% 200%;
       animation: gradientShift 3s ease infinite;
       color: white;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
 
     @keyframes gradientShift {
@@ -430,17 +478,20 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
     }
 
     .stat-number {
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 700;
       margin: 0;
       color: #2d3748;
+      line-height: 1;
     }
 
     .stat-label {
       color: #718096;
-      font-size: 1rem;
+      font-size: 0.9rem;
       margin: 0;
       font-weight: 500;
+      margin-top: 0.3rem;
+      line-height: 1.2;
     }
 
     .table-section {
@@ -470,6 +521,62 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       margin: 0;
       display: flex;
       align-items: center;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn-export {
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      border: 2px solid #48bb78;
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: white;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 12px rgba(72, 187, 120, 0.3);
+    }
+
+    .btn-export:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+      background: linear-gradient(135deg, #38a169, #2f855a);
+      border-color: #38a169;
+    }
+
+    .btn-refresh {
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      border: 2px solid #667eea;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-refresh:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      background: linear-gradient(135deg, #5a67d8, #553c9a);
+      border-color: #5a67d8;
+    }
+
+    .btn-export:active,
+    .btn-refresh:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .table-modern {
@@ -654,31 +761,6 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       font-size: 0.875rem;
     }
 
-    .pagination-modern {
-      margin: 0;
-    }
-
-    .pagination-modern .page-link {
-      border: none;
-      padding: 0.5rem 1rem;
-      margin: 0 0.25rem;
-      border-radius: 8px;
-      color: #4a5568;
-      background: transparent;
-      transition: all 0.3s ease;
-    }
-
-    .pagination-modern .page-item.active .page-link {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .pagination-modern .page-link:hover {
-      background: rgba(102, 126, 234, 0.1);
-      transform: translateY(-1px);
-    }
-
     @media (max-width: 768px) {
       .header-content {
         flex-direction: column;
@@ -690,12 +772,119 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
         font-size: 2rem;
       }
 
+      .usuarios-container {
+        padding: 1rem;
+      }
+
+      .filters-row {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: stretch;
+      }
+
+      .search-container,
+      .filter-container,
+      .action-container {
+        flex: none;
+        width: 100%;
+        min-width: auto;
+      }
+
+      .filters-section {
+        padding: 1rem;
+      }
+
+      .stats-row {
+        gap: 0.5rem;
+      }
+
+      .stat-card {
+        width: calc(25% - 0.375rem);
+        height: 100px;
+        padding: 0.8rem;
+      }
+
+      .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .stat-number {
+        font-size: 1.6rem;
+      }
+
+      .stat-label {
+        font-size: 0.8rem;
+      }
+
       .table-responsive {
         border-radius: 0;
       }
 
       .action-buttons {
         flex-direction: column;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .filters-section {
+        padding: 0.8rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .search-input,
+      .filter-select,
+      .btn-filter {
+        height: 44px;
+        font-size: 0.9rem;
+      }
+
+      .stats-row {
+        gap: 0.3rem;
+      }
+
+      .stat-card {
+        width: calc(25% - 0.225rem);
+        height: 80px;
+        padding: 0.6rem;
+      }
+
+      .stat-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .stat-number {
+        font-size: 1.3rem;
+      }
+
+      .stat-label {
+        font-size: 0.7rem;
+        line-height: 1.1;
+      }
+    }
+    /* Estilos responsivos */
+    @media (max-width: 768px) {
+      .btn-export,
+      .btn-refresh {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .card-actions {
+        gap: 0.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .btn-export,
+      .btn-refresh {
+        padding: 0.45rem 0.8rem;
+        font-size: 0.75rem;
       }
     }
   `]

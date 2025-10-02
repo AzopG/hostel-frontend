@@ -12,22 +12,22 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
       <!-- Navegación superior -->
       <div class="navigation-header">
         <button class="btn-volver" (click)="volver()" title="Volver al inicio">
-          <span>← Volver al Inicio</span>
+          <span><i class="fas fa-arrow-left"></i> Volver al Inicio</span>
         </button>
         <button class="btn-buscar" (click)="irABuscar()" title="Buscar habitaciones">
-          <span>🔍 Buscar Habitaciones</span>
+          <span><i class="fas fa-search"></i> Buscar Habitaciones</span>
         </button>
       </div>
 
       <!-- Header -->
       <div class="header">
-        <h1>📅 Calendario de Disponibilidad</h1>
+        <h1><i class="fas fa-calendar-alt"></i> Calendario de Disponibilidad</h1>
         <p class="subtitle">Selecciona una ciudad y visualiza la disponibilidad de habitaciones</p>
       </div>
 
       <!-- CA4: Mensaje inicial si no hay ciudad seleccionada -->
       <div *ngIf="!ciudadSeleccionada && !isLoadingCiudades" class="mensaje-inicial">
-        <div class="icono-ciudad">🏙️</div>
+        <div class="icono-ciudad"><i class="fas fa-city"></i></div>
         <h2>Selecciona una ciudad para ver disponibilidad</h2>
         <p>Elige una ciudad del listado para consultar la disponibilidad de habitaciones</p>
       </div>
@@ -43,7 +43,7 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
         <!-- Lista de ciudades -->
         <div *ngIf="!isLoadingCiudades && ciudades.length > 0" class="ciudades-grid">
           <div class="seccion-header">
-            <h3>🌆 Ciudades Disponibles</h3>
+            <h3><i class="fas fa-map-marker-alt"></i> Ciudades Disponibles</h3>
             <span class="badge">{{ ciudades.length }} ciudad{{ ciudades.length !== 1 ? 'es' : '' }}</span>
           </div>
           
@@ -55,7 +55,7 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
               [class.selected]="ciudadSeleccionada === ciudad.ciudad"
               (click)="seleccionarCiudad(ciudad.ciudad)"
             >
-              <div class="ciudad-icon">🏨</div>
+              <div class="ciudad-icon"><i class="fas fa-building"></i></div>
               <div class="ciudad-info">
                 <h4>{{ ciudad.ciudad }}</h4>
                 <p class="ciudad-stats">
@@ -64,14 +64,14 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
                   <span>{{ ciudad.totalHabitaciones }} habitacion{{ ciudad.totalHabitaciones !== 1 ? 'es' : '' }}</span>
                 </p>
               </div>
-              <div class="check-icon" *ngIf="ciudadSeleccionada === ciudad.ciudad">✓</div>
+              <div class="check-icon" *ngIf="ciudadSeleccionada === ciudad.ciudad"><i class="fas fa-check"></i></div>
             </div>
           </div>
         </div>
 
         <!-- Error cargando ciudades -->
         <div *ngIf="errorCiudades" class="error-message">
-          <span class="error-icon">⚠️</span>
+          <span class="error-icon"><i class="fas fa-exclamation-triangle"></i></span>
           <p>{{ errorCiudades }}</p>
           <button class="retry-btn" (click)="cargarCiudades()">Reintentar</button>
         </div>
@@ -82,7 +82,7 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
         <!-- Información de la ciudad seleccionada -->
         <div class="ciudad-seleccionada-info">
           <div class="info-header">
-            <h3>📍 {{ ciudadSeleccionada }}</h3>
+            <h3><i class="fas fa-map-marker-alt"></i> {{ ciudadSeleccionada }}</h3>
             <button class="cambiar-btn" (click)="limpiarSeleccion()">Cambiar ciudad</button>
           </div>
           <div *ngIf="disponibilidadData" class="stats-row">
@@ -141,7 +141,7 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
               </div>
               <div class="dia-info">
                 <div class="disponibilidad-badge" [class.disponible]="dia.disponible">
-                  {{ dia.disponible ? '✓' : '✗' }}
+                  <i [class]="dia.disponible ? 'fas fa-check' : 'fas fa-times'"></i>
                 </div>
                 <div class="habitaciones-count">
                   <span class="count">{{ dia.habitacionesDisponibles }}</span>
@@ -154,7 +154,7 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
 
         <!-- Error cargando disponibilidad -->
         <div *ngIf="errorDisponibilidad" class="error-message">
-          <span class="error-icon">⚠️</span>
+          <span class="error-icon"><i class="fas fa-exclamation-triangle"></i></span>
           <p>{{ errorDisponibilidad }}</p>
           <button class="retry-btn" (click)="cargarDisponibilidad()">Reintentar</button>
         </div>
@@ -188,6 +188,11 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
       transition: all 0.3s ease;
       text-decoration: none;
       font-size: 0.95rem;
+    }
+
+    .btn-volver i,
+    .btn-buscar i {
+      font-size: 16px;
     }
 
     .btn-volver {
@@ -231,6 +236,15 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
       margin: 0 0 10px 0;
       color: #333;
       font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .header h1 i {
+      color: #667eea;
+      font-size: 28px;
     }
 
     .subtitle {
@@ -253,6 +267,13 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
     .icono-ciudad {
       font-size: 80px;
       margin-bottom: 20px;
+      color: #667eea;
+      display: flex;
+      justify-content: center;
+    }
+
+    .icono-ciudad i {
+      font-size: 80px;
     }
 
     .mensaje-inicial h2 {
@@ -289,6 +310,14 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
       margin: 0;
       color: #333;
       font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .seccion-header h3 i {
+      color: #667eea;
+      font-size: 18px;
     }
 
     .badge {
@@ -332,6 +361,14 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
 
     .ciudad-icon {
       font-size: 40px;
+      color: #667eea;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ciudad-icon i {
+      font-size: 40px;
     }
 
     .ciudad-info {
@@ -361,6 +398,13 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
       color: #667eea;
       font-size: 24px;
       font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-icon i {
+      font-size: 24px;
     }
 
     /* Loading */
@@ -408,6 +452,14 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
       margin: 0;
       color: #333;
       font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-header h3 i {
+      color: #667eea;
+      font-size: 20px;
     }
 
     .cambiar-btn {
@@ -625,6 +677,11 @@ import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services
       font-size: 32px;
       display: block;
       margin-bottom: 10px;
+      color: #dc3545;
+    }
+
+    .error-icon i {
+      font-size: 32px;
     }
 
     .retry-btn {
@@ -811,7 +868,7 @@ export class CalendarioDisponibilidadComponent implements OnInit {
       return 'Fecha pasada';
     }
     if (dia.disponible) {
-      return `${dia.habitacionesDisponibles} habitación(es) disponible(s) de ${dia.totalHabitaciones}`;
+      return dia.habitacionesDisponibles + ' habitación(es) disponible(s) de ' + dia.totalHabitaciones;
     }
     return 'Sin disponibilidad';
   }

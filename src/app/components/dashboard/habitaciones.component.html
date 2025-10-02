@@ -4,14 +4,14 @@
   <div class="filters-section">
     <form class="filters-container" (ngSubmit)="buscarHabitaciones()">
       <div class="filter-group">
-        <label class="filter-label">🏨 Hotel</label>
+        <label class="filter-label"><i class="fas fa-hotel"></i> Hotel</label>
         <select class="filter-select" [(ngModel)]="filtroHotelId" name="hotelId">
           <option value="">Todos los hoteles</option>
           <option *ngFor="let hotel of hoteles" [value]="hotel._id">{{ hotel.nombre }}</option>
         </select>
       </div>
       <div class="filter-group">
-        <label class="filter-label">🛏️ Tipo</label>
+        <label class="filter-label"><i class="fas fa-bed"></i> Tipo</label>
         <select class="filter-select" [(ngModel)]="filtroTipo" name="tipo">
           <option value="">Todos los tipos</option>
           <option value="estándar">Estándar</option>
@@ -22,19 +22,19 @@
         </select>
       </div>
       <div class="filter-group">
-        <label class="filter-label">👥 Capacidad</label>
+        <label class="filter-label"><i class="fas fa-users"></i> Capacidad</label>
         <input class="filter-select" type="number" placeholder="Capacidad" [(ngModel)]="filtroCapacidad" name="capacidad" min="1" />
       </div>
       <div class="filter-group">
-        <label class="filter-label">💰 Precio mínimo</label>
+        <label class="filter-label"><i class="fas fa-dollar-sign"></i> Precio mínimo</label>
         <input class="filter-select" type="number" placeholder="Precio mínimo" [(ngModel)]="filtroPrecioMin" name="precioMin" min="0" />
       </div>
       <div class="filter-group">
-        <label class="filter-label">💰 Precio máximo</label>
+        <label class="filter-label"><i class="fas fa-dollar-sign"></i> Precio máximo</label>
         <input class="filter-select" type="number" placeholder="Precio máximo" [(ngModel)]="filtroPrecioMax" name="precioMax" min="0" />
       </div>
       <div class="filter-group">
-        <label class="filter-label">🚦 Disponibilidad</label>
+        <label class="filter-label"><i class="fas fa-traffic-light"></i> Disponibilidad</label>
         <select class="filter-select" [(ngModel)]="filtroDisponible" name="disponible">
           <option [ngValue]="undefined">Todas</option>
           <option [ngValue]="true">Disponible</option>
@@ -51,21 +51,21 @@
       <ng-container *ngFor="let servicio of serviciosDisponibles">
         <label class="servicio-checkbox">
           <span class="servicio-icon">
-            {{
-              servicio === 'WiFi' ? '📶' :
-              servicio === 'Aire acondicionado' ? '❄️' :
-              servicio === 'Desayuno' ? '🥐' :
-              servicio === 'TV' ? '📺' :
-              servicio === 'Piscina' ? '🏊' :
-              servicio === 'Gimnasio' ? '🏋️' :
-              servicio === 'Mascotas' ? '🐾' :
-              servicio === 'Restaurante' ? '🍽️' :
-              servicio === 'Bar' ? '🍸' :
-              servicio === 'Spa' ? '💆' :
-              servicio === 'Parqueadero' ? '🚗' :
-              servicio === 'Lavandería' ? '🧺' :
-              '🔹'
-            }}
+            <i class="fas" [ngClass]="{
+              'fa-wifi': servicio === 'WiFi',
+              'fa-snowflake': servicio === 'Aire acondicionado',
+              'fa-utensils': servicio === 'Desayuno',
+              'fa-tv': servicio === 'TV',
+              'fa-swimming-pool': servicio === 'Piscina',
+              'fa-dumbbell': servicio === 'Gimnasio',
+              'fa-paw': servicio === 'Mascotas',
+              'fa-concierge-bell': servicio === 'Restaurante',
+              'fa-glass-martini': servicio === 'Bar',
+              'fa-spa': servicio === 'Spa',
+              'fa-car': servicio === 'Parqueadero',
+              'fa-tshirt': servicio === 'Lavandería',
+              'fa-star': true
+            }"></i>
           </span>
           <input type="checkbox" [(ngModel)]="serviciosSeleccionados[servicio]" name="servicio_{{servicio}}" /> {{ servicio }}
         </label>

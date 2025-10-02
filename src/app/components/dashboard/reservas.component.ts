@@ -156,19 +156,21 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       <!-- Header -->
       <div class="header-section">
         <div class="header-content">
-          <h1 class="page-title">
-            <i class="fas fa-calendar-check me-3"></i>
-            Gestión de Reservas
-          </h1>
-          <p class="page-subtitle">Administra y confirma las reservas de tu hotel</p>
-        </div>
-        <div class="header-actions">
-          <button class="btn btn-primary btn-modern" (click)="nuevaReserva()">
-            <i class="fas fa-plus me-2"></i>Nueva Reserva
-          </button>
-          <button class="btn btn-outline-secondary btn-modern" (click)="cargarReservas()">
-            <i class="fas fa-sync me-2"></i>Actualizar
-          </button>
+          <div class="header-left">
+            <h1 class="page-title">
+              <i class="fas fa-calendar-check me-3"></i>
+              Gestión de Reservas
+            </h1>
+            <p class="page-subtitle">Administra y confirma las reservas de tu hotel</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary btn-modern" (click)="nuevaReserva()">
+              <i class="fas fa-plus me-2"></i>Nueva Reserva
+            </button>
+            <button class="btn btn-outline-secondary btn-modern" (click)="cargarReservas()">
+              <i class="fas fa-sync me-2"></i>Actualizar
+            </button>
+          </div>
         </div>
       </div>
 
@@ -192,27 +194,37 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       <!-- Estadísticas superiores -->
       <div class="stats-row" *ngIf="!cargando">
         <div class="stat-card stat-primary">
-          <div class="stat-icon">📅</div>
+          <div class="stat-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
           <div class="stat-number">{{ totalReservas }}</div>
           <div class="stat-label">Total Reservas</div>
         </div>
         <div class="stat-card stat-success">
-          <div class="stat-icon">✅</div>
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
           <div class="stat-number">{{ reservasConfirmadas }}</div>
           <div class="stat-label">Confirmadas</div>
         </div>
         <div class="stat-card stat-warning">
-          <div class="stat-icon">⏰</div>
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
           <div class="stat-number">{{ reservasPendientes }}</div>
           <div class="stat-label">Pendientes</div>
         </div>
         <div class="stat-card stat-danger">
-          <div class="stat-icon">❌</div>
+          <div class="stat-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
           <div class="stat-number">{{ reservasCanceladas }}</div>
           <div class="stat-label">Canceladas</div>
         </div>
         <div class="stat-card stat-info">
-          <div class="stat-icon">💰</div>
+          <div class="stat-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
           <div class="stat-number">{{ ingresosMes | currency:'COP':'symbol-narrow':'1.0-0' }}</div>
           <div class="stat-label">Ingresos del mes</div>
         </div>
@@ -220,43 +232,45 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
 
       <!-- Filtros -->
       <div class="filters-section" *ngIf="!cargando">
-        <div class="row g-3">
-          <div class="col-md-3">
-            <label class="form-label">Fecha desde</label>
-            <input 
-              type="date" 
-              class="form-control" 
-              [(ngModel)]="fechaDesde"
-              (change)="actualizarFiltros()">
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Fecha hasta</label>
-            <input 
-              type="date" 
-              class="form-control" 
-              [(ngModel)]="fechaHasta"
-              (change)="actualizarFiltros()">
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Estado</label>
-            <select 
-              class="form-select" 
-              [(ngModel)]="estadoFiltro"
-              (change)="actualizarFiltros()">
-              <option value="">Todos los estados</option>
-              <option value="pendiente">Pendiente</option>
-              <option value="confirmada">Confirmada</option>
-              <option value="cancelada">Cancelada</option>
-              <option value="completada">Completada</option>
-            </select>
-          </div>
-          <div class="col-md-3 d-flex align-items-end gap-2">
-            <button class="btn btn-primary flex-fill" (click)="actualizarFiltros()">
-              <i class="fas fa-search me-2"></i>Filtrar
-            </button>
-            <button class="btn btn-outline-secondary flex-fill" (click)="limpiarFiltros()">
-              <i class="fas fa-eraser me-2"></i>Limpiar
-            </button>
+        <div class="filters-container">
+          <div class="filters-row">
+            <div class="filter-group">
+              <label class="form-label">Fecha desde</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                [(ngModel)]="fechaDesde"
+                (change)="actualizarFiltros()">
+            </div>
+            <div class="filter-group">
+              <label class="form-label">Fecha hasta</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                [(ngModel)]="fechaHasta"
+                (change)="actualizarFiltros()">
+            </div>
+            <div class="filter-group">
+              <label class="form-label">Estado</label>
+              <select 
+                class="form-select" 
+                [(ngModel)]="estadoFiltro"
+                (change)="actualizarFiltros()">
+                <option value="">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmada">Confirmada</option>
+                <option value="cancelada">Cancelada</option>
+                <option value="completada">Completada</option>
+              </select>
+            </div>
+            <div class="filter-actions">
+              <button class="btn btn-primary" (click)="actualizarFiltros()">
+                <i class="fas fa-search me-2"></i>Filtrar
+              </button>
+              <button class="btn btn-outline-secondary" (click)="limpiarFiltros()">
+                <i class="fas fa-eraser me-2"></i>Limpiar
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -272,7 +286,7 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
-              <table class="table table-hover mb-0">
+              <table class="table table-hover mb-0 w-100">
                 <thead>
                   <tr>
                     <th>Código</th>
@@ -375,6 +389,32 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
+    .header-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .header-left {
+      flex: 1;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
     .h2 {
       font-size: 2.5rem;
       font-weight: 700;
@@ -384,10 +424,29 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       align-items: center;
     }
 
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2d3748;
+      margin: 0 0 0.5rem 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .page-subtitle {
+      color: #6b7280;
+      font-size: 1rem;
+      margin: 0;
+      font-weight: 400;
+    }
+
     .h2::before {
-      content: '📋';
+      font-family: "Font Awesome 6 Free";
+      content: "\\f0cb";
+      font-weight: 900;
       margin-right: 1rem;
       font-size: 2rem;
+      color: #0A3161;
     }
 
     .btn-primary {
@@ -396,15 +455,46 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      background: linear-gradient(135deg, #ff7eb3, #ff758c);
+      background: #8B2C6E;
       border: none;
-      box-shadow: 0 4px 15px rgba(255, 126, 179, 0.3);
+      box-shadow: 0 4px 15px rgba(139, 44, 110, 0.3);
       transition: all 0.3s ease;
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(255, 126, 179, 0.4);
+      background: #6B2454;
+      box-shadow: 0 8px 25px rgba(139, 44, 110, 0.4);
+    }
+
+    .text-primary, .spinner-border.text-primary {
+      color: #8B2C6E !important;
+    }
+
+    .spinner-border.text-primary {
+      border-color: #8B2C6E;
+      border-right-color: transparent;
+    }
+
+    .btn-modern {
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 12px 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary.btn-modern {
+      background: #8B2C6E;
+      border: none;
+      box-shadow: 0 4px 15px rgba(139, 44, 110, 0.3);
+    }
+
+    .btn-primary.btn-modern:hover {
+      background: #6B2454;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 44, 110, 0.4);
     }
 
     .stats-row {
@@ -434,9 +524,16 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
     .stat-icon {
       font-size: 3rem;
       margin-bottom: 1rem;
-      color: #B89778;
+      color: #0A3161;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.4));
+      filter: drop-shadow(0 0 8px rgba(10, 49, 97, 0.4));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-icon i {
+      font-size: 3rem;
     }
 
     .stat-number {
@@ -467,6 +564,47 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
+    .filters-section {
+      margin-bottom: 2rem;
+    }
+
+    .filters-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(10, 49, 97, 0.1);
+    }
+
+    .filters-row {
+      display: flex;
+      align-items: end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: end;
+    }
+
+    .filter-actions .btn {
+      min-width: 120px;
+      height: 48px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
     .form-label {
       font-weight: 600;
       color: #4a5568;
@@ -486,8 +624,8 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
     }
 
     .form-select:focus, .form-control:focus {
-      border-color: #ff7eb3;
-      box-shadow: 0 0 0 3px rgba(255, 126, 179, 0.1);
+      border-color: #8B2C6E;
+      box-shadow: 0 0 0 3px rgba(139, 44, 110, 0.1);
     }
 
     .card {
@@ -497,11 +635,22 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       border: none;
       overflow: hidden;
       transition: all 0.3s ease;
+      width: 100%;
     }
 
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .table-section {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .table-card {
+      width: 100%;
+      max-width: 100%;
     }
 
     .card-header {
@@ -520,12 +669,17 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
     }
 
     .card-title::before {
-      content: '🏨';
+      font-family: "Font Awesome 6 Free";
+      content: "\\f594";
+      font-weight: 900;
       margin-right: 0.5rem;
+      color: #0A3161;
     }
     
     .table {
       margin: 0;
+      width: 100%;
+      table-layout: fixed;
     }
     
     .table th {
@@ -539,15 +693,28 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
       letter-spacing: 0.5px;
     }
 
+    .table th:nth-child(1) { width: 8%; }   /* Código */
+    .table th:nth-child(2) { width: 20%; }  /* Cliente */
+    .table th:nth-child(3) { width: 12%; }  /* Hotel */
+    .table th:nth-child(4) { width: 10%; }  /* Habitación */
+    .table th:nth-child(5) { width: 10%; }  /* Check-in */
+    .table th:nth-child(6) { width: 10%; }  /* Check-out */
+    .table th:nth-child(7) { width: 10%; }  /* Estado */
+    .table th:nth-child(8) { width: 10%; }  /* Total */
+    .table th:nth-child(9) { width: 10%; }  /* Acciones */
+
     .table td {
       padding: 1.5rem 1rem;
       border: none;
       border-bottom: 1px solid #e2e8f0;
       vertical-align: middle;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .table tbody tr:hover {
-      background: linear-gradient(90deg, rgba(255, 126, 179, 0.05), rgba(255, 117, 140, 0.05));
+      background: linear-gradient(90deg, rgba(139, 44, 110, 0.05), rgba(107, 36, 84, 0.05));
       transform: scale(1.01);
       transition: all 0.3s ease;
     }
@@ -555,7 +722,7 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
     .avatar-circle {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #ff7eb3, #ff758c);
+      background: #8B2C6E;
       color: white;
       border-radius: 50%;
       display: flex;
@@ -619,15 +786,15 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
     }
 
     .btn-outline-primary {
-      background: rgba(255, 126, 179, 0.1);
-      color: #ff7eb3;
+      background: rgba(139, 44, 110, 0.1);
+      color: #8B2C6E;
       border: none;
     }
 
     .btn-outline-primary:hover {
-      background: rgba(255, 126, 179, 0.2);
+      background: rgba(139, 44, 110, 0.2);
       transform: scale(1.1);
-      color: #ff758c;
+      color: #6B2454;
     }
 
     .btn-outline-warning {
@@ -657,6 +824,103 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
     .table-responsive {
       border-radius: 0 0 20px 20px;
       overflow: hidden;
+      width: 100%;
+    }
+
+    .client-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      max-width: 100%;
+    }
+
+    .client-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .client-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .client-email {
+      font-size: 0.8rem;
+      color: #6b7280;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hotel-name {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .date-cell {
+      font-family: monospace;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .amount-cell {
+      text-align: right;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.25rem;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    .btn-action {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-view {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .btn-action-view:hover {
+      background: rgba(59, 130, 246, 0.2);
+      transform: scale(1.1);
+    }
+
+    .btn-action-confirm {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+    }
+
+    .btn-action-confirm:hover {
+      background: rgba(34, 197, 94, 0.2);
+      transform: scale(1.1);
+    }
+
+    .btn-action-reject {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+
+    .btn-action-reject:hover {
+      background: rgba(239, 68, 68, 0.2);
+      transform: scale(1.1);
     }
 
     /* Animaciones de entrada */
@@ -698,8 +962,32 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
         text-align: center;
       }
 
-      .h2 {
+      .header-section {
+        padding: 1.5rem;
+      }
+
+      .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+      }
+
+      .header-left {
+        text-align: center;
+      }
+
+      .header-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .h2, .page-title {
         font-size: 2rem;
+        justify-content: center;
+      }
+
+      .page-subtitle {
+        text-align: center;
       }
 
       .stats-row {
@@ -715,8 +1003,37 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
         font-size: 2rem;
       }
 
+      .stat-icon i {
+        font-size: 2rem;
+      }
+
       .stat-number {
         font-size: 2rem;
+      }
+
+      .filters-container {
+        padding: 1.5rem;
+        margin: 0 -0.5rem;
+      }
+
+      .filters-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .filter-group {
+        min-width: 100%;
+      }
+
+      .filter-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .filter-actions .btn {
+        flex: 1;
+        min-width: auto;
+        max-width: 48%;
       }
 
       .row.mb-3 {
@@ -726,18 +1043,52 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
 
       .table-responsive {
         border-radius: 0;
+        overflow-x: auto;
       }
 
-      .btn-group .btn {
-        width: 35px;
-        height: 35px;
-        font-size: 0.8rem;
+      .table {
+        min-width: 800px;
+      }
+
+      .table th, .table td {
+        padding: 1rem 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      .client-info {
+        gap: 0.5rem;
       }
 
       .avatar-circle {
         width: 35px;
         height: 35px;
         font-size: 1rem;
+      }
+
+      .btn-action {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+      }
+
+      .action-buttons {
+        gap: 0.2rem;
+      }
+    }
+
+    @media (max-width: 992px) and (min-width: 769px) {
+      .filters-row {
+        flex-wrap: wrap;
+      }
+
+      .filter-group {
+        min-width: calc(50% - 0.75rem);
+      }
+
+      .filter-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
       }
     }
 
@@ -746,8 +1097,29 @@ import { ReservaService, ReservaParaHotel } from '../../services/reserva.service
         grid-template-columns: 1fr;
       }
 
-      .form-select, .form-control {
-        margin-bottom: 1rem;
+      .filters-container {
+        padding: 1.5rem;
+        margin: 0 -0.5rem;
+      }
+
+      .filters-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .filter-group {
+        min-width: 100%;
+      }
+
+      .filter-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .filter-actions .btn {
+        flex: 1;
+        min-width: auto;
+        max-width: 48%;
       }
 
       .table th, .table td {

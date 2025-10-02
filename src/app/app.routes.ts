@@ -37,11 +37,6 @@ export const routes: Routes = [
     path: 'modificar-reserva/:id', 
     loadComponent: () => import('./components/modificar-reserva/modificar-reserva.component').then(m => m.ModificarReservaComponent)
   },
-  // Mis Reservas (acceso público - por código de reserva)
-  { 
-    path: 'mis-reservas', 
-    loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent)
-  },
   {
     path: 'detalle-reserva/:codigo',
     loadComponent: () => import('./components/detalle-reserva/detalle-reserva.component').then(m => m.DetalleReservaComponent)
@@ -110,6 +105,11 @@ export const routes: Routes = [
       { 
         path: 'reservas', 
         loadComponent: () => import('./components/dashboard/reservas.component').then(m => m.ReservasComponent) 
+      },
+      // Mis Reservas para clientes
+      { 
+        path: 'mis-reservas', 
+        loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent)
       },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]

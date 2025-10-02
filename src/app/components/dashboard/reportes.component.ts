@@ -9,81 +9,18 @@ import { AuthService } from '../../services/auth.service';
   imports: [CommonModule],
   template: `
     <div class="container-fluid">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Reportes</h1>
-        <button class="btn btn-success" (click)="exportarReporte()">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="position: relative;">
+        <h1 class="h2"><i class="fas fa-chart-bar me-3"></i>Reportes</h1>
+        <button class="btn btn-success" (click)="exportarReporte()" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);">
           <i class="fas fa-download"></i> Exportar
         </button>
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-md-3">
-          <div class="card text-white bg-primary">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h4 class="card-title">{{ totalReservas }}</h4>
-                  <p class="card-text">Total Reservas</p>
-                </div>
-                <div class="align-self-center">
-                  <i class="fas fa-calendar-alt fa-2x"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-success">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h4 class="card-title">{{ ingresosTotales | currency:'USD':'symbol':'1.0-0' }}</h4>
-                  <p class="card-text">Ingresos Totales</p>
-                </div>
-                <div class="align-self-center">
-                  <i class="fas fa-dollar-sign fa-2x"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-info">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h4 class="card-title">{{ ocupacionPromedio }}%</h4>
-                  <p class="card-text">Ocupación Promedio</p>
-                </div>
-                <div class="align-self-center">
-                  <i class="fas fa-bed fa-2x"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-warning">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h4 class="card-title">{{ usuariosActivos }}</h4>
-                  <p class="card-text">Usuarios Activos</p>
-                </div>
-                <div class="align-self-center">
-                  <i class="fas fa-users fa-2x"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title mb-0">Reservas por Mes</h5>
+              <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i>Reservas por Mes</h5>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -110,7 +47,7 @@ import { AuthService } from '../../services/auth.service';
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title mb-0">Top Hoteles</h5>
+              <h5 class="card-title mb-0"><i class="fas fa-hotel me-2"></i>Top Hoteles</h5>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -127,7 +64,7 @@ import { AuthService } from '../../services/auth.service';
                       <td>{{ hotel.nombre }}</td>
                       <td>{{ hotel.reservas }}</td>
                       <td>
-                        <span class="badge bg-success">{{ hotel.rating }} ⭐</span>
+                        <span class="badge bg-success">{{ hotel.rating }} <i class="fas fa-star"></i></span>
                       </td>
                     </tr>
                   </tbody>
@@ -151,6 +88,8 @@ import { AuthService } from '../../services/auth.service';
       right: 0;
       bottom: 0;
       overflow-y: auto;
+      padding-top: 0; /* Eliminar espacio superior */
+      padding-bottom: 0; /* Eliminar espacio inferior */
     }
 
     .d-flex.justify-content-between {
@@ -158,8 +97,9 @@ import { AuthService } from '../../services/auth.service';
       backdrop-filter: blur(10px);
       border-radius: 20px;
       padding: 2rem;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem; /* Reducir aún más el espacio */
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      margin-bottom: 0; /* Eliminar completamente el margen inferior */
     }
 
     .h2 {
@@ -169,12 +109,6 @@ import { AuthService } from '../../services/auth.service';
       margin: 0;
       display: flex;
       align-items: center;
-    }
-
-    .h2::before {
-      content: '📊';
-      margin-right: 1rem;
-      font-size: 2rem;
     }
 
     .btn-success {
@@ -298,11 +232,6 @@ import { AuthService } from '../../services/auth.service';
       display: flex;
       align-items: center;
     }
-
-    .card-title::before {
-      content: '📈';
-      margin-right: 0.5rem;
-    }
     
     .table {
       margin: 0;
@@ -413,6 +342,18 @@ import { AuthService } from '../../services/auth.service';
       .table-responsive {
         border-radius: 0;
       }
+    }
+
+    .card.text-white.bg-info {
+      padding: 16px; /* Reducir el padding para disminuir el espacio */
+    }
+
+    .card.text-white.bg-primary {
+      padding: 16px; /* Reducir el padding para disminuir el espacio */
+    }
+
+    .d-flex.justify-content-between {
+      padding: 16px; /* Reducir el padding para disminuir el espacio */
     }
   `]
 })
