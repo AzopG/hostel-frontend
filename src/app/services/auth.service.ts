@@ -161,7 +161,11 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(response.usuario);
         }),
-        catchError(this.handleError<LoginResponse>('login'))
+        catchError(error => {
+          console.error('Login error:', error);
+          // No interceptar el error, dejarlo pasar al componente
+          throw error;
+        })
       );
   }
 

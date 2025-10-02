@@ -1,0 +1,162 @@
+<div class="hoteles-container">
+  <!-- Barra superior de gestión -->
+  <div class="hoteles-topbar">
+    <div class="hoteles-title">
+      <span class="icon-hoteles"></span>
+      <h1>Gestión de Hoteles</h1>
+      <p>Administra y controla toda la cadena hotelera</p>
+    </div>
+    <button class="agregar-btn" (click)="agregarHotel()" [disabled]="cargando">+ Nuevo Hotel</button>
+  </div>
+  <div class="hoteles-metrics pretty-metrics">
+    <div class="metric-card pretty-card">
+      <span class="metric-icon metric-hoteles"><i class="fas fa-building"></i></span>
+      <div>
+        <div class="metric-value">{{ getTotalHoteles() }}</div>
+        <div class="metric-label">Total Hoteles</div>
+      </div>
+    </div>
+    <div class="metric-card pretty-card">
+      <span class="metric-icon metric-activos"><i class="fas fa-check-circle"></i></span>
+      <div>
+        <div class="metric-value">{{ getHotelesActivos() }}</div>
+        <div class="metric-label">Activos</div>
+      </div>
+    </div>
+    <div class="metric-card pretty-card">
+      <span class="metric-icon metric-premium"><i class="fas fa-star"></i></span>
+      <div>
+        <div class="metric-value">{{ getHotelesPremium() }}</div>
+        <div class="metric-label">5 Estrellas</div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal para ver/editar hotel -->
+  <div class="modal-backdrop" *ngIf="modalVisible" (click)="cerrarModal()"></div>
+  <div class="modal" *ngIf="modalVisible">
+    <div class="modal-content" [ngClass]="modalModo">
+      <h2>
+        <ng-container *ngIf="modalModo === 'crear'">Nuevo Hotel</ng-container>
+        <ng-container *ngIf="modalModo === 'editar'">Editar Hotel</ng-container>
+        <ng-container *ngIf="modalModo === 'ver'">Detalles del Hotel</ng-container>
+      </h2>
+      <form *ngIf="modalHotel" (ngSubmit)="guardarEdicionHotel()" autocomplete="off">
+        <div class="form-group">
+          <input [(ngModel)]="modalHotel.nombre" name="nombre" placeholder="Nombre del hotel" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="modalHotel.ciudad" name="ciudad" placeholder="Ciudad" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="modalHotel.direccion" name="direccion" placeholder="Dirección completa" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="modalHotel.telefono" name="telefono" placeholder="Teléfono de contacto" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="modalHotel.email" name="email" placeholder="Email de contacto" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <input type="number" [(ngModel)]="modalHotel.categoria" name="categoria" min="1" max="5" placeholder="Categoría (1-5 estrellas)" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="form-group">
+          <ng-container *ngIf="modalModo !== 'crear'">
+            <ng-container *ngIf="modalModo === 'ver'">
+              <input type="text" [value]="'Habitaciones: ' + (modalHotel.habitaciones ? modalHotel.habitaciones.length : 0)" readonly />
+            </ng-container>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <input type="number" [(ngModel)]="modalHotel.ocupacion" name="ocupacion" min="0" max="100" placeholder="Ocupación actual (%)" [readonly]="modalModo === 'ver'" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarModal()">Cerrar</button>
+          <button *ngIf="modalModo === 'editar'" type="submit" [disabled]="cargando">Guardar</button>
+          <button *ngIf="modalModo === 'crear'" type="submit" [disabled]="cargando" class="btn-crear">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal de confirmación de eliminación -->
+  <div class="modal-backdrop" *ngIf="modalEliminarVisible" (click)="cerrarModalEliminar()"></div>
+  <div class="modal" *ngIf="modalEliminarVisible">
+    <div class="modal-content">
+      <h2>¿Eliminar hotel?</h2>
+      <p>¿Seguro que quieres eliminar <b>{{ hotelAEliminar?.nombre }}</b>? Esta acción no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarModalEliminar()">Cancelar</button>
+        <button type="button" (click)="eliminarHotel(hotelAEliminar)" [disabled]="cargando">Eliminar</button>
+      </div>
+    </div>
+  </div>
+  <!-- Filtros y botón agregar -->
+  <div class="hoteles-header">
+    <div class="filtros">
+      <select (change)="filtrarPorEstado($event)">
+        <option value="todos">Todos</option>
+        <option value="activo">Activos</option>
+        <option value="inactivo">Inactivos</option>
+      </select>
+      <select (change)="filtrarPorCategoria($event)">
+        <option value="todas">Todas las categorías</option>
+        <option *ngFor="let cat of [1,2,3,4,5]" [value]="cat">{{ cat }} estrellas</option>
+      </select>
+    </div>
+  <!-- Botón duplicado eliminado -->
+  </div>
+  <!-- Listado de hoteles -->
+  <div class="hoteles-list" [@listAnimation]="hotelesFiltrados.length">
+    <div *ngIf="cargando" class="cargando-hoteles">Cargando hoteles...</div>
+    <div *ngIf="!cargando && hotelesFiltrados.length === 0" class="sin-hoteles">No hay hoteles para mostrar.</div>
+    <div *ngFor="let hotel of hotelesFiltrados; trackBy: trackByHotelId" class="hotel-card" [@fadeInUp]>
+      <div class="hotel-card-header">
+        <span class="hotel-nombre">{{ hotel.nombre }}</span>
+        <span class="hotel-estado" [ngClass]="hotel.activo ? 'activo' : 'inactivo'">
+          {{ hotel.activo ? 'Activo' : 'Inactivo' }}
+        </span>
+      </div>
+      <div class="hotel-card-body">
+        <div class="hotel-info">
+          <span><b>Ciudad:</b> {{ hotel.ciudad }}</span>
+          <span><b>Dirección:</b> {{ hotel.direccion }}</span>
+          <span><b>Teléfono:</b> {{ hotel.telefono }}</span>
+          <span><b>Email:</b> {{ hotel.email }}</span>
+          <span><b>Categoría:</b>
+            <ng-container *ngFor="let star of getStarsArray(hotel.categoria)">
+              <span class="star">★</span>
+            </ng-container>
+          </span>
+          <span><b>Habitaciones:</b> {{ getNumeroHabitaciones(hotel) }}</span>
+          <span><b>Ocupación:</b> {{ hotel.ocupacion }}%</span>
+        </div>
+        <div class="hotel-actions">
+          <button (click)="verHotel(hotel)">Ver</button>
+          <button (click)="editarHotel(hotel)">Editar</button>
+          <button (click)="confirmarEliminarHotel(hotel)">Eliminar</button>
+          <button (click)="toggleEstadoHotel(hotel)"
+                  [ngClass]="hotel.activo ? 'btn-inactivo' : 'btn-activo'"
+                  [disabled]="cargando">
+            {{ hotel.activo ? 'Desactivar' : 'Activar' }}
+          </button>
+            <button (click)="abrirModalHabitaciones(hotel)">Editar Habitaciones</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal para editar habitaciones -->
+    <div class="modal-backdrop" *ngIf="modalHabitacionesVisible" (click)="cerrarModalHabitaciones()"></div>
+    <div class="modal" *ngIf="modalHabitacionesVisible">
+      <div class="modal-content">
+        <h2>Editar Habitaciones de {{ hotelHabitaciones?.nombre }}</h2>
+        <app-habitaciones-editor
+          [habitaciones]="habitacionesEdit"
+          (habitacionesChange)="habitacionesEdit = $event">
+        </app-habitaciones-editor>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarModalHabitaciones()">Cancelar</button>
+          <button type="button" (click)="guardarHabitacionesEditadas()" [disabled]="cargando || !habitacionesValidas">Guardar</button>
+        </div>
+      </div>
+    </div>
+</div>

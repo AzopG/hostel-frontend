@@ -9,17 +9,18 @@ import { AuthService, Usuario } from '../../services/auth.service';
   imports: [CommonModule, RouterLink],
   template: `
     <div class="dashboard-home">
-      <!-- Header personalizado -->
-      <div class="welcome-header">
-        <h1>¡Bienvenido{{ currentUser?.tipo === 'cliente' ? '' : 'a' }}, {{ currentUser?.nombre }}!</h1>
-        <p class="subtitle" [ngSwitch]="currentUser?.tipo">
-          <span *ngSwitchCase="'cliente'">Explora nuestras opciones de alojamiento y haz tu próxima reserva.</span>
-          <span *ngSwitchCase="'empresa'">Gestiona tus eventos corporativos y reservas empresariales.</span>
-          <span *ngSwitchCase="'admin_hotel'">Panel de administración para gestionar tu hotel.</span>
-          <span *ngSwitchCase="'admin_central'">Panel de administración central del sistema.</span>
-          <span *ngSwitchDefault>¡Comienza a explorar nuestras funcionalidades!</span>
-        </p>
-      </div>
+      <div class="dashboard-content">
+        <!-- Header personalizado -->
+        <div class="welcome-header">
+          <h1>¡Bienvenido{{ currentUser?.tipo === 'cliente' ? '' : 'a' }}, {{ currentUser?.nombre }}!</h1>
+          <p class="subtitle" [ngSwitch]="currentUser?.tipo">
+            <span *ngSwitchCase="'cliente'">Explora nuestras opciones de alojamiento y haz tu próxima reserva.</span>
+            <span *ngSwitchCase="'empresa'">Gestiona tus eventos corporativos y reservas empresariales.</span>
+            <span *ngSwitchCase="'admin_hotel'">Panel de administración para gestionar tu hotel.</span>
+            <span *ngSwitchCase="'admin_central'">Panel de administración central del sistema.</span>
+            <span *ngSwitchDefault>¡Comienza a explorar nuestras funcionalidades!</span>
+          </p>
+        </div>
 
       <!-- Opciones rápidas por rol -->
       <div class="quick-actions" [ngSwitch]="currentUser?.tipo">
@@ -99,21 +100,21 @@ import { AuthService, Usuario } from '../../services/auth.service';
         <!-- Admin Central -->
         <div *ngSwitchCase="'admin_central'" class="actions-grid">
           <div class="action-card" routerLink="/dashboard/hoteles">
-            <div class="card-icon">🏨</div>
+            <div class="card-icon"><i class="fas fa-building"></i></div>
             <h3>Gestionar Hoteles</h3>
             <p>Administra toda la cadena hotelera</p>
             <div class="card-arrow">→</div>
           </div>
           
           <div class="action-card" routerLink="/dashboard/usuarios">
-            <div class="card-icon">👥</div>
+            <div class="card-icon"><i class="fas fa-users-cog"></i></div>
             <h3>Gestionar Usuarios</h3>
             <p>Administra todos los usuarios del sistema</p>
             <div class="card-arrow">→</div>
           </div>
           
           <div class="action-card" routerLink="/dashboard/reportes">
-            <div class="card-icon">📊</div>
+            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
             <h3>Ver Reportes</h3>
             <p>Consulta estadísticas y reportes globales</p>
             <div class="card-arrow">→</div>
@@ -174,32 +175,53 @@ import { AuthService, Usuario } from '../../services/auth.service';
   `,
   styles: [`
     .dashboard-home {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
+      min-height: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .dashboard-content {
       padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
     }
 
     .welcome-header {
       text-align: center;
       margin-bottom: 3rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .welcome-header h1 {
       font-size: 2.5rem;
-      color: #1C2526;
+      color: #212529;
       margin-bottom: 0.5rem;
       font-weight: 700;
       font-family: 'Playfair Display', serif;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
     }
 
     .subtitle {
       font-size: 1.1rem;
-      color: #4A1B2F;
+      color: #495057;
       max-width: 600px;
       margin: 0 auto;
       font-family: 'Crimson Text', serif;
       font-weight: 500;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
     }
 
     .actions-grid {
@@ -210,25 +232,25 @@ import { AuthService, Usuario } from '../../services/auth.service';
     }
 
     .action-card {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 12px;
       padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       cursor: pointer;
-      border: 2px solid rgba(184, 151, 120, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.5);
       text-decoration: none;
       color: inherit;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
     }
 
     .action-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(184, 151, 120, 0.3);
-      border-color: #B89778;
-      background: rgba(255, 255, 255, 1);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+      border-color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .card-icon {
@@ -290,50 +312,67 @@ import { AuthService, Usuario } from '../../services/auth.service';
     }
 
     .stat-card {
-      background: linear-gradient(135deg, #B89778, #4A1B2F);
-      color: #F8F1E9;
+      background: rgba(255, 255, 255, 0.2);
+      color: #212529;
       padding: 1.5rem;
-      border-radius: 12px;
+      border-radius: 16px;
       text-align: center;
-      border: 2px solid rgba(248, 241, 233, 0.3);
-      box-shadow: 0 6px 20px rgba(184, 151, 120, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
     .stat-number {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      font-family: 'Cormorant Garamond', serif;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      color: #212529;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5);
     }
 
     .stat-label {
-      font-size: 0.9rem;
-      opacity: 0.95;
+      font-size: 1rem;
+      color: #495057;
       font-family: 'Crimson Text', serif;
       font-weight: 500;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .tips-section {
-      background: rgba(248, 241, 233, 0.8);
+      background: rgba(255, 255, 255, 0.15);
       padding: 2rem;
-      border-radius: 12px;
-      border-left: 4px solid #B89778;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(184, 151, 120, 0.3);
+      border-radius: 16px;
+      border-left: 4px solid #6c757d;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
     }
 
     .tips-section h3 {
-      color: #1C2526;
+      color: #212529;
       margin-bottom: 1rem;
       font-weight: 700;
       font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
     }
 
     .tips-list p {
-      color: #4A1B2F;
+      color: #495057;
       margin-bottom: 0.5rem;
+      font-family: 'Crimson Text', serif;
+      line-height: 1.6;
+    }
       line-height: 1.6;
       font-family: 'Crimson Text', serif;
       font-weight: 500;
@@ -341,7 +380,13 @@ import { AuthService, Usuario } from '../../services/auth.service';
 
     @media (max-width: 768px) {
       .dashboard-home {
+        padding: 0;
+        height: 100%;
+      }
+
+      .dashboard-content {
         padding: 1rem;
+        height: 100%;
       }
 
       .welcome-header h1 {

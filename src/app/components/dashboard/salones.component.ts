@@ -173,10 +173,16 @@ import { Router } from '@angular/router';
     }
 
     .container-fluid {
-      background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-      min-height: 100vh;
-      margin: -20px;
-      padding: 20px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
+      min-height: calc(100vh - 70px);
+      margin: 0;
+      padding: 2rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
     }
 
     .d-flex.justify-content-between {

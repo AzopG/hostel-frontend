@@ -21,11 +21,11 @@
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: 2px;
-  gap: 15px;
+  gap: 12px;
   color: #F8F1E9;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   z-index: 1001;
-  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-family: 'Palatino Linotype', 'Libre Baskerville', 'Book Antiqua', Palatino, serif;
   text-transform: uppercase;
 }
 
@@ -36,14 +36,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 70px;
 }
 
 .brand-logo {
-  width: 45px;
-  height: 45px;
+  width: 65px;
+  height: 65px;
   object-fit: contain;
   filter: drop-shadow(0 0 8px rgba(184, 151, 120, 0.6)) drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
   transition: all 0.3s ease;
+  margin-right: 5px;
 }
 
 .brand-logo:hover {
