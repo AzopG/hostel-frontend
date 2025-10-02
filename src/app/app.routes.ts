@@ -15,7 +15,7 @@ export const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'forgot-password', component: ResetPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   // HU04: Calendario de disponibilidad por ciudad (acceso público)
   { path: 'disponibilidad-ciudad', component: CalendarioDisponibilidadComponent },

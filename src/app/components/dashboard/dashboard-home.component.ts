@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService, Usuario } from '../../services/auth.service';
+import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -124,22 +125,71 @@ import { AuthService, Usuario } from '../../services/auth.service';
       <!-- Estadísticas rápidas -->
       <div class="stats-section" *ngIf="currentUser">
         <h2>Resumen Rápido</h2>
-        <div class="stats-grid">
+        
+        <!-- Loading indicator -->
+        <div *ngIf="isLoading" class="loading-container">
+          <div class="loading-spinner"></div>
+          <p>Cargando estadísticas...</p>
+        </div>
+
+        <!-- Error message -->
+        <div *ngIf="error" class="error-message">
+          <span class="error-icon">⚠️</span>
+          {{error}}
+          <button class="retry-btn" (click)="cargarEstadisticas()">Reintentar</button>
+        </div>
+
+        <!-- Stats grid -->
+        <div *ngIf="!isLoading && !error" class="stats-grid">
+          <!-- Para clientes y empresas -->
           <div class="stat-card" *ngIf="currentUser.tipo === 'cliente' || currentUser.tipo === 'empresa'">
             <div class="stat-number">{{ getMyReservationsCount() }}</div>
             <div class="stat-label">Mis Reservas</div>
           </div>
           
-          <div class="stat-card" *ngIf="currentUser.tipo.includes('admin')">
-            <div class="stat-number">{{ getTotalReservations() }}</div>
-            <div class="stat-label">Total Reservas</div>
+          <div class="stat-card" *ngIf="currentUser.tipo === 'cliente' || currentUser.tipo === 'empresa'">
+            <div class="stat-number">{{ getTotalGastado() }}</div>
+            <div class="stat-label">Total Gastado</div>
           </div>
-          
-          <div class="stat-card" *ngIf="currentUser.tipo.includes('admin')">
+
+          <!-- Para admin_hotel -->
+          <div class="stat-card" *ngIf="currentUser.tipo === 'admin_hotel'">
+            <div class="stat-number">{{ getTotalReservations() }}</div>
+            <div class="stat-label">Reservas Hotel</div>
+          </div>
+
+          <div class="stat-card" *ngIf="currentUser.tipo === 'admin_hotel'">
+            <div class="stat-number">{{ getIngresosTotales() }}</div>
+            <div class="stat-label">Ingresos</div>
+          </div>
+
+          <div class="stat-card" *ngIf="currentUser.tipo === 'admin_hotel' && estadisticas.nombreHotel">
+            <div class="stat-number">{{ estadisticas.totalHabitaciones || 0 }}</div>
+            <div class="stat-label">Habitaciones</div>
+          </div>
+
+          <!-- Para admin_central -->
+          <div class="stat-card" *ngIf="currentUser.tipo === 'admin_central'">
             <div class="stat-number">{{ getTotalHotels() }}</div>
             <div class="stat-label">Hoteles</div>
           </div>
           
+          <div class="stat-card" *ngIf="currentUser.tipo === 'admin_central'">
+            <div class="stat-number">{{ getTotalReservations() }}</div>
+            <div class="stat-label">Total Reservas</div>
+          </div>
+
+          <div class="stat-card" *ngIf="currentUser.tipo === 'admin_central'">
+            <div class="stat-number">{{ getTotalClientes() }}</div>
+            <div class="stat-label">Clientes</div>
+          </div>
+
+          <div class="stat-card" *ngIf="currentUser.tipo === 'admin_central'">
+            <div class="stat-number">{{ getIngresosTotales() }}</div>
+            <div class="stat-label">Ingresos</div>
+          </div>
+          
+          <!-- Para todos -->
           <div class="stat-card">
             <div class="stat-number">{{ getCurrentMonth() }}</div>
             <div class="stat-label">Mes Actual</div>
@@ -339,6 +389,56 @@ import { AuthService, Usuario } from '../../services/auth.service';
       font-weight: 500;
     }
 
+    .loading-container {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #B89778;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem auto;
+    }
+
+    .error-message {
+      background: rgba(245, 101, 101, 0.1);
+      border: 1px solid rgba(245, 101, 101, 0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      color: #e53e3e;
+      margin: 1rem 0;
+    }
+
+    .error-icon {
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    }
+
+    .retry-btn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      margin-left: 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .retry-btn:hover {
+      background: #c53030;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media (max-width: 768px) {
       .dashboard-home {
         padding: 1rem;
@@ -360,29 +460,99 @@ import { AuthService, Usuario } from '../../services/auth.service';
 })
 export class DashboardHomeComponent implements OnInit {
   currentUser: Usuario | null = null;
+  estadisticas: EstadisticasGenerales = {};
+  isLoading = true;
+  error = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private estadisticasService: EstadisticasService
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
+      if (user) {
+        this.cargarEstadisticas();
+      }
     });
   }
 
+  cargarEstadisticas(): void {
+    this.isLoading = true;
+    this.error = '';
+    
+    this.estadisticasService.obtenerEstadisticasGenerales().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.estadisticas = response.stats;
+        } else {
+          this.error = 'Error al cargar estadísticas';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar estadísticas:', error);
+        this.error = 'Error de conexión al cargar estadísticas';
+        this.isLoading = false;
+        // Usar valores por defecto en caso de error
+        this.usarValoresPorDefecto();
+      }
+    });
+  }
+
+  usarValoresPorDefecto(): void {
+    this.estadisticas = {
+      totalHoteles: 0,
+      totalReservas: 0,
+      totalClientes: 0,
+      ingresosTotales: 0,
+      misReservas: 0,
+      reservasActivas: 0
+    };
+  }
+
   getMyReservationsCount(): string {
-    // En una implementación real, esto vendría del backend
-    return '3';
+    if (this.currentUser?.tipo === 'cliente' || this.currentUser?.tipo === 'empresa') {
+      return (this.estadisticas.misReservas || 0).toString();
+    }
+    return (this.estadisticas.reservasActivas || 0).toString();
   }
 
   getTotalReservations(): string {
-    // En una implementación real, esto vendría del backend
-    const baseCount = this.currentUser?.tipo === 'admin_central' ? 156 : 23;
-    return baseCount.toString();
+    return (this.estadisticas.totalReservas || 0).toString();
   }
 
   getTotalHotels(): string {
-    // En una implementación real, esto vendría del backend
-    return this.currentUser?.tipo === 'admin_central' ? '8' : '1';
+    return (this.estadisticas.totalHoteles || 0).toString();
+  }
+
+  getTotalClientes(): string {
+    return (this.estadisticas.totalClientes || 0).toString();
+  }
+
+  getIngresosTotales(): string {
+    const ingresos = this.estadisticas.ingresosTotales || 0;
+    if (ingresos >= 1000000) {
+      return `${Math.round(ingresos / 1000000)}M`;
+    } else if (ingresos >= 1000) {
+      return `${Math.round(ingresos / 1000)}K`;
+    }
+    return ingresos.toString();
+  }
+
+  getTotalGastado(): string {
+    const gastado = this.estadisticas.totalGastado || 0;
+    if (gastado >= 1000000) {
+      return `${Math.round(gastado / 1000000)}M`;
+    } else if (gastado >= 1000) {
+      return `${Math.round(gastado / 1000)}K`;
+    }
+    return gastado.toString();
+  }
+
+  getOcupacionPromedio(): string {
+    return `${this.estadisticas.ocupacionPromedio || 0}%`;
   }
 
   getCurrentMonth(): string {

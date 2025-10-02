@@ -1,124 +1,105 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { DetalleHabitacion, HabitacionService } from '../../services/habitacion.service';
-import { Hotel, HotelService } from '../../services/hotel.service';
+<div class="habitaciones-container">
+  <div class="filters-section">
+    <form class="filters-container" (ngSubmit)="buscarHabitaciones()">
+      <div class="filter-group">
+        <label class="filter-label">🏨 Hotel</label>
+        <select class="filter-select" [(ngModel)]="filtroHotelId" name="hotelId">
+          <option value="">Todos los hoteles</option>
+          <option *ngFor="let hotel of hoteles" [value]="hotel._id">{{ hotel.nombre }}</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">🛏️ Tipo</label>
+        <select class="filter-select" [(ngModel)]="filtroTipo" name="tipo">
+          <option value="">Todos los tipos</option>
+          <option value="estándar">Estándar</option>
+          <option value="doble">Doble</option>
+          <option value="suite">Suite</option>
+          <option value="familiar">Familiar</option>
+          <option value="individual">Individual</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">👥 Capacidad</label>
+        <input class="filter-select" type="number" placeholder="Capacidad" [(ngModel)]="filtroCapacidad" name="capacidad" min="1" />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">💰 Precio mínimo</label>
+        <input class="filter-select" type="number" placeholder="Precio mínimo" [(ngModel)]="filtroPrecioMin" name="precioMin" min="0" />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">💰 Precio máximo</label>
+        <input class="filter-select" type="number" placeholder="Precio máximo" [(ngModel)]="filtroPrecioMax" name="precioMax" min="0" />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">🚦 Disponibilidad</label>
+        <select class="filter-select" [(ngModel)]="filtroDisponible" name="disponible">
+          <option [ngValue]="undefined">Todas</option>
+          <option [ngValue]="true">Disponible</option>
+          <option [ngValue]="false">No disponible</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn-filtrar" type="submit">Filtrar</button>
+        <button class="btn-filtrar" type="button" (click)="mostrarAvanzados = !mostrarAvanzados">Filtros avanzados</button>
+      </div>
+    </form>
+    <div class="filtros-row advanced" *ngIf="mostrarAvanzados">
+      <label style="font-weight:500; margin-right:8px;">Servicios:</label>
+      <ng-container *ngFor="let servicio of serviciosDisponibles">
+        <label class="servicio-checkbox">
+          <span class="servicio-icon">
+            {{
+              servicio === 'WiFi' ? '📶' :
+              servicio === 'Aire acondicionado' ? '❄️' :
+              servicio === 'Desayuno' ? '🥐' :
+              servicio === 'TV' ? '📺' :
+              servicio === 'Piscina' ? '🏊' :
+              servicio === 'Gimnasio' ? '🏋️' :
+              servicio === 'Mascotas' ? '🐾' :
+              servicio === 'Restaurante' ? '🍽️' :
+              servicio === 'Bar' ? '🍸' :
+              servicio === 'Spa' ? '💆' :
+              servicio === 'Parqueadero' ? '🚗' :
+              servicio === 'Lavandería' ? '🧺' :
+              '🔹'
+            }}
+          </span>
+          <input type="checkbox" [(ngModel)]="serviciosSeleccionados[servicio]" name="servicio_{{servicio}}" /> {{ servicio }}
+        </label>
+      </ng-container>
+    </div>
+  </div>
 
-@Component({
-  selector: 'app-habitaciones',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './habitaciones.component.html',
-  styleUrls: ['./habitaciones.component.css']
-})
-export class HabitacionesComponent implements OnInit {
-  // ...existing code...
-
-  guardarHabitaciones(): void {
-    // Solo crear las habitaciones que no tienen _id
-    const nuevas = this.habitaciones.filter(h => !h._id);
-    const existentes = this.habitaciones.filter(h => !!h._id);
-
-    nuevas.forEach(h => {
-      this.habitacionService.crearHabitacion(h).subscribe({
-        next: () => {
-          // Recargar habitaciones después de crear
-          this.buscarHabitaciones();
-        },
-        error: (err) => {
-          console.error('Error al crear habitación:', err);
-        }
-      });
-    });
-
-    existentes.forEach(h => {
-      this.habitacionService.actualizarHabitacion(h._id, h).subscribe({
-        next: () => {
-          // Recargar habitaciones después de actualizar
-          this.buscarHabitaciones();
-        },
-        error: (err) => {
-          console.error('Error al actualizar habitación:', err);
-        }
-      });
-    });
-  }
-  public habitaciones: DetalleHabitacion[] = [];
-  public mostrarEditor: boolean = false;
-  public hoteles: Hotel[] = [];
-
-  // Filtros para la búsqueda
-  public filtroTipo: string = '';
-  public filtroCapacidad?: number;
-  public filtroPrecioMin?: number;
-  public filtroPrecioMax?: number;
-  public filtroDisponible?: boolean;
-  public filtroHotelId: string = '';
-
-  // Filtros avanzados
-  public mostrarAvanzados: boolean = false;
-  public serviciosDisponibles: string[] = [
-    'WiFi',
-    'Aire acondicionado',
-    'Desayuno',
-    'TV',
-    'Piscina',
-    'Gimnasio',
-    'Mascotas',
-    'Restaurante',
-    'Bar',
-    'Spa',
-    'Parqueadero',
-    'Lavandería'
-  ];
-  public serviciosSeleccionados: { [servicio: string]: boolean } = {};
-
-  constructor(
-    private habitacionService: HabitacionService,
-    private hotelService: HotelService
-  ) {}
-  ngOnInit(): void {
-    // Cargar hoteles reales al iniciar
-    this.hotelService.getHoteles().subscribe({
-      next: (hoteles) => {
-        this.hoteles = hoteles;
-      },
-      error: (err) => {
-        console.error('Error al cargar hoteles:', err);
-      }
-    });
-    // Opcional: cargar habitaciones iniciales
-    this.buscarHabitaciones();
-  }
-
-  buscarHabitaciones(): void {
-    // Obtener servicios seleccionados
-    const serviciosFiltrar = Object.keys(this.serviciosSeleccionados)
-      .filter(s => this.serviciosSeleccionados[s]);
-
-    const filtros: any = {
-      tipo: this.filtroTipo || undefined,
-      capacidad: this.filtroCapacidad,
-      precioMin: this.filtroPrecioMin,
-      precioMax: this.filtroPrecioMax,
-      disponible: this.filtroDisponible,
-      hotelId: this.filtroHotelId || undefined
-    };
-    if (serviciosFiltrar.length > 0) {
-      filtros.servicios = serviciosFiltrar;
-    }
-    this.habitacionService.buscarHabitacionesFiltradas(filtros).subscribe({
-      next: (result) => {
-        this.habitaciones = result;
-      },
-      error: (err) => {
-        // Manejo de error peludito
-        console.error('Error al buscar habitaciones:', err);
-      }
-    });
-  }
-
-  onHabitacionesChange(event: any): void {
-    this.habitaciones = event;
-  }
-}
+  <div class="habitaciones-list">
+    <div *ngIf="habitaciones.length === 0" class="no-result">No hay habitaciones que coincidan con los filtros.</div>
+  <div *ngFor="let h of habitaciones" class="habitacion-card">
+    <div class="habitacion-img-col">
+  <img [src]="h.fotos && h.fotos.length ? h.fotos[0] : 'https://usagif.com/wp-content/uploads/2021/11/tumbleweed-acegif-m.gif'" alt="Foto habitación" class="habitacion-main-img" />
+      </div>
+      <div class="habitacion-info-col">
+        <div class="card-header">
+          <span class="tipo">{{ h.tipo }}</span>
+          <span class="precio">${{ h.precio | number:'1.0-0' }} COP/noche</span>
+        </div>
+        <div class="info-row"><b>Número:</b> {{ h.numero }}</div>
+        <div class="info-row"><b>Capacidad:</b> {{ h.capacidad }} huéspedes</div>
+        <div class="info-row"><b>Servicios:</b>
+          <span *ngFor="let s of h.servicios" class="servicio-chip">{{ s }}</span>
+          <span *ngIf="!h.servicios || !h.servicios.length">N/A</span>
+        </div>
+        <div class="info-row">
+          <b>Disponibilidad:</b>
+          <span [class.disponible]="h.disponible" [class.no-disponible]="!h.disponible">{{ h.disponible ? 'Disponible' : 'No disponible' }}</span>
+        </div>
+  <div class="info-row"><b>Hotel:</b> {{ h.hotel && h.hotel.nombre ? h.hotel.nombre : 'N/A' }} <span *ngIf="h.hotel && h.hotel.ciudad">({{ h.hotel.ciudad }})</span></div>
+  <div class="info-row"><b>Check-in:</b> {{ h.hotel && h.hotel.politicas && h.hotel.politicas.checkIn ? h.hotel.politicas.checkIn : '15:00' }} <b>Check-out:</b> {{ h.hotel && h.hotel.politicas && h.hotel.politicas.checkOut ? h.hotel.politicas.checkOut : '12:00' }}</div>
+        <div class="info-row"><b>Descripción:</b> {{ h.descripcion }}</div>
+        <div class="info-row fotos-row" *ngIf="h.fotos && h.fotos.length > 1">
+          <b>Más fotos:</b>
+          <img *ngFor="let foto of h.fotos.slice(1,4)" [src]="foto" alt="Foto habitación" class="foto-thumb" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

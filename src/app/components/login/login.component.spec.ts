@@ -1,33 +1,42 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+﻿﻿import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../../services/auth.service';
+import { of, throwError } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
-describe('LoginComponent - HU02', () => {
+describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authService: jasmine.SpyObj<AuthService>;
-  let router: jasmine.SpyObj<Router>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let router: Router;
 
   beforeEach(async () => {
-    const authServiceSpy = jasmine.createSpyObj('AuthService', ['login', 'isAuthenticated']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-
+    const spy = jasmine.createSpyObj('AuthService', ['login', 'isAuthenticated']);
+    spy.isAuthenticated.and.returnValue(false);
+    
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, ReactiveFormsModule],
+      imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterTestingModule.withRoutes([]),
+        LoginComponent
+      ],
       providers: [
-        { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy }
+        { provide: AuthService, useValue: spy }
       ]
     }).compileComponents();
 
+    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    authService.isAuthenticated.and.returnValue(false);
     fixture.detectChanges();
   });
 
@@ -35,54 +44,124 @@ describe('LoginComponent - HU02', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize form with rememberMe false', () => {
+  it('should initialize with empty form', () => {
+    expect(component.loginForm.get('email')?.value).toBe('');
+    expect(component.loginForm.get('password')?.value).toBe('');
     expect(component.loginForm.get('rememberMe')?.value).toBe(false);
   });
 
-  it('CA1: should redirect cliente to mis-reservas', (done) => {
-    authService.login.and.returnValue(of({
-      msg: 'OK',
-      token: 't1',
-      usuario: { _id: '1', nombre: 'Test', email: 'test@test.com', tipo: 'cliente' as const },
-      expiresIn: '24h'
-    }));
-    component.loginForm.patchValue({ email: 'test@test.com', password: 'pass123' });
-    component.onSubmit();
-    setTimeout(() => {
-      expect(router.navigate).toHaveBeenCalledWith(['/dashboard/mis-reservas']);
-      done();
-    }, 1100);
+  it('should validate required fields', () => {
+    const form = component.loginForm;
+    expect(form.valid).toBeFalsy();
+    
+    const email = form.get('email');
+    const password = form.get('password');
+    
+    expect(email?.errors?.['required']).toBeTruthy();
+    expect(password?.errors?.['required']).toBeTruthy();
   });
 
-  it('CA2: should show "Credenciales inválidas"', (done) => {
-    authService.login.and.returnValue(throwError(() => ({ status: 401, error: {} })));
-    component.loginForm.patchValue({ email: 'bad@test.com', password: 'wrong' });
-    component.onSubmit();
-    setTimeout(() => {
-      expect(component.errorMessage).toBe('Credenciales inválidas');
-      done();
-    }, 100);
+  it('should validate email format', () => {
+    const email = component.loginForm.get('email');
+    email?.setValue('invalid-email');
+    expect(email?.errors?.['email']).toBeTruthy();
+    
+    email?.setValue('valid@email.com');
+    expect(email?.errors?.['email']).toBeFalsy();
   });
 
-  it('CA3: should show error for empty fields', () => {
-    component.loginForm.patchValue({ email: '', password: '' });
+  it('should show validation errors when form is submitted empty', () => {
     component.onSubmit();
     expect(component.errorMessage).toBe('Por favor, completa todos los campos requeridos');
   });
 
-  it('CA4: should send rememberMe value', (done) => {
-    authService.login.and.returnValue(of({
-      msg: 'OK',
-      token: 't1',
-      usuario: { _id: '1', nombre: 'Test', email: 'test@test.com', tipo: 'cliente' as const },
-      expiresIn: '24h'
+  it('should call auth service when form is valid', fakeAsync(() => {
+    const credentials = {
+      email: 'test@example.com',
+      password: 'password123',
+      rememberMe: false
+    };
+
+    authServiceSpy.login.and.returnValue(of({ 
+      msg: 'Login exitoso',
+      token: 'fake-jwt-token',
+      expiresIn: '3600',
+      usuario: { 
+        _id: '123',
+        nombre: 'Test User',
+        email: 'test@example.com',
+        tipo: 'cliente'
+      }
     }));
-    component.loginForm.patchValue({ email: 'test@test.com', password: 'pass123', rememberMe: true });
+
+    component.loginForm.patchValue(credentials);
     component.onSubmit();
-    setTimeout(() => {
-      const callArgs = authService.login.calls.mostRecent().args[0];
-      expect(callArgs.rememberMe).toBe(true);
-      done();
-    }, 100);
+    tick();
+
+    expect(authServiceSpy.login).toHaveBeenCalledWith(credentials);
+    expect(component.successMessage).toContain('Bienvenido Test User');
+  }));
+
+  it('should handle login error', () => {
+    const credentials = {
+      email: 'test@example.com',
+      password: 'password123',
+      rememberMe: false
+    };
+
+    authServiceSpy.login.and.returnValue(throwError(() => ({ status: 401 })));
+
+    component.loginForm.patchValue(credentials);
+    component.onSubmit();
+
+    expect(component.errorMessage).toBe('Credenciales inválidas');
+    expect(component.isLoading).toBeFalse();
+  });
+
+  it('should navigate to dashboard if already authenticated', () => {
+    authServiceSpy.isAuthenticated.and.returnValue(true);
+    component.ngOnInit();
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  it('should navigate based on user role after successful login', fakeAsync(() => {
+    const credentials = {
+      email: 'admin@test.com',
+      password: 'password',
+      rememberMe: false
+    };
+
+    authServiceSpy.login.and.returnValue(of({
+      msg: 'Login exitoso',
+      token: 'fake-jwt-token',
+      expiresIn: '3600',
+      usuario: {
+        _id: '456',
+        nombre: 'Admin',
+        email: 'admin@test.com',
+        tipo: 'admin_central'
+      }
+    }));
+
+    component.loginForm.patchValue(credentials);
+    component.onSubmit();
+    tick(1000);
+
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard/hoteles']);
+  }));
+
+  it('should handle volver() navigation', () => {
+    component.volver();
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
+  });
+
+  it('should prevent default and navigate on goToRegister()', () => {
+    const event = new Event('click');
+    spyOn(event, 'preventDefault');
+    
+    component.goToRegister(event);
+    
+    expect(event.preventDefault).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/register']);
   });
 });

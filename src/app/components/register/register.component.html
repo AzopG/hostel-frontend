@@ -1,0 +1,186 @@
+<div class="register-container">
+  <div class="navigation-header">
+    <button class="btn-volver" (click)="volver()" title="Volver al inicio">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </div>
+
+  <div class="register-layout">
+    <div class="image-section">
+      <div class="image-container">
+        <img src="registro.png" alt="Registro Hotel Paradise" class="register-image">
+        <div class="image-overlay">
+          <div class="welcome-text">
+            <h2>Únete a Hotel Paradise</h2>
+            <p>Descubre una nueva forma de gestionar tu experiencia hotelera</p>
+            <div class="features-list">
+              <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Reservas en línea</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Gestión completa</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Soporte 24/7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="register-card">
+        <div class="register-header">
+          <h2>Crear Cuenta</h2>
+          <p>Regístrate para acceder al sistema hotelero</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+          <div class="form-group">
+            <label for="nombre">Nombre completo <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fas fa-user"></i></span>
+              <input
+                id="nombre"
+                type="text"
+                formControlName="nombre"
+                placeholder="Ingresa tu nombre completo"
+                [class.error]="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
+                [attr.aria-invalid]="registerForm.get('nombre')?.invalid"
+              />
+            </div>
+            <div class="error-message" *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched">
+              <span *ngIf="registerForm.get('nombre')?.errors?.['required']">El nombre es requerido</span>
+              <span *ngIf="registerForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Correo electrónico <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fas fa-envelope"></i></span>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="admin@hotelchain.com"
+                [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                [attr.aria-invalid]="registerForm.get('email')?.invalid"
+              />
+            </div>
+            <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+              <span *ngIf="registerForm.get('email')?.errors?.['required']">El correo es requerido</span>
+              <span *ngIf="registerForm.get('email')?.errors?.['email']">Formato de correo inválido</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Contraseña <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                placeholder="••••••••"
+                [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                [attr.aria-invalid]="registerForm.get('password')?.invalid"
+              />
+            </div>
+            <div class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+              <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es requerida</span>
+              <span *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar contraseña <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
+              <input
+                id="confirmPassword"
+                type="password"
+                formControlName="confirmPassword"
+                placeholder="Repite tu contraseña"
+                [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+                [attr.aria-invalid]="registerForm.get('confirmPassword')?.invalid"
+              />
+            </div>
+            <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+              <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Debes confirmar tu contraseña</span>
+            </div>
+            <div class="error-message" *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
+              <span>Las contraseñas no coinciden</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tipo">Tipo de cuenta <span class="required">*</span></label>
+            <div class="select-wrapper">
+              <span class="input-icon"><i class="fas fa-tag"></i></span>
+              <select
+                id="tipo"
+                formControlName="tipo"
+                [class.error]="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched"
+                [attr.aria-invalid]="registerForm.get('tipo')?.invalid"
+              >
+                <option value="">Selecciona un tipo</option>
+                <option value="cliente">Cliente</option>
+                <option value="empresa">Empresa</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+            <div class="error-message" *ngIf="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched">
+              <span *ngIf="registerForm.get('tipo')?.errors?.['required']">Debes seleccionar un tipo de cuenta</span>
+            </div>
+          </div>
+
+          <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'empresa'">
+            <label for="empresa">Nombre de la empresa <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fas fa-building"></i></span>
+              <input
+                id="empresa"
+                type="text"
+                formControlName="empresa"
+                placeholder="Ingresa el nombre de tu empresa"
+                [class.error]="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched"
+                [attr.aria-invalid]="registerForm.get('empresa')?.invalid"
+              />
+            </div>
+            <div class="error-message" *ngIf="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched">
+              <span *ngIf="registerForm.get('empresa')?.errors?.['required']">El nombre de la empresa es requerido</span>
+            </div>
+          </div>
+
+          <div class="alert error-alert" *ngIf="errorMessage">
+            <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+            <strong>{{ errorMessage }}</strong>
+          </div>
+
+          <div class="alert success-alert" *ngIf="successMessage">
+            <span class="alert-icon"><i class="fas fa-check-circle"></i></span>
+            {{ successMessage }}
+          </div>
+
+          <button 
+            type="submit" 
+            class="submit-btn"
+            [disabled]="isLoading || registerForm.invalid"
+          >
+            <span *ngIf="isLoading" class="loading-spinner"></span>
+            <span class="btn-text">{{ isLoading ? 'Creando cuenta...' : 'Crear Cuenta' }}</span>
+          </button>
+        </form>
+
+        <div class="register-footer">
+          <p>¿Ya tienes cuenta? <a routerLink="/login" class="login-link">Inicia sesión aquí</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
