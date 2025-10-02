@@ -126,9 +126,20 @@ export class AuthService {
       if (token && userStr) {
         try {
           const user = JSON.parse(userStr);
-          this.isAuthenticatedSubject.next(true);
-          this.currentUserSubject.next(user);
+          // Validar que el token no esté expirado antes de hacer la verificación
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const currentTime = Math.floor(Date.now() / 1000);
+          
+          if (payload.exp && payload.exp > currentTime) {
+            // Token no expirado, usar datos del storage
+            this.isAuthenticatedSubject.next(true);
+            this.currentUserSubject.next(user);
+          } else {
+            // Token expirado
+            this.logout();
+          }
         } catch (error) {
+
           this.logout();
         }
       }
@@ -155,6 +166,7 @@ export class AuthService {
           }
         } catch (error) {
           console.warn('Invalid token format:', error);
+
           this.logout();
         }
       }
@@ -271,7 +283,9 @@ export class AuthService {
     const headers = this.getAuthHeaders();
     return this.http.get<{ usuario: Usuario }>(`${this.API_URL}/verify`, { headers })
       .pipe(
+
         catchError(this.handleError<{ usuario: Usuario }>('verifyToken')),
+
         catchError((error) => {
           console.warn('Token verification endpoint not available:', error);
           // En lugar de fallar, devolver un observable vacío que cause logout
@@ -398,3 +412,4 @@ export class AuthService {
     };
   }
 }
+

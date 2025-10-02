@@ -252,9 +252,6 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               </ul>
             </nav>
           </div>
-        </div>
-      </div>
-    </div>
   `,
   styles: [`
     .usuarios-container {
