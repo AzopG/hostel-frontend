@@ -1,8 +1,10 @@
-import { isPlatformBrowser } from '@angular/common';
+
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
+
 
 export interface Usuario {
   _id: string;
@@ -117,6 +119,21 @@ export class AuthService {
    * CA4: Verifica tanto localStorage como sessionStorage
    */
   private checkStoredToken(): void {
+
+    if (isPlatformBrowser(this.platformId)) {
+      const token = this.getToken();
+      const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+      
+      if (token && userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          this.isAuthenticatedSubject.next(true);
+          this.currentUserSubject.next(user);
+        } catch (error) {
+          // Error al parsear el usuario, limpiar storage
+          this.logout();
+        }
+
     const token = this.getToken();
     if (token) {
       // Validar que el token no esté expirado antes de hacer la verificación
@@ -149,6 +166,7 @@ export class AuthService {
       } catch (error) {
         console.warn('Invalid token format:', error);
         this.logout();
+
       }
     }
   }
@@ -180,7 +198,13 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(response.usuario);
         }),
-        catchError(this.handleError<LoginResponse>('login'))
+
+        catchError(error => {
+          console.error('Login error:', error);
+          // No interceptar el error, dejarlo pasar al componente
+          throw error;
+        })
+
       );
   }
 
@@ -259,11 +283,15 @@ export class AuthService {
     const headers = this.getAuthHeaders();
     return this.http.get<{ usuario: Usuario }>(`${this.API_URL}/verify`, { headers })
       .pipe(
+
+        catchError(this.handleError<{ usuario: Usuario }>('verifyToken'))
+
         catchError((error) => {
           console.warn('Token verification endpoint not available:', error);
           // En lugar de fallar, devolver un observable vacío que cause logout
           return of(null as any);
         })
+
       );
   }
 
@@ -384,4 +412,4 @@ export class AuthService {
       return of(result as T);
     };
   }
-}
+

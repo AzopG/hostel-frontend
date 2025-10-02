@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -7,72 +8,8 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormsModule],
+  imports: [CommonModule],
   template: `
-    <div *ngIf="modalVisible" class="modal-backdrop" (click)="cerrarModal()" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:1000;"></div>
-    <div *ngIf="modalVisible" class="modal" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1001;min-width:350px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.25);padding:2rem;">
-      <div class="modal-content">
-        <h2 *ngIf="modalModo === 'ver'">Detalles de Usuario</h2>
-        <h2 *ngIf="modalModo === 'editar'">Editar Usuario</h2>
-        <h2 *ngIf="modalModo === 'eliminar'">Eliminar Usuario</h2>
-        <form *ngIf="modalModo === 'editar'" (ngSubmit)="guardarEdicionUsuario()" style="display:flex;flex-direction:column;gap:1rem;">
-          <div class="form-group" style="display:flex;flex-direction:column;align-items:flex-start;">
-            <label style="font-weight:600;">Nombre:</label>
-            <input [(ngModel)]="modalUsuario.nombre" name="nombre" style="border-radius:8px;border:1px solid #ccc;padding:8px;width:100%;" />
-          </div>
-          <div class="form-group" style="display:flex;flex-direction:column;align-items:flex-start;">
-            <label style="font-weight:600;">Email:</label>
-            <input [(ngModel)]="modalUsuario.email" name="email" style="border-radius:8px;border:1px solid #ccc;padding:8px;width:100%;" />
-          </div>
-          <div class="form-group" style="display:flex;flex-direction:column;align-items:flex-start;">
-            <label style="font-weight:600;">Teléfono:</label>
-            <input [(ngModel)]="modalUsuario.telefono" name="telefono" style="border-radius:8px;border:1px solid #ccc;padding:8px;width:100%;" />
-          </div>
-          <div class="form-group" style="display:flex;flex-direction:column;align-items:flex-start;">
-            <label style="font-weight:600;">Rol:</label>
-            <select [(ngModel)]="modalUsuario.tipo" name="tipo" style="border-radius:8px;border:1px solid #ccc;padding:8px;width:100%;">
-              <option value="admin_central">Admin Central</option>
-              <option value="admin_hotel">Admin Hotel</option>
-              <option value="empresa">Empresa</option>
-              <option value="cliente">Cliente</option>
-            </select>
-          </div>
-          <div class="form-group" style="display:flex;flex-direction:column;align-items:flex-start;">
-            <label style="font-weight:600;">Nueva Contraseña:</label>
-            <input [(ngModel)]="modalUsuario.nuevaPassword" name="nuevaPassword" type="password" placeholder="Dejar vacío para no cambiar" style="border-radius:8px;border:1px solid #ccc;padding:8px;width:100%;" />
-          </div>
-          <div class="modal-actions" style="display:flex;justify-content:flex-end;gap:1rem;">
-            <button type="button" (click)="cerrarModal()" style="background:#eee;border:none;padding:8px 16px;border-radius:8px;font-weight:600;">Cancelar</button>
-            <button type="submit" style="background:#667eea;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;">Guardar</button>
-          </div>
-        </form>
-        <div *ngIf="modalModo === 'ver'" style="display:flex;flex-direction:column;gap:1rem;">
-          <div><b>Nombre:</b> {{ modalUsuario.nombre }}</div>
-          <div><b>Email:</b> {{ modalUsuario.email }}</div>
-          <div><b>Teléfono:</b> {{ modalUsuario.telefono }}</div>
-          <div><b>Rol:</b> {{ getTipoLabel(modalUsuario.tipo) }}</div>
-          <div><b>Contraseña:</b>
-            <span *ngIf="modalUsuario.password && modalUsuario.password.startsWith('$2b$')">
-              <span style="color:#888;font-style:italic;">Contraseña protegida (no editable ni visible)</span>
-            </span>
-            <span *ngIf="modalUsuario.password && !modalUsuario.password.startsWith('$2b$')">
-              <span *ngIf="mostrarPassword">{{ modalUsuario.password }}<button (click)="mostrarPassword=false" style="margin-left:8px;">🙈</button></span>
-              <span *ngIf="!mostrarPassword">••••••••<button (click)="mostrarPassword=true" style="margin-left:8px;">👁️</button></span>
-            </span>
-          </div>
-          <div class="modal-actions" style="display:flex;justify-content:flex-end;gap:1rem;">
-            <button type="button" (click)="cerrarModal()" style="background:#667eea;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;">Cerrar</button>
-          </div>
-        </div>
-        <div *ngIf="modalModo === 'eliminar'">
-          <p>¿Seguro que deseas eliminar al usuario <b>{{ modalUsuario.nombre }}</b>?</p>
-          <div class="modal-actions">
-            <button type="button" (click)="cerrarModal()">Cancelar</button>
-            <button type="button" (click)="confirmarEliminarUsuario()">Eliminar</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="usuarios-container">
       <!-- Header moderno -->
       <div class="page-header">
@@ -141,6 +78,18 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
             </div>
           </div>
           <div class="col-md-3">
+            <div class="stat-card stat-success">
+              <div class="stat-icon">
+                <i class="fas fa-user-check"></i>
+              </div>
+              <div class="stat-content">
+                <h3 class="stat-number">{{ getUsuariosActivos() }}</h3>
+                <p class="stat-label">Usuarios Activos</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+
             <div class="stat-card stat-warning">
               <div class="stat-icon">
                 <i class="fas fa-user-tie"></i>
@@ -192,7 +141,8 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                   <th>Contacto</th>
                   <th>Tipo</th>
                   <th>Empresa</th>
-                  <!-- <th>Estado</th> -->
+                  <th>Estado</th>
+
                   <th>Último Acceso</th>
                   <th>Acciones</th>
                 </tr>
@@ -210,6 +160,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                       <div class="user-details">
                         <div class="user-name">{{ usuario.nombre }}</div>
                         <div class="user-id">#{{ usuario._id }}</div>
+
                       </div>
                     </div>
                   </td>
@@ -228,6 +179,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                     </span>
                   </td>
                   <td>
+
                     <ng-container *ngIf="usuario.empresa && usuario.empresa !== '-' && usuario.empresa.trim() !== ''">
                       <span class="empresa-badge">
                         <i class="fas fa-building me-1"></i>
@@ -239,6 +191,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                     </ng-container>
                   </td>
                   <!--
+
                   <td>
                     <span class="status-badge" 
                           [ngClass]="usuario.activo ? 'status-active' : 'status-inactive'">
@@ -246,11 +199,12 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                       {{ usuario.activo ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
-                  -->
+
                   <td>
                     <span class="text-muted">
                       <i class="fas fa-clock me-1"></i>
                       {{ usuario.updatedAt ? (usuario.updatedAt | date:'short') : 'Nunca' }}
+
                     </span>
                   </td>
                   <td>
@@ -307,10 +261,16 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
   styles: [`
     .usuarios-container {
       padding: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      margin: -20px;
-      padding: 20px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
+      min-height: calc(100vh - 70px);
+      margin: 0;
+      padding: 2rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
     }
 
     .page-header {
@@ -744,6 +704,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
   `]
 })
 export class UsuariosComponent {
+
   usuarios: Usuario[] = [];
   modalVisible = false;
   modalUsuario: any = null;
@@ -765,6 +726,7 @@ export class UsuariosComponent {
       }
     );
   }
+
 
   getBadgeClass(tipo: string): string {
     switch (tipo) {
@@ -797,8 +759,9 @@ export class UsuariosComponent {
   }
 
   getUsuariosActivos(): number {
-    // Si no existe el campo activo, considera todos los usuarios como activos
-    return this.usuarios.length;
+
+    return this.usuarios.filter(u => u.activo).length;
+
   }
 
   getAdministradores(): number {
@@ -811,6 +774,7 @@ export class UsuariosComponent {
 
   trackByUser(index: number, usuario: any): string {
     return usuario._id;
+
   }
 
   agregarUsuario(): void {
@@ -819,6 +783,7 @@ export class UsuariosComponent {
   }
 
   verUsuario(usuario: any): void {
+
     this.modalUsuario = { ...usuario };
     this.modalModo = 'ver';
     this.mostrarPassword = false;
