@@ -196,7 +196,7 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
             />
             <span class="checkbox-custom"></span>
             <span class="servicio-info">
-              <span class="servicio-icono" [innerHTML]="servicio.icono"></span>
+              <i [ngClass]="['servicio-icono', 'fas', servicio.icono]"></i>
               <span class="servicio-texto">
                 <strong>{{ servicio.nombre }}</strong>
                 <small>{{ servicio.descripcion }}</small>
