@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,4 +32,5 @@ export class HabitacionesComponent {
 		// Aquí iría la lógica para filtrar habitaciones según los filtros
 		// Puedes implementar la llamada al servicio o filtrar el array local
 	}
+
 }
