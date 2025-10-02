@@ -652,7 +652,7 @@ import * as HotelSelectors from '../../store/selectors/hotel.selectors';
       text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-      font-weight: 600;
+      font-weight: 400;
       margin-left: auto;
       min-width: 24px;
       height: 20px;
