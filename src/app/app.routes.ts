@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+  // HU08: Ver detalle de reserva (acceso público)
+ import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
@@ -40,6 +41,10 @@ export const routes: Routes = [
   { 
     path: 'mis-reservas', 
     loadComponent: () => import('./components/mis-reservas/mis-reservas.component').then(m => m.MisReservasComponent)
+  },
+  {
+    path: 'detalle-reserva/:codigo',
+    loadComponent: () => import('./components/detalle-reserva/detalle-reserva.component').then(m => m.DetalleReservaComponent)
   },
   // HU11: Ver recibo de reserva (acceso público)
   { 

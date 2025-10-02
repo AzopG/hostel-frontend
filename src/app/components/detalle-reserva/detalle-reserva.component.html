@@ -1,0 +1,29 @@
+<div *ngIf="cargando" class="detalle-cargando">Cargando reserva...</div>
+<div *ngIf="error && !cargando" class="detalle-error">{{ error }}</div>
+<div *ngIf="reserva && !cargando" class="detalle-reserva">
+  <h2>Detalle de Reserva</h2>
+  <div class="codigo">Código: <b>{{ reserva.codigoReserva }}</b></div>
+  <div class="estado">Estado: <span [ngClass]="reserva.estado">{{ reserva.estado }}</span></div>
+  <div class="hotel">
+    <b>Hotel:</b> {{ reserva.hotel.nombre }}<br>
+    <b>Ciudad:</b> {{ reserva.hotel.ciudad }}<br>
+    <b>Dirección:</b> {{ reserva.hotel.direccion }}
+  </div>
+  <div class="habitacion">
+    <b>Habitación:</b> {{ reserva.habitacion.tipo }} - {{ reserva.habitacion.numero }}
+  </div>
+  <div class="fechas">
+    <b>Check-in:</b> {{ reserva.fechaInicio | date:'longDate' }}<br>
+    <b>Check-out:</b> {{ reserva.fechaFin | date:'longDate' }}<br>
+    <b>Noches:</b> {{ reserva.noches }}
+  </div>
+  <div class="tarifa">
+    <b>Total:</b> {{ reserva.tarifa.total | currency:'COP':'symbol':'1.0-0' }}
+  </div>
+  <div class="huesped">
+    <b>Huésped:</b> {{ reserva.datosHuesped.nombre }} {{ reserva.datosHuesped.apellido }}<br>
+    <b>Email:</b> {{ reserva.datosHuesped.email }}<br>
+    <b>Teléfono:</b> {{ reserva.datosHuesped.telefono }}
+  </div>
+  <button (click)="volver()" class="btn btn-primary">Volver</button>
+</div>
