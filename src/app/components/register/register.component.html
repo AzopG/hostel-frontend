@@ -125,8 +125,8 @@
               <select
                 id="tipo"
                 formControlName="tipo"
-                [class.error]="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched"
-                [attr.aria-invalid]="registerForm.get('tipo')?.invalid"
+                [class.error]="hasError('tipo')"
+                [attr.aria-invalid]="hasError('tipo')"
               >
                 <option value="">Selecciona un tipo</option>
                 <option value="cliente">Cliente</option>
@@ -134,26 +134,114 @@
               </select>
               <span class="select-arrow">▼</span>
             </div>
-            <div class="error-message" *ngIf="registerForm.get('tipo')?.invalid && registerForm.get('tipo')?.touched">
-              <span *ngIf="registerForm.get('tipo')?.errors?.['required']">Debes seleccionar un tipo de cuenta</span>
+            <div class="error-message" *ngIf="hasError('tipo')">
+              <span>{{ getErrorMessage('tipo') }}</span>
             </div>
           </div>
 
-          <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'empresa'">
-            <label for="empresa">Nombre de la empresa <span class="required">*</span></label>
+          <!-- HU13: Campos específicos para empresas -->
+          <ng-container *ngIf="registerForm.get('tipo')?.value === 'empresa'">
+            <div class="form-group">
+              <label for="razonSocial">Razón Social <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-building"></i></span>
+                <input
+                  id="razonSocial"
+                  type="text"
+                  formControlName="razonSocial"
+                  placeholder="Ingresa la razón social de tu empresa"
+                  [class.error]="hasError('razonSocial')"
+                  [attr.aria-invalid]="hasError('razonSocial')"
+                />
+              </div>
+              <div class="error-message" *ngIf="hasError('razonSocial')">
+                <span>{{ getErrorMessage('razonSocial') }}</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="nit">NIT <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                <input
+                  id="nit"
+                  type="text"
+                  formControlName="nit"
+                  placeholder="900.123.456-1"
+                  [class.error]="hasError('nit')"
+                  [attr.aria-invalid]="hasError('nit')"
+                  (input)="onNitInput($event)"
+                />
+              </div>
+              <div class="error-message" *ngIf="hasError('nit')">
+                <span>{{ getErrorMessage('nit') }}</span>
+              </div>
+              <div class="help-text">
+                <small>Formato válido: 900.123.456-1 o 900123456</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactoNombre">Nombre del Contacto <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-user-tie"></i></span>
+                <input
+                  id="contactoNombre"
+                  type="text"
+                  formControlName="contactoNombre"
+                  placeholder="Nombre de la persona de contacto"
+                  [class.error]="hasError('contactoNombre')"
+                  [attr.aria-invalid]="hasError('contactoNombre')"
+                />
+              </div>
+              <div class="error-message" *ngIf="hasError('contactoNombre')">
+                <span>{{ getErrorMessage('contactoNombre') }}</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactoCargo">Cargo del Contacto</label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-briefcase"></i></span>
+                <input
+                  id="contactoCargo"
+                  type="text"
+                  formControlName="contactoCargo"
+                  placeholder="Ej: Gerente General, Representante Legal"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactoTelefono">Teléfono de Contacto <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><i class="fas fa-phone"></i></span>
+                <input
+                  id="contactoTelefono"
+                  type="tel"
+                  formControlName="contactoTelefono"
+                  placeholder="+57 300 123 4567"
+                  [class.error]="hasError('contactoTelefono')"
+                  [attr.aria-invalid]="hasError('contactoTelefono')"
+                />
+              </div>
+              <div class="error-message" *ngIf="hasError('contactoTelefono')">
+                <span>{{ getErrorMessage('contactoTelefono') }}</span>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Campo básico de empresa (legacy - solo para clientes que pongan nombre de empresa) -->
+          <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'cliente'">
+            <label for="empresa">Nombre de la empresa (opcional)</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fas fa-building"></i></span>
               <input
                 id="empresa"
                 type="text"
                 formControlName="empresa"
-                placeholder="Ingresa el nombre de tu empresa"
-                [class.error]="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched"
-                [attr.aria-invalid]="registerForm.get('empresa')?.invalid"
+                placeholder="Si trabajas para una empresa, ingrésala aquí"
               />
-            </div>
-            <div class="error-message" *ngIf="registerForm.get('empresa')?.invalid && registerForm.get('empresa')?.touched">
-              <span *ngIf="registerForm.get('empresa')?.errors?.['required']">El nombre de la empresa es requerido</span>
             </div>
           </div>
 

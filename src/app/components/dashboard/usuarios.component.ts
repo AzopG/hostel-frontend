@@ -8,7 +8,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="usuarios-container">
       <!-- Header moderno -->
@@ -179,32 +179,32 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                     </span>
                   </td>
                   <td>
-
-                    <ng-container *ngIf="usuario.empresa && usuario.empresa !== '-' && usuario.empresa.trim() !== ''">
-                      <span class="empresa-badge">
-                        <i class="fas fa-building me-1"></i>
-                        {{ usuario.empresa }}
-                      </span>
+                    <ng-container *ngIf="usuario.tipo === 'empresa'">
+                      <div class="empresa-info">
+                        <div class="empresa-nombre">
+                          <i class="fas fa-building me-1"></i>
+                          {{ usuario.razonSocial || usuario.empresa || 'Empresa' }}
+                        </div>
+                        <div class="empresa-nit" *ngIf="usuario.nit">
+                          <small class="text-muted">NIT: {{ formatearNIT(usuario.nit) }}</small>
+                        </div>
+                      </div>
                     </ng-container>
-                    <ng-container *ngIf="!usuario.empresa || usuario.empresa === '-' || usuario.empresa.trim() === ''">
-                      <span class="text-muted">No es una Empresa</span>
+                    <ng-container *ngIf="usuario.tipo !== 'empresa'">
+                      <span class="text-muted">-</span>
                     </ng-container>
                   </td>
-                  <!--
-
                   <td>
                     <span class="status-badge" 
-                          [ngClass]="usuario.activo ? 'status-active' : 'status-inactive'">
-                      <i [class]="usuario.activo ? 'fas fa-circle' : 'fas fa-circle'" class="status-dot me-1"></i>
-                      {{ usuario.activo ? 'Activo' : 'Inactivo' }}
+                          [ngClass]="usuario.activo !== false ? 'status-active' : 'status-inactive'">
+                      <i [class]="usuario.activo !== false ? 'fas fa-circle' : 'fas fa-circle'" class="status-dot me-1"></i>
+                      {{ usuario.activo !== false ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
-
                   <td>
                     <span class="text-muted">
                       <i class="fas fa-clock me-1"></i>
                       {{ usuario.updatedAt ? (usuario.updatedAt | date:'short') : 'Nunca' }}
-
                     </span>
                   </td>
                   <td>
@@ -254,6 +254,156 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
               </ul>
             </nav>
           </div>
+        </div>
+      </div>
+
+      <!-- Modal para ver/editar/eliminar usuario -->
+      <div class="modal-overlay" *ngIf="modalVisible" (click)="cerrarModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3 class="modal-title">
+              <i *ngIf="modalModo === 'ver'" class="fas fa-eye me-2"></i>
+              <i *ngIf="modalModo === 'editar'" class="fas fa-edit me-2"></i>
+              <i *ngIf="modalModo === 'eliminar'" class="fas fa-trash me-2"></i>
+              {{ modalModo === 'ver' ? 'Ver Usuario' : modalModo === 'editar' ? 'Editar Usuario' : 'Eliminar Usuario' }}
+            </h3>
+            <button class="btn-close" (click)="cerrarModal()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="modal-body" *ngIf="modalUsuario">
+            <!-- Modo Ver -->
+            <div *ngIf="modalModo === 'ver'" class="user-details">
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <label>Nombre:</label>
+                  <span>{{ modalUsuario.nombre }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Email:</label>
+                  <span>{{ modalUsuario.email }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Tipo:</label>
+                  <span class="badge-modern" [ngClass]="getBadgeClass(modalUsuario.tipo)">
+                    {{ getTipoLabel(modalUsuario.tipo) }}
+                  </span>
+                </div>
+                
+                <!-- HU13: Información adicional para empresas -->
+                <ng-container *ngIf="modalUsuario.tipo === 'empresa'">
+                  <div class="detail-item" *ngIf="modalUsuario.razonSocial">
+                    <label>Razón Social:</label>
+                    <span>{{ modalUsuario.razonSocial }}</span>
+                  </div>
+                  <div class="detail-item" *ngIf="modalUsuario.nit">
+                    <label>NIT:</label>
+                    <span>{{ formatearNIT(modalUsuario.nit) }}</span>
+                  </div>
+                  <div class="detail-item" *ngIf="modalUsuario.contactoEmpresa?.nombre">
+                    <label>Contacto:</label>
+                    <span>{{ modalUsuario.contactoEmpresa.nombre }}</span>
+                  </div>
+                  <div class="detail-item" *ngIf="modalUsuario.contactoEmpresa?.cargo">
+                    <label>Cargo:</label>
+                    <span>{{ modalUsuario.contactoEmpresa.cargo }}</span>
+                  </div>
+                  <div class="detail-item" *ngIf="modalUsuario.contactoEmpresa?.telefono">
+                    <label>Teléfono:</label>
+                    <span>{{ modalUsuario.contactoEmpresa.telefono }}</span>
+                  </div>
+                </ng-container>
+                
+                <div class="detail-item" *ngIf="modalUsuario.telefono">
+                  <label>Teléfono:</label>
+                  <span>{{ modalUsuario.telefono }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Estado:</label>
+                  <span class="status-badge" [ngClass]="modalUsuario.activo !== false ? 'status-active' : 'status-inactive'">
+                    {{ modalUsuario.activo !== false ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </div>
+                <div class="detail-item" *ngIf="modalUsuario.createdAt">
+                  <label>Registrado:</label>
+                  <span>{{ modalUsuario.createdAt | date:'medium' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modo Editar -->
+            <div *ngIf="modalModo === 'editar'" class="edit-form">
+              <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" [(ngModel)]="modalUsuario.nombre" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Email:</label>
+                <input type="email" [(ngModel)]="modalUsuario.email" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Tipo:</label>
+                <select [(ngModel)]="modalUsuario.tipo" class="form-control">
+                  <option value="cliente">Cliente</option>
+                  <option value="empresa">Empresa</option>
+                  <option value="admin_hotel">Admin Hotel</option>
+                  <option value="admin_central">Admin Central</option>
+                </select>
+              </div>
+              
+              <!-- HU13: Campos adicionales para empresas -->
+              <ng-container *ngIf="modalUsuario.tipo === 'empresa'">
+                <div class="form-group">
+                  <label>Razón Social:</label>
+                  <input type="text" [(ngModel)]="modalUsuario.razonSocial" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>NIT:</label>
+                  <input type="text" [(ngModel)]="modalUsuario.nit" class="form-control">
+                </div>
+              </ng-container>
+              
+              <div class="form-group" *ngIf="modalUsuario.tipo === 'empresa'">
+                <label>Empresa:</label>
+                <input type="text" [(ngModel)]="modalUsuario.empresa" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Teléfono:</label>
+                <input type="text" [(ngModel)]="modalUsuario.telefono" class="form-control">
+              </div>
+            </div>
+
+            <!-- Modo Eliminar -->
+            <div *ngIf="modalModo === 'eliminar'" class="delete-confirmation">
+              <div class="warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <p class="warning-text">
+                ¿Está seguro que desea eliminar al usuario <strong>{{ modalUsuario.nombre }}</strong>?
+              </p>
+              <p class="warning-subtitle">
+                Esta acción no se puede deshacer.
+              </p>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button *ngIf="modalModo === 'ver'" class="btn btn-secondary" (click)="cerrarModal()">
+              Cerrar
+            </button>
+            <div *ngIf="modalModo === 'editar'">
+              <button class="btn btn-secondary me-2" (click)="cerrarModal()">Cancelar</button>
+              <button class="btn btn-primary" (click)="guardarEdicionUsuario()">Guardar</button>
+            </div>
+            <div *ngIf="modalModo === 'eliminar'">
+              <button class="btn btn-secondary me-2" (click)="cerrarModal()">Cancelar</button>
+              <button class="btn btn-danger" (click)="confirmarEliminarUsuario()">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
   styles: [`
     .usuarios-container {
@@ -570,6 +720,22 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       font-size: 0.875rem;
     }
 
+    .empresa-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .empresa-nombre {
+      color: #4a5568;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .empresa-nit {
+      font-size: 0.75rem;
+    }
+
     .status-badge {
       padding: 0.5rem 1rem;
       border-radius: 20px;
@@ -698,6 +864,215 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
         flex-direction: column;
       }
     }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2d3748;
+      margin: 0;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #a0aec0;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close:hover {
+      background: #f7fafc;
+      color: #e53e3e;
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .detail-item label {
+      font-weight: 600;
+      color: #4a5568;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-item span {
+      color: #2d3748;
+      font-size: 1rem;
+    }
+
+    .edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #4a5568;
+      font-size: 0.875rem;
+    }
+
+    .form-control {
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .delete-confirmation {
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .warning-icon {
+      font-size: 4rem;
+      color: #f56565;
+      margin-bottom: 1rem;
+    }
+
+    .warning-text {
+      font-size: 1.25rem;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+
+    .warning-subtitle {
+      color: #718096;
+      font-size: 1rem;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      padding: 2rem;
+      border-top: 1px solid #e2e8f0;
+      background: #f8fafc;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #4a5568;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e0;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #f56565, #e53e3e);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(245, 101, 101, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        width: 95%;
+      }
+
+      .modal-header,
+      .modal-body,
+      .modal-footer {
+        padding: 1.5rem;
+      }
+    }
   `]
 })
 export class UsuariosComponent {
@@ -771,7 +1146,26 @@ export class UsuariosComponent {
 
   trackByUser(index: number, usuario: any): string {
     return usuario._id;
+  }
 
+  /**
+   * HU13: Formatear NIT para visualización
+   * Ejemplo: 9001234561 → 900.123.456-1
+   */
+  formatearNIT(nit: string): string {
+    if (!nit) return '';
+    
+    const nitStr = nit.toString();
+    
+    if (nitStr.length === 10) {
+      // Formato: XXX.XXX.XXX-X
+      return `${nitStr.slice(0, 3)}.${nitStr.slice(3, 6)}.${nitStr.slice(6, 9)}-${nitStr.slice(9)}`;
+    } else if (nitStr.length === 9) {
+      // Formato: XXX.XXX.XXX
+      return `${nitStr.slice(0, 3)}.${nitStr.slice(3, 6)}.${nitStr.slice(6)}`;
+    }
+    
+    return nitStr;
   }
 
   agregarUsuario(): void {

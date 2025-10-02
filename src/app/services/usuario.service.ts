@@ -7,9 +7,19 @@ export interface Usuario {
   nombre: string;
   email: string;
   tipo: string;
-  empresa?: string;
+  empresa?: string; // Nombre comercial (legacy)
+  
+  // HU13: Campos adicionales para empresas
+  razonSocial?: string; // Razón social legal
+  nit?: string; // NIT de la empresa
+  contactoEmpresa?: {
+    nombre: string;
+    cargo?: string;
+    telefono: string;
+  };
+  
   activo?: boolean;
-  telefono?: string;
+  telefono?: string; // Para clientes individuales
   createdAt?: string;
   updatedAt?: string;
 }
