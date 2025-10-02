@@ -8,6 +8,7 @@ import { trigger, state, style, transition, animate, query, stagger } from '@ang
 import { AppState } from '../../store';
 import * as HotelActions from '../../store/actions/hotel.actions';
 import * as HotelSelectors from '../../store/selectors/hotel.selectors';
+import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -51,10 +52,15 @@ export class DashboardComponent implements OnInit {
     clientes: 0,
     ingresos: '0'
   };
+  
+  estadisticas: EstadisticasGenerales = {};
+  isLoadingStats = true;
+  statsError = '';
 
   private authService = inject(AuthService);
   private router = inject(Router);
   private store = inject(Store<AppState>);
+  private estadisticasService = inject(EstadisticasService);
 
   constructor() {
     this.hoteles$ = this.store.select(HotelSelectors.selectHoteles);
@@ -74,8 +80,8 @@ export class DashboardComponent implements OnInit {
     // Cargar datos iniciales
     this.loadInitialData();
     
-    // Configurar estadísticas mock
-    this.setupStatsData();
+    // Cargar estadísticas reales
+    this.cargarEstadisticasReales();
   }
 
   private setupMenuItems(): void {
@@ -226,5 +232,76 @@ export class DashboardComponent implements OnInit {
 
   trackByMenuId(index: number, item: any): any {
     return item.id || index;
+  }
+
+  cargarEstadisticasReales(): void {
+    this.isLoadingStats = true;
+    this.statsError = '';
+    
+    this.estadisticasService.obtenerEstadisticasGenerales().subscribe({
+      next: (response) => {
+        console.log('📊 Estadísticas recibidas:', response);
+        if (response.success) {
+          this.estadisticas = response.stats;
+          this.actualizarStatsData();
+        } else {
+          this.statsError = 'Error al cargar estadísticas';
+          this.usarValoresPorDefecto();
+        }
+        this.isLoadingStats = false;
+      },
+      error: (error) => {
+        console.error('❌ Error al cargar estadísticas:', error);
+        this.statsError = 'Error de conexión al cargar estadísticas';
+        this.isLoadingStats = false;
+        this.usarValoresPorDefecto();
+      }
+    });
+  }
+
+  private actualizarStatsData(): void {
+    const userType = this.getCurrentUserType();
+    
+    if (userType === 'admin_central') {
+      this.statsData = {
+        hoteles: this.estadisticas.totalHoteles || 0,
+        reservas: this.estadisticas.totalReservas || 0,
+        clientes: this.estadisticas.totalClientes || 0,
+        ingresos: this.formatearIngresos(this.estadisticas.ingresosTotales || 0)
+      };
+    } else if (userType === 'admin_hotel') {
+      this.statsData = {
+        hoteles: this.estadisticas.totalHoteles || 0, // Usar valor real del backend
+        reservas: this.estadisticas.totalReservas || 0,
+        clientes: this.estadisticas.totalClientes || 0,
+        ingresos: this.formatearIngresos(this.estadisticas.ingresosTotales || 0)
+      };
+    } else {
+      // Cliente o empresa
+      this.statsData = {
+        hoteles: 0,
+        reservas: this.estadisticas.misReservas || 0,
+        clientes: 1,
+        ingresos: this.formatearIngresos(this.estadisticas.totalGastado || 0)
+      };
+    }
+  }
+
+  private formatearIngresos(ingresos: number): string {
+    if (ingresos >= 1000000) {
+      return `${Math.round(ingresos / 1000000)}M`;
+    } else if (ingresos >= 1000) {
+      return `${Math.round(ingresos / 1000)}K`;
+    }
+    return ingresos.toString();
+  }
+
+  private usarValoresPorDefecto(): void {
+    this.statsData = {
+      hoteles: 0,
+      reservas: 0,
+      clientes: 0,
+      ingresos: '0'
+    };
   }
 }
