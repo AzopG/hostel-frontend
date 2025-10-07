@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { DisponibilidadService, Ciudad, DisponibilidadDia } from '../../services/disponibilidad.service';
 
 @Component({
@@ -745,10 +744,7 @@ export class CalendarioDisponibilidadComponent implements OnInit {
   fechaInicio: string;
   fechaFin: string;
 
-  constructor(
-    private disponibilidadService: DisponibilidadService,
-    private router: Router
-  ) {
+  constructor(private disponibilidadService: DisponibilidadService) {
     const rango = this.disponibilidadService.getRangoFechasPorDefecto();
     this.fechaInicio = rango.fechaInicio;
     this.fechaFin = rango.fechaFin;
@@ -891,13 +887,15 @@ export class CalendarioDisponibilidadComponent implements OnInit {
    * Volver al inicio
    */
   volver(): void {
-    this.router.navigate(['/']);
+    // Implementar Router
+    window.location.href = '/';
   }
 
   /**
    * Ir a buscar habitaciones
    */
   irABuscar(): void {
-    this.router.navigate(['/buscar-habitaciones']);
+    // Implementar Router
+    window.location.href = '/buscar-habitaciones';
   }
 }

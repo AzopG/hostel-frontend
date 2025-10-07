@@ -1,0 +1,440 @@
+<!-- Esta es la sección específica de contenido que se mostrará dentro del dashboard -->
+<div class="client-reservas-container">
+  <!-- Header -->
+  <div class="header">
+    <h1><i class="fas fa-calendar-check"></i> Mis Reservas</h1>
+    <button class="btn-recargar" (click)="recargar()" [disabled]="cargando || cargandoPaquetes">
+      <i class="fas fa-sync"></i> {{ (cargando || cargandoPaquetes) ? 'Cargando...' : 'Actualizar' }}
+    </button>
+  </div>
+
+  <!-- Pestañas de tipo de reserva -->
+  <div class="tabs-section">
+    <button 
+      class="tab-btn" 
+      [class.activo]="vistaActual === 'habitaciones'"
+      (click)="cambiarVista('habitaciones')">
+      <i class="fas fa-hotel"></i> Habitaciones ({{ reservas.length }})
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.activo]="vistaActual === 'paquetes'"
+      (click)="cambiarVista('paquetes')">
+      <i class="fas fa-box"></i> Paquetes Corporativos ({{ reservasPaquetes.length }})
+    </button>
+  </div>
+
+  <!-- Filtros y Búsqueda -->
+  <div class="filtros-section">
+    <!-- Filtros por Estado -->
+    <div class="filtros-estado">
+      <button 
+        class="filtro-btn" 
+        [class.activo]="estadoFiltro === 'todas'"
+        (click)="cambiarFiltro('todas')">
+        Todas ({{ vistaActual === 'habitaciones' ? contarPorEstado('todas') : contarPaquetesPorEstado('todas') }})
+      </button>
+      <button 
+        class="filtro-btn" 
+        [class.activo]="estadoFiltro === 'confirmada'"
+        (click)="cambiarFiltro('confirmada')">
+        <i class="fas fa-check"></i> Confirmadas ({{ vistaActual === 'habitaciones' ? contarPorEstado('confirmada') : contarPaquetesPorEstado('confirmada') }})
+
+      </button>
+      <button 
+        class="filtro-btn" 
+        [class.activo]="estadoFiltro === 'pendiente'"
+        (click)="cambiarFiltro('pendiente')">
+        <i class="fas fa-hourglass-half"></i> Pendientes ({{ vistaActual === 'habitaciones' ? contarPorEstado('pendiente') : contarPaquetesPorEstado('pendiente') }})
+      </button>
+      <button 
+        class="filtro-btn" 
+        [class.activo]="estadoFiltro === 'cancelada'"
+        (click)="cambiarFiltro('cancelada')">
+        <i class="fas fa-times"></i> Canceladas ({{ vistaActual === 'habitaciones' ? contarPorEstado('cancelada') : contarPaquetesPorEstado('cancelada') }})
+      </button>
+      <button 
+        class="filtro-btn" 
+        [class.activo]="estadoFiltro === 'completada'"
+        (click)="cambiarFiltro('completada')">
+        <i class="fas fa-check-double"></i> Completadas ({{ vistaActual === 'habitaciones' ? contarPorEstado('completada') : contarPaquetesPorEstado('completada') }})
+      </button>
+    </div>
+
+    <!-- Barra de Búsqueda -->
+    <div class="busqueda">
+      <input 
+        type="text" 
+        class="input-busqueda" 
+        placeholder="Buscar por código, hotel o tipo de habitación..."
+        [(ngModel)]="busquedaCodigo"
+        (input)="buscar()">
+      <button 
+        class="btn-limpiar" 
+        *ngIf="busquedaCodigo"
+        (click)="limpiarBusqueda()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="cargando" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando reservas...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !cargando" class="error-message">
+    <p><i class="fas fa-exclamation-triangle"></i> {{ error }}</p>
+    <button class="btn-reintentar" (click)="recargar()">Reintentar</button>
+  </div>
+  
+  <!-- Lista Vacía - Habitaciones -->
+  <div *ngIf="vistaActual === 'habitaciones' && !cargando && !error && reservasFiltradas.length === 0" class="lista-vacia">
+    <div class="icono-vacio"><i class="fas fa-inbox"></i></div>
+    <h3>No hay reservas de habitaciones</h3>
+    <p *ngIf="busquedaCodigo">No se encontraron resultados para "{{ busquedaCodigo }}"</p>
+    <p *ngIf="!busquedaCodigo && estadoFiltro !== 'todas'">
+      No tienes reservas de habitaciones en estado "{{ estadoFiltro }}"
+    </p>
+    <p *ngIf="!busquedaCodigo && estadoFiltro === 'todas'">
+      Aún no has realizado ninguna reserva de habitación.
+    </p>
+    <div class="info-filtro">
+      <small><i class="fas fa-lightbulb"></i> Se muestran solo las reservas más recientes con datos completos</small>
+    </div>
+    <button class="btn-buscar-habitaciones" (click)="irABuscar()">
+      <i class="fas fa-search"></i> Buscar Habitaciones
+    </button>
+  </div>
+
+  <!-- Lista Vacía - Paquetes -->
+  <div *ngIf="vistaActual === 'paquetes' && !cargandoPaquetes && !error && reservasPaquetesFiltradas.length === 0" class="lista-vacia">
+    <div class="icono-vacio"><i class="fas fa-box-open"></i></div>
+    <h3>No hay reservas de paquetes</h3>
+    <p *ngIf="busquedaCodigo">No se encontraron resultados para "{{ busquedaCodigo }}"</p>
+    <p *ngIf="!busquedaCodigo && estadoFiltro !== 'todas'">
+      No tienes reservas de paquetes en estado "{{ estadoFiltro }}"
+    </p>
+    <p *ngIf="!busquedaCodigo && estadoFiltro === 'todas'">
+      Aún no has realizado ninguna reserva de paquete corporativo.
+    </p>
+    <button class="btn-buscar-habitaciones" (click)="irAPaquetes()">
+      <i class="fas fa-cube"></i> Ver Paquetes Disponibles
+    </button>
+  </div>
+
+  <!-- Lista de Reservas de Habitaciones -->
+  <div *ngIf="vistaActual === 'habitaciones' && !cargando && !error && reservasFiltradas.length > 0" class="reservas-grid">
+    <div *ngFor="let reserva of reservasFiltradas" class="reserva-card">
+      <!-- Header de Card -->
+      <div class="card-header">
+        <div class="codigo-estado">
+          <span class="codigo">{{ reserva.codigoReserva }}</span>
+          <span class="estado-badge" [ngClass]="getEstadoClase(reserva.estado)">
+            {{ getEstadoIcono(reserva.estado) }} {{ reserva.estado }}
+          </span>
+        </div>
+        <div class="tiempo-restante" *ngIf="reserva.estado === 'confirmada' && reserva.horasHastaCheckIn && reserva.horasHastaCheckIn > 0">
+          <i class="fas fa-clock"></i> {{ getTiempoRestante(reserva) }}
+        </div>
+      </div>
+
+      <!-- Información Principal -->
+      <div class="card-body">
+        <!-- Hotel y Habitación -->
+        <div class="info-principal">
+          <h3 class="hotel-nombre"><i class="fas fa-hotel"></i> {{ reserva.hotel.nombre }}</h3>
+          <p class="hotel-ubicacion"><i class="fas fa-map-marker-alt"></i> {{ reserva.hotel.ciudad }}, {{ reserva.hotel.departamento }}</p>
+          <p class="habitacion-tipo"><i class="fas fa-bed"></i> {{ reserva.habitacion.tipo }} - Habitación {{ reserva.habitacion.numero }}</p>
+        </div>
+
+        <!-- Fechas -->
+        <div class="info-fechas">
+          <div class="fecha-item">
+            <span class="fecha-label">Check-in:</span>
+            <span class="fecha-valor">{{ formatearFecha(reserva.fechaInicio) }}</span>
+          </div>
+          <div class="fecha-item">
+            <span class="fecha-label">Check-out:</span>
+            <span class="fecha-valor">{{ formatearFecha(reserva.fechaFin) }}</span>
+          </div>
+          <div class="fecha-item">
+            <span class="fecha-label">Noches:</span>
+            <span class="fecha-valor">{{ reserva.noches }}</span>
+          </div>
+        </div>
+
+        <!-- Tarifa -->
+        <div class="info-tarifa">
+          <div class="tarifa-total">
+            <span class="tarifa-label">Total:</span>
+            <span class="tarifa-valor">{{ formatearPrecio(reserva.tarifa.total) }}</span>
+          </div>
+        </div>
+
+        <!-- Alertas de Acción -->
+        <div class="alertas" *ngIf="reserva.estado === 'confirmada'">
+          <!-- Alerta: No puede modificar (< 24h) -->
+          <div class="alerta alerta-warning" *ngIf="!reserva.puedeModificar && reserva.horasHastaCheckIn && reserva.horasHastaCheckIn < 24 && reserva.horasHastaCheckIn > 0">
+            <i class="fas fa-exclamation-triangle"></i> No puedes modificar esta reserva (faltan menos de 24h para el check-in)
+          </div>
+
+          <!-- Alerta: Puede modificar -->
+          <div class="alerta alerta-info" *ngIf="reserva.puedeModificar">
+            <i class="fas fa-info-circle"></i> Puedes modificar las fechas hasta 24h antes del check-in
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer de Card: Botones de Acción -->
+      <div class="card-footer">
+        <!-- HU11: Botón Descargar Recibo -->
+        <button 
+          class="btn btn-recibo" 
+          *ngIf="reserva.estado === 'confirmada' || reserva.estado === 'completada'"
+          (click)="verRecibo(reserva)"
+          title="Ver y descargar recibo de pago">
+          <i class="fas fa-file-invoice"></i> Ver Recibo
+        </button>
+
+        <button class="btn btn-secondary" (click)="verDetalle(reserva)">
+          <i class="fas fa-eye"></i> Ver Detalle
+        </button>
+
+        <!-- HU09: Botón Modificar Fechas -->
+        <button 
+          class="btn btn-primary" 
+          *ngIf="reserva.estado === 'confirmada'"
+          [disabled]="!reserva.puedeModificar"
+          [title]="!reserva.puedeModificar ? 'No se puede modificar esta reserva' : 'Modificar fechas de la reserva'"
+          (click)="modificarFechas(reserva)">
+          <i class="fas fa-calendar-alt"></i> Modificar
+        </button>
+
+        <!-- HU10: Botón Cancelar -->
+        <button 
+          class="btn btn-danger" 
+          *ngIf="reserva.estado === 'confirmada'"
+          [disabled]="!reserva.puedeCancelar"
+          [title]="!reserva.puedeCancelar ? 'No se puede cancelar esta reserva' : 'Cancelar reserva'"
+          (click)="abrirModalCancelar(reserva)">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+
+        <!-- Estado no permite acciones -->
+        <span class="sin-acciones" *ngIf="reserva.estado !== 'confirmada' && reserva.estado !== 'completada'">
+          {{ reserva.estado === 'cancelada' ? 'Reserva cancelada' : 'Reserva en proceso' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Reservas de Paquetes -->
+  <div *ngIf="vistaActual === 'paquetes' && !cargandoPaquetes && !error && reservasPaquetesFiltradas.length > 0" class="reservas-grid">
+    <div *ngFor="let reserva of reservasPaquetesFiltradas" class="reserva-card paquete-card">
+      <!-- Header de Card -->
+      <div class="card-header">
+        <div class="codigo-estado">
+          <span class="codigo">{{ reserva.numeroReserva }}</span>
+          <span class="estado-badge" [ngClass]="getEstadoClase(reserva.estado)">
+            {{ getEstadoIcono(reserva.estado) }} {{ reserva.estado }}
+          </span>
+        </div>
+        <div class="tipo-evento">
+          <i class="fas fa-clipboard-list"></i> {{ reserva.tipoEvento }}
+        </div>
+      </div>
+
+      <!-- Información Principal -->
+      <div class="card-body">
+        <!-- Evento y Empresa -->
+        <div class="info-principal">
+          <h3 class="evento-nombre"><i class="fas fa-bullseye"></i> {{ reserva.nombreEvento }}</h3>
+          <p class="empresa-nombre"><i class="fas fa-building"></i> {{ reserva.datosEmpresa?.razonSocial }}</p>
+          <p class="hotel-ubicacion"><i class="fas fa-map-marker-alt"></i> Hotel: {{ reserva.paquete?.hotel?.nombre }} - {{ reserva.paquete?.hotel?.ciudad }}</p>
+        </div>
+
+        <!-- Fechas -->
+        <div class="info-fechas">
+          <div class="fecha-item">
+            <span class="fecha-label"><i class="fas fa-calendar-day"></i> Fecha del Evento:</span>
+            <span class="fecha-valor">{{ formatearFecha(reserva.fechaInicio) }}</span>
+          </div>
+          <div class="fecha-item">
+            <span class="fecha-label"><i class="fas fa-users"></i> Asistentes:</span>
+            <span class="fecha-valor">{{ reserva.numeroAsistentes }} personas</span>
+          </div>
+        </div>
+
+        <!-- Información Adicional -->
+        <div class="info-adicional">
+          <div class="info-item">
+            <span class="info-label"><i class="fas fa-envelope"></i> Email:</span>
+            <span class="info-valor">{{ reserva.datosEmpresa?.email }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label"><i class="fas fa-phone"></i> Teléfono:</span>
+            <span class="info-valor">{{ reserva.datosEmpresa?.telefono }}</span>
+          </div>
+        </div>
+
+        <!-- Precio Total -->
+        <div class="precio-total" *ngIf="reserva.precios?.total">
+          <span class="precio-label">Total:</span>
+          <span class="precio-valor">{{ formatearPrecio(reserva.precios.total) }}</span>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="card-actions">
+        <button 
+          class="btn btn-outline-primary btn-sm"
+          [title]="'Ver detalles completos de la reserva ' + reserva.numeroReserva">
+          <i class="fas fa-eye"></i> Ver Detalles
+        </button>
+        
+        <button 
+          *ngIf="reserva.estado === 'confirmada'"
+          class="btn btn-outline-warning btn-sm"
+          [title]="'Modificar reserva ' + reserva.numeroReserva">
+          <i class="fas fa-pencil-alt"></i> Modificar
+        </button>
+        
+        <button 
+          *ngIf="reserva.estado === 'confirmada'"
+          class="btn btn-outline-danger btn-sm"
+          [title]="'Cancelar reserva ' + reserva.numeroReserva">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Cancelación -->
+  <div class="modal-overlay" *ngIf="mostrarModalCancelar" (click)="cerrarModalCancelar()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="fas fa-ban"></i> Cancelar Reserva</h2>
+        <button class="btn-cerrar-modal" (click)="cerrarModalCancelar()"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- HU10: Loading mientras verifica políticas -->
+        <div *ngIf="verificandoPoliticas" class="modal-loading">
+          <div class="spinner-small"></div>
+          <p>Verificando políticas de cancelación...</p>
+        </div>
+
+        <!-- Contenido del modal cuando ya se verificaron políticas -->
+        <div *ngIf="!verificandoPoliticas && politicaCancelacion">
+          <p class="modal-advertencia">
+            <i class="fas fa-exclamation-triangle"></i> Estás a punto de cancelar la siguiente reserva:
+          </p>
+
+          <div class="reserva-resumen" *ngIf="reservaACancelar">
+            <p><strong>Código:</strong> {{ reservaACancelar.codigoReserva }}</p>
+            <p><strong>Hotel:</strong> {{ reservaACancelar.hotel.nombre }}</p>
+            <p><strong>Habitación:</strong> {{ reservaACancelar.habitacion.tipo }}</p>
+            <p><strong>Fechas:</strong> {{ formatearFecha(reservaACancelar.fechaInicio) }} - {{ formatearFecha(reservaACancelar.fechaFin) }}</p>
+            <p><strong>Total pagado:</strong> {{ formatearPrecio(reservaACancelar.tarifa.total) }}</p>
+          </div>
+
+          <!-- HU10 CA1 + CA2: Información de Penalización -->
+          <div class="politica-cancelacion">
+            <h4><i class="fas fa-clipboard-list"></i> Política de Cancelación</h4>
+            
+            <!-- CA1: Cancelación Gratuita -->
+            <div *ngIf="politicaCancelacion.dentroVentanaGratuita" class="alerta alerta-success">
+              <strong><i class="fas fa-check-circle"></i> Cancelación Gratuita</strong>
+              <p>{{ politicaCancelacion.mensaje }}</p>
+              <div class="detalle-reembolso">
+                <span>Reembolso completo:</span>
+                <strong class="monto-reembolso">{{ formatearPrecio(politicaCancelacion.montoReembolso) }}</strong>
+              </div>
+            </div>
+
+            <!-- CA2: Con Penalización -->
+            <div *ngIf="!politicaCancelacion.dentroVentanaGratuita" class="alerta alerta-warning-penalizacion">
+              <strong><i class="fas fa-exclamation-triangle"></i> Penalización Aplicable</strong>
+              <p>{{ politicaCancelacion.mensaje }}</p>
+              
+              <div class="desglose-penalizacion">
+                <div class="linea-desglose">
+                  <span>Total pagado:</span>
+                  <span>{{ formatearPrecio(reservaACancelar?.tarifa?.total || 0) }}</span>
+                </div>
+                <div class="linea-desglose penalizacion">
+                  <span>Penalización ({{ politicaCancelacion.porcentajePenalizacion }}%):</span>
+                  <span class="monto-negativo">-{{ formatearPrecio(politicaCancelacion.montoPenalizacion) }}</span>
+                </div>
+                <div class="linea-desglose total-reembolso">
+                  <span><strong>Reembolso:</strong></span>
+                  <strong class="monto-reembolso">{{ formatearPrecio(politicaCancelacion.montoReembolso) }}</strong>
+                </div>
+              </div>
+
+              <!-- CA2: Checkbox de confirmación de penalización -->
+              <div class="confirmacion-penalizacion">
+                <label class="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    [(ngModel)]="aceptaPenalizacion"
+                    [disabled]="cancelando">
+                  <span>Acepto la penalización del {{ politicaCancelacion.porcentajePenalizacion }}% y entiendo que recibiré {{ formatearPrecio(politicaCancelacion.montoReembolso) }} de reembolso.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="info-tiempo">
+              <p><strong><i class="fas fa-clock"></i> Tiempo hasta check-in:</strong> {{ politicaCancelacion.horasHastaCheckIn }} horas ({{ politicaCancelacion.diasHastaCheckIn }} días)</p>
+            </div>
+
+            <div class="detalles-politica">
+              <p class="titulo-detalles"><strong>Ventanas de cancelación:</strong></p>
+              <ul>
+                <li>{{ politicaCancelacion.detalles.ventanaGratuita }}: Sin penalización</li>
+                <li>{{ politicaCancelacion.detalles.penalizacion50 }}: 50% de penalización</li>
+                <li>{{ politicaCancelacion.detalles.penalizacion100 }}: 100% de penalización</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Motivo de cancelación -->
+          <div class="form-group">
+            <label for="motivoCancelacion">Motivo de la cancelación: *</label>
+            <textarea 
+              id="motivoCancelacion"
+              class="textarea-motivo"
+              [(ngModel)]="motivoCancelacion"
+              placeholder="Por favor, indica el motivo de la cancelación..."
+              rows="3"
+              [disabled]="cancelando"></textarea>
+          </div>
+
+          <!-- HU10 CA4: Nota sobre notificación -->
+          <p class="modal-nota">
+            <i class="fas fa-info-circle"></i> Recibirás un correo electrónico de confirmación con los detalles de la cancelación.
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer" *ngIf="!verificandoPoliticas">
+        <button 
+          class="btn btn-secondary" 
+          (click)="cerrarModalCancelar()"
+          [disabled]="cancelando">
+          Volver
+        </button>
+        <button 
+          class="btn btn-danger" 
+          (click)="confirmarCancelacion()"
+          [disabled]="cancelando || !motivoCancelacion.trim() || (politicaCancelacion && politicaCancelacion.montoPenalizacion > 0 && !aceptaPenalizacion)">
+          {{ cancelando ? 'Cancelando...' : 'Confirmar Cancelación' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
