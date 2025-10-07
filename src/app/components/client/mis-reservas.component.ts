@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ReservaService, ReservaCreada } from '../../services/reserva.service';
 import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
+import { AuthService } from '../../services/auth.service';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
 type EstadoFiltro = 'todas' | 'confirmada' | 'cancelada' | 'completada' | 'pendiente';
@@ -39,6 +40,7 @@ interface ReservaConAcciones extends ReservaCreada {
           <i class="fas fa-hotel"></i> Habitaciones ({{ reservas.length }})
         </button>
         <button 
+          *ngIf="esCliente === false"
           class="tab-btn" 
           [class.activo]="vistaActual === 'paquetes'"
           (click)="cambiarVista('paquetes')">
@@ -1511,16 +1513,32 @@ export class MisReservasClientComponent implements OnInit {
   verificandoPoliticas = false;
   politicaCancelacion: any = null;
   aceptaPenalizacion = false;
+  
+  // Control de vista según tipo de usuario
+  esCliente = true;
 
   constructor(
     private reservaService: ReservaService,
     private reservaPaqueteService: ReservaPaqueteService,
+    private authService: AuthService,
     public router: Router
   ) {}
 
   ngOnInit(): void {
+    // Determinar tipo de usuario
+    const currentUser = this.authService.getCurrentUser();
+    const tipoUsuario = currentUser?.tipo?.toLowerCase() || 'cliente';
+    this.esCliente = tipoUsuario === 'cliente';
+    
+    console.log('🔍 Debug: Tipo de usuario:', tipoUsuario, 'Es cliente:', this.esCliente);
+    
+    // Cargar reservas de habitaciones siempre
     this.cargarReservas();
-    this.cargarReservasPaquetes();
+    
+    // Cargar paquetes solo si no es cliente
+    if (!this.esCliente) {
+      this.cargarReservasPaquetes();
+    }
   }
 
   /**
@@ -1898,6 +1916,11 @@ export class MisReservasClientComponent implements OnInit {
    * Cambiar entre vista de habitaciones y paquetes
    */
   cambiarVista(vista: TipoVista): void {
+    // Si es cliente, solo permitir vista de habitaciones
+    if (this.esCliente && vista === 'paquetes') {
+      return;
+    }
+    
     this.vistaActual = vista;
     this.estadoFiltro = 'todas';
     this.busquedaCodigo = '';
