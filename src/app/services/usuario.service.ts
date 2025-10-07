@@ -36,8 +36,12 @@ export class UsuarioService {
     return this.http.get<Usuario[]>(this.apiUrl);
   }
 
-  updateUsuario(id: string, usuario: Partial<Usuario>): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, usuario);
+  createUsuario(usuario: Partial<Usuario>): Observable<Usuario> {
+    return this.http.post<Usuario>(this.apiUrl, usuario);
+  }
+
+  updateUsuario(id: string, usuario: Partial<Usuario>): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario);
   }
 
   deleteUsuario(id: string): Observable<any> {

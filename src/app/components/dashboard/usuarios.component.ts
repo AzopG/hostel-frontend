@@ -7,7 +7,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="usuarios-container">
       <!-- Header moderno -->
@@ -99,12 +99,84 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
             <div class="stat-content">
               <h3 class="stat-number">{{ getEmpresas() }}</h3>
               <p class="stat-label">Empresas</p>
-            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Tabla moderna de usuarios -->
+    <!-- Modal para crear/editar usuario -->
+    <div class="modal-overlay" *ngIf="modalVisible" (click)="cerrarModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-user me-2"></i>
+            {{ modalModo === 'crear' ? 'Nuevo Usuario' : modalModo === 'editar' ? 'Editar Usuario' : modalModo === 'ver' ? 'Ver Usuario' : 'Eliminar Usuario' }}
+          </h3>
+          <button class="btn-close" (click)="cerrarModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <form *ngIf="modalModo !== 'eliminar'" class="user-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" class="form-control" [(ngModel)]="modalUsuario.nombre" 
+                       [readonly]="modalModo === 'ver'" name="nombre">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-control" [(ngModel)]="modalUsuario.email" 
+                       [readonly]="modalModo === 'ver'" name="email">
+              </div>
+            </div>
+            
+            <div class="form-row" *ngIf="modalModo === 'crear'">
+              <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" class="form-control" [(ngModel)]="modalUsuario.password" 
+                       name="password">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>Tipo de usuario</label>
+                <select class="form-control" [(ngModel)]="modalUsuario.tipo" 
+                        [disabled]="modalModo === 'ver'" name="tipo">
+                  <option value="">Seleccionar tipo</option>
+                  <option value="admin_central">Admin Central</option>
+                  <option value="admin_hotel">Admin Hotel</option>
+                  <option value="empresa">Empresa</option>
+                  <option value="cliente">Cliente</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Estado</label>
+                <select class="form-control" [(ngModel)]="modalUsuario.estado" 
+                        [disabled]="modalModo === 'ver'" name="estado">
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </div>
+            </div>
+          </form>
+          
+          <div *ngIf="modalModo === 'eliminar'" class="delete-confirmation">
+            <p>¿Estás seguro de que deseas eliminar al usuario <strong>{{ modalUsuario.nombre }}</strong>?</p>
+            <p class="text-danger">Esta acción no se puede deshacer.</p>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+          <button *ngIf="modalModo === 'crear'" class="btn btn-primary" (click)="crearUsuario()">Crear Usuario</button>
+          <button *ngIf="modalModo === 'editar'" class="btn btn-primary" (click)="actualizarUsuario()">Actualizar</button>
+          <button *ngIf="modalModo === 'eliminar'" class="btn btn-danger" (click)="confirmarEliminar()">Eliminar</button>
+        </div>
+      </div>
+    </div>      <!-- Tabla moderna de usuarios -->
       <div class="table-section">
         <div class="modern-card">
           <div class="card-header-modern">
@@ -886,6 +958,177 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
         font-size: 0.75rem;
       }
     }
+
+    /* Estilos del Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .modal-title {
+      margin: 0;
+      color: #2d3748;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: #718096;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-close:hover {
+      background: #f7fafc;
+      color: #2d3748;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .user-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 500;
+      color: #4a5568;
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-control:readonly,
+    .form-control:disabled {
+      background: #f7fafc;
+      color: #718096;
+    }
+
+    .delete-confirmation {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .delete-confirmation p {
+      margin: 0.5rem 0;
+    }
+
+    .text-danger {
+      color: #e53e3e;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary {
+      background: #edf2f7;
+      color: #4a5568;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5a67d8;
+    }
+
+    .btn-danger {
+      background: #e53e3e;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c53030;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .modal-content {
+        width: 95%;
+        margin: 1rem;
+      }
+    }
   `]
 })
 export class UsuariosComponent {
@@ -893,7 +1136,7 @@ export class UsuariosComponent {
   usuarios: Usuario[] = [];
   modalVisible = false;
   modalUsuario: any = null;
-  modalModo: 'ver' | 'editar' | 'eliminar' = 'ver';
+  modalModo: 'ver' | 'editar' | 'eliminar' | 'crear' = 'ver';
   mostrarPassword = false;
 
   constructor(private usuarioService: UsuarioService) {
@@ -964,7 +1207,22 @@ export class UsuariosComponent {
 
   agregarUsuario(): void {
     console.log('Agregar nuevo usuario');
-    // Implementar lógica para agregar usuario
+    this.modalUsuario = {
+      _id: '',
+      nombre: '',
+      email: '',
+      password: '',
+      tipo: '',
+      estado: 'activo',
+      fechaCreacion: new Date().toISOString(),
+      ultimoAcceso: null,
+      empresa: null,
+      hotel: null,
+      datos_empresa: null
+    };
+    this.modalModo = 'crear';
+    this.mostrarPassword = false;
+    this.modalVisible = true;
   }
 
   verUsuario(usuario: any): void {
@@ -1011,6 +1269,45 @@ export class UsuariosComponent {
         alert('Error al eliminar usuario');
       }
     );
+  }
+
+  crearUsuario(): void {
+    if (!this.modalUsuario.nombre || !this.modalUsuario.email || !this.modalUsuario.password || !this.modalUsuario.tipo) {
+      alert('Todos los campos son requeridos');
+      return;
+    }
+    
+    this.usuarioService.createUsuario(this.modalUsuario).subscribe({
+      next: (response: Usuario) => {
+        console.log('Usuario creado exitosamente:', response);
+        this.cerrarModal();
+        this.cargarUsuarios();
+        location.reload();
+      },
+      error: (error: any) => {
+        console.error('Error al crear usuario:', error);
+        alert('Error al crear usuario');
+      }
+    });
+  }
+
+  actualizarUsuario(): void {
+    this.usuarioService.updateUsuario(this.modalUsuario._id, this.modalUsuario).subscribe({
+      next: (response) => {
+        console.log('Usuario actualizado exitosamente:', response);
+        this.cerrarModal();
+        this.cargarUsuarios();
+        location.reload();
+      },
+      error: (error) => {
+        console.error('Error al actualizar usuario:', error);
+        alert('Error al actualizar usuario');
+      }
+    });
+  }
+
+  confirmarEliminar(): void {
+    this.confirmarEliminarUsuario();
   }
 
   cerrarModal(): void {
