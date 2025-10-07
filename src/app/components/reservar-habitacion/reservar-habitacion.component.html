@@ -229,14 +229,10 @@
       </div>
     </div>
 
-    <div class="card-politicas">
+      <div class="card-politicas">
       <h3>📋 Políticas de Cancelación</h3>
       <div class="politicas-contenido">
-        <p><strong>Check-in:</strong> {{ habitacion.hotel.politicas.checkIn || '15:00' }}</p>
-        <p><strong>Check-out:</strong> {{ habitacion.hotel.politicas.checkOut || '12:00' }}</p>
-        <p *ngIf="habitacion.hotel.politicas.cancelacion"><strong>Cancelación:</strong> {{ habitacion.hotel.politicas.cancelacion }}</p>
-        <p><strong>Mascotas:</strong> {{ habitacion.hotel.politicas.mascotas ? 'Permitidas' : 'No permitidas' }}</p>
-        <p><strong>Fumadores:</strong> {{ habitacion.hotel.politicas.fumadores ? 'Permitido' : 'No permitido' }}</p>
+        <p><strong>Cancelación:</strong>Solo posible 24 horas antes</p>
       </div>
       
       <label class="checkbox-politicas">
@@ -247,9 +243,7 @@
           [attr.data-testid]="'checkbox-politicas'">
         <span>He leído y acepto las políticas de cancelación</span>
       </label>
-    </div>
-
-    <div class="botones">
+    </div>    <div class="botones">
       <button (click)="volverPaso()" class="btn-secondary">← Atrás</button>
       <button 
         (click)="confirmarReserva()" 
