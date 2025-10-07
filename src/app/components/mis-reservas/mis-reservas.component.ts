@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReservaService, ReservaCreada } from '../../services/reserva.service';
 import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
+import { AuthService } from '../../services/auth.service';
 
 type EstadoFiltro = 'todas' | 'confirmada' | 'cancelada' | 'completada' | 'pendiente';
 type TipoVista = 'habitaciones' | 'paquetes';
@@ -56,12 +57,27 @@ export class MisReservasComponent implements OnInit {
   constructor(
     private reservaService: ReservaService,
     private reservaPaqueteService: ReservaPaqueteService,
+    public authService: AuthService,  // Changed to public so it can be used in template
     public router: Router
   ) {}
 
   ngOnInit(): void {
+    // Debug: Check current user and role
+    const currentUser = this.authService.getCurrentUser();
+    console.log('MisReservas init - Current user:', currentUser);
+    console.log('Is empresa user?', this.isEmpresaUser());
+    
     this.cargarReservas();
-    this.cargarReservasPaquetes();
+    
+    // Only load paquetes if user is empresa type
+    if (this.isEmpresaUser()) {
+      console.log('Loading paquetes for empresa user');
+      this.cargarReservasPaquetes();
+    } else {
+      console.log('Not loading paquetes - user is not empresa type');
+      // Ensure we're on habitaciones view if not empresa user
+      this.vistaActual = 'habitaciones';
+    }
   }
 
   /**
@@ -386,6 +402,15 @@ export class MisReservasComponent implements OnInit {
   }
 
   /**
+   * Verificar si el usuario es de tipo empresa
+   */
+  isEmpresaUser(): boolean {
+    const user = this.authService.getCurrentUser();
+    console.log('Current user type:', user?.tipo);
+    return this.authService.hasRole('empresa');
+  }
+
+  /**
    * Formatear precio a formato colombiano
    */
   formatearPrecio(precio: number): string {
@@ -439,11 +464,16 @@ export class MisReservasComponent implements OnInit {
    * Cambiar entre vista de habitaciones y paquetes
    */
   cambiarVista(vista: TipoVista): void {
+    // If trying to access paquetes view but not empresa user, don't allow it
+    if (vista === 'paquetes' && !this.isEmpresaUser()) {
+      return;
+    }
+    
     this.vistaActual = vista;
     this.estadoFiltro = 'todas';
     this.busquedaCodigo = '';
     
-    if (vista === 'paquetes' && this.reservasPaquetes.length === 0) {
+    if (vista === 'paquetes' && this.reservasPaquetes.length === 0 && this.isEmpresaUser()) {
       this.cargarReservasPaquetes();
     }
   }

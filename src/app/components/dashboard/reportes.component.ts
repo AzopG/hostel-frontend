@@ -173,6 +173,28 @@ import { AuthService } from '../../services/auth.service';
       overflow-y: auto;
       padding-top: 0; /* Eliminar espacio superior */
       padding-bottom: 0; /* Eliminar espacio inferior */
+      /* Custom scrollbar styling */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(102, 126, 234, 0.5) rgba(248, 249, 250, 0.6);
+    }
+    
+    /* Custom webkit scrollbar styles */
+    .container-fluid::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .container-fluid::-webkit-scrollbar-track {
+      background: rgba(248, 249, 250, 0.6);
+      border-radius: 10px;
+    }
+    
+    .container-fluid::-webkit-scrollbar-thumb {
+      background: rgba(102, 126, 234, 0.5);
+      border-radius: 10px;
+    }
+    
+    .container-fluid::-webkit-scrollbar-thumb:hover {
+      background: rgba(102, 126, 234, 0.7);
     }
 
     .d-flex.justify-content-between {
@@ -267,6 +289,29 @@ import { AuthService } from '../../services/auth.service';
       padding: 2rem;
       position: relative;
       z-index: 2;
+      max-height: 500px;
+      overflow-y: auto;
+      /* Custom scrollbar styling */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(102, 126, 234, 0.5) rgba(248, 249, 250, 0.6);
+    }
+    
+    .card-body::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .card-body::-webkit-scrollbar-track {
+      background: rgba(248, 249, 250, 0.6);
+      border-radius: 10px;
+    }
+    
+    .card-body::-webkit-scrollbar-thumb {
+      background: rgba(102, 126, 234, 0.5);
+      border-radius: 10px;
+    }
+    
+    .card-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(102, 126, 234, 0.7);
     }
     
     .card-body h4 {
@@ -365,6 +410,29 @@ import { AuthService } from '../../services/auth.service';
     .table-responsive {
       border-radius: 0 0 20px 20px;
       overflow: hidden;
+      max-height: 400px;
+      overflow-y: auto;
+      /* Custom scrollbar styling */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(102, 126, 234, 0.5) rgba(248, 249, 250, 0.6);
+    }
+    
+    .table-responsive::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .table-responsive::-webkit-scrollbar-track {
+      background: rgba(248, 249, 250, 0.6);
+      border-radius: 8px;
+    }
+    
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: rgba(102, 126, 234, 0.5);
+      border-radius: 8px;
+    }
+    
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: rgba(102, 126, 234, 0.7);
     }
 
     /* Animaciones personalizadas */
@@ -398,6 +466,30 @@ import { AuthService } from '../../services/auth.service';
       100% { background-position: 0% 50%; }
     }
 
+    /* Horizontal scrollbar styling */
+    .card-body::-webkit-scrollbar-horizontal,
+    .table-responsive::-webkit-scrollbar-horizontal {
+      height: 8px;
+    }
+    
+    .card-body::-webkit-scrollbar-thumb:horizontal,
+    .table-responsive::-webkit-scrollbar-thumb:horizontal {
+      background: rgba(102, 126, 234, 0.5);
+      border-radius: 10px;
+    }
+    
+    .card-body::-webkit-scrollbar-thumb:horizontal:hover,
+    .table-responsive::-webkit-scrollbar-thumb:horizontal:hover {
+      background: rgba(102, 126, 234, 0.7);
+    }
+    
+    /* Ensure responsive charts fit within containers */
+    app-reportes-bar-chart {
+      width: 100%;
+      min-height: 300px;
+      display: block;
+    }
+
     @media (max-width: 768px) {
       .container-fluid {
         margin: -10px;
@@ -424,6 +516,11 @@ import { AuthService } from '../../services/auth.service';
 
       .table-responsive {
         border-radius: 0;
+        max-height: 300px; /* Smaller max-height on mobile */
+      }
+      
+      .card-body {
+        max-height: 400px; /* Smaller max-height on mobile */
       }
     }
 

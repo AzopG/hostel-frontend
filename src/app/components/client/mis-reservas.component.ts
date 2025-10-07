@@ -467,6 +467,30 @@ interface ReservaConAcciones extends ReservaCreada {
       padding: 20px;
       max-width: 100%;
       margin: 0 auto;
+      height: 100%;
+      min-height: calc(100vh - 70px);
+      overflow-y: auto !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: rgba(102, 126, 234, 0.5) rgba(248, 249, 250, 0.6) !important;
+    }
+    
+    .client-reservas-container::-webkit-scrollbar {
+      width: 8px !important;
+      display: block !important;
+    }
+    
+    .client-reservas-container::-webkit-scrollbar-track {
+      background: rgba(248, 249, 250, 0.6) !important;
+      border-radius: 10px !important;
+    }
+    
+    .client-reservas-container::-webkit-scrollbar-thumb {
+      background: rgba(102, 126, 234, 0.5) !important;
+      border-radius: 10px !important;
+    }
+    
+    .client-reservas-container::-webkit-scrollbar-thumb:hover {
+      background: rgba(102, 126, 234, 0.7) !important;
     }
 
     /* Header */
