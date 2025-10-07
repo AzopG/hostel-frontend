@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.tu-dominio.com/api', // Cambia esto por la URL real de tu backend en producción
-  wsUrl: 'wss://api.tu-dominio.com' // Cambia esto por la URL real del WebSocket en producción
+  apiUrl: 'https://hostel-backend-ebon.vercel.app/api', // Cambia esto por la URL real de tu backend en producción
+  wsUrl: 'wss://hostel-backend-ebon.vercel.app' // Cambia esto por la URL real del WebSocket en producción
 };
