@@ -111,13 +111,16 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 .register-card {
   width: 100%;
   max-width: 450px;
   margin: 0 auto;
+  padding: 1rem 0;
 }
 
 .register-header {
@@ -278,6 +281,32 @@
   color: #4A1B2F;
 }
 
+/* Estilos personalizados para barra de scroll */
+.form-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.form-section::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #722F37 0%, #4A1B2F 100%);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.form-section::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #4A1B2F 0%, #722F37 100%);
+}
+
+/* Para Firefox */
+.form-section {
+  scrollbar-width: thin;
+  scrollbar-color: #722F37 #f1f1f1;
+}
+
 @media (max-width: 992px) {
   .register-layout {
     flex-direction: column;
@@ -292,12 +321,16 @@
     width: 100%;
     height: 65vh;
     padding: 1.5rem;
+    overflow-y: auto;
+    max-height: 65vh;
   }
 }
 
 @media (max-width: 768px) {
   .form-section {
     padding: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 35vh);
   }
 
   .register-header h2 {
@@ -326,5 +359,11 @@
 
   .form-section {
     padding: 1rem 0.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 30vh);
+  }
+
+  .register-card {
+    padding: 0.5rem 0;
   }
 }
