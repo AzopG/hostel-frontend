@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Usuario, UsuarioService } from '../../services/usuario.service';
@@ -152,14 +151,14 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                   <option value="cliente">Cliente</option>
                 </select>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Estado</label>
                 <select class="form-control" [(ngModel)]="modalUsuario.estado" 
                         [disabled]="modalModo === 'ver'" name="estado">
                   <option value="activo">Activo</option>
                   <option value="inactivo">Inactivo</option>
                 </select>
-              </div>
+              </div> -->
             </div>
           </form>
           
@@ -203,7 +202,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                   <th>Contacto</th>
                   <th>Tipo</th>
                   <th>Empresa</th>
-                  <th>Estado</th>
+                  <!-- <th>Estado</th> -->
 
                   <th>Último Acceso</th>
                   <th>Acciones</th>
@@ -251,13 +250,13 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                       <span class="text-muted">No es una Empresa</span>
                     </ng-container>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span class="status-badge" 
                           [ngClass]="usuario.activo ? 'status-active' : 'status-inactive'">
                       <i [class]="usuario.activo ? 'fas fa-circle' : 'fas fa-circle'" class="status-dot me-1"></i>
                       {{ usuario.activo ? 'Activo' : 'Inactivo' }}
                     </span>
-                  </td>
+                  </td> -->
                   <td>
                     <span class="last-login">
                       <i class="fas fa-clock me-1"></i>

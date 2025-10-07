@@ -23,7 +23,7 @@
             <span class="header-stat-label">Hoteles</span>
           </div>
         </div>
-        
+
         <div class="header-stat-item">
           <div class="header-stat-circle">
             <i class="fas fa-calendar-check"></i>
@@ -33,8 +33,9 @@
             <span class="header-stat-label">Reservas</span>
           </div>
         </div>
-        
-        <div class="header-stat-item">
+
+        <!-- Solo mostrar clientes e ingresos si no es cliente -->
+        <div class="header-stat-item" *ngIf="getCurrentUserType() !== 'cliente'">
           <div class="header-stat-circle">
             <i class="fas fa-users"></i>
           </div>
@@ -43,8 +44,8 @@
             <span class="header-stat-label">Clientes</span>
           </div>
         </div>
-        
-        <div class="header-stat-item">
+
+        <div class="header-stat-item" *ngIf="getCurrentUserType() !== 'cliente'">
           <div class="header-stat-circle">
             <i class="fas fa-dollar-sign"></i>
           </div>
