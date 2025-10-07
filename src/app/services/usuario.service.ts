@@ -24,6 +24,7 @@ export interface Usuario {
   activo?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  lastLogin?: string; // Último acceso del usuario
 }
 
 @Injectable({ providedIn: 'root' })

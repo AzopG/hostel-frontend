@@ -241,7 +241,6 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                     </span>
                   </td>
                   <td>
-
                     <ng-container *ngIf="usuario.empresa && usuario.empresa !== '-' && usuario.empresa.trim() !== ''">
                       <span class="empresa-badge">
                         <i class="fas fa-building me-1"></i>
@@ -252,8 +251,6 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                       <span class="text-muted">No es una Empresa</span>
                     </ng-container>
                   </td>
-                  <!--
-
                   <td>
                     <span class="status-badge" 
                           [ngClass]="usuario.activo ? 'status-active' : 'status-inactive'">
@@ -261,12 +258,10 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
                       {{ usuario.activo ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
-
                   <td>
-                    <span class="text-muted">
+                    <span class="last-login">
                       <i class="fas fa-clock me-1"></i>
-                      {{ usuario.updatedAt ? (usuario.updatedAt | date:'short') : 'Nunca' }}
-
+                      {{ usuario.lastLogin ? (usuario.lastLogin | date:'short') : 'Nunca' }}
                     </span>
                   </td>
                   <td>
@@ -769,6 +764,21 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 
     .status-dot {
       font-size: 0.5rem;
+    }
+    
+    .last-login {
+      display: flex;
+      align-items: center;
+      color: #718096;
+      font-size: 0.875rem;
+      background: rgba(160, 174, 192, 0.1);
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+    }
+    
+    .last-login i {
+      color: #4299e1;
+      margin-right: 0.5rem;
     }
 
     .action-buttons {
