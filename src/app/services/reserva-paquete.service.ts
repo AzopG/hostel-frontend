@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface PaqueteDisponible {
   _id: string;
@@ -95,7 +96,7 @@ export interface ReservaPaquete {
   providedIn: 'root'
 })
 export class ReservaPaqueteService {
-  private apiUrl = 'http://localhost:4000/api/reservas-paquetes';
+  private apiUrl = `${environment.apiUrl}/reservas-paquetes`;
 
   constructor(
     private http: HttpClient,

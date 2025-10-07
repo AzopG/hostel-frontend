@@ -16,12 +16,6 @@
       (click)="cambiarVista('habitaciones')">
       <i class="fas fa-hotel"></i> Habitaciones ({{ reservas.length }})
     </button>
-    <button 
-      class="tab-btn" 
-      [class.activo]="vistaActual === 'paquetes'"
-      (click)="cambiarVista('paquetes')">
-      <i class="fas fa-box"></i> Paquetes Corporativos ({{ reservasPaquetes.length }})
-    </button>
   </div>
 
   <!-- Filtros y Búsqueda -->
@@ -32,32 +26,31 @@
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'todas'"
         (click)="cambiarFiltro('todas')">
-        Todas ({{ vistaActual === 'habitaciones' ? contarPorEstado('todas') : contarPaquetesPorEstado('todas') }})
+        Todas ({{ esCliente ? contarPorEstado('todas') : (vistaActual === 'habitaciones' ? contarPorEstado('todas') : contarPaquetesPorEstado('todas')) }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'confirmada'"
         (click)="cambiarFiltro('confirmada')">
-        <i class="fas fa-check"></i> Confirmadas ({{ vistaActual === 'habitaciones' ? contarPorEstado('confirmada') : contarPaquetesPorEstado('confirmada') }})
-
+        <i class="fas fa-check"></i> Confirmadas ({{ esCliente ? contarPorEstado('confirmada') : (vistaActual === 'habitaciones' ? contarPorEstado('confirmada') : contarPaquetesPorEstado('confirmada')) }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'pendiente'"
         (click)="cambiarFiltro('pendiente')">
-        <i class="fas fa-hourglass-half"></i> Pendientes ({{ vistaActual === 'habitaciones' ? contarPorEstado('pendiente') : contarPaquetesPorEstado('pendiente') }})
+        <i class="fas fa-hourglass-half"></i> Pendientes ({{ esCliente ? contarPorEstado('pendiente') : (vistaActual === 'habitaciones' ? contarPorEstado('pendiente') : contarPaquetesPorEstado('pendiente')) }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'cancelada'"
         (click)="cambiarFiltro('cancelada')">
-        <i class="fas fa-times"></i> Canceladas ({{ vistaActual === 'habitaciones' ? contarPorEstado('cancelada') : contarPaquetesPorEstado('cancelada') }})
+        <i class="fas fa-times"></i> Canceladas ({{ esCliente ? contarPorEstado('cancelada') : (vistaActual === 'habitaciones' ? contarPorEstado('cancelada') : contarPaquetesPorEstado('cancelada')) }})
       </button>
       <button 
         class="filtro-btn" 
         [class.activo]="estadoFiltro === 'completada'"
         (click)="cambiarFiltro('completada')">
-        <i class="fas fa-check-double"></i> Completadas ({{ vistaActual === 'habitaciones' ? contarPorEstado('completada') : contarPaquetesPorEstado('completada') }})
+        <i class="fas fa-check-double"></i> Completadas ({{ esCliente ? contarPorEstado('completada') : (vistaActual === 'habitaciones' ? contarPorEstado('completada') : contarPaquetesPorEstado('completada')) }})
       </button>
     </div>
 
@@ -109,21 +102,6 @@
     </button>
   </div>
 
-  <!-- Lista Vacía - Paquetes -->
-  <div *ngIf="vistaActual === 'paquetes' && !cargandoPaquetes && !error && reservasPaquetesFiltradas.length === 0" class="lista-vacia">
-    <div class="icono-vacio"><i class="fas fa-box-open"></i></div>
-    <h3>No hay reservas de paquetes</h3>
-    <p *ngIf="busquedaCodigo">No se encontraron resultados para "{{ busquedaCodigo }}"</p>
-    <p *ngIf="!busquedaCodigo && estadoFiltro !== 'todas'">
-      No tienes reservas de paquetes en estado "{{ estadoFiltro }}"
-    </p>
-    <p *ngIf="!busquedaCodigo && estadoFiltro === 'todas'">
-      Aún no has realizado ninguna reserva de paquete corporativo.
-    </p>
-    <button class="btn-buscar-habitaciones" (click)="irAPaquetes()">
-      <i class="fas fa-cube"></i> Ver Paquetes Disponibles
-    </button>
-  </div>
 
   <!-- Lista de Reservas de Habitaciones -->
   <div *ngIf="vistaActual === 'habitaciones' && !cargando && !error && reservasFiltradas.length > 0" class="reservas-grid">
@@ -232,7 +210,7 @@
   </div>
 
   <!-- Lista de Reservas de Paquetes -->
-  <div *ngIf="vistaActual === 'paquetes' && !cargandoPaquetes && !error && reservasPaquetesFiltradas.length > 0" class="reservas-grid">
+  <div *ngIf="!esCliente && vistaActual === 'paquetes' && !cargandoPaquetes && !error && reservasPaquetesFiltradas.length > 0" class="reservas-grid">
     <div *ngFor="let reserva of reservasPaquetesFiltradas" class="reserva-card paquete-card">
       <!-- Header de Card -->
       <div class="card-header">

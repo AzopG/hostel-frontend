@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 
 export interface Usuario {
@@ -96,7 +97,7 @@ export interface ResetPasswordResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:4000/api/auth';
+  private readonly API_URL = `${environment.apiUrl}/auth`;
   
   // Subject para manejar el estado de autenticación
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
