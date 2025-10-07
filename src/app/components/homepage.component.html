@@ -34,7 +34,7 @@
       </div>
       <div>
         <span class="user-name">{{ currentUser?.nombre }}</span>
-        <a class="" href="#panel" (click)="navigateToDashboard(); closeMobileMenu()">Panel de Control</a>
+        <a class="" href="#" (click)="navigateToDashboard(); closeMobileMenu(); $event.preventDefault()">Panel de Control</a>
         <a class="" href="login/" (click)="logout(); closeMobileMenu()">Salir</a>
      
       </div>
@@ -219,17 +219,6 @@
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- Sección de Contacto -->
-  <section class="contact-section" id="mapa">
-    <div class="container">
-      <h2 class="section-title">Ubicación de Nuestros Hoteles</h2>
-      <div class="contact-info">
-        <p>Contamos con hoteles en las principales ciudades de Colombia.</p>
-        <p>Para más información sobre ubicaciones específicas, inicia sesión en tu panel.</p>
       </div>
     </div>
   </section>
