@@ -266,25 +266,36 @@
       </div>
 
       <!-- Acciones -->
+      <!-- 🚨 ARCHIVO CORRECTO EDITADO - 2025-10-07 🚨 -->
       <div class="card-actions">
         <button 
           class="btn btn-outline-primary btn-sm"
-          [title]="'Ver detalles completos de la reserva ' + reserva.numeroReserva">
-          <i class="fas fa-eye"></i> Ver Detalles
+          [title]="'Ver detalles completos de la reserva ' + reserva.numeroReserva"
+          (click)="verDetallePaquete(reserva)">
+          <i class="fas fa-eye"></i> 🔍 DETALLES NUEVO
+        </button>
+        
+        <button 
+          class="btn btn-outline-info btn-sm"
+          [title]="'Gestionar asistentes de ' + reserva.numeroReserva"
+          (click)="gestionarAsistentes(reserva)">
+          <i class="fas fa-users"></i> 👥 ASISTENTES NUEVO
         </button>
         
         <button 
           *ngIf="reserva.estado === 'confirmada'"
           class="btn btn-outline-warning btn-sm"
-          [title]="'Modificar reserva ' + reserva.numeroReserva">
-          <i class="fas fa-pencil-alt"></i> Modificar
+          [title]="'Modificar reserva ' + reserva.numeroReserva"
+          (click)="modificarPaquete(reserva)">
+          <i class="fas fa-pencil-alt"></i> ✏️ MODIFICAR NUEVO
         </button>
         
         <button 
           *ngIf="reserva.estado === 'confirmada'"
           class="btn btn-outline-danger btn-sm"
-          [title]="'Cancelar reserva ' + reserva.numeroReserva">
-          <i class="fas fa-times"></i> Cancelar
+          [title]="'Cancelar reserva ' + reserva.numeroReserva"
+          (click)="cancelarPaquete(reserva)">
+          <i class="fas fa-times"></i> ❌ CANCELAR NUEVO
         </button>
       </div>
     </div>

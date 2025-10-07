@@ -63,6 +63,7 @@ export class MisReservasComponent implements OnInit {
 
   ngOnInit(): void {
     // Debug: Check current user and role
+    console.log('🔄 MisReservas Component Loading... [UPDATED]');
     const currentUser = this.authService.getCurrentUser();
     console.log('MisReservas init - Current user:', currentUser);
     console.log('Is empresa user?', this.isEmpresaUser());
@@ -543,5 +544,42 @@ export class MisReservasComponent implements OnInit {
    */
   irAPaquetes(): void {
     this.router.navigate(['/ver-paquetes']);
+  }
+
+  /**
+   * Ver detalles de un paquete corporativo
+   */
+  verDetallePaquete(reserva: any): void {
+    console.log('Ver detalles del paquete:', reserva);
+    // TODO: Implementar modal o navegación para ver detalles
+    alert(`Ver detalles de la reserva ${reserva.numeroReserva}`);
+  }
+
+  /**
+   * Modificar un paquete corporativo
+   */
+  modificarPaquete(reserva: any): void {
+    console.log('Modificar paquete:', reserva);
+    // TODO: Implementar modal o navegación para modificar
+    alert(`Modificar reserva ${reserva.numeroReserva}`);
+  }
+
+  /**
+   * Cancelar un paquete corporativo
+   */
+  cancelarPaquete(reserva: any): void {
+    console.log('Cancelar paquete:', reserva);
+    if (confirm(`¿Estás seguro de que deseas cancelar la reserva ${reserva.numeroReserva}?`)) {
+      // TODO: Implementar cancelación de paquete
+      alert(`Cancelando reserva ${reserva.numeroReserva}`);
+    }
+  }
+
+  /**
+   * Gestionar asistentes de un paquete corporativo
+   */
+  gestionarAsistentes(reserva: any): void {
+    console.log('Gestionar asistentes:', reserva);
+    this.router.navigate(['/gestionar-asistentes', reserva._id]);
   }
 }

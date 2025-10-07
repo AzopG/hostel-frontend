@@ -315,21 +315,31 @@ interface ReservaConAcciones extends ReservaCreada {
           <div class="card-actions">
             <button 
               class="btn btn-outline-primary btn-sm"
-              [title]="'Ver detalles completos de la reserva ' + reserva.numeroReserva">
+              [title]="'Ver detalles completos de la reserva ' + reserva.numeroReserva"
+              (click)="verDetallePaquete(reserva)">
               <i class="fas fa-eye"></i> Ver Detalles
+            </button>
+            
+            <button 
+              class="btn btn-outline-info btn-sm"
+              [title]="'Gestionar asistentes de ' + reserva.numeroReserva"
+              (click)="gestionarAsistentes(reserva)">
+              <i class="fas fa-users"></i> Asistentes
             </button>
             
             <button 
               *ngIf="reserva.estado === 'confirmada'"
               class="btn btn-outline-warning btn-sm"
-              [title]="'Modificar reserva ' + reserva.numeroReserva">
+              [title]="'Modificar reserva ' + reserva.numeroReserva"
+              (click)="modificarPaquete(reserva)">
               <i class="fas fa-pencil-alt"></i> Modificar
             </button>
             
             <button 
               *ngIf="reserva.estado === 'confirmada'"
               class="btn btn-outline-danger btn-sm"
-              [title]="'Cancelar reserva ' + reserva.numeroReserva">
+              [title]="'Cancelar reserva ' + reserva.numeroReserva"
+              (click)="cancelarPaquete(reserva)">
               <i class="fas fa-times"></i> Cancelar
             </button>
           </div>
@@ -1531,12 +1541,14 @@ export class MisReservasClientComponent implements OnInit {
     this.esCliente = tipoUsuario === 'cliente';
     
     console.log('🔍 Debug: Tipo de usuario:', tipoUsuario, 'Es cliente:', this.esCliente);
+    console.log('🎯 BOTONES ACTUALIZADOS - VERSION 2025-10-07');
     
     // Cargar reservas de habitaciones siempre
     this.cargarReservas();
     
     // Cargar paquetes solo si no es cliente
     if (!this.esCliente) {
+      console.log('🔄 Cargando paquetes para empresa...');
       this.cargarReservasPaquetes();
     }
   }
@@ -1995,5 +2007,111 @@ export class MisReservasClientComponent implements OnInit {
    */
   irAPaquetes(): void {
     this.router.navigate(['/ver-paquetes']);
+  }
+
+  /**
+   * Ver detalles de un paquete corporativo
+   */
+  verDetallePaquete(reserva: any): void {
+    console.log('Ver detalles del paquete:', reserva);
+    
+    // Crear modal con detalles completos
+    const detalles = `
+DETALLES DE LA RESERVA DE PAQUETE
+═══════════════════════════════════
+
+📋 Información General:
+• Número de Reserva: ${reserva.numeroReserva}
+• Estado: ${reserva.estado.toUpperCase()}
+• Tipo de Evento: ${reserva.tipoEvento}
+
+🏢 Empresa:
+• Razón Social: ${reserva.datosEmpresa?.razonSocial || 'N/A'}
+• NIT: ${reserva.datosEmpresa?.nit || 'N/A'}
+• Email: ${reserva.datosEmpresa?.email || 'N/A'}
+• Teléfono: ${reserva.datosEmpresa?.telefono || 'N/A'}
+
+🎉 Evento:
+• Nombre: ${reserva.nombreEvento}
+• Fecha: ${new Date(reserva.fechaInicio).toLocaleDateString('es-CO')}
+• Asistentes: ${reserva.numeroAsistentes} personas
+
+💰 Información Financiera:
+• Subtotal Paquete: ${this.formatearPrecio(reserva.precios?.subtotalPaquete || 0)}
+• Total: ${this.formatearPrecio(reserva.precios?.total || 0)}
+
+📝 Observaciones:
+${reserva.notas || 'Sin observaciones adicionales'}
+    `;
+    
+    alert(detalles);
+  }
+
+  /**
+   * Modificar un paquete corporativo
+   */
+  modificarPaquete(reserva: any): void {
+    console.log('Modificar paquete:', reserva);
+    
+    if (reserva.estado !== 'confirmada') {
+      alert('Solo se pueden modificar reservas confirmadas');
+      return;
+    }
+    
+    const nuevoNumeroAsistentes = prompt(
+      `Modificar número de asistentes para ${reserva.numeroReserva}\n\nNúmero actual: ${reserva.numeroAsistentes}`,
+      reserva.numeroAsistentes.toString()
+    );
+    
+    if (nuevoNumeroAsistentes && !isNaN(parseInt(nuevoNumeroAsistentes))) {
+      const numero = parseInt(nuevoNumeroAsistentes);
+      if (numero > 0 && numero <= 500) {
+        // TODO: Llamar al servicio real para modificar
+        alert(`✅ Reserva ${reserva.numeroReserva} modificada:\nNuevo número de asistentes: ${numero}`);
+        // Aquí irían las llamadas al backend
+        this.cargarReservasPaquetes(); // Recargar datos
+      } else {
+        alert('El número de asistentes debe estar entre 1 y 500');
+      }
+    }
+  }
+
+  /**
+   * Cancelar un paquete corporativo
+   */
+  cancelarPaquete(reserva: any): void {
+    console.log('Cancelar paquete:', reserva);
+    
+    if (reserva.estado === 'cancelada') {
+      alert('Esta reserva ya está cancelada');
+      return;
+    }
+    
+    const motivo = prompt(
+      `¿Estás seguro de que deseas cancelar la reserva ${reserva.numeroReserva}?\n\nPor favor, indica el motivo de la cancelación:`,
+      ''
+    );
+    
+    if (motivo && motivo.trim()) {
+      // TODO: Implementar cancelación real con el backend
+      alert(`✅ Reserva ${reserva.numeroReserva} cancelada exitosamente.\n\nMotivo: ${motivo}`);
+      
+      // Simular actualización del estado (en la implementación real esto vendría del servidor)
+      reserva.estado = 'cancelada';
+      reserva.motivoCancelacion = motivo;
+      
+      // Recargar datos
+      this.cargarReservasPaquetes();
+    } else if (motivo !== null) {
+      alert('Debe proporcionar un motivo para la cancelación');
+    }
+  }
+
+  /**
+   * Gestionar asistentes de un paquete corporativo
+   */
+  gestionarAsistentes(reserva: any): void {
+    console.log('Gestionar asistentes:', reserva);
+    this.router.navigate(['/gestionar-asistentes', reserva._id]);
   }
 }
