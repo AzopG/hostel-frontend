@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable, Subject, filter, map, retry, takeUntil, timer } from 'rxjs';
 
 export interface WebSocketMessage {
@@ -75,7 +76,7 @@ export class RealtimeService implements OnDestroy {
   private userActivityUpdates$ = new Subject<any>();
 
   // Configuration
-  private readonly wsUrl = 'ws://localhost:3001'; // URL del WebSocket server
+  private readonly wsUrl = environment.wsUrl;
   private readonly maxReconnectAttempts = 10;
   private readonly reconnectDelay = 3000;
 

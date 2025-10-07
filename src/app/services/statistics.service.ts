@@ -19,11 +19,13 @@ export interface Statistics {
   };
 }
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticsService {
-  private readonly API_URL = 'http://localhost:4000/api';
+  private readonly API_URL = environment.apiUrl;
   
   private statisticsSubject = new BehaviorSubject<Statistics>({
     totalHoteles: 0,
