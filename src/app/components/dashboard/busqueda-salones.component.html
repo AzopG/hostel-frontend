@@ -1,0 +1,318 @@
+<div class="dashboard-content">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h2 class="dashboard-title">
+      <i class="fas fa-glass-cheers me-3"></i>
+      Búsqueda de Salones para Eventos
+    </h2>
+    <p class="dashboard-subtitle">Encuentra el salón perfecto para tu evento corporativo</p>
+  </div>
+
+  <!-- Formulario de Búsqueda -->
+  <div class="card form-card">
+    <h3>Criterios de Búsqueda</h3>
+    
+    <form [formGroup]="busquedaForm" (ngSubmit)="buscarSalones()">
+      <div class="form-grid">
+        <!-- Hotel -->
+        <div class="form-group">
+          <label for="hotelId">Hotel *</label>
+          <select id="hotelId" formControlName="hotelId" class="form-control">
+            <option value="">Seleccione un hotel</option>
+            <option *ngFor="let hotel of hoteles" [value]="hotel._id">
+              {{ hotel.nombre }}
+            </option>
+          </select>
+          <span class="error-message" *ngIf="esCampoInvalido('hotelId')">
+            Debe seleccionar un hotel
+          </span>
+        </div>
+
+        <!-- Capacidad Mínima (CA1) -->
+        <div class="form-group">
+          <label for="capacidadMinima">Capacidad Mínima (personas) *</label>
+          <input 
+            type="number" 
+            id="capacidadMinima" 
+            formControlName="capacidadMinima"
+            class="form-control"
+            min="1"
+            placeholder="Ej: 50"
+          />
+          <span class="error-message" *ngIf="esCampoInvalido('capacidadMinima')">
+            Ingrese una capacidad válida (mínimo 1 persona)
+          </span>
+        </div>
+
+        <!-- Fecha Inicio (CA1, CA3) -->
+        <div class="form-group">
+          <label for="fechaInicio">Fecha Inicio *</label>
+          <input 
+            type="date" 
+            id="fechaInicio" 
+            formControlName="fechaInicio"
+            class="form-control"
+          />
+          <span class="error-message" *ngIf="esCampoInvalido('fechaInicio')">
+            Seleccione una fecha de inicio
+          </span>
+        </div>
+
+        <!-- Fecha Fin (CA1, CA3) -->
+        <div class="form-group">
+          <label for="fechaFin">Fecha Fin *</label>
+          <input 
+            type="date" 
+            id="fechaFin" 
+            formControlName="fechaFin"
+            class="form-control"
+          />
+          <span class="error-message" *ngIf="esCampoInvalido('fechaFin')">
+            Seleccione una fecha de fin
+          </span>
+        </div>
+
+        <!-- Ordenar Por (CA4) -->
+        <div class="form-group">
+          <label for="ordenarPor">Ordenar Resultados Por</label>
+          <select id="ordenarPor" formControlName="ordenarPor" class="form-control">
+            <option *ngFor="let opcion of opcionesOrdenamiento" [value]="opcion.valor">
+              {{ opcion.etiqueta }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- HU15: Equipamiento Requerido con filtrado mejorado -->
+      <div class="form-group equipamiento-section">
+        <div class="equipamiento-header">
+          <label>
+            🔧 Equipamiento Requerido 
+            <span class="badge-filtros" *ngIf="equipamientoSeleccionado.length > 0">
+              {{ equipamientoSeleccionado.length }} seleccionado(s)
+            </span>
+          </label>
+          <div class="equipamiento-acciones">
+            <button 
+              type="button" 
+              class="btn-link"
+              (click)="toggleEquipamientoExpandido()"
+            >
+              {{ mostrarEquipamientoExpandido ? '▼ Mostrar menos' : '▶ Mostrar más' }}
+            </button>
+            <button 
+              type="button" 
+              class="btn-link btn-limpiar"
+              *ngIf="equipamientoSeleccionado.length > 0"
+              (click)="limpiarFiltrosEquipamiento()"
+            >
+              ✕ Limpiar filtros
+            </button>
+          </div>
+        </div>
+
+        <!-- HU15 - CA1: Lista de equipamiento seleccionable -->
+        <div class="equipamiento-grid" [class.expandido]="mostrarEquipamientoExpandido">
+          <button 
+            type="button"
+            *ngFor="let equip of equipamientoDisponible"
+            class="equipamiento-btn"
+            [class.selected]="esEquipamientoSeleccionado(equip)"
+            (click)="toggleEquipamiento(equip)"
+            [title]="'Click para ' + (esEquipamientoSeleccionado(equip) ? 'remover' : 'agregar')"
+          >
+            <span class="checkmark" *ngIf="esEquipamientoSeleccionado(equip)">✓</span>
+            {{ equip }}
+          </button>
+        </div>
+
+        <!-- HU15 - CA1: Indicador de filtrado activo -->
+        <div class="filtros-activos" *ngIf="equipamientoSeleccionado.length > 0">
+          <small class="info-filtros">
+            ℹ️ Mostrando solo salones que tienen <strong>todos</strong> los equipamientos seleccionados
+          </small>
+        </div>
+      </div>
+
+      <!-- Error General -->
+      <div class="alert alert-danger" *ngIf="error">
+        <strong>⚠️ Error:</strong> {{ error }}
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="loading"
+        >
+          <span *ngIf="!loading">🔍 Buscar Salones</span>
+          <span *ngIf="loading">⏳ Buscando...</span>
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="limpiarBusqueda()"
+          [disabled]="loading"
+        >
+          🔄 Limpiar
+        </button>
+      </div>
+
+      <!-- Indicador de recálculo automático (CA3) -->
+      <div class="info-message" *ngIf="mostrarResultados">
+        <small>ℹ️ Los resultados se actualizan automáticamente al cambiar las fechas o capacidad</small>
+      </div>
+    </form>
+  </div>
+
+  <!-- HU15 - CA3: Mensaje mejorado cuando no hay resultados -->
+  <div class="card sugerencias-card" *ngIf="sugerencias">
+    <div class="no-results">
+      <div class="no-results-icon">🏢</div>
+      <h3>😕 {{ sugerencias.mensaje }}</h3>
+      
+      <!-- HU15: Información específica sobre filtros de equipamiento -->
+      <div class="filtros-aplicados" *ngIf="equipamientoSeleccionado.length > 0">
+        <div class="filtros-equipamiento-activos">
+          <p><strong>🔧 Filtros de equipamiento activos:</strong></p>
+          <div class="equipamiento-tags">
+            <span class="tag-equipamiento-activo" *ngFor="let equip of equipamientoSeleccionado">
+              ✓ {{ equip }}
+            </span>
+          </div>
+          <p class="nota-filtros">
+            <small>ℹ️ Solo se muestran salones que tienen <strong>todos</strong> los equipamientos seleccionados</small>
+          </p>
+        </div>
+      </div>
+
+      <div class="recomendaciones">
+        <h4>💡 Sugerencias:</h4>
+        <ul>
+          <li *ngFor="let recomendacion of sugerencias.recomendaciones">
+            {{ recomendacion }}
+          </li>
+          <li *ngIf="equipamientoSeleccionado.length > 0">
+            <strong>Remover algunos filtros de equipamiento</strong> para ver más opciones
+          </li>
+        </ul>
+      </div>
+
+      <!-- HU15 - CA3: Botón para limpiar filtros de equipamiento -->
+      <div class="acciones-sugerencias" *ngIf="equipamientoSeleccionado.length > 0">
+        <button class="btn-accion-primario" (click)="limpiarFiltrosEquipamiento()">
+          🔧 Limpiar Filtros de Equipamiento
+        </button>
+        <button class="btn-accion-secundario" (click)="limpiarBusqueda()">
+          🔄 Limpiar Toda la Búsqueda
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados de Búsqueda -->
+  <div class="resultados-section" *ngIf="mostrarResultados && salones.length > 0">
+    <div class="resultados-header">
+      <h3>✅ Salones Disponibles ({{ salones.length }})</h3>
+      <p class="resultados-info">
+        Mostrando salones con capacidad mayor o igual a 
+        <strong>{{ busquedaForm.get('capacidadMinima')?.value }} personas</strong>
+      </p>
+    </div>
+
+    <div class="salones-grid">
+      <div class="salon-card" *ngFor="let salon of salones">
+        <!-- Header del Card -->
+        <div class="salon-header">
+          <h3>{{ salon?.nombre }}</h3>
+          <span class="capacidad-badge">
+            👥 {{ salon.capacidad }} personas
+          </span>
+        </div>
+
+        <!-- Hotel Info -->
+        <div class="salon-hotel">
+          <span class="hotel-icon">🏨</span>
+          <div>
+            <strong>{{ salon.hotel.nombre }}</strong>
+            <small *ngIf="salon.hotel.ciudad">{{ salon.hotel.ciudad }}</small>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <p class="salon-descripcion" *ngIf="salon.descripcion">
+          {{ salon.descripcion }}
+        </p>
+
+        <!-- Equipamiento -->
+        <div class="salon-equipamiento" *ngIf="salon.equipamiento && salon.equipamiento.length > 0">
+          <strong>Equipamiento:</strong>
+          <div class="tags">
+            <span class="tag" *ngFor="let equip of salon.equipamiento">
+              {{ equip }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Servicios Incluidos -->
+        <div class="salon-servicios" *ngIf="salon.serviciosIncluidos && salon.serviciosIncluidos.length > 0">
+          <strong>Servicios incluidos:</strong>
+          <ul class="servicios-list">
+            <li *ngFor="let servicio of salon.serviciosIncluidos">✓ {{ servicio }}</li>
+          </ul>
+        </div>
+
+        <!-- Información de Precio -->
+        <div class="salon-precio">
+          <div class="precio-detalle">
+            <span class="precio-label">Precio por día:</span>
+            <span class="precio-valor">$ {{ salon.precioPorDia }}</span>
+          </div>
+          <div class="precio-detalle">
+            <span class="precio-label">Días solicitados:</span>
+            <span class="precio-valor">{{ salon.dias }}</span>
+          </div>
+          <div class="precio-total">
+            <span class="precio-label">Total:</span>
+            <span class="precio-valor-total">$ {{ salon.precioTotal }}</span>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="salon-acciones">
+          <button 
+            class="btn btn-info"
+            (click)="verDetalleSalon(salon)"
+          >
+            👁️ Ver Detalle
+          </button>
+          <button 
+            class="btn btn-outline"
+            (click)="verificarDisponibilidadSalon(salon)"
+          >
+            🔍 Verificar Disponibilidad
+          </button>
+          <button 
+            class="btn btn-primary"
+            (click)="reservarSalon(salon)"
+          >
+            📅 Reservar Salón
+          </button>
+        </div>
+
+        <!-- Badge de Disponibilidad -->
+        <div class="disponibilidad-badge" *ngIf="salon.disponibleParaFechas">
+          ✓ Disponible
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Buscando salones disponibles...</p>
+  </div>
+</div>

@@ -235,20 +235,6 @@
             </div>
           </ng-container>
 
-          <!-- Campo básico de empresa (legacy - solo para clientes que pongan nombre de empresa) -->
-          <div class="form-group empresa-field" *ngIf="registerForm.get('tipo')?.value === 'cliente'">
-            <label for="empresa">Nombre de la empresa (opcional)</label>
-            <div class="input-wrapper">
-              <span class="input-icon"><i class="fas fa-building"></i></span>
-              <input
-                id="empresa"
-                type="text"
-                formControlName="empresa"
-                placeholder="Si trabajas para una empresa, ingrésala aquí"
-              />
-            </div>
-          </div>
-
           <div class="alert error-alert" *ngIf="errorMessage">
             <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
             <strong>{{ errorMessage }}</strong>

@@ -180,14 +180,14 @@ export class DashboardComponent implements OnInit {
             id: 'ver-paquetes',
             label: 'Paquetes Corporativos',
             icon: 'fas fa-cube',
-            route: '/ver-paquetes',
+            route: '/dashboard/paquetes-corporativos',
             description: 'Ver y reservar paquetes empresariales'
           },
           {
             id: 'salones',
             label: 'Salones',
             icon: 'fas fa-glass-cheers',
-            route: '/busqueda-salones',
+            route: '/dashboard/busqueda-salones',
             description: 'Buscar salones para eventos'
           }
         ];
