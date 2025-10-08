@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalAsistentesComponent } from './modal-asistentes.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -19,7 +20,7 @@ interface ReservaConAcciones extends ReservaCreada {
 @Component({
   selector: 'app-mis-reservas-client',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ModalAsistentesComponent],
   template: `<ng-container>
     <!-- Esta es la sección específica de contenido que se mostrará dentro del dashboard -->
     <div class="client-reservas-container">
@@ -286,10 +287,7 @@ interface ReservaConAcciones extends ReservaCreada {
                 <span class="fecha-label"><i class="fas fa-calendar-day"></i> Fecha del Evento:</span>
                 <span class="fecha-valor">{{ formatearFecha(reserva.fechaInicio) }}</span>
               </div>
-              <div class="fecha-item">
-                <span class="fecha-label"><i class="fas fa-users"></i> Asistentes:</span>
-                <span class="fecha-valor">{{ reserva.numeroAsistentes }} personas</span>
-              </div>
+              <!-- Asistentes section removed -->
             </div>
 
             <!-- Información Adicional -->
@@ -319,14 +317,15 @@ interface ReservaConAcciones extends ReservaCreada {
               (click)="verDetallePaquete(reserva)">
               <i class="fas fa-eye"></i> Ver Detalles
             </button>
-            
+
             <button 
-              class="btn btn-outline-info btn-sm"
-              [title]="'Gestionar asistentes de ' + reserva.numeroReserva"
+              *ngIf="reserva.estado === 'confirmada'"
+              class="btn btn-outline-success btn-sm"
+              [title]="'Gestionar asistentes de la reserva ' + reserva.numeroReserva"
               (click)="gestionarAsistentes(reserva)">
-              <i class="fas fa-users"></i> Asistentes
+              <i class="fas fa-users"></i> Gestionar asistentes
             </button>
-            
+
             <button 
               *ngIf="reserva.estado === 'confirmada'"
               class="btn btn-outline-warning btn-sm"
@@ -334,7 +333,7 @@ interface ReservaConAcciones extends ReservaCreada {
               (click)="modificarPaquete(reserva)">
               <i class="fas fa-pencil-alt"></i> Modificar
             </button>
-            
+
             <button 
               *ngIf="reserva.estado === 'confirmada'"
               class="btn btn-outline-danger btn-sm"
@@ -345,6 +344,13 @@ interface ReservaConAcciones extends ReservaCreada {
           </div>
         </div>
       </div>
+
+      <!-- Modal de Asistentes para paquetes corporativos -->
+      <app-modal-asistentes
+        *ngIf="mostrarModalAsistentes && reservaIdAsistentes"
+        [numeroReserva]="reservaIdAsistentes"
+        (cerrar)="cerrarModalAsistentes()">
+      </app-modal-asistentes>
 
       <!-- Modal de Cancelación -->
       <div class="modal-overlay" *ngIf="mostrarModalCancelar" (click)="cerrarModalCancelar()">
@@ -1493,6 +1499,8 @@ interface ReservaConAcciones extends ReservaCreada {
   `]
 })
 export class MisReservasClientComponent implements OnInit {
+  mostrarModalAsistentes: boolean = false;
+  reservaIdAsistentes: string | null = null;
   // Tipo de vista actual
   vistaActual: TipoVista = 'habitaciones';
   
@@ -2111,7 +2119,16 @@ ${reserva.notas || 'Sin observaciones adicionales'}
    * Gestionar asistentes de un paquete corporativo
    */
   gestionarAsistentes(reserva: any): void {
-    console.log('Gestionar asistentes:', reserva);
-    this.router.navigate(['/gestionar-asistentes', reserva._id]);
+    this.reservaIdAsistentes = reserva.numeroReserva;
+    this.mostrarModalAsistentes = true;
+    document.body.classList.add('modal-open');
+  }
+
+  cerrarModalAsistentes(): void {
+    this.mostrarModalAsistentes = false;
+    this.reservaIdAsistentes = null;
+    document.body.classList.remove('modal-open');
+    // Opcional: recargar asistentes o reservas si es necesario
+    this.cargarReservasPaquetes();
   }
 }

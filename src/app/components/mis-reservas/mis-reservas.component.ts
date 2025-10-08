@@ -575,11 +575,5 @@ export class MisReservasComponent implements OnInit {
     }
   }
 
-  /**
-   * Gestionar asistentes de un paquete corporativo
-   */
-  gestionarAsistentes(reserva: any): void {
-    console.log('Gestionar asistentes:', reserva);
-    this.router.navigate(['/gestionar-asistentes', reserva._id]);
-  }
+  // Asistente management removed
 }

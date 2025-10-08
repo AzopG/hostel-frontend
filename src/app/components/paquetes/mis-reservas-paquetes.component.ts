@@ -150,10 +150,7 @@ import { ReservaPaqueteService, ReservaPaquete } from '../../services/reserva-pa
                 </div>
 
                 <div class="detalles-reserva">
-                  <div class="detalle-item">
-                    <i class="fas fa-users text-primary"></i>
-                    <span>{{ reserva.numeroAsistentes }} asistentes</span>
-                  </div>
+                  <!-- Asistentes display removed -->
                   
                   <div class="detalle-item" *ngIf="reserva.paquete && typeof reserva.paquete === 'object'">
                     <i class="fas fa-cube text-info"></i>
@@ -262,9 +259,7 @@ import { ReservaPaqueteService, ReservaPaquete } from '../../services/reserva-pa
                     <div class="info-item">
                       <strong>Tipo:</strong> {{ getTipoEventoLabel(reservaSeleccionada.tipoEvento) }}
                     </div>
-                    <div class="info-item">
-                      <strong>Asistentes:</strong> {{ reservaSeleccionada.numeroAsistentes }}
-                    </div>
+                    <!-- Asistentes detail removed -->
                     <div class="info-item">
                       <strong>Fechas:</strong> {{ formatearFecha(reservaSeleccionada.fechaInicio) }} - {{ formatearFecha(reservaSeleccionada.fechaFin) }}
                     </div>
