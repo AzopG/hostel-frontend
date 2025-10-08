@@ -1,3 +1,9 @@
+<!-- Modal de gestión de asistentes -->
+<app-modal-asistentes 
+  *ngIf="mostrarModalAsistentes && reservaIdAsistentes"
+  [reservaId]="reservaIdAsistentes"
+  (click)="cerrarModalAsistentes()"
+></app-modal-asistentes>
 <!-- Esta es la sección específica de contenido que se mostrará dentro del dashboard -->
 <div class="client-reservas-container">
   <!-- Header -->
@@ -240,10 +246,7 @@
             <span class="fecha-label"><i class="fas fa-calendar-day"></i> Fecha del Evento:</span>
             <span class="fecha-valor">{{ formatearFecha(reserva.fechaInicio) }}</span>
           </div>
-          <div class="fecha-item">
-            <span class="fecha-label"><i class="fas fa-users"></i> Asistentes:</span>
-            <span class="fecha-valor">{{ reserva.numeroAsistentes }} personas</span>
-          </div>
+          <!-- Sección de asistentes eliminada -->
         </div>
 
         <!-- Información Adicional -->
@@ -276,10 +279,11 @@
         </button>
         
         <button 
+          *ngIf="reserva.estado === 'confirmada' && reserva.tipoEvento === 'evento_corporativo'"
           class="btn btn-outline-info btn-sm"
-          [title]="'Gestionar asistentes de ' + reserva.numeroReserva"
+          [title]="'Gestionar asistentes para la reserva ' + reserva.numeroReserva"
           (click)="gestionarAsistentes(reserva)">
-          <i class="fas fa-users"></i> 👥 ASISTENTES NUEVO
+          <i class="fas fa-users"></i> 👥 GESTIONAR ASISTENTES
         </button>
         
         <button 

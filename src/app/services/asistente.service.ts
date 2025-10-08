@@ -11,11 +11,11 @@ import { environment } from '../../environments/environment';
 export interface Asistente {
   _id?: string;
   nombre: string;
-  correo: string;
+  email: string;
+  descripcion?: string;
   confirmado?: boolean;
   fechaRegistro?: Date | string;
   fechaModificacion?: Date | string;
-  notas?: string;
 }
 
 export interface EstadisticasAsistentes {
@@ -79,7 +79,7 @@ export interface RespuestaImportacion {
   providedIn: 'root'
 })
 export class AsistenteService {
-  private apiUrl = `${environment.apiUrl}/asistentes`;
+  private apiUrl = `${environment.apiUrl}/reservas-paquetes`;
 
   constructor(private http: HttpClient) { }
 
@@ -93,9 +93,9 @@ export class AsistenteService {
   /**
    * Obtener lista completa de asistentes de una reserva
    */
-  obtenerAsistentes(reservaId: string): Observable<RespuestaListaAsistentes> {
+  obtenerAsistentes(numeroReserva: string): Observable<RespuestaListaAsistentes> {
     return this.http.get<RespuestaListaAsistentes>(
-      `${this.apiUrl}/${reservaId}`,
+      `${this.apiUrl}/codigo/${numeroReserva}/asistentes`,
       { headers: this.getHeaders() }
     );
   }
@@ -103,9 +103,9 @@ export class AsistenteService {
   /**
    * HU19 CA1: Agregar un nuevo asistente
    */
-  agregarAsistente(reservaId: string, asistente: { nombre: string, correo: string, notas?: string }): Observable<RespuestaAsistente> {
+  agregarAsistente(numeroReserva: string, asistente: { nombre: string, email: string, descripcion?: string }): Observable<RespuestaAsistente> {
     return this.http.post<RespuestaAsistente>(
-      `${this.apiUrl}/${reservaId}`,
+      `${this.apiUrl}/codigo/${numeroReserva}/asistentes`,
       asistente,
       { headers: this.getHeaders() }
     );
@@ -115,12 +115,12 @@ export class AsistenteService {
    * HU19 CA2: Editar datos de un asistente existente
    */
   editarAsistente(
-    reservaId: string, 
+    numeroReserva: string, 
     asistenteId: string, 
-    datos: { nombre?: string, correo?: string, confirmado?: boolean, notas?: string }
+    datos: { nombre?: string, email?: string, descripcion?: string, confirmado?: boolean }
   ): Observable<RespuestaAsistente> {
     return this.http.put<RespuestaAsistente>(
-      `${this.apiUrl}/${reservaId}/${asistenteId}`,
+      `${this.apiUrl}/codigo/${numeroReserva}/asistentes/${asistenteId}`,
       datos,
       { headers: this.getHeaders() }
     );
@@ -129,9 +129,9 @@ export class AsistenteService {
   /**
    * HU19 CA3: Eliminar un asistente de la lista
    */
-  eliminarAsistente(reservaId: string, asistenteId: string): Observable<RespuestaAsistente> {
+  eliminarAsistente(numeroReserva: string, asistenteId: string): Observable<RespuestaAsistente> {
     return this.http.delete<RespuestaAsistente>(
-      `${this.apiUrl}/${reservaId}/${asistenteId}`,
+      `${this.apiUrl}/codigo/${numeroReserva}/asistentes/${asistenteId}`,
       { headers: this.getHeaders() }
     );
   }
