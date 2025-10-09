@@ -19,12 +19,10 @@
     <li><a href="#servicios" (click)="closeMobileMenu()">Servicios</a></li>
     <li><a href="#contacto" (click)="closeMobileMenu()">Contacto</a></li>
     <li *ngIf="!isAuthenticated">
-      <!-- <button class="register-nav-btn" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</button> -->
-      <a class="" href="register/" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</a>
+      <a class="auth-link register" href="register/" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</a>
     </li>
     <li *ngIf="!isAuthenticated">
-      <!-- <button class="login-nav-btn" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</button> -->
-      <a class="" href="login/" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</a>
+      <a class="auth-link login" href="login/" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</a>
     </li>
     
     <li *ngIf="isAuthenticated" class="user-menu">
@@ -32,11 +30,10 @@
         <span class="bell-icon"><i class="fas fa-bell"></i></span>
         <span class="notification-count" *ngIf="totalNotifications > 0">{{ totalNotifications }}</span>
       </div>
-      <div>
+      <div class="user-actions">
         <span class="user-name">{{ currentUser?.nombre }}</span>
-        <a class="" href="#" (click)="navigateToDashboard(); closeMobileMenu(); $event.preventDefault()">Panel de Control</a>
-        <a class="" href="login/" (click)="logout(); closeMobileMenu()">Salir</a>
-     
+        <a class="dashboard-link" href="#" (click)="navigateToDashboard(); closeMobileMenu(); $event.preventDefault()">Panel de Control</a>
+        <a class="logout-link" href="login/" (click)="logout(); closeMobileMenu()">Salir</a>
       </div>
     </li>
   </ul> 
@@ -69,60 +66,28 @@
 <div class="homepage">
   <!-- Hero Section -->
   <section class="hero">
+    <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-text">
         <h1 class="hero-title">Hotel Paradise</h1>
         <p class="hero-subtitle">
-          Experiencia hotelera excepcional e integra con servicios de lujo y comodidad incomparable
+          Experiencia hotelera excepcional con servicios de lujo y comodidad incomparable
         </p>
         <div class="hero-actions">
           <button class="btn-primary" (click)="navigateToBuscarHabitaciones()">
             <span class="btn-icon"><i class="fas fa-search"></i></span>
             Buscar Habitaciones
           </button>
-          <button class="btn-primary" (click)="navigateToCalendario()">
+          <button class="btn-secondary" (click)="navigateToCalendario()">
             <span class="btn-icon"><i class="fas fa-calendar-alt"></i></span>
             Ver Disponibilidad
           </button>
-        </div>
-        <div class="hero-features-icons">
-          <div class="feature-circle" data-tooltip="Servicio Premium">
-            <span class="feature-icon"><i class="fas fa-star"></i></span>
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="tooltip-title">Servicio Premium</span>
-                <span class="tooltip-description">Atención personalizada 24/7</span>
-              </div>
-              <div class="tooltip-arrow"></div>
-            </div>
-          </div>
-          <div class="feature-circle" data-tooltip="Instalaciones de Lujo">
-            <span class="feature-icon"><i class="fas fa-swimming-pool"></i></span>
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="tooltip-title">Instalaciones de Lujo</span>
-                <span class="tooltip-description">Piscina, spa y gimnasio premium</span>
-              </div>
-              <div class="tooltip-arrow"></div>
-            </div>
-          </div>
-          <div class="feature-circle" data-tooltip="Gastronomía Exclusiva">
-            <span class="feature-icon"><i class="fas fa-utensils"></i></span>
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="tooltip-title">Gastronomía Exclusiva</span>
-                <span class="tooltip-description">Chefs internacionales y cocina gourmet</span>
-              </div>
-              <div class="tooltip-arrow"></div>
-            </div>
-          </div>
         </div>
       </div>
       <div class="hero-visual">
         <div class="floating-card">
           <div class="card-header">
-            <!-- ___________________________________________________________________________________ -->
-            <h3>Panel de Control</h3>
+            <h3>Estadísticas</h3>
             <div class="status-indicator active"></div>
           </div>
           <div class="stats-grid">
@@ -145,11 +110,42 @@
           </div>
         </div>
       </div>
-      
+    </div>
+  </section>
 
-
-
-
+  <!-- Botones rápidos -->
+  <section class="quick-buttons-container">
+    <div class="quick-buttons-wrapper">
+      <div class="feature-circle" data-tooltip="Servicio Premium">
+        <span class="feature-icon"><i class="fas fa-star"></i></span>
+        <div class="custom-tooltip">
+          <div class="tooltip-content">
+            <span class="tooltip-title">Servicio Premium</span>
+            <span class="tooltip-description">Atención personalizada 24/7</span>
+          </div>
+          <div class="tooltip-arrow"></div>
+        </div>
+      </div>
+      <div class="feature-circle" data-tooltip="Instalaciones de Lujo">
+        <span class="feature-icon"><i class="fas fa-swimming-pool"></i></span>
+        <div class="custom-tooltip">
+          <div class="tooltip-content">
+            <span class="tooltip-title">Instalaciones de Lujo</span>
+            <span class="tooltip-description">Piscina, spa y gimnasio premium</span>
+          </div>
+          <div class="tooltip-arrow"></div>
+        </div>
+      </div>
+      <div class="feature-circle" data-tooltip="Gastronomía Exclusiva">
+        <span class="feature-icon"><i class="fas fa-utensils"></i></span>
+        <div class="custom-tooltip">
+          <div class="tooltip-content">
+            <span class="tooltip-title">Gastronomía Exclusiva</span>
+            <span class="tooltip-description">Chefs internacionales y cocina gourmet</span>
+          </div>
+          <div class="tooltip-arrow"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -157,92 +153,173 @@
   <section class="features" id="servicios">
     <div class="container">
       <h2 class="section-title">Nuestros Servicios</h2>
+      <div class="section-subtitle">Descubra las soluciones integrales para la gestión hotelera</div>
+      
       <div class="features-grid">
-        
         <!-- Reservas -->
         <div class="feature-card" (click)="navigateToService('reservas')">
-          <div class="feature-icon-large"><i class="fas fa-hotel"></i></div>
-          <h3>Gestión de Reservas</h3>
-          <p>Sistema completo para administrar reservas de habitaciones, salones de eventos y servicios especiales.</p>
-          <div class="service-highlights">
-            <span class="service-tag">{{ currentStats.reservasPendientes }} Pendientes</span>
-            <span class="service-tag">{{ currentStats.reservasConfirmadas }} Confirmadas</span>
+          <div class="card-icon-wrapper">
+            <div class="feature-icon-large"><i class="fas fa-hotel"></i></div>
           </div>
-          <div class="feature-action">
-            <span class="action-text">Gestionar Reservas</span>
-            <span class="action-arrow">→</span>
+          <div class="card-content">
+            <h3>Gestión de Reservas</h3>
+            <p>Sistema completo para administrar reservas de habitaciones, salones de eventos y servicios especiales.</p>
+            <div class="service-highlights">
+              <span class="service-tag">{{ currentStats.reservasPendientes }} Pendientes</span>
+              <span class="service-tag">{{ currentStats.reservasConfirmadas }} Confirmadas</span>
+            </div>
+            <div class="feature-action">
+              <span class="action-text">Gestionar Reservas</span>
+              <span class="action-arrow">→</span>
+            </div>
           </div>
         </div>
 
         <!-- Habitaciones -->
         <div class="feature-card" (click)="navigateToService('habitaciones')">
-          <div class="feature-icon-large"><i class="fas fa-bed"></i></div>
-          <h3>Habitaciones</h3>
-          <p>Gestión de habitaciones disponibles y ocupación en tiempo real.</p>
-          <div class="service-highlights">
-            <span class="service-tag">Disponibilidad</span>
-            <span class="service-tag">Ocupación</span>
+          <div class="card-icon-wrapper">
+            <div class="feature-icon-large"><i class="fas fa-bed"></i></div>
           </div>
-          <div class="feature-action">
-            <span class="action-text">Ver Habitaciones</span>
-            <span class="action-arrow">→</span>
+          <div class="card-content">
+            <h3>Habitaciones</h3>
+            <p>Gestión de habitaciones disponibles y ocupación en tiempo real.</p>
+            <div class="service-highlights">
+              <span class="service-tag">Disponibilidad</span>
+              <span class="service-tag">Ocupación</span>
+            </div>
+            <div class="feature-action">
+              <span class="action-text">Ver Habitaciones</span>
+              <span class="action-arrow">→</span>
+            </div>
           </div>
         </div>
 
         <!-- Hoteles -->
         <div class="feature-card" (click)="navigateToService('hoteles')">
-          <div class="feature-icon-large"><i class="fas fa-building"></i></div>
-          <h3>Gestión de Hoteles</h3>
-          <p>Administra tu cadena hotelera desde un solo lugar.</p>
-          <div class="service-highlights">
-            <span class="service-tag">{{ currentStats.totalHoteles }} Hoteles</span>
-            <span class="service-tag">Multi-sede</span>
+          <div class="card-icon-wrapper">
+            <div class="feature-icon-large"><i class="fas fa-building"></i></div>
           </div>
-          <div class="feature-action">
-            <span class="action-text">Administrar</span>
-            <span class="action-arrow">→</span>
+          <div class="card-content">
+            <h3>Gestión de Hoteles</h3>
+            <p>Administra tu cadena hotelera desde un solo lugar.</p>
+            <div class="service-highlights">
+              <span class="service-tag">{{ currentStats.totalHoteles }} Hoteles</span>
+              <span class="service-tag">Multi-sede</span>
+            </div>
+            <div class="feature-action">
+              <span class="action-text">Administrar</span>
+              <span class="action-arrow">→</span>
+            </div>
           </div>
         </div>
 
         <!-- Reportes -->
         <div class="feature-card" (click)="navigateToService('reportes')">
-          <div class="feature-icon-large"><i class="fas fa-chart-bar"></i></div>
-          <h3>Reportes y Estadísticas</h3>
-          <p>Análisis completo del rendimiento de tu negocio hotelero.</p>
-          <div class="service-highlights">
-            <span class="service-tag">Analíticas</span>
-            <span class="service-tag">Ingresos: {{ formatRevenue(currentStats.ingresosTotales) }}</span>
+          <div class="card-icon-wrapper">
+            <div class="feature-icon-large"><i class="fas fa-chart-bar"></i></div>
           </div>
-          <div class="feature-action">
-            <span class="action-text">Ver Reportes</span>
-            <span class="action-arrow">→</span>
+          <div class="card-content">
+            <h3>Reportes y Estadísticas</h3>
+            <p>Análisis completo del rendimiento de tu negocio hotelero.</p>
+            <div class="service-highlights">
+              <span class="service-tag">Analíticas</span>
+              <span class="service-tag">Ingresos: {{ formatRevenue(currentStats.ingresosTotales) }}</span>
+            </div>
+            <div class="feature-action">
+              <span class="action-text">Ver Reportes</span>
+              <span class="action-arrow">→</span>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Sección de Contacto -->
+  <section class="contact" id="contacto">
+    <div class="container">
+      <h2 class="section-title">Contáctenos</h2>
+      <p class="contact-subtitle">Estamos aquí para responder cualquier consulta sobre nuestros servicios de gestión hotelera</p>
+      
+      <div class="contact-grid">
+        <!-- Teléfono -->
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <h3 class="contact-title">Llámenos</h3>
+          <p class="contact-info">+57 123 456 7890<br>Lun - Vie: 8:00 - 18:00</p>
+          <a href="tel:+573211234567" class="contact-button">Llamar ahora</a>
+        </div>
+        
+        <!-- Email -->
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h3 class="contact-title">Escríbanos</h3>
+          <p class="contact-info">info&#64;hotelparadise.com<br>Respuesta en 24 horas</p>
+          <a href="mailto:info&#64;hotelparadise.com" class="contact-button">Enviar email</a>
+        </div>
+        
+        <!-- Ubicación -->
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h3 class="contact-title">Visítenos</h3>
+          <p class="contact-info">Calle Principal #123<br>Bogotá, Colombia</p>
+          <a href="https://maps.google.com" target="_blank" class="contact-button">Ver mapa</a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer" id="contacto">
-    <div class="container">
-      <div class="footer-content">
+  <footer>
+    <div class="footer-top">
+      <div class="footer-content-wrapper">
+        <!-- Enlaces rápidos -->
         <div class="footer-section">
-          <h4>Hotel Paradise</h4>
-          <p>Sistema de gestión hotelera integral para cadenas y hoteles independientes.</p>
+          <h3 class="footer-title">Hotel Paradise</h3>
+          <p class="footer-tagline">Sistema de gestión hotelera integral</p>
         </div>
+        
+        <!-- Enlaces -->
         <div class="footer-section">
-          <h4>Contacto</h4>
-          <ul>
-            <li><i class="fas fa-phone"></i> +57 123 456 7890</li>
-            <li><i class="fas fa-envelope"></i> info&#64;hotelparadise.com</li>
-            <li><i class="fas fa-map-marker-alt"></i> Bogotá, Colombia</li>
-          </ul>
+          <div class="footer-links-group">
+            <a href="#inicio" class="footer-link">Inicio</a>
+            <span class="footer-divider">|</span>
+            <a href="#servicios" class="footer-link">Servicios</a>
+            <span class="footer-divider">|</span>
+            <a href="#contacto" class="footer-link">Contacto</a>
+            <span class="footer-divider">|</span>
+            <a href="login/" class="footer-link">Iniciar Sesión</a>
+          </div>
+        </div>
+        
+        <!-- Social y Contacto -->
+        <div class="footer-section">
+          <div class="footer-contact-wrapper">
+            <a href="mailto:info&#64;hotelparadise.com" class="footer-contact-link">
+              <i class="fas fa-envelope"></i> info&#64;hotelparadise.com
+            </a>
+            <a href="tel:+573211234567" class="footer-contact-link">
+              <i class="fas fa-phone-alt"></i> +57 123 456 7890
+            </a>
+          </div>
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Hotel Paradise. Sistema de gestión hotelera.</p>
-      </div>
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p class="copyright">&copy; 2025 Hotel Paradise. Todos los derechos reservados.</p>
     </div>
   </footer>
 </div>

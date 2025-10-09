@@ -200,9 +200,9 @@
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 70px);
-  height: calc(100vh - 70px);
+  height: auto;
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow-y: visible;
 }
 
 .stats-section {
@@ -216,17 +216,39 @@
   padding: 0;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   min-height: calc(100vh - 70px);
-  height: calc(100vh - 70px);
+  height: auto;
   flex: 1;
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.8);
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #667eea #f0f2f5;
 }
 
 .router-content:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  transform: none;
+}
+
+/* Estilos para scrollbar en navegadores webkit (Chrome, Safari) */
+.router-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.router-content::-webkit-scrollbar-track {
+  background: #f0f2f5;
+  border-radius: 4px;
+}
+
+.router-content::-webkit-scrollbar-thumb {
+  background-color: #667eea;
+  border-radius: 4px;
+}
+
+.router-content::-webkit-scrollbar-thumb:hover {
+  background-color: #5a6fcf;
 }
 
 .stats-grid {

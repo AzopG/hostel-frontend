@@ -422,6 +422,31 @@ import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servi
       max-width: 1400px;
       margin: 0 auto;
       padding: 20px;
+      height: auto;
+      min-height: 100vh;
+      max-height: none;
+      overflow-y: visible;
+      scrollbar-width: thin;
+      scrollbar-color: #667eea #f0f2f5;
+    }
+    
+    /* Estilo para scrollbar en navegadores webkit (Chrome, Safari) */
+    .busqueda-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .busqueda-container::-webkit-scrollbar-track {
+      background: #f0f2f5;
+      border-radius: 4px;
+    }
+    
+    .busqueda-container::-webkit-scrollbar-thumb {
+      background-color: #667eea;
+      border-radius: 4px;
+    }
+    
+    .busqueda-container::-webkit-scrollbar-thumb:hover {
+      background-color: #5a6fcf;
     }
 
     .header {

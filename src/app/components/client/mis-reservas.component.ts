@@ -1715,15 +1715,28 @@ export class MisReservasClientComponent implements OnInit {
    * Navegar a detalle de reserva
    */
   verDetalle(reserva: ReservaConAcciones): void {
-    // Redirigir a la nueva vista de detalle usando el código de reserva
-    this.router.navigate(['/detalle-reserva', reserva.codigoReserva]);
+    // Verificar si estamos en el contexto del dashboard para mantener el layout
+    if (this.router.url.includes('/dashboard')) {
+      // Redirigir manteniendo el contexto del dashboard
+      this.router.navigate(['/dashboard/detalle-reserva', reserva.codigoReserva]);
+    } else {
+      // Redirigir a la vista standalone
+      this.router.navigate(['/detalle-reserva', reserva.codigoReserva]);
+    }
   }
 
   /**
    * HU11: Navegar a ver recibo
    */
   verRecibo(reserva: ReservaConAcciones): void {
-    this.router.navigate(['/recibo', reserva._id]);
+    // Verificar si estamos en el contexto del dashboard para mantener el layout
+    if (this.router.url.includes('/dashboard')) {
+      // Redirigir manteniendo el contexto del dashboard
+      this.router.navigate(['/dashboard/recibo', reserva._id]);
+    } else {
+      // Redirigir a la vista standalone
+      this.router.navigate(['/recibo', reserva._id]);
+    }
   }
 
   /**
@@ -2000,7 +2013,17 @@ export class MisReservasClientComponent implements OnInit {
    * Navegar a buscar habitaciones
    */
   irABuscar(): void {
-    this.router.navigate(['/buscar-habitaciones']);
+    // Verificamos si estamos en el contexto del dashboard y navegamos a la ruta correcta
+    if (this.router.url.includes('/dashboard')) {
+      console.log('Navegando a la vista de búsqueda de habitaciones dentro del dashboard...');
+      // Usar timeout para asegurar que la navegación ocurra después de cualquier proceso pendiente
+      setTimeout(() => {
+        this.router.navigate(['/dashboard/busqueda-habitaciones']);
+      }, 100);
+    } else {
+      console.log('Navegando a la vista de búsqueda de habitaciones fuera del dashboard...');
+      this.router.navigate(['/buscar-habitaciones']);
+    }
   }
 
   /**
@@ -2014,7 +2037,12 @@ export class MisReservasClientComponent implements OnInit {
    * Navegar a paquetes corporativos
    */
   irAPaquetes(): void {
-    this.router.navigate(['/ver-paquetes']);
+    // Verificamos si estamos en el contexto del dashboard y navegamos a la ruta correcta
+    if (this.router.url.includes('/dashboard')) {
+      this.router.navigate(['/dashboard/paquetes-corporativos']);
+    } else {
+      this.router.navigate(['/ver-paquetes']);
+    }
   }
 
   /**

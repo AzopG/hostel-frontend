@@ -1,5 +1,6 @@
 <!-- HU07: Detalle de Habitación -->
-<div class="navigation-header">
+<!-- Barra de navegación solo cuando NO estamos en el dashboard -->
+<div class="navigation-header" *ngIf="!isDashboardView()">
   <button (click)="volverAResultados()" class="btn-volver-nav">
     ← Volver a Búsqueda
   </button>
@@ -29,8 +30,8 @@
   <!-- Detalle completo -->
   <div *ngIf="habitacion && !loading" class="detalle-content">
     
-    <!-- HU07 CA4: Botón Volver conservando filtros -->
-    <button (click)="volverAResultados()" class="btn-volver-arriba">
+    <!-- HU07 CA4: Botón Volver conservando filtros - solo cuando estamos en dashboard -->
+    <button *ngIf="!isDashboardView()" (click)="volverAResultados()" class="btn-volver-arriba">
       ← Volver a resultados
     </button>
 

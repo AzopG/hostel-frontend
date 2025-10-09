@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReservaService, DatosEvento, DatosContacto } from '../../services/reserva.service';
 import { SalonService } from '../../services/salon.service';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * HU17: Reservar un Salón
@@ -30,6 +31,10 @@ export class ReservarSalonComponent implements OnInit {
   fechaInicio = '';
   fechaFin = '';
   layoutId = '';
+  
+  // Para navegación desde el dashboard
+  fromDashboard = false;
+  returnUrl: string | null = null;
   
   // Información del salón
   salon: any = null;
@@ -60,7 +65,8 @@ export class ReservarSalonComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private reservaService: ReservaService,
-    private salonService: SalonService
+    private salonService: SalonService,
+    private authService: AuthService
   ) {
     this.inicializarFormularios();
   }
@@ -78,6 +84,8 @@ export class ReservarSalonComponent implements OnInit {
       this.fechaInicio = params['fechaInicio'] || '';
       this.fechaFin = params['fechaFin'] || '';
       this.layoutId = params['layoutId'] || '';
+      this.fromDashboard = params['fromDashboard'] === 'true';
+      this.returnUrl = params['returnUrl'] || null;
       
       if (this.salonId && this.fechaInicio && this.fechaFin) {
         this.iniciarReserva();
@@ -307,6 +315,9 @@ export class ReservarSalonComponent implements OnInit {
           this.reservaConfirmada = response.reserva;
           this.pasoActual = 4; // Mostrar confirmación
           this.scrollToTop();
+          
+          // Opcional: Si venimos del dashboard, podríamos enviar un evento o actualizar algún servicio
+          // para refrescar las reservas en el panel de empresa cuando el usuario regrese
         } else if (response.conflicto) {
           // CA2: Conflicto detectado en el último momento
           this.manejarConflicto(response.message || '', response.sugerencia || '');
@@ -371,14 +382,27 @@ export class ReservarSalonComponent implements OnInit {
    * CA2: Volver a la búsqueda de salones
    */
   volverABusqueda(): void {
-    this.router.navigate(['/busqueda-salones']);
+    if (this.fromDashboard) {
+      // Si venimos del dashboard, volvemos a la búsqueda de salones dentro del panel
+      const returnPath = this.returnUrl || '/dashboard/busqueda-salones';
+      this.router.navigate([returnPath]);
+    } else {
+      // Navegación normal a la búsqueda de salones
+      this.router.navigate(['/busqueda-salones']);
+    }
   }
 
   /**
    * Ir al home
    */
   irAlHome(): void {
-    this.router.navigate(['/']);
+    if (this.fromDashboard) {
+      // Si venimos del dashboard, volvemos al panel principal
+      this.router.navigate(['/dashboard/home']);
+    } else {
+      // Navegación normal al home
+      this.router.navigate(['/']);
+    }
   }
 
   /**
@@ -409,6 +433,30 @@ export class ReservarSalonComponent implements OnInit {
       day: 'numeric'
     };
     return new Date(fecha).toLocaleDateString('es-CO', opciones);
+  }
+
+  /**
+   * Navegar a la lista de reservas en el panel de empresa
+   */
+  irAMisReservas(): void {
+    if (this.fromDashboard) {
+      // Navegar a la lista de reservas dentro del panel de empresa
+      this.router.navigate(['/dashboard/mis-reservas']);
+    } else {
+      // Si el usuario tiene una cuenta, podemos enviarlo a iniciar sesión o sus reservas
+      const usuario = this.authService.getCurrentUser();
+      if (usuario) {
+        if (usuario.tipo === 'empresa') {
+          this.router.navigate(['/dashboard/mis-reservas']);
+        } else {
+          this.router.navigate(['/mis-reservas']);
+        }
+      } else {
+        this.router.navigate(['/login'], { 
+          queryParams: { returnUrl: '/dashboard/mis-reservas' } 
+        });
+      }
+    }
   }
 
   /**

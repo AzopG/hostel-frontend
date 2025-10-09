@@ -42,6 +42,12 @@ export class ReservarHabitacionComponent implements OnInit {
   
   // HU08 CA3: Conflicto de disponibilidad
   conflictoDisponibilidad = false;
+  
+  // Estado para controlar si estamos en el dashboard
+  dashboardView = false;
+  
+  // Almacenar la URL de referencia para volver atrás
+  private returnUrl: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +61,17 @@ export class ReservarHabitacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Detectar si estamos en el dashboard basado en la URL
+    const currentUrl = this.router.url;
+    this.dashboardView = currentUrl.includes('/dashboard/');
+    
+    // Capturar la URL de referencia si existe
+    this.route.queryParams.subscribe(params => {
+      if (params['returnUrl']) {
+        this.returnUrl = decodeURIComponent(params['returnUrl']);
+      }
+    });
+    
     // Obtener ID de habitación
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -258,14 +275,23 @@ export class ReservarHabitacionComponent implements OnInit {
   }
 
   /**
-   * CA3: Volver a la búsqueda
+   * CA3: Volver a la búsqueda o a la página anterior
    */
   volverABusqueda(): void {
-    this.router.navigate(['/buscar-habitaciones'], {
+    // Si tenemos una URL de retorno que incluye "buscar-habitaciones", usarla
+    if (this.returnUrl && this.returnUrl.includes('buscar-habitaciones')) {
+      this.router.navigateByUrl(this.returnUrl);
+      return;
+    }
+    
+    const baseRoute = this.dashboardView ? '/dashboard/buscar-habitaciones' : '/buscar-habitaciones';
+    
+    this.router.navigate([baseRoute], {
       queryParams: {
         fechaInicio: this.fechaInicio,
         fechaFin: this.fechaFin,
-        huespedes: this.huespedes
+        huespedes: this.huespedes,
+        fromDashboard: this.dashboardView ? 'true' : undefined
       }
     });
   }
@@ -285,13 +311,27 @@ export class ReservarHabitacionComponent implements OnInit {
    * Ir al detalle de la habitación
    */
   verDetalle(): void {
+    // Si tenemos una URL de retorno específica, usarla
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+      return;
+    }
+    
     if (this.habitacion) {
-      this.router.navigate(['/habitacion', this.habitacion._id], {
-        queryParams: {
-          fechaInicio: this.fechaInicio,
-          fechaFin: this.fechaFin,
-          huespedes: this.huespedes
-        }
+      const baseRoute = this.dashboardView ? '/dashboard/habitacion' : '/habitacion';
+      const queryParams: {[key: string]: any} = {
+        fechaInicio: this.fechaInicio,
+        fechaFin: this.fechaFin,
+        huespedes: this.huespedes
+      };
+      
+      // Si estamos en dashboard, mantener ese contexto
+      if (this.dashboardView) {
+        queryParams['fromDashboard'] = 'true';
+      }
+      
+      this.router.navigate([baseRoute, this.habitacion._id], {
+        queryParams: queryParams
       });
     }
   }
@@ -342,16 +382,30 @@ export class ReservarHabitacionComponent implements OnInit {
   }
 
   /**
-   * Volver al detalle de la habitación
+   * Volver al detalle de la habitación o a la URL de referencia anterior
    */
   volverADetalle(): void {
+    // Si tenemos una URL de retorno específica, usarla
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+      return;
+    }
+    
     if (this.habitacion) {
-      this.router.navigate(['/habitacion', this.habitacion._id], {
-        queryParams: {
-          fechaInicio: this.fechaInicio,
-          fechaFin: this.fechaFin,
-          huespedes: this.huespedes
-        }
+      const baseRoute = this.dashboardView ? '/dashboard/habitacion' : '/habitacion';
+      const queryParams: {[key: string]: any} = {
+        fechaInicio: this.fechaInicio,
+        fechaFin: this.fechaFin,
+        huespedes: this.huespedes
+      };
+      
+      // Si estamos en dashboard, mantener ese contexto
+      if (this.dashboardView) {
+        queryParams['fromDashboard'] = 'true';
+      }
+      
+      this.router.navigate([baseRoute, this.habitacion._id], {
+        queryParams: queryParams
       });
     } else {
       this.volverABusqueda();
@@ -362,6 +416,17 @@ export class ReservarHabitacionComponent implements OnInit {
    * Navegar al inicio
    */
   irAInicio(): void {
-    this.router.navigate(['/']);
+    if (this.dashboardView) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/']);
+    }
+  }
+  
+  /**
+   * Verificar si estamos en la vista de dashboard
+   */
+  isDashboardView(): boolean {
+    return this.dashboardView;
   }
 }

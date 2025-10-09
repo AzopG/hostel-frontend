@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { SalonService, Salon, BusquedaSalonesResponse } from '../../services/salon.service';
 import { HotelService } from '../../services/hotel.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard-busqueda-salones',
@@ -61,10 +62,18 @@ export class DashboardBusquedaSalonesComponent implements OnInit {
     private fb: FormBuilder,
     private salonService: SalonService,
     private hotelService: HotelService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
+  // Variable para verificar si está en panel de empresa
+  currentUser: any = null;
+  esEmpresa = false;
+  
   ngOnInit(): void {
+    this.currentUser = this.authService.getCurrentUser();
+    this.esEmpresa = this.currentUser?.tipo === 'empresa';
+    
     this.inicializarFormulario();
     this.cargarHoteles();
     this.configurarRecalculoAutomatico(); // HU14 - CA3
@@ -289,8 +298,19 @@ export class DashboardBusquedaSalonesComponent implements OnInit {
    * Acción para reservar un salón
    */
   reservarSalon(salon: Salon): void {
-    // Aquí se integraría con el sistema de reservas
-    alert(`Reservar salón: ${salon.nombre}\nCapacidad: ${salon.capacidad} personas\nPrecio total: $${salon.precioTotal}`);
+    const queryParams: any = {};
+    
+    if (this.busquedaForm.value.fechaInicio && this.busquedaForm.value.fechaFin) {
+      queryParams.fechaInicio = this.busquedaForm.value.fechaInicio;
+      queryParams.fechaFin = this.busquedaForm.value.fechaFin;
+    }
+    
+    // Siempre establecemos estas propiedades cuando estamos dentro del dashboard
+    queryParams.fromDashboard = true;
+    queryParams.returnUrl = '/dashboard/busqueda-salones';
+    
+    // Utilizamos la ruta completa con /dashboard/ para mantener el contexto del dashboard
+    this.router.navigate(['/dashboard/reservar-salon', salon._id], { queryParams });
   }
 
   /**
@@ -348,6 +368,11 @@ export class DashboardBusquedaSalonesComponent implements OnInit {
       queryParams.fechaFin = this.busquedaForm.value.fechaFin;
     }
 
-    this.router.navigate(['/salon', salon._id], { queryParams });
+    // Siempre establecemos estas propiedades cuando estamos dentro del dashboard
+    queryParams.fromDashboard = true;
+    queryParams.returnUrl = '/dashboard/busqueda-salones';
+
+    // Utilizamos la ruta completa con /dashboard/ para mantener el contexto del dashboard
+    this.router.navigate(['/dashboard/salon', salon._id], { queryParams });
   }
 }

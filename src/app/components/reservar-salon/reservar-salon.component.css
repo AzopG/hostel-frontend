@@ -911,7 +911,21 @@
 .botones-finales {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.botones-finales .btn {
+  padding: 15px 30px;
+  min-width: 180px;
+}
+
+.botones-finales .btn-primary {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+}
+
+.botones-finales .btn-primary:hover {
+  box-shadow: 0 5px 15px rgba(86, 171, 47, 0.4);
 }
 
 .btn {

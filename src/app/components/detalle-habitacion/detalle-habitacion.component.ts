@@ -32,6 +32,8 @@ export class DetalleHabitacionComponent implements OnInit, OnDestroy {
 
   // HU07 CA4: Navegación
   private queryParams: any = {};
+  private dashboardView = false;  // Para identificar si estamos en el dashboard
+  private returnUrl: string | null = null; // Para volver a la página anterior
 
   // Galería de fotos
   fotoActual = 0;
@@ -53,11 +55,25 @@ export class DetalleHabitacionComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Detectar si estamos en el dashboard basado en la URL
+    const currentUrl = this.router.url;
+    this.dashboardView = currentUrl.includes('/dashboard/');
+
     // HU07 CA4: Guardar queryParams para conservar filtros al volver
     this.route.queryParams.subscribe(params => {
       this.queryParams = { ...params };
       this.fechaInicio = params['fechaInicio'] || '';
       this.fechaFin = params['fechaFin'] || '';
+      
+      // También podemos detectar el dashboard por un parámetro en la URL
+      if (params['fromDashboard'] === 'true') {
+        this.dashboardView = true;
+      }
+      
+      // Capturar URL de retorno si existe
+      if (params['returnUrl']) {
+        this.returnUrl = decodeURIComponent(params['returnUrl']);
+      }
     });
 
     // HU07 CA1: Cargar detalle
@@ -162,9 +178,29 @@ export class DetalleHabitacionComponent implements OnInit, OnDestroy {
    * HU07 CA4: Volver a resultados conservando filtros
    */
   volverAResultados(): void {
-    this.router.navigate(['/buscar-habitaciones'], {
-      queryParams: this.queryParams
-    });
+    // Si tenemos una URL de retorno específica (de buscar-habitaciones), usarla primero
+    if (this.returnUrl && this.returnUrl.includes('buscar-habitaciones')) {
+      this.router.navigateByUrl(this.returnUrl);
+      return;
+    }
+    
+    // Si estamos en el dashboard, mantenemos la ruta del dashboard
+    if (this.dashboardView) {
+      this.router.navigate(['/dashboard/buscar-habitaciones'], {
+        queryParams: this.queryParams
+      });
+    } else {
+      this.router.navigate(['/buscar-habitaciones'], {
+        queryParams: this.queryParams
+      });
+    }
+  }
+  
+  /**
+   * Verifica si estamos en la vista de dashboard
+   */
+  isDashboardView(): boolean {
+    return this.dashboardView;
   }
 
   /**
@@ -217,11 +253,22 @@ export class DetalleHabitacionComponent implements OnInit, OnDestroy {
   irAReserva(): void {
     if (!this.habitacion) return;
 
-    this.router.navigate(['/reservar', this.habitacion._id], {
-      queryParams: {
-        fechaInicio: this.fechaInicio,
-        fechaFin: this.fechaFin
-      }
+    // Mantener contexto de dashboard si es necesario
+    const baseRoute = this.dashboardView ? '/dashboard/reservar' : '/reservar';
+    const queryParams: {[key: string]: any} = {
+      fechaInicio: this.fechaInicio,
+      fechaFin: this.fechaFin,
+      // Guardar la URL actual como returnUrl para poder volver exactamente a esta página
+      returnUrl: encodeURIComponent(this.router.url)
+    };
+    
+    // Mantener indicador de dashboard
+    if (this.dashboardView) {
+      queryParams['fromDashboard'] = 'true';
+    }
+
+    this.router.navigate([baseRoute, this.habitacion._id], {
+      queryParams: queryParams
     });
   }
 
@@ -229,6 +276,11 @@ export class DetalleHabitacionComponent implements OnInit, OnDestroy {
    * Navegar al inicio
    */
   irAInicio(): void {
-    this.router.navigate(['/']);
+    // Si estamos en el dashboard, ir al dashboard principal
+    if (this.dashboardView) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

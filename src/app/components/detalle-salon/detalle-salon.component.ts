@@ -25,6 +25,8 @@ export class DetalleSalonComponent implements OnInit {
   
   // Navegación (CA4)
   filtrosGuardados: any = null;
+  fromDashboard: boolean = false;
+  returnUrl: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,6 +51,16 @@ export class DetalleSalonComponent implements OnInit {
           inicio: params['fechaInicio'],
           fin: params['fechaFin']
         };
+      }
+      
+      // Comprobar si viene del dashboard
+      if (params['fromDashboard'] === 'true') {
+        this.fromDashboard = true;
+      }
+      
+      // Guardar URL de retorno si existe
+      if (params['returnUrl']) {
+        this.returnUrl = params['returnUrl'];
       }
     });
 
@@ -152,8 +164,19 @@ export class DetalleSalonComponent implements OnInit {
    * HU16 - CA4: Volver a resultados de búsqueda manteniendo filtros
    */
   volverAResultados(): void {
-    // Los filtros ya están en localStorage, solo navegamos de vuelta
-    this.router.navigate(['/busqueda-salones']);
+    // Si viene del dashboard, volver allí
+    if (this.fromDashboard) {
+      // Si hay una URL específica a la que volver, usarla
+      if (this.returnUrl) {
+        this.router.navigate([this.returnUrl]);
+      } else {
+        // De lo contrario, ir a la búsqueda de salones dentro del dashboard
+        this.router.navigate(['/dashboard/busqueda-salones']);
+      }
+    } else {
+      // Los filtros ya están en localStorage, solo navegamos de vuelta
+      this.router.navigate(['/busqueda-salones']);
+    }
   }
 
   /**
@@ -175,8 +198,20 @@ export class DetalleSalonComponent implements OnInit {
     if (this.layoutSeleccionado) {
       queryParams.layoutId = this.layoutSeleccionado._id;
     }
-
-    this.router.navigate(['/reservar-salon', this.salon._id], { queryParams });
+    
+    // Mantener la información de navegación desde el dashboard si existe
+    if (this.fromDashboard) {
+      queryParams.fromDashboard = true;
+      if (this.returnUrl) {
+        queryParams.returnUrl = this.returnUrl;
+      }
+      
+      // Si viene del dashboard, mantener el contexto del dashboard en la navegación
+      this.router.navigate(['/dashboard/reservar-salon', this.salon._id], { queryParams });
+    } else {
+      // Navegación normal fuera del dashboard
+      this.router.navigate(['/reservar-salon', this.salon._id], { queryParams });
+    }
   }
 
   /**
