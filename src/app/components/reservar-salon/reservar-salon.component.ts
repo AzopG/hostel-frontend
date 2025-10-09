@@ -53,6 +53,7 @@ export class ReservarSalonComponent implements OnInit {
   // CA2: Manejo de conflictos
   conflictoDetectado = false;
   mensajeConflicto = '';
+  mostrarFloatingNotification = true;
 
   constructor(
     private fb: FormBuilder,
@@ -65,6 +66,9 @@ export class ReservarSalonComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Inicializar propiedades
+    this.mostrarFloatingNotification = true;
+    
     // Obtener parámetros de la URL
     this.route.params.subscribe(params => {
       this.salonId = params['id'];
@@ -139,6 +143,7 @@ export class ReservarSalonComponent implements OnInit {
       error: (err) => {
         console.error('Error al iniciar reserva:', err);
         this.error = err.error?.message || 'Error al cargar la información del salón';
+        this.mostrarFloatingNotification = true;
         this.cargando = false;
       }
     });
@@ -221,8 +226,21 @@ export class ReservarSalonComponent implements OnInit {
         } else {
           // CA2: Conflicto detectado
           this.conflictoDetectado = true;
-          this.mensajeConflicto = response.message || 'El salón ya no está disponible';
-          this.error = response.sugerencia || 'Por favor, regresa a la búsqueda para encontrar otras opciones.';
+          this.mensajeConflicto = response.message || '¡ATENCIÓN! Este salón ya está reservado';
+          this.error = response.sugerencia || 'Por favor, seleccione otras fechas u horarios para su reserva o explore otros salones disponibles.';
+          
+          // Scroll hacia la alerta para asegurar que el usuario la vea
+          setTimeout(() => {
+            const alertaElement = document.querySelector('.alerta-conflicto');
+            if (alertaElement) {
+              alertaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              // Aplicar clase de destaque
+              alertaElement.classList.add('destacado');
+              setTimeout(() => {
+                alertaElement.classList.remove('destacado');
+              }, 1000);
+            }
+          }, 100);
         }
       },
       error: (err) => {
@@ -232,10 +250,24 @@ export class ReservarSalonComponent implements OnInit {
         if (err.status === 409) {
           // CA2: Conflicto
           this.conflictoDetectado = true;
-          this.mensajeConflicto = err.error.message || 'El salón ya no está disponible';
-          this.error = err.error.sugerencia || 'Otro usuario realizó una reserva mientras completabas el formulario.';
+          this.mensajeConflicto = err.error.message || '¡ATENCIÓN! Este salón ya está reservado';
+          this.error = err.error.sugerencia || 'El horario seleccionado ya está ocupado. Por favor, seleccione otras fechas u horarios para su reserva.';
+          
+          // Scroll hacia la alerta para asegurar que el usuario la vea
+          setTimeout(() => {
+            const alertaElement = document.querySelector('.alerta-conflicto');
+            if (alertaElement) {
+              alertaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              // Aplicar clase de destaque
+              alertaElement.classList.add('destacado');
+              setTimeout(() => {
+                alertaElement.classList.remove('destacado');
+              }, 1000);
+            }
+          }, 100);
         } else {
           this.error = 'Error al verificar disponibilidad. Por favor, intenta nuevamente.';
+          this.mostrarFloatingNotification = true;
         }
       }
     });
@@ -247,6 +279,7 @@ export class ReservarSalonComponent implements OnInit {
   confirmarReserva(): void {
     this.cargando = true;
     this.error = '';
+    this.conflictoDetectado = false; // Reset conflict state
 
     const datosEvento: DatosEvento = {
       ...this.formularioEvento.value,
@@ -276,9 +309,7 @@ export class ReservarSalonComponent implements OnInit {
           this.scrollToTop();
         } else if (response.conflicto) {
           // CA2: Conflicto detectado en el último momento
-          this.conflictoDetectado = true;
-          this.mensajeConflicto = response.message || 'El salón ya no está disponible';
-          this.error = response.sugerencia || 'Por favor, regresa a la búsqueda.';
+          this.manejarConflicto(response.message || '', response.sugerencia || '');
         }
       },
       error: (err) => {
@@ -287,14 +318,53 @@ export class ReservarSalonComponent implements OnInit {
         
         if (err.status === 409) {
           // CA2: Conflicto
-          this.conflictoDetectado = true;
-          this.mensajeConflicto = err.error.message || 'El salón ya no está disponible';
-          this.error = err.error.sugerencia || 'Otro usuario confirmó una reserva antes que tú.';
+          this.manejarConflicto(
+            err.error.message || '¡ATENCIÓN! Este salón ya está reservado', 
+            err.error.sugerencia || 'El horario seleccionado ya está ocupado. Por favor, seleccione otras fechas u horarios para su reserva.'
+          );
         } else {
           this.error = err.error?.message || 'Error al confirmar la reserva. Por favor, intenta nuevamente.';
         }
       }
     });
+  }
+  
+  /**
+   * Maneja la visualización del conflicto de reserva
+   */
+  private manejarConflicto(mensaje: string, sugerencia: string): void {
+    this.conflictoDetectado = true;
+    this.mensajeConflicto = mensaje || '¡ATENCIÓN! Este salón ya está reservado';
+    this.error = sugerencia || 'El horario seleccionado ya está ocupado. Por favor, seleccione otras fechas u horarios.';
+    this.mostrarFloatingNotification = true;
+    
+    // Volver al paso 1 para permitir cambiar fechas/horarios
+    this.pasoActual = 1;
+    
+    // Scroll hacia la alerta para asegurar que el usuario la vea
+    setTimeout(() => {
+      const alertaElement = document.querySelector('.alerta-conflicto');
+      if (alertaElement) {
+        alertaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Aplicar una clase temporal para llamar la atención
+        alertaElement.classList.add('destacado');
+        setTimeout(() => {
+          alertaElement.classList.remove('destacado');
+        }, 1000);
+      }
+    }, 100);
+  }
+  
+  /**
+   * Cierra la notificación flotante
+   */
+  cerrarNotificacion(): void {
+    this.mostrarFloatingNotification = false;
+    // Si hay un conflicto activo, lo mantenemos para la alerta inline
+    if (!this.conflictoDetectado) {
+      this.error = '';
+    }
   }
 
   /**

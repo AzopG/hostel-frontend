@@ -34,9 +34,19 @@
     <div class="contenido-alerta">
       <h3>{{ mensajeConflicto }}</h3>
       <p>{{ error }}</p>
-      <button class="btn btn-primary" (click)="volverABusqueda()">
-        Volver a la Búsqueda
-      </button>
+      <div class="sugerencias-alternativas">
+        <h4>¿Qué puedes hacer?</h4>
+        <ul>
+          <li><strong>Cambiar horario:</strong> Seleccionar otro horario o fecha para este mismo salón</li>
+          <li><strong>Buscar alternativas:</strong> Explorar otros salones disponibles con características similares</li>
+          <li><strong>Contactar ayuda:</strong> Hablar con el hotel para verificar opciones personalizadas</li>
+        </ul>
+      </div>
+      <div class="acciones-conflicto">
+        <button class="btn btn-primary btn-accion" (click)="volverABusqueda()">
+          <i class="fas fa-search"></i> Buscar otros salones
+        </button>
+      </div>
     </div>
   </div>
 
@@ -46,9 +56,37 @@
     <p>Procesando...</p>
   </div>
 
-  <!-- Alerta de error general -->
-  <div class="alerta alerta-error" *ngIf="error && !conflictoDetectado">
+  <!-- Alerta de error general (inline) -->
+  <div class="alerta alerta-error" *ngIf="error && !conflictoDetectado && !mostrarFloatingNotification">
     {{ error }}
+  </div>
+  
+  <!-- Floating Notification para errores y conflictos -->
+  <div class="floating-notification" *ngIf="(conflictoDetectado || (error && !conflictoDetectado)) && mostrarFloatingNotification">
+    <div class="notification-content">
+      <div class="notification-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="notification-text">
+        <h3 *ngIf="conflictoDetectado">{{ mensajeConflicto }}</h3>
+        <h3 *ngIf="error && !conflictoDetectado">¡Atención! Hay un problema</h3>
+        <p>{{ error }}</p>
+        <div class="notification-actions" *ngIf="conflictoDetectado">
+          <button class="btn-notification" (click)="volverABusqueda()">
+            <i class="fas fa-search"></i> Buscar otros salones
+          </button>
+          <button class="btn-notification" (click)="cerrarNotificacion()">
+            <i class="fas fa-times"></i> Cerrar
+          </button>
+        </div>
+        <div class="notification-actions" *ngIf="error && !conflictoDetectado">
+          <button class="btn-notification" (click)="cerrarNotificacion()">
+            Entendido
+          </button>
+        </div>
+      </div>
+      <button class="close-button" (click)="cerrarNotificacion()">×</button>
+    </div>
   </div>
 
   <!-- CA1: PASO 1 - Datos del Evento -->
