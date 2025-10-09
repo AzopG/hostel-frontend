@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsistenteService, Asistente } from '../../services/asistente.service';
@@ -57,6 +59,31 @@ export class ModalAsistentesComponent implements OnInit {
       next: () => this.cargarAsistentes(),
       error: () => { this.cargando = false; }
     });
+  }
+
+  exportarPDF() {
+    const doc = new jsPDF();
+    const columns = [
+      { header: 'Nombre', dataKey: 'nombre' },
+      { header: 'Email', dataKey: 'email' },
+      { header: 'Descripción', dataKey: 'descripcion' }
+    ];
+    const data = this.asistentes.map(a => ({
+      nombre: a.nombre,
+      email: a.email,
+      descripcion: a.descripcion || ''
+    }));
+    doc.setFontSize(16);
+    doc.text('Lista de Asistentes', 14, 18);
+    (autoTable as any)(doc, {
+      head: [columns.map(c => c.header)],
+      body: data.map(row => columns.map(c => (row as any)[c.dataKey])),
+      startY: 24,
+      styles: { fontSize: 11 },
+      headStyles: { fillColor: [46, 125, 50] },
+      margin: { left: 14, right: 14 }
+    });
+    doc.save('asistentes.pdf');
   }
 
   cerrar() {
