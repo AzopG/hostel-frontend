@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -10,9 +10,6 @@ import { FormsModule } from '@angular/forms';
     <div class="container-fluid">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="position: relative;">
         <h1 class="h2"><i class="fas fa-bed me-3"></i>Gestión de Habitaciones</h1>
-        <button class="btn btn-success" (click)="agregarHabitacion()" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);">
-          <i class="fas fa-plus me-2"></i>Agregar Habitación
-        </button>
       </div>
 
       <!-- Filtros -->

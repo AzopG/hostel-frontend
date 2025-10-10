@@ -34,7 +34,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
           <div class="search-container">
             <div class="search-box">
               <i class="fas fa-search search-icon"></i>
-              <input type="text" class="form-control search-input" placeholder="Buscar usuarios...">
+              <input type="text" class="form-control search-input" placeholder="     Buscar usuarios...">
             </div>
           </div>
           <div class="filter-container">
@@ -54,8 +54,8 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
             </select>
           </div>
           <div class="action-container">
-            <button class="btn btn-filter">
-              <i class="fas fa-filter me-2"></i>Filtrar
+            <button class="btn btn-filter-2">
+              <i class="fas fa-filter me-2"></i> Filtrar
             </button>
           </div>
         </div>
@@ -420,12 +420,13 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
 
     .filter-select {
       border-radius: 12px;
-      border: 2px solid #e2e8f0;
+      border: 2px solid #8b8b8bff;
       height: 48px;
       font-size: 1rem;
       transition: all 0.3s ease;
       background: white;
       width: 100%;
+      text-align: center;
     }
 
     .filter-select:focus {
@@ -433,11 +434,25 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
       outline: none;
     }
-
+    
+    .btn-filter-2{
+      cursor: pointer;
+      background:rgb(212, 175, 55);
+      color: #1A1A1A;
+      flex: 0.25;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 0.5px;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+    }
     .btn-filter {
       padding: 0.75rem 1.5rem;
       border-radius: 12px;
-      border: 2px solid #667eea;
+      border: 2px solid rgb(212, 175, 55);
       background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
       font-weight: 600;
@@ -682,7 +697,7 @@ import { Usuario, UsuarioService } from '../../services/usuario.service';
       width: 45px;
       height: 45px;
       border-radius: 12px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #b3b004ff, #473f02ff);
       display: flex;
       align-items: center;
       justify-content: center;

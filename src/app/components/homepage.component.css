@@ -1,3 +1,7 @@
+.section-title.text-black, .section-subtitle.text-black {
+  color: #1A1A1A !important;
+  text-shadow: none !important;
+}
 /* Paleta de colores dorada elegante */
 :root {
   /* Paleta Dorada Elegante */
@@ -550,8 +554,8 @@
   bottom: 120%;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--color-blue-dark);
-  color: var(--color-white);
+  background: #fff;
+  color: var(--black-elegant);
   padding: 12px 16px;
   border-radius: 8px;
   font-size: 0.85rem;
@@ -563,7 +567,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   min-width: 200px;
   text-align: center;
-  border: 1px solid var(--color-blue-light);
+  border: 1px solid var(--gold-light);
 }
 
 .feature-circle:hover .custom-tooltip {
@@ -1116,23 +1120,23 @@
     margin-top: 1.2rem;
   }
   
-  .footer-title {
-    font-size: 1.1rem;
+  .tooltip-title {
+    font-weight: 700;
+    color: var(--gold-dark);
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    font-family: var(--font-display);
   }
-  
-  .footer-tagline {
-    font-size: 0.8rem;
-  }
-  
-  .copyright {
-    font-size: 0.75rem;
-  }
-}
-
-.features {
-  background: linear-gradient(135deg, var(--black-elegant) 0%, var(--gold-deep) 100%);
-  padding: 6rem 0;
-  position: relative;
+  .tooltip-description {
+    font-weight: 400;
+    color: var(--black-elegant);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    font-family: var(--font-accent);
+    background: linear-gradient(135deg, var(--black-elegant) 0%, var(--gold-deep) 100%);
+    padding: 6rem 0;
+    position: relative;
+    overflow: hidden;}
 }
 
 .container {

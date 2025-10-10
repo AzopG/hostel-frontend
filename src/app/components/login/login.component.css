@@ -1,3 +1,16 @@
+.login-image-section .welcome-text h2,
+.features-list,
+.login-image-section .welcome-text p {
+  color: #fff !important;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.25);
+}
+.tex-white{
+  color: #fff !important;
+  text-shadow: 1px 1px 4px rgb(255, 255, 255);
+  font-family: 'Playfair Display', serif;
+  overflow: fit;
+
+}
 .login-container {
   height: 100vh;
   width: 100vw;
@@ -405,7 +418,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(rgba(7, 34, 156, 0.5), rgba(248, 248, 248, 0.09));
+  background: linear-gradient(rgba(7, 34, 156, 0.6), rgba(54, 0, 102, 0.4));
   display: flex;
   align-items: center;
   justify-content: center;

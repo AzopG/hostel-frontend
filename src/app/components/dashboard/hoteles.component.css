@@ -63,9 +63,10 @@
 .icon-hoteles {
   font-size: 2.2rem;
   margin-bottom: 0.2rem;
-  color: #43cea2;
+  color: #00fcac;
   display: inline-block;
 }
+
 .hoteles-metrics.pretty-metrics {
   display: flex;
   gap: 2rem;
@@ -199,12 +200,12 @@
 .form-group select {
   padding: 0.8rem 1rem;
   border-radius: 12px;
-  border: 2px solid #43cea2;
+  border: 2px solid #D4AF37;
   font-size: 1rem;
   background: #fff;
   transition: all 0.3s ease;
   font-family: inherit;
-}
+  }
 
 .form-group input::placeholder {
   color: #718096;
@@ -242,21 +243,32 @@
   justify-content: center;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #cacaca;
 }
 
 .modal-actions button {
+    padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #D4AF37;
+  cursor: pointer;
+  background: linear-gradient(135deg, #F4E8C1 0%, #E6D293 100%);
+  color: #1A1A1A;
+  transition: all 0.3s ease;
+  flex: 0.25;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
   padding: 0.8rem 2rem;
   border-radius: 12px;
-
-  border: none;
   font-weight: 600;
   font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
   min-width: 120px;
-  position: relative;
-  overflow: hidden;
+  position: relative;;
 }
 
 .modal-actions button[type="button"] {
@@ -315,21 +327,30 @@
   font-size: 1rem;
 }
 .agregar-btn {
-  padding: 0.7rem 1.5rem;
-  border-radius: 10px;
-  border: none;
-  font-weight: 600;
-  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #D4AF37;
   cursor: pointer;
-  background: linear-gradient(135deg, #43cea2, #185a9d);
-  color: white;
-  box-shadow: 0 2px 8px rgba(67,206,162,0.15);
-  transition: all 0.2s;
+  background: linear-gradient(135deg, #F4E8C1 0%, #E6D293 100%);
+  color: #1A1A1A;
+  transition: all 0.3s ease;
+  flex: 0.25;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
 }
+
 .agregar-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+
 .hoteles-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));

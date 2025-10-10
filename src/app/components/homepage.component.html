@@ -28,10 +28,10 @@
     </li>
     
     <li *ngIf="isAuthenticated" class="user-menu">
-      <div class="notification-bell" (click)="toggleNotifications()">
+      <!-- <div class="notification-bell" (click)="toggleNotifications()">
         <span class="bell-icon"><i class="fas fa-bell"></i></span>
         <span class="notification-count" *ngIf="totalNotifications > 0">{{ totalNotifications }}</span>
-      </div>
+      </div> -->
       <div class="user-actions">
         <span class="user-name">{{ currentUser?.nombre }}</span>
         <a class="dashboard-link" href="#" (click)="navigateToDashboard(); closeMobileMenu(); $event.preventDefault()">Panel de Control</a>
@@ -157,12 +157,12 @@
       </div>
     </div>
   </section>
-
+<br>
   <!-- Services Section -->
   <section class="features" id="servicios">
     <div class="container">
-      <h2 class="section-title">Nuestros Servicios</h2>
-      <div class="section-subtitle">Descubra las soluciones integrales para la gestión hotelera</div>
+  <h2 class="section-title text-black">Nuestros Servicios</h2>
+  <div class="section-subtitle text-black">Descubra las soluciones integrales para la gestión hotelera</div>
       
       <div class="features-grid">
         <!-- Reservas -->

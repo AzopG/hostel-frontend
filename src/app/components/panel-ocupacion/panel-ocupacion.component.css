@@ -1,63 +1,190 @@
 .panel-ocupacion {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: linear-gradient(135deg, var(--white-warm) 0%, var(--white-cream) 100%);
-  border-radius: 18px;
-  box-shadow: var(--shadow-gold);
-  font-family: var(--font-display);
+  padding: 2.5rem;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  background: transparent;
 }
+
+.panel-ocupacion h2 {
+  text-align: center;
+  color: #1C2526;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  font-family: 'Playfair Display', serif;
+}
+
 .filtros-fecha {
   display: flex;
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   justify-content: center;
-}
-.tarjetas-ciudad {
-  display: flex;
   flex-wrap: wrap;
+}
+
+.filtros-fecha label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4A1B2F;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  font-family: 'Crimson Text', serif;
+}
+
+.filtros-fecha input[type="date"] {
+  padding: 12px 16px;
+  border: 2px solid rgba(184, 151, 120, 0.3);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1C2526;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-family: 'Crimson Text', serif;
+}
+
+.filtros-fecha input[type="date"]:focus {
+  outline: none;
+  border-color: #B89778;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 15px rgba(184, 151, 120, 0.2);
+}
+
+.tarjetas-ciudad {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  justify-content: center;
+  justify-items: center;
 }
+
 .tarjeta-ciudad {
-  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
-  border-radius: 14px;
-  padding: 1.5rem 2rem;
-  min-width: 220px;
-  box-shadow: var(--shadow-gold);
+  background: linear-gradient(135deg, #DAA520 0%, #B8860B 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  min-width: 280px;
+  width: 100%;
+  max-width: 350px;
+  box-shadow: 0 8px 24px rgba(184, 151, 120, 0.3);
   text-align: center;
-  color: var(--white-pure);
-  transition: transform 0.2s, box-shadow 0.2s;
-  font-family: var(--font-display);
-  border: 2px solid var(--gold-deep);
+  font-family: 'Playfair Display', serif;
+  border: 2px solid #FFD700;
+  color: #FFFFFF;
 }
+
 .tarjeta-ciudad:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 8px 32px rgba(28, 37, 38, 0.28);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(184, 151, 120, 0.4);
+}
+
+.tarjeta-ciudad h3 {
+  color: #FFFFFF;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
 }
 
 .porcentaje {
-  font-size: 2.2rem;
-  font-weight: bold;
+  font-size: 3rem;
+  font-weight: 700;
   color: #8B1538;
-  margin: 0.5rem 0 0.2rem 0;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.18);
+  margin: 1rem 0;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
+
 .detalle {
-  color: #F8F1E9;
+  color: #FFFFFF;
   font-size: 1rem;
-  opacity: 0.85;
-}
-.cargando, .error {
-  text-align: center;
-  margin-top: 1rem;
-  color: #8B1538;
-  font-weight: 600;
+  margin: 1rem 0;
+  font-weight: 500;
+  font-family: 'Crimson Text', serif;
 }
 
 .ciudad {
-  font-size: 0.95rem;
-  color: #F8F1E9;
-  opacity: 0.7;
-  margin-top: 0.3rem;
+  font-size: 1rem;
+  color: #FFFFFF;
+  font-weight: 600;
+  margin-top: 1rem;
+  font-family: 'Crimson Text', serif;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.cargando, .error {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  font-family: 'Crimson Text', serif;
+}
+
+.cargando {
+  color: #B8860B;
+  background: rgba(218, 165, 32, 0.1);
+  border: 2px solid rgba(218, 165, 32, 0.3);
+}
+
+.error {
+  color: #8B1538;
+  background: rgba(139, 21, 56, 0.1);
+  border: 2px solid rgba(139, 21, 56, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .panel-ocupacion {
+    padding: 1.5rem;
+  }
+  
+  .panel-ocupacion h2 {
+    font-size: 1.8rem;
+  }
+  
+  .filtros-fecha {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .tarjetas-ciudad {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .tarjeta-ciudad {
+    min-width: auto;
+    padding: 1.5rem;
+  }
+  
+  .porcentaje {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel-ocupacion h2 {
+    font-size: 1.6rem;
+  }
+  
+  .tarjeta-ciudad h3 {
+    font-size: 1.2rem;
+  }
+  
+  .porcentaje {
+    font-size: 2.2rem;
+  }
+  
+  .detalle {
+    font-size: 0.9rem;
+  }
 }

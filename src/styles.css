@@ -463,7 +463,7 @@ html {
 }
 
 .table th {
-  background: linear-gradient(135deg, var(--black-elegant) 0%, var(--black-soft) 100%) !important;
+  background: rgb(22, 21, 10) !important;
   color: #d4af37 !important;
   padding: 12px !important;
   font-weight: 600 !important;

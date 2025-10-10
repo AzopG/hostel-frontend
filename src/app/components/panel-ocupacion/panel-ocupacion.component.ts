@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReservaService, OcupacionHotel } from '../../services/reserva.service';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { OcupacionHotel, ReservaService } from '../../services/reserva.service';
 
 
 
