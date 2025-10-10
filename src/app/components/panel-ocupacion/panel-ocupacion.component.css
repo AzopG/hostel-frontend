@@ -2,10 +2,10 @@
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, var(--white-warm) 0%, var(--white-cream) 100%);
   border-radius: 18px;
-  box-shadow: 0 6px 32px rgba(28, 37, 38, 0.12);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: var(--shadow-gold);
+  font-family: var(--font-display);
 }
 .filtros-fecha {
   display: flex;
@@ -20,14 +20,16 @@
   justify-content: center;
 }
 .tarjeta-ciudad {
-  background: linear-gradient(135deg, #1C2526 0%, #0A3161 100%);
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
   border-radius: 14px;
   padding: 1.5rem 2rem;
   min-width: 220px;
-  box-shadow: 0 4px 18px rgba(28, 37, 38, 0.18);
+  box-shadow: var(--shadow-gold);
   text-align: center;
-  color: #F8F1E9;
+  color: var(--white-pure);
   transition: transform 0.2s, box-shadow 0.2s;
+  font-family: var(--font-display);
+  border: 2px solid var(--gold-deep);
 }
 .tarjeta-ciudad:hover {
   transform: translateY(-4px) scale(1.03);

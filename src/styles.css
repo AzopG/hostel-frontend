@@ -1,53 +1,115 @@
-/* Estilos globales para Hotel Paradise */
+/* Estilos globales para Hotel Paradise - Tema Dorado Elegante */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  /* Paleta Dorada Elegante */
+  --gold-light: #F4E8C1;
+  --gold-medium: #E6D293;
+  --gold-rich: #D4AF37;
+  --gold-dark: #B8860B;
+  --gold-deep: #996F07;
+  
+  --white-pure: #FFFFFF;
+  --white-warm: #FFFEF7;
+  --white-cream: #FDF8E7;
+  --white-pearl: #F5F0E8;
+  
+  --black-elegant: #1A1A1A;
+  --black-soft: #2C2C2C;
+  --gray-charcoal: #404040;
+  --gray-medium: #666666;
+  
+  /* Tipografías elegantes */
+  --font-display: 'Playfair Display', 'Times New Roman', serif;
+  --font-body: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-accent: 'Crimson Text', 'Georgia', serif;
+  
+  /* Sombras doradas elegantes */
+  --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.15);
+  --shadow-gold-hover: 0 8px 30px rgba(212, 175, 55, 0.25);
+  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
 body {
-  font-family: 'EB Garamond', 'Times New Roman', 'Times', serif;
-  line-height: 1.6;
-  color: #333;
+  font-family: var(--font-body);
+  line-height: 1.7;
+  color: var(--black-elegant);
   font-weight: 400;
   letter-spacing: 0.3px;
+  background: var(--white-warm);
+  font-size: 16px;
 }
 
-/* Tipografía elegante y formal */
+/* Tipografía elegante */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: 0.5px;
-  line-height: 1.3;
+  letter-spacing: 0.8px;
+  line-height: 1.2;
+  color: var(--black-elegant);
 }
 
-h1 { font-size: 2.5rem; font-weight: 700; }
-h2 { font-size: 2.2rem; font-weight: 600; }
-h3 { font-size: 1.8rem; font-weight: 600; }
-h4 { font-size: 1.5rem; font-weight: 500; }
-h5 { font-size: 1.3rem; font-weight: 500; }
-h6 { font-size: 1.1rem; font-weight: 500; }
+h1 { 
+  font-size: 3.2rem; 
+  font-weight: 700; 
+  color: var(--black-elegant);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+h2 { 
+  font-size: 2.8rem; 
+  font-weight: 600; 
+  color: var(--black-elegant);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+}
+h3 { 
+  font-size: 2.2rem; 
+  font-weight: 600; 
+  color: var(--black-elegant);
+}
+h4 { 
+  font-size: 1.8rem; 
+  font-weight: 500; 
+  color: var(--black-soft);
+}
+h5 { 
+  font-size: 1.5rem; 
+  font-weight: 500; 
+  color: var(--black-soft);
+}
+h6 { 
+  font-size: 1.2rem; 
+  font-weight: 500; 
+  color: var(--gray-charcoal);
+}
 
 /* Texto del cuerpo y párrafos */
 p, span, div, a {
-  font-family: 'Crimson Text', 'Times New Roman', serif;
+  font-family: var(--font-body);
   font-weight: 400;
-  line-height: 1.7;
-  letter-spacing: 0.2px;
+  line-height: 1.8;
+  letter-spacing: 0.4px;
+  color: var(--black-elegant);
 }
 
 /* Botones y elementos interactivos */
 button, .btn, input, select, textarea {
-  font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+  font-family: var(--font-body);
   font-weight: 500;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
+  color: var(--black-elegant);
 }
 
 /* Navegación y menús */
 nav, .navbar, .nav-menu {
-  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-weight: 500;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
 
 /* Asegurar que los iconos y emojis se vean correctamente */
@@ -77,16 +139,17 @@ i, .icon, [class*="fa-"] {
   line-height: 1;
 }
 
-/* Navbar discreto */
+/* Navbar elegante dorado */
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 1rem 0;
+  background: linear-gradient(135deg, var(--white-pure) 0%, var(--white-cream) 100%);
+  backdrop-filter: blur(15px);
+  padding: 1.2rem 0;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-gold);
+  border-bottom: 1px solid var(--gold-light);
 }
 
 .nav-container {
@@ -99,71 +162,124 @@ i, .icon, [class*="fa-"] {
 }
 
 .logo {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #8B4513;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  font-family: var(--font-display);
+  text-shadow: 1px 1px 3px rgba(212, 175, 55, 0.2);
+  letter-spacing: 1.5px;
 }
 
 .nav-menu {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 .nav-menu a {
   text-decoration: none;
-  color: #555;
+  color: var(--black-elegant);
   font-weight: 500;
-  transition: color 0.3s ease;
+  font-family: var(--font-display);
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-rich), var(--gold-dark));
+  transition: width 0.3s ease;
 }
 
 .nav-menu a:hover {
-  color: #8B4513;
+  color: var(--gold-dark);
+  transform: translateY(-1px);
 }
 
-/* Hero llamativo */
+.nav-menu a:hover::after {
+  width: 100%;
+}
+
+/* Hero dorado elegante */
 .hero {
   min-height: 100vh;
-  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  background: linear-gradient(135deg, var(--white-warm) 0%, var(--white-cream) 50%, var(--gold-light) 100%);
   display: flex;
   align-items: center;
   padding: 0 2rem;
-  margin-top: 80px;
+  margin-top: 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .hero-content {
   flex: 1;
-  color: white;
-  max-width: 600px;
+  color: var(--black-elegant);
+  max-width: 650px;
+  position: relative;
+  z-index: 2;
 }
 
 .hero h1 {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
+  font-size: 4.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  color: var(--black-elegant);
+  text-shadow: 2px 2px 4px rgba(212, 175, 55, 0.15);
+  font-family: var(--font-display);
+  line-height: 1.1;
 }
 
 .hero p {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  font-size: 1.4rem;
+  margin-bottom: 2.5rem;
   opacity: 0.9;
+  color: var(--black-soft);
+  font-family: var(--font-accent);
+  line-height: 1.7;
+  font-weight: 500;
 }
 
 .cta-button {
-  background: white;
-  color: #8B4513;
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
+  color: var(--white-pure);
   border: none;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 50px;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  font-family: var(--font-display);
+  letter-spacing: 0.8px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-gold);
 }
 
 .cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-gold-hover);
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-deep) 100%);
 }
 
 .hero-image {
@@ -175,16 +291,17 @@ i, .icon, [class*="fa-"] {
 
 .image-placeholder {
   font-size: 15rem;
-  opacity: 0.3;
+  opacity: 0.15;
+  color: var(--gold-medium);
 }
 
-/* Secciones estilo hotelero */
+/* Secciones estilo hotelero elegante */
 .section {
-  padding: 5rem 0;
+  padding: 6rem 0;
 }
 
 .alt-bg {
-  background: #f8f8f8;
+  background: linear-gradient(135deg, var(--white-pearl) 0%, var(--white-cream) 100%);
 }
 
 .container {
@@ -195,58 +312,267 @@ i, .icon, [class*="fa-"] {
 
 .section h2 {
   text-align: center;
-  font-size: 3rem;
-  margin-bottom: 3rem;
-  color: #8B4513;
+  font-size: 3.5rem;
+  margin-bottom: 3.5rem;
+  color: var(--black-elegant);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(212, 175, 55, 0.1);
 }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
   margin-top: 2rem;
 }
 
 .card {
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  background: var(--white-pure);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  border: 1px solid var(--gold-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold-rich), var(--gold-dark));
+  transition: height 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-gold-hover);
+  border-color: var(--gold-medium);
+}
+
+.card:hover::before {
+  height: 8px;
 }
 
 .card-image {
-  font-size: 4rem;
-  margin-bottom: 1rem;
+  font-size: 4.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--gold-rich);
 }
 
 .card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #8B4513;
+  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+  color: var(--black-elegant);
+  font-family: var(--font-display);
+  font-weight: 600;
 }
 
 .card p {
-  color: #666;
+  color: var(--gray-medium);
+  line-height: 1.8;
+  font-family: var(--font-accent);
+  font-size: 1.1rem;
+}
+
+/* ==================== REGLAS RESPONSIVE GLOBALES ==================== */
+
+/* Imágenes responsivas por defecto */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Contenedores responsivos base */
+.container-responsive {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Texto responsivo */
+.text-responsive {
+  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
   line-height: 1.6;
 }
 
-/* Responsive */
+/* Botones táctiles para móviles */
+.btn-touch {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.75rem 1.5rem;
+}
+
+/* Inputs amigables para móviles */
+input, 
+textarea, 
+select {
+  font-size: 16px; /* Previene zoom en iOS */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Tablas responsivas */
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==================== ESTILOS DEL DASHBOARD ==================== */
+.btn-primary, .btn-action {
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%) !important;
+  border: 2px solid var(--gold-deep) !important;
+  color: var(--white-pure) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: var(--shadow-gold) !important;
+  min-height: 44px !important;
+}
+
+.btn-primary:hover, .btn-action:hover {
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-deep) 100%) !important;
+  border-color: var(--gold-rich) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-gold-hover) !important;
+}
+
+.table {
+  font-family: var(--font-display) !important;
+  border-collapse: separate !important;
+  border-spacing: 0 8px !important;
+  width: 100% !important;
+}
+
+.table th {
+  background: linear-gradient(135deg, var(--black-elegant) 0%, var(--black-soft) 100%) !important;
+  color: #d4af37 !important;
+  padding: 12px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  border-bottom: 2px solid var(--gold-rich) !important;
+}
+
+.table td {
+  padding: 12px !important;
+  background: var(--white-pure) !important;
+  border-top: 1px solid var(--gold-light) !important;
+}
+
+.table tr:hover td {
+  background: rgba(212, 175, 55, 0.05) !important;
+}
+
+.card-dashboard {
+  background: var(--white-pure) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-gold) !important;
+  border: 1px solid var(--gold-light) !important;
+  transition: all 0.3s ease !important;
+  overflow: hidden !important;
+}
+
+.card-dashboard:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: var(--shadow-gold-hover) !important;
+}
+
+.card-header {
+  background: linear-gradient(135deg, var(--black-elegant) 0%, var(--black-soft) 100%) !important;
+  color: var(--gold-rich) !important;
+  font-family: var(--font-display) !important;
+  border-bottom: 2px solid var(--gold-rich) !important;
+  padding: 15px 20px !important;
+}
+
+.form-control {
+  border: 2px solid var(--gold-light) !important;
+  border-radius: 8px !important;
+  padding: 10px 15px !important;
+  font-family: var(--font-display) !important;
+  transition: all 0.3s ease !important;
+  font-size: 16px !important;
+}
+
+.form-control:focus {
+  border-color: var(--gold-rich) !important;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2) !important;
+  outline: none !important;
+}
+
+.badge-active {
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%) !important;
+  color: var(--white-pure) !important;
+  padding: 5px 10px !important;
+  border-radius: 20px !important;
+  font-family: var(--font-display) !important;
+  font-size: 0.8rem !important;
+}
+
+.badge-inactive {
+  background: linear-gradient(135deg, var(--black-elegant) 0%, var(--black-soft) 100%) !important;
+  color: var(--white-pure) !important;
+  padding: 5px 10px !important;
+  border-radius: 20px !important;
+  font-family: var(--font-display) !important;
+  font-size: 0.8rem !important;
+}
+
+/* ==================== BREAKPOINTS RESPONSIVE ==================== */
+
+/* Large tablets y small laptops */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+  }
+  
+  .cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Tablets */
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
     text-align: center;
-    padding: 2rem;
+    padding: 2rem 1rem;
+    margin-top: 70px;
   }
   
   .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
+  }
+  
+  .hero p {
+    font-size: 1.1rem;
   }
   
   .nav-menu {
@@ -255,5 +581,175 @@ i, .icon, [class*="fa-"] {
   
   .cards-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .card {
+    padding: 2rem;
+  }
+  
+  .btn-primary, .btn-action {
+    padding: 12px 24px !important;
+    font-size: 0.95rem !important;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .container-responsive {
+    padding: 0 0.75rem;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2.2rem; }
+  h3 { font-size: 1.8rem; }
+  h4 { font-size: 1.5rem; }
+  h5 { font-size: 1.3rem; }
+  h6 { font-size: 1.1rem; }
+}
+
+/* Móviles grandes */
+@media (max-width: 480px) {
+  .hero {
+    padding: 1.5rem 0.75rem;
+    margin-top: 60px;
+  }
+  
+  .hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .cta-button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .container-responsive {
+    padding: 0 0.5rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card h3 {
+    font-size: 1.5rem;
+  }
+  
+  .btn-primary, .btn-action {
+    padding: 14px 20px !important;
+    font-size: 0.9rem !important;
+    width: 100%;
+  }
+  
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 6px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.3rem; }
+  h5 { font-size: 1.1rem; }
+  h6 { font-size: 1rem; }
+}
+
+/* Móviles pequeños */
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero p {
+    font-size: 0.95rem;
+  }
+  
+  .cta-button {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  .card {
+    padding: 1.25rem;
+  }
+  
+  .btn-primary, .btn-action {
+    padding: 12px 16px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.3rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1rem; }
+  h6 { font-size: 0.9rem; }
+}
+
+/* Landscape móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding: 1rem;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .hero p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Touch devices optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .btn-primary, 
+  .btn-action, 
+  .cta-button,
+  button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  .card:hover {
+    transform: none;
+  }
+  
+  .btn-primary:hover, 
+  .btn-action:hover {
+    transform: none !important;
+  }
+  
+  a, button, .clickable {
+    -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
   }
 }

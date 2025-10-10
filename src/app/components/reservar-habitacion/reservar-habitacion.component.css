@@ -1,5 +1,5 @@
 .reservar-container {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
+  background: linear-gradient(135deg, var(--white-warm) 0%, var(--white-cream) 100%);
   min-height: calc(100vh - 70px);
   margin: 0;
   padding: 2rem;
@@ -9,6 +9,7 @@
   right: 0;
   bottom: 0;
   overflow-y: auto;
+  font-family: var(--font-display);
 }
 
 /* ========== NAVEGACIÓN HEADER ========== */
@@ -121,16 +122,18 @@
 }
 
 .paso.activo {
-  background: #0066cc;
-  color: white;
-  border-color: #0066cc;
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
+  color: var(--white-pure);
+  border-color: var(--gold-deep);
   font-weight: 600;
+  font-family: var(--font-display);
 }
 
 .paso.completado {
-  background: #28a745;
-  color: white;
-  border-color: #28a745;
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-deep) 100%);
+  color: var(--white-pure);
+  border-color: var(--gold-rich);
+  font-family: var(--font-display);
 }
 
 /* Títulos */
@@ -162,21 +165,23 @@ h3 {
 
 /* Cards */
 .card {
-  background: white;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
+  background: var(--white-pure);
+  border: 2px solid var(--gold-light);
+  border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-gold);
+  font-family: var(--font-display);
 }
 
 .card h3 {
   margin-top: 0;
-  color: #0066cc;
+  color: var(--gold-dark);
   font-size: 1.1rem;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid var(--gold-light);
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+  font-family: var(--font-display);
 }
 
 .card p {
@@ -188,12 +193,13 @@ h3 {
 .resumen-habitacion {
   display: flex;
   gap: 1.5rem;
-  background: white;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
+  background: var(--white-pure);
+  border: 2px solid var(--gold-light);
+  border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-gold);
+  font-family: var(--font-display);
 }
 
 .foto-habitacion {
@@ -563,14 +569,17 @@ h3 {
 }
 
 .btn-primary {
-  background: #0066cc;
-  color: white;
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
+  color: var(--white-pure);
+  border: 2px solid var(--gold-deep) !important;
+  font-family: var(--font-display);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #0052a3;
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-deep) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+  box-shadow: var(--shadow-gold-hover);
+  border-color: var(--gold-rich) !important;
 }
 
 .btn-primary:disabled {

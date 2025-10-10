@@ -18,6 +18,9 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
         <button (click)="irAInicio()" class="btn-nav-secondary">
           <i class="fas fa-home me-2"></i> Inicio
         </button>
+        <button (click)="testModal()" class="btn-test" *ngIf="paquetesFiltrados.length > 0">
+          🧪 TEST MODAL
+        </button>
       </div>
 
       <!-- Header -->
@@ -129,6 +132,116 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
           <p>Cargando paquetes disponibles...</p>
         </div>
       </div>
+
+      <!-- Modal de detalles del paquete -->
+      <div class="modal" 
+           [class.fade]="true"
+           [class.show]="modalDetalleVisible" 
+           [style.display]="modalDetalleVisible ? 'block' : 'none'" 
+           [attr.aria-hidden]="!modalDetalleVisible"
+           tabindex="-1" 
+           *ngIf="modalDetalleVisible"
+           role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{ paqueteSeleccionado?.nombre }}</h5>
+              <button type="button" class="btn-close" (click)="cerrarModalDetalle()"></button>
+            </div>
+            <div class="modal-body" *ngIf="paqueteSeleccionado">
+              <div class="detalle-paquete">
+                <div class="mb-4">
+                  <h6><i class="fas fa-info-circle me-2"></i>Información General</h6>
+                  <p>{{ paqueteSeleccionado.descripcion }}</p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <strong>Tipo:</strong> {{ getTipoEventoLabel(paqueteSeleccionado.tipo) }}
+                    </div>
+                    <div class="col-md-6">
+                      <strong>Capacidad:</strong> {{ paqueteSeleccionado.capacidadMinima }} - {{ paqueteSeleccionado.capacidadMaxima }} personas
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4" *ngIf="paqueteSeleccionado.habitaciones?.length">
+                  <h6><i class="fas fa-bed me-2"></i>Habitaciones Incluidas</h6>
+                  <div class="list-group">
+                    <div *ngFor="let hab of paqueteSeleccionado.habitaciones" class="list-group-item">
+                      <strong>{{ getTipoHabitacionLabel(hab.tipo) }}</strong>
+                      - {{ hab.cantidad }} unidades por {{ hab.noches }} noche(s)
+                      <span class="badge bg-success ms-2">\${{ formatearPrecio(hab.precioPorNoche) }}/noche</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4" *ngIf="paqueteSeleccionado.salones?.length">
+                  <h6><i class="fas fa-building me-2"></i>Salones Incluidos</h6>
+                  <div class="list-group">
+                    <div *ngFor="let salon of paqueteSeleccionado.salones" class="list-group-item">
+                      <strong>{{ salon.nombre }}</strong>
+                      - Capacidad: {{ salon.capacidad }} personas
+                      <span class="badge bg-info ms-2">{{ salon.horas }}h incluidas</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4" *ngIf="paqueteSeleccionado.servicios?.length">
+                  <h6><i class="fas fa-concierge-bell me-2"></i>Servicios Adicionales</h6>
+                  <div class="list-group">
+                    <div *ngFor="let servicio of paqueteSeleccionado.servicios" class="list-group-item">
+                      <strong>{{ servicio.nombre }}</strong>
+                      <span class="text-muted">- {{ servicio.categoria }}</span>
+                      <span class="badge bg-warning ms-2">\${{ formatearPrecio(servicio.precio) }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4" *ngIf="paqueteSeleccionado.catering?.length">
+                  <h6><i class="fas fa-utensils me-2"></i>Opciones de Catering</h6>
+                  <div class="list-group">
+                    <div *ngFor="let catering of paqueteSeleccionado.catering" class="list-group-item">
+                      <strong>{{ getCateringLabel(catering.tipo) }}</strong>
+                      <p class="mb-1 text-muted">{{ catering.descripcion }}</p>
+                      <span class="badge bg-primary">\${{ formatearPrecio(catering.precioPorPersona) }}/persona</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" (click)="cerrarModalDetalle()">Cerrar</button>
+              <button class="btn btn-primary" (click)="reservarPaquete(paqueteSeleccionado!)">
+                <i class="fas fa-calendar-plus me-2"></i>Reservar Paquete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-backdrop fade" 
+           [class.show]="modalDetalleVisible" 
+           *ngIf="modalDetalleVisible"
+           (click)="cerrarModalDetalle()"></div>
+
+      <!-- Modal Simple para Testing -->
+      <div *ngIf="modalDetalleVisible && paqueteSeleccionado" class="modal-simple-test">
+        <div class="modal-simple-content">
+          <h3>{{ paqueteSeleccionado.nombre }}</h3>
+          <p><strong>Descripción:</strong> {{ paqueteSeleccionado.descripcion }}</p>
+          <p><strong>Hotel:</strong> {{ paqueteSeleccionado.hotel?.nombre }} - {{ paqueteSeleccionado.hotel?.ciudad }}</p>
+          <p><strong>Tipo:</strong> {{ getTipoEventoLabel(paqueteSeleccionado.tipo) }}</p>
+          <p><strong>Capacidad:</strong> {{ paqueteSeleccionado.capacidadMinima }} - {{ paqueteSeleccionado.capacidadMaxima }} personas</p>
+          <p><strong>Precio:</strong> \${{ formatearPrecio(paqueteSeleccionado.precios?.base) }} {{ paqueteSeleccionado.precios?.moneda }}</p>
+          
+          <div class="modal-simple-buttons">
+            <button class="btn-simple-reservar" (click)="reservarPaquete(paqueteSeleccionado!)">
+              Reservar
+            </button>
+            <button class="btn-simple-cerrar" (click)="cerrarModalDetalle()">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `,
   styles: [`
@@ -155,7 +268,7 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
       margin-bottom: 0;
     }
 
-    .btn-nav, .btn-nav-secondary {
+    .btn-nav, .btn-nav-secondary, .btn-test {
       background: #667eea;
       color: white;
       border: none;
@@ -172,10 +285,20 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
     .btn-nav-secondary {
       background: #6c757d;
     }
+    .btn-test {
+      background: #ffc107;
+      color: #000;
+      font-weight: 700;
+    }
     .btn-nav:hover, .btn-nav-secondary:hover {
       background: #5a67d8;
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .btn-test:hover {
+      background: #e0a800;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3);
     }
 
     .header-section {
@@ -392,6 +515,249 @@ import { PaquetePublicoService } from '../../services/paquete-publico.service';
         margin: 0.5rem;
       }
     }
+
+    /* ==================== MODALES ==================== */
+    .modal {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      z-index: 9999 !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      outline: 0 !important;
+    }
+
+    .modal.fade {
+      transition: opacity 0.15s linear;
+      opacity: 0;
+    }
+
+    .modal.show {
+      opacity: 1 !important;
+      display: block !important;
+    }
+
+    .modal-backdrop {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      z-index: 9998 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(0, 0, 0, 0.7) !important;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-backdrop.fade {
+      opacity: 0;
+      transition: opacity 0.15s linear;
+    }
+
+    .modal-backdrop.show {
+      opacity: 1 !important;
+    }
+
+    .modal-dialog {
+      position: relative !important;
+      width: auto !important;
+      margin: 2rem auto !important;
+      max-width: 800px !important;
+      pointer-events: none !important;
+      display: flex !important;
+      align-items: center !important;
+      min-height: calc(100% - 4rem) !important;
+    }
+
+    .modal-content {
+      border-radius: 25px;
+      border: 3px solid #667eea;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      background: linear-gradient(135deg, white 0%, #f8f9fa 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      pointer-events: auto;
+      background-clip: padding-box;
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 22px 22px 0 0;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: none;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .modal-title {
+      font-size: 2rem;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .modal-body {
+      padding: 2.5rem;
+      background: linear-gradient(135deg, white 0%, rgba(248, 241, 233, 0.3) 100%);
+    }
+
+    .detalle-paquete h6 {
+      color: #667eea;
+      font-weight: 700;
+      font-size: 1.3rem;
+      font-family: 'Playfair Display', serif;
+      border-bottom: 3px solid #e3f2fd;
+      padding-bottom: 0.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .list-group-item {
+      border: 2px solid rgba(102, 126, 234, 0.2);
+      border-radius: 12px !important;
+      margin-bottom: 0.8rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 500;
+    }
+
+    .list-group-item:hover {
+      background: rgba(102, 126, 234, 0.1);
+      border-color: #667eea;
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .modal-footer {
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(248, 241, 233, 0.5) 0%, #f8f9fa 100%);
+      border-top: 2px solid #e3f2fd;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    /* MODAL SIMPLE DE TESTING */
+    .modal-simple-test {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(255, 0, 0, 0.9) !important;
+      z-index: 999999 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      pointer-events: auto !important;
+    }
+
+    .modal-simple-content {
+      background: white !important;
+      padding: 30px !important;
+      border-radius: 15px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+      max-width: 90vw !important;
+      max-height: 90vh !important;
+      overflow-y: auto !important;
+      min-width: 500px !important;
+      border: 5px solid #007bff !important;
+      position: relative !important;
+      z-index: 1000000 !important;
+    }
+
+    .modal-simple-content h3 {
+      color: #667eea !important;
+      font-family: 'Playfair Display', serif !important;
+      margin-bottom: 20px !important;
+      font-size: 1.8rem !important;
+      text-align: center !important;
+    }
+
+    .modal-simple-content p {
+      margin-bottom: 10px !important;
+      color: #495057 !important;
+      line-height: 1.5 !important;
+      font-family: 'Crimson Text', serif !important;
+    }
+
+    .modal-simple-buttons {
+      margin-top: 30px !important;
+      display: flex !important;
+      gap: 15px !important;
+      justify-content: center !important;
+    }
+
+    .btn-simple-reservar {
+      background: #28a745 !important;
+      color: white !important;
+      border: none !important;
+      padding: 12px 25px !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      font-family: 'Crimson Text', serif !important;
+    }
+
+    .btn-simple-reservar:hover {
+      background: #218838 !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .btn-simple-cerrar {
+      background: #6c757d !important;
+      color: white !important;
+      border: none !important;
+      padding: 12px 25px !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      font-family: 'Crimson Text', serif !important;
+    }
+
+    .btn-simple-cerrar:hover {
+      background: #545b62 !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .btn-close {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .btn-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
   `]
 })
 export class VerPaquetesComponent implements OnInit {
@@ -401,6 +767,10 @@ export class VerPaquetesComponent implements OnInit {
   ciudadFiltro: string = '';
   tipoEventoFiltro: string = '';
   cargando: boolean = false;
+  
+  // Modal
+  modalDetalleVisible = false;
+  paqueteSeleccionado: any = null;
 
   constructor(
     private paqueteService: PaquetePublicoService,
@@ -461,8 +831,139 @@ export class VerPaquetesComponent implements OnInit {
   }
 
   verDetalles(paquete: any) {
-    // Mostrar modal con detalles completos
+    console.log('🔍 Abriendo detalles del paquete:', paquete.nombre);
     console.log('Ver detalles de:', paquete);
+    
+    this.paqueteSeleccionado = paquete;
+    this.modalDetalleVisible = true;
+    
+    console.log('✅ Modal debería estar visible:', this.modalDetalleVisible);
+    console.log('📋 Paquete seleccionado:', this.paqueteSeleccionado?.nombre);
+    
+    // Forzar detección de cambios y debugging extensivo
+    setTimeout(() => {
+      console.log('🔄 DEBUGGING COMPLETO:');
+      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      
+      const modalSimple = document.querySelector('.modal-simple-test');
+      const modalBootstrap = document.querySelector('.modal');
+      const backdrop = document.querySelector('.modal-backdrop');
+      
+      console.log('🎭 ELEMENTOS EN DOM:');
+      console.log('   - Modal simple:', modalSimple);
+      console.log('   - Modal Bootstrap:', modalBootstrap);
+      console.log('   - Backdrop:', backdrop);
+      
+      if (modalSimple) {
+        console.log('📏 Estilos del modal simple:', window.getComputedStyle(modalSimple));
+        console.log('   - Display:', window.getComputedStyle(modalSimple).display);
+        console.log('   - Position:', window.getComputedStyle(modalSimple).position);
+        console.log('   - Z-index:', window.getComputedStyle(modalSimple).zIndex);
+        
+        // Intentar forzar la visibilidad del modal simple
+        (modalSimple as HTMLElement).style.display = 'flex';
+        (modalSimple as HTMLElement).style.position = 'fixed';
+        (modalSimple as HTMLElement).style.top = '0';
+        (modalSimple as HTMLElement).style.left = '0';
+        (modalSimple as HTMLElement).style.width = '100vw';
+        (modalSimple as HTMLElement).style.height = '100vh';
+        (modalSimple as HTMLElement).style.zIndex = '99999';
+        (modalSimple as HTMLElement).style.background = 'rgba(255, 0, 0, 0.8)';
+        console.log('🚨 MODAL FORZADO A SER VISIBLE');
+      }
+    }, 200);
+  }
+
+  /**
+   * Cerrar modal de detalles
+   */
+  cerrarModalDetalle(): void {
+    console.log('🚪 Cerrando modal');
+    this.modalDetalleVisible = false;
+    this.paqueteSeleccionado = null;
+  }
+
+  /**
+   * Método de test para forzar apertura del modal
+   */
+  testModal(): void {
+    console.log('🧪 TEST: Forzando apertura del modal');
+    
+    if (this.paquetesFiltrados.length > 0) {
+      const paquetePrueba = this.paquetesFiltrados[0];
+      console.log('🧪 Usando paquete de prueba:', paquetePrueba.nombre);
+      
+      this.paqueteSeleccionado = paquetePrueba;
+      this.modalDetalleVisible = true;
+      
+      console.log('🧪 Variables establecidas:');
+      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      
+      // Forzar actualización del DOM
+      setTimeout(() => {
+        const modalElement = document.querySelector('.modal-simple-test');
+        if (modalElement) {
+          console.log('🧪 Modal encontrado, forzando estilos...');
+          (modalElement as HTMLElement).style.display = 'flex';
+          (modalElement as HTMLElement).style.position = 'fixed';
+          (modalElement as HTMLElement).style.zIndex = '999999';
+          (modalElement as HTMLElement).style.background = 'rgba(255, 0, 0, 0.9)';
+        } else {
+          console.log('🚨 ERROR: Modal no encontrado en DOM');
+        }
+      }, 100);
+    } else {
+      console.log('🚨 No hay paquetes disponibles');
+      alert('No hay paquetes para mostrar');
+    }
+  }
+
+  /**
+   * Obtener etiqueta del tipo de evento
+   */
+  getTipoEventoLabel(tipo: string): string {
+    const tipos: { [key: string]: string } = {
+      'evento_corporativo': 'Evento Corporativo',
+      'reunion_negocios': 'Reunión de Negocios',
+      'congreso': 'Congreso',
+      'capacitacion': 'Capacitación',
+      'celebracion_empresarial': 'Celebración Empresarial'
+    };
+    return tipos[tipo] || tipo;
+  }
+
+  /**
+   * Obtener etiqueta del tipo de habitación
+   */
+  getTipoHabitacionLabel(tipo: string): string {
+    const tipos: { [key: string]: string } = {
+      'individual': 'Individual',
+      'doble': 'Doble',
+      'triple': 'Triple',
+      'suite_junior': 'Suite Junior',
+      'suite_ejecutiva': 'Suite Ejecutiva',
+      'suite_presidencial': 'Suite Presidencial'
+    };
+    return tipos[tipo] || tipo;
+  }
+
+  /**
+   * Obtener etiqueta del catering
+   */
+  getCateringLabel(tipo: string): string {
+    const tipos: { [key: string]: string } = {
+      'coffee_break': 'Coffee Break',
+      'desayuno_continental': 'Desayuno Continental',
+      'desayuno_americano': 'Desayuno Americano',
+      'almuerzo_ejecutivo': 'Almuerzo Ejecutivo',
+      'almuerzo_buffet': 'Almuerzo Buffet',
+      'cena_formal': 'Cena Formal',
+      'coctel': 'Cóctel',
+      'brunch': 'Brunch'
+    };
+    return tipos[tipo] || tipo;
   }
 
   formatearPrecio(precio: number): string {

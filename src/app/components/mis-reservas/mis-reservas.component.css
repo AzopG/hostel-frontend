@@ -1,10 +1,11 @@
 .mis-reservas-container {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--white-warm) 0%, var(--white-cream) 100%);
   min-height: 100vh;
   margin: 0;
   padding: 2rem;
   position: relative;
   overflow-x: hidden;
+  font-family: var(--font-display);
 }
 
 .content-wrapper {
@@ -428,12 +429,14 @@
 
 /* Header de Card */
 .card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
   padding: 1rem 1.5rem;
-  color: white;
+  color: var(--white-pure);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: var(--font-display);
+  border-bottom: 2px solid var(--gold-deep);
 }
 
 .codigo-estado {
@@ -632,12 +635,17 @@
 }
 
 .btn-primary {
-  background-color: #3498db;
-  color: white;
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
+  color: var(--white-pure);
+  border: 2px solid var(--gold-deep);
+  font-family: var(--font-display);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #2980b9;
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-deep) 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-gold-hover);
+  border-color: var(--gold-rich);
 }
 
 .btn-secondary {

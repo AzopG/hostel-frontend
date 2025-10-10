@@ -19,10 +19,12 @@
     <li><a href="#servicios" (click)="closeMobileMenu()">Servicios</a></li>
     <li><a href="#contacto" (click)="closeMobileMenu()">Contacto</a></li>
     <li *ngIf="!isAuthenticated">
-      <a class="auth-link register" href="register/" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</a>
+      <a href="register/" (click)="closeMobileMenu(); closeMobileMenu()">Registrarse</a>
+      <a href="login/" (click)="closeMobileMenu(); closeMobileMenu()">Iniciar Sesion</a>
+      <!-- <a class="auth-link register" href="register/" (click)="navigateToRegister(); closeMobileMenu()">Registrarse</a> -->
     </li>
     <li *ngIf="!isAuthenticated">
-      <a class="auth-link login" href="login/" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</a>
+      <!-- <a class="auth-link login" href="login/" (click)="navigateToLogin(); closeMobileMenu()">Iniciar Sesión</a> -->
     </li>
     
     <li *ngIf="isAuthenticated" class="user-menu">
@@ -86,9 +88,16 @@
       </div>
       <div class="hero-visual">
         <div class="floating-card">
-          <div class="card-header">
+          <!-- Burbujitas doradas animadas -->
+          <div class="bubble-1"></div>
+          <div class="bubble-2"></div>
+          <div class="bubble-3"></div>
+          <div class="bubble-4"></div>
+          <div class="bubble-5"></div>
+          <div class="bubble-6"></div>
+          
+          <div class="">
             <h3>Estadísticas</h3>
-            <div class="status-indicator active"></div>
           </div>
           <div class="stats-grid">
             <div class="stat-item">

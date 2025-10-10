@@ -1,0 +1,245 @@
+.registro-empresa-container {
+  background: linear-gradient(135deg, var(--white-warm) 0%, var(--white-cream) 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-display);
+}
+
+.form-container {
+  background: linear-gradient(135deg, var(--white-pure) 0%, var(--white-warm) 100%);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: var(--shadow-gold);
+  border: 2px solid var(--gold-rich);
+  width: 100%;
+  max-width: 600px;
+  backdrop-filter: blur(10px);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  font-size: 2.5rem;
+  color: var(--gold-deep);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  text-shadow: var(--text-shadow-gold);
+}
+
+.form-header p {
+  color: var(--text-dark);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.875rem;
+  border: 2px solid var(--gold-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: var(--white-pure);
+  color: var(--text-dark);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--gold-rich);
+  box-shadow: var(--shadow-gold-hover);
+}
+
+.form-control::placeholder {
+  color: #999;
+}
+
+.error-message {
+  color: var(--error);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--gold-rich) 0%, var(--gold-dark) 100%);
+  color: var(--white-pure);
+  border: 2px solid var(--gold-deep);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: var(--text-shadow-dark);
+  font-family: var(--font-display);
+  margin-top: 1rem;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-deep) 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-gold-hover);
+}
+
+.btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #ccc, #999);
+  border-color: #999;
+}
+
+.logo-container {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.logo-container img {
+  max-width: 150px;
+  height: auto;
+}
+
+.divider {
+  margin: 2rem 0;
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+}
+
+.info-section {
+  background: linear-gradient(135deg, rgba(184, 151, 120, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border-left: 4px solid var(--gold-rich);
+}
+
+.info-section h3 {
+  color: var(--gold-deep);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+}
+
+.info-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-section li {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: var(--text-dark);
+}
+
+.info-section li:before {
+  content: "•";
+  color: var(--gold-rich);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--white-warm);
+  border-top: 3px solid var(--gold-rich);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.success-message {
+  text-align: center;
+  padding: 2rem;
+  color: var(--success);
+  background: rgba(40, 167, 69, 0.1);
+  border-radius: 12px;
+  margin: 2rem 0;
+  border: 2px solid currentColor;
+}
+
+.navigation-links {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.link-back {
+  color: var(--gold-dark);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.link-back:hover {
+  color: var(--gold-deep);
+  text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .registro-empresa-container {
+    padding: 1rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .form-header h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .btn-submit {
+    font-size: 1rem;
+    padding: 0.875rem;
+  }
+}

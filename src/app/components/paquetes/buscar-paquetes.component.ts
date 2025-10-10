@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReservaPaqueteService, PaqueteDisponible } from '../../services/reserva-paquete.service';
-import { HotelService } from '../../services/hotel.service';
 import { AuthService } from '../../services/auth.service';
+import { HotelService } from '../../services/hotel.service';
+import { PaqueteDisponible, ReservaPaqueteService } from '../../services/reserva-paquete.service';
 
 @Component({
   selector: 'app-buscar-paquetes',
@@ -24,6 +24,9 @@ import { AuthService } from '../../services/auth.service';
               <p class="page-subtitle">Encuentra el paquete perfecto para tu evento corporativo</p>
             </div>
             <div class="col-md-6 text-end">
+              <button class="btn btn-warning me-2" (click)="testModal()" *ngIf="paquetes.length > 0">
+                🧪 TEST MODAL
+              </button>
               <button class="btn btn-outline-primary me-2" (click)="irAMisReservas()">
                 <i class="fas fa-list me-2"></i>Mis Reservas
               </button>
@@ -120,7 +123,16 @@ import { AuthService } from '../../services/auth.service';
               <div *ngFor="let paquete of paquetes" class="col-lg-6 col-xl-4 mb-4">
                 <div class="paquete-card">
                   <div class="paquete-header">
-                    <div class="paquete-tipo">{{ getTipoEventoLabel(paquete.tipo) }}</div>
+                    <div class="paquete-badges">
+                      <div class="info-badge ciudad-badge">
+                        <span class="ciudad-label">Ciudad:</span>
+                        <span class="ciudad-value">{{ paquete.hotel.ciudad }}</span>
+                      </div>
+                      <div class="info-badge evento-badge">
+                        <span class="evento-label">Tipo de evento:</span>
+                        <span class="evento-value">{{ getTipoEventoLabel(paquete.tipo) }}</span>
+                      </div>
+                    </div>
                     <h5 class="paquete-titulo">{{ paquete.nombre }}</h5>
                   </div>
                   
@@ -156,18 +168,17 @@ import { AuthService } from '../../services/auth.service';
                   </div>
                   
                   <div class="paquete-footer">
-                    <div class="precio-info">
-                      <span class="precio-label">Desde</span>
-                      <span class="precio-valor">\${{ formatearPrecio(paquete.precios.base) }}</span>
-                      <span class="precio-moneda">{{ paquete.precios.moneda }}</span>
+                    <div class="paquete-precio">
+                      \${{ formatearPrecio(paquete.precios.base) }}
+                      <div class="precio-moneda">{{ paquete.precios.moneda }}</div>
                     </div>
                     
                     <div class="paquete-actions">
-                      <button class="btn btn-outline-primary btn-sm me-2" (click)="verDetallePaquete(paquete)">
-                        <i class="fas fa-eye me-1"></i>Ver Detalles
+                      <button class="btn-ver-detalles" (click)="verDetallePaquete(paquete)">
+                        Ver Detalles
                       </button>
-                      <button class="btn btn-primary btn-sm" (click)="reservarPaquete(paquete)">
-                        <i class="fas fa-calendar-plus me-1"></i>Reservar
+                      <button class="btn-reservar" (click)="reservarPaquete(paquete)">
+                        Reservar
                       </button>
                     </div>
                   </div>
@@ -179,9 +190,15 @@ import { AuthService } from '../../services/auth.service';
       </div>
 
       <!-- Modal de detalles del paquete -->
-      <div class="modal fade" [class.show]="modalDetalleVisible" [style.display]="modalDetalleVisible ? 'block' : 'none'" 
-           tabindex="-1" *ngIf="modalDetalleVisible">
-        <div class="modal-dialog modal-lg">
+      <div class="modal" 
+           [class.fade]="true"
+           [class.show]="modalDetalleVisible" 
+           [style.display]="modalDetalleVisible ? 'block' : 'none'" 
+           [attr.aria-hidden]="!modalDetalleVisible"
+           tabindex="-1" 
+           *ngIf="modalDetalleVisible"
+           role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">{{ paqueteSeleccionado?.nombre }}</h5>
@@ -256,7 +273,31 @@ import { AuthService } from '../../services/auth.service';
           </div>
         </div>
       </div>
-      <div class="modal-backdrop fade" [class.show]="modalDetalleVisible" *ngIf="modalDetalleVisible"></div>
+      <div class="modal-backdrop fade" 
+           [class.show]="modalDetalleVisible" 
+           *ngIf="modalDetalleVisible"
+           (click)="cerrarModalDetalle()"></div>
+
+      <!-- Modal Simple para Testing -->
+      <div *ngIf="modalDetalleVisible && paqueteSeleccionado" class="modal-simple-test">
+        <div class="modal-simple-content">
+          <h3>{{ paqueteSeleccionado.nombre }}</h3>
+          <p><strong>Descripción:</strong> {{ paqueteSeleccionado.descripcion }}</p>
+          <p><strong>Hotel:</strong> {{ paqueteSeleccionado.hotel.nombre }} - {{ paqueteSeleccionado.hotel.ciudad }}</p>
+          <p><strong>Tipo:</strong> {{ getTipoEventoLabel(paqueteSeleccionado.tipo) }}</p>
+          <p><strong>Capacidad:</strong> {{ paqueteSeleccionado.capacidadMinima }} - {{ paqueteSeleccionado.capacidadMaxima }} personas</p>
+          <p><strong>Precio:</strong> \${{ formatearPrecio(paqueteSeleccionado.precios.base) }} {{ paqueteSeleccionado.precios.moneda }}</p>
+          
+          <div class="modal-simple-buttons">
+            <button class="btn-simple-reservar" (click)="reservarPaquete(paqueteSeleccionado!)">
+              Reservar
+            </button>
+            <button class="btn-simple-cerrar" (click)="cerrarModalDetalle()">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `,
   styleUrls: ['./buscar-paquetes.component.css']
@@ -350,16 +391,118 @@ export class BuscarPaquetesComponent implements OnInit {
    * Ver detalles de un paquete
    */
   verDetallePaquete(paquete: PaqueteDisponible): void {
+    console.log('🔍 Abriendo detalles del paquete:', paquete.nombre);
+    console.log('Ver detalles de: ', paquete);
+    
     this.paqueteSeleccionado = paquete;
     this.modalDetalleVisible = true;
+    
+    console.log('✅ Modal debería estar visible:', this.modalDetalleVisible);
+    console.log('📋 Paquete seleccionado:', this.paqueteSeleccionado?.nombre);
+    
+    // Forzar detección de cambios y debugging extensivo
+    setTimeout(() => {
+      console.log('🔄 DEBUGGING COMPLETO:');
+      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      
+      const modalSimple = document.querySelector('.modal-simple-test');
+      const modalBootstrap = document.querySelector('.modal');
+      const backdrop = document.querySelector('.modal-backdrop');
+      
+      console.log('🎭 ELEMENTOS EN DOM:');
+      console.log('   - Modal simple:', modalSimple);
+      console.log('   - Modal Bootstrap:', modalBootstrap);
+      console.log('   - Backdrop:', backdrop);
+      
+      if (modalSimple) {
+        console.log('📏 Estilos del modal simple:', window.getComputedStyle(modalSimple));
+        console.log('   - Display:', window.getComputedStyle(modalSimple).display);
+        console.log('   - Position:', window.getComputedStyle(modalSimple).position);
+        console.log('   - Z-index:', window.getComputedStyle(modalSimple).zIndex);
+      }
+      
+      if (modalBootstrap) {
+        console.log('📏 Estilos del modal Bootstrap:', window.getComputedStyle(modalBootstrap));
+      }
+      
+      // Intentar forzar la visibilidad del modal simple
+      if (modalSimple) {
+        (modalSimple as HTMLElement).style.display = 'flex';
+        (modalSimple as HTMLElement).style.position = 'fixed';
+        (modalSimple as HTMLElement).style.top = '0';
+        (modalSimple as HTMLElement).style.left = '0';
+        (modalSimple as HTMLElement).style.width = '100vw';
+        (modalSimple as HTMLElement).style.height = '100vh';
+        (modalSimple as HTMLElement).style.zIndex = '99999';
+        (modalSimple as HTMLElement).style.background = 'rgba(255, 0, 0, 0.8)';
+        console.log('🚨 MODAL FORZADO A SER VISIBLE');
+      }
+    }, 200);
   }
 
   /**
    * Cerrar modal de detalles
    */
   cerrarModalDetalle(): void {
+    console.log('🚪 Cerrando modal');
     this.modalDetalleVisible = false;
     this.paqueteSeleccionado = null;
+  }
+
+  /**
+   * Método de test para forzar apertura del modal
+   */
+  testModal(): void {
+    console.log('🧪 TEST: Forzando apertura del modal');
+    
+    if (this.paquetes.length > 0) {
+      const paquetePrueba = this.paquetes[0];
+      console.log('🧪 Usando paquete de prueba:', paquetePrueba.nombre);
+      
+      this.paqueteSeleccionado = paquetePrueba;
+      this.modalDetalleVisible = true;
+      
+      console.log('🧪 Variables establecidas:');
+      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      
+      // Forzar actualización del DOM
+      setTimeout(() => {
+        const modalElement = document.querySelector('.modal-simple-test');
+        if (modalElement) {
+          console.log('🧪 Modal encontrado, forzando estilos...');
+          (modalElement as HTMLElement).style.display = 'flex';
+          (modalElement as HTMLElement).style.position = 'fixed';
+          (modalElement as HTMLElement).style.zIndex = '999999';
+          (modalElement as HTMLElement).style.background = 'rgba(255, 0, 0, 0.9)';
+        } else {
+          console.log('🚨 ERROR: Modal no encontrado en DOM');
+        }
+      }, 100);
+    } else {
+      console.log('🚨 No hay paquetes disponibles');
+      alert('No hay paquetes para mostrar');
+    }
+  }
+
+  /**
+   * Método alternativo para debugging - abrir modal con alert
+   */
+  verDetallesPaqueteDebug(paquete: PaqueteDisponible): void {
+    console.log('🔍 DEBUG: Intentando abrir modal para:', paquete.nombre);
+    
+    // Mostrar un alert primero para confirmar que el método se ejecuta
+    alert(`Modal para: ${paquete.nombre}\nTipo: ${this.getTipoEventoLabel(paquete.tipo)}\nCiudad: ${paquete.hotel.ciudad}`);
+    
+    // Luego intentar abrir el modal
+    this.paqueteSeleccionado = paquete;
+    this.modalDetalleVisible = true;
+    
+    console.log('🎭 Estado después de intentar abrir:', {
+      modalVisible: this.modalDetalleVisible,
+      paqueteSeleccionado: this.paqueteSeleccionado?.nombre
+    });
   }
 
   /**
