@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -68,5 +68,29 @@ export class EstadisticasService {
     }
     
     return this.http.get<ReservasEstadisticas>(url);
+  }
+
+  /**
+   * Obtener reporte de ocupación por rango de fechas
+   */
+  obtenerReporteOcupacion(fechaInicio: string, fechaFin: string): Observable<any> {
+    const url = `${this.apiUrl}/ocupacion?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+    return this.http.get<any>(url);
+  }
+
+  /**
+   * Obtener reporte de eventos y asistentes en salones
+   */
+  obtenerReporteEventos(fechaInicio: string, fechaFin: string): Observable<any> {
+    const url = `${this.apiUrl}/eventos?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+    return this.http.get<any>(url);
+  }
+
+  /**
+   * Obtener KPIs de desempeño por sede
+   */
+  obtenerKPIsSedes(fechaInicio: string, fechaFin: string): Observable<any> {
+    const url = `${this.apiUrl}/kpis-sedes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+    return this.http.get<any>(url);
   }
 }
