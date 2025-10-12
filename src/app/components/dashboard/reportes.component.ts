@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
 import { AuthService } from '../../services/auth.service';
 import { EstadisticasGenerales, EstadisticasService } from '../../services/estadisticas.service';
 import { ReportesBarChartComponent } from './reportes-bar-chart.component';
@@ -1788,8 +1789,183 @@ export class ReportesComponent implements OnInit {
   }
 
   exportarReporte(): void {
-    console.log('Exportando reporte...');
-    // Implementar lógica para exportar reporte
+    try {
+      // Crear libro de Excel
+      const workbook = XLSX.utils.book_new();
+      
+      // Fecha actual para el nombre del archivo
+      const fechaActual = new Date();
+      const fechaFormateada = fechaActual.toLocaleDateString('es-ES').replace(/\//g, '-');
+
+      // === HOJA 1: ESTADÍSTICAS GENERALES ===
+      const estadisticasGenerales = [
+        ['ESTADÍSTICAS GENERALES DEL SISTEMA'],
+        ['Fecha de Generación:', fechaActual.toLocaleString('es-ES')],
+        ['Usuario:', this.currentUser?.nombre || 'N/A'],
+        [''],
+        ['Métrica', 'Valor'],
+        ['Total de Reservas', this.totalReservas],
+        ['Ingresos Totales', `$${this.ingresosTotales}`],
+        ['Ocupación Promedio', `${this.ocupacionPromedio}%`],
+        ['Usuarios Activos', this.usuariosActivos],
+        [''],
+        ['RESERVAS POR MES'],
+        ['Mes', 'Reservas', 'Ingresos'],
+        ...this.reservasPorMes.map(item => [
+          item.nombre,
+          item.reservas,
+          `$${item.ingresos}`
+        ])
+      ];
+
+      if (this.labelsTopHoteles.length > 0) {
+        estadisticasGenerales.push([''], ['TOP HOTELES POR RESERVAS'], ['Hotel', 'Reservas']);
+        this.labelsTopHoteles.forEach((hotel, index) => {
+          estadisticasGenerales.push([hotel, this.dataTopHoteles[index]]);
+        });
+      }
+
+      if (this.labelsHabitaciones.length > 0) {
+        estadisticasGenerales.push([''], ['HABITACIONES POR HOTEL'], ['Hotel', 'Habitaciones']);
+        this.labelsHabitaciones.forEach((hotel, index) => {
+          estadisticasGenerales.push([hotel, this.dataHabitaciones[index]]);
+        });
+      }
+
+      if (this.labelsSalas.length > 0) {
+        estadisticasGenerales.push([''], ['SALAS POR HOTEL'], ['Hotel', 'Salas']);
+        this.labelsSalas.forEach((hotel, index) => {
+          estadisticasGenerales.push([hotel, this.dataSalas[index]]);
+        });
+      }
+
+      if (this.labelsPaquetes.length > 0) {
+        estadisticasGenerales.push([''], ['PAQUETES POR HOTEL'], ['Hotel', 'Paquetes']);
+        this.labelsPaquetes.forEach((hotel, index) => {
+          estadisticasGenerales.push([hotel, this.dataPaquetes[index]]);
+        });
+      }
+
+      const wsGeneral = XLSX.utils.aoa_to_sheet(estadisticasGenerales);
+      XLSX.utils.book_append_sheet(workbook, wsGeneral, 'Estadísticas Generales');
+
+      // === HOJA 2: REPORTE DE OCUPACIÓN ===
+      if (this.reporteOcupacion.length > 0) {
+        const ocupacionData = [
+          ['REPORTE DE OCUPACIÓN POR SEDE'],
+          [`Periodo: ${this.fechaInicio} al ${this.fechaFin}`],
+          [''],
+          ['Hotel', 'Total Habitaciones', 'Reservas Confirmadas', 'Ocupación (%)', 'Ingresos Totales', 'Días del Periodo'],
+          ...this.reporteOcupacion.map(sede => [
+            sede.hotel,
+            sede.totalHabitaciones,
+            sede.reservasConfirmadas,
+            sede.ocupacionPromedio,
+            sede.ingresosTotales,
+            sede.diasRango
+          ])
+        ];
+
+        const wsOcupacion = XLSX.utils.aoa_to_sheet(ocupacionData);
+        XLSX.utils.book_append_sheet(workbook, wsOcupacion, 'Reporte Ocupación');
+      }
+
+      // === HOJA 3: REPORTE DE EVENTOS ===
+      if (this.reporteEventos.length > 0) {
+        const eventosData = [
+          ['REPORTE DE EVENTOS Y ASISTENTES'],
+          [`Periodo: ${this.fechaInicio} al ${this.fechaFin}`],
+          [''],
+          ['RESUMEN GENERAL'],
+          ['Total Eventos:', this.resumenEventos.totalEventos || 0],
+          ['Total Asistentes:', this.resumenEventos.totalAsistentes || 0],
+          ['Total Salones:', this.resumenEventos.totalSalones || 0],
+          ['Ingresos por Eventos:', `$${this.resumenEventos.ingresosEventos || 0}`],
+          [''],
+          ['DETALLE POR SALÓN'],
+          ['Hotel', 'Salón', 'Capacidad', 'Utilización (%)', 'Eventos', 'Total Asistentes']
+        ];
+
+        this.reporteEventos.forEach(salon => {
+          eventosData.push([
+            salon.hotel,
+            salon.salon,
+            salon.capacidadSalon,
+            salon.utilizacionPromedio,
+            salon.eventos.length,
+            salon.eventos.reduce((sum: number, evento: any) => sum + evento.asistentes, 0)
+          ]);
+
+          // Agregar detalle de eventos del salón
+          if (salon.eventos.length > 0) {
+            eventosData.push(['', 'EVENTOS DEL SALÓN:', '', '', '', '']);
+            eventosData.push(['', 'Fecha', 'Cliente', 'Empresa', 'Asistentes', 'Ingresos']);
+            salon.eventos.forEach((evento: any) => {
+              eventosData.push([
+                '',
+                new Date(evento.fecha).toLocaleDateString('es-ES'),
+                evento.cliente,
+                evento.empresa,
+                evento.asistentes,
+                `$${evento.ingresos}`
+              ]);
+            });
+            eventosData.push(['']); // Línea en blanco
+          }
+        });
+
+        const wsEventos = XLSX.utils.aoa_to_sheet(eventosData);
+        XLSX.utils.book_append_sheet(workbook, wsEventos, 'Reporte Eventos');
+      }
+
+      // === HOJA 4: KPIS POR SEDE ===
+      if (this.kpisSedes.length > 0) {
+        const kpisData = [
+          ['KPIS DE DESEMPEÑO POR SEDE'],
+          [`Periodo: ${this.fechaInicio} al ${this.fechaFin}`],
+          [''],
+          ['RESUMEN GLOBAL'],
+          ['Total Sedes:', this.resumenKPIs.totalSedes || 0],
+          ['Ocupación Promedio Global:', `${this.resumenKPIs.ocupacionPromedioGlobal || 0}%`],
+          ['Mejor Sede:', this.resumenKPIs.mejorSede || 'N/A'],
+          [''],
+          ['DETALLE POR SEDE'],
+          [
+            'Ranking', 'Sede', 'Ubicación', 'Total Reservas', 'Ingresos Totales', 
+            'Ocupación (%)', 'RevPAR', 'Calificación', 'Tendencia (%)', 'Nivel de Desempeño'
+          ],
+          ...this.kpisSedes.map(sede => [
+            sede.ranking,
+            sede.sede,
+            sede.ubicacion || 'N/A',
+            sede.totalReservas,
+            sede.ingresosTotales,
+            sede.tasaOcupacionHabitaciones,
+            sede.revPAR,
+            sede.calificacionPromedio,
+            sede.tendenciaReservas,
+            sede['nivelDesempeño']
+          ])
+        ];
+
+        const wsKPIs = XLSX.utils.aoa_to_sheet(kpisData);
+        XLSX.utils.book_append_sheet(workbook, wsKPIs, 'KPIs por Sede');
+      }
+
+      // Generar y descargar el archivo
+      const nombreArchivo = `Reportes_Hoteleros_${fechaFormateada}.xlsx`;
+      XLSX.writeFile(workbook, nombreArchivo);
+
+      // Mostrar mensaje de éxito
+      console.log('✅ Reporte exportado exitosamente:', nombreArchivo);
+      
+      // Opcional: mostrar notificación al usuario
+      this.mostrarNotificacionExportacion(nombreArchivo);
+
+    } catch (error) {
+      console.error('❌ Error al exportar reporte:', error);
+      this.error = 'Error al exportar el reporte. Inténtelo nuevamente.';
+    }
   }
 
   // ===== MÉTODOS PARA NUEVOS REPORTES =====
@@ -1919,6 +2095,45 @@ export class ReportesComponent implements OnInit {
       'Necesita Mejora': 'nivel-malo'
     };
     return niveles[nivel] || 'nivel-regular';
+  }
+
+  private mostrarNotificacionExportacion(nombreArchivo: string): void {
+    // Crear notificación temporal
+    const notification = document.createElement('div');
+    notification.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        z-index: 10000;
+        font-family: 'Crimson Text', serif;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 300px;
+      ">
+        <i class="fas fa-check-circle" style="font-size: 1.2rem;"></i>
+        <div>
+          <div style="font-weight: 700;">¡Reporte Exportado!</div>
+          <div style="font-size: 0.9rem; opacity: 0.9;">${nombreArchivo}</div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Eliminar notificación después de 5 segundos
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 5000);
   }
 
   getTendenciaIcon(tendencia: number): string {
