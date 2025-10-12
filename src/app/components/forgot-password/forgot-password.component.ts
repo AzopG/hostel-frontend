@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -326,7 +326,7 @@ export class ForgotPasswordComponent {
         
         // En desarrollo, mostrar el link en consola
         if (response.resetUrl) {
-          console.log('🔗 Link de recuperación (DEV):', response.resetUrl);
+          // console.log('🔗 Link de recuperación (DEV):', response.resetUrl);
         }
       },
       error: (error) => {

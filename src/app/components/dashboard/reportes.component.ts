@@ -1653,23 +1653,23 @@ export class ReportesComponent implements OnInit {
   }
 
   cargarDatosReportes(): void {
-    console.log('🔄 Cargando datos de reportes...');
+    // console.log('🔄 Cargando datos de reportes...');
     this.isLoading = true;
     this.error = '';
     
     this.estadisticasService.obtenerEstadisticasGenerales().subscribe({
       next: (response) => {
-        console.log('✅ Respuesta del servicio recibida:', response);
-        console.log('✅ response.stats:', response.stats);
-        console.log('✅ response.stats.reservasPorMes:', response.stats?.reservasPorMes);
+        // console.log('✅ Respuesta del servicio recibida:', response);
+        // console.log('✅ response.stats:', response.stats);
+        // console.log('✅ response.stats.reservasPorMes:', response.stats?.reservasPorMes);
         
         if (response.success && response.stats) {
           this.estadisticas = response.stats;
-          console.log('📊 Estadísticas asignadas:', this.estadisticas);
-          console.log('📊 reservasPorMes asignadas:', this.estadisticas.reservasPorMes);
+          // console.log('📊 Estadísticas asignadas:', this.estadisticas);
+          // console.log('📊 reservasPorMes asignadas:', this.estadisticas.reservasPorMes);
           this.actualizarDatosReportes();
         } else {
-          console.log('⚠️ Respuesta no válida, usando datos por defecto');
+          // console.log('⚠️ Respuesta no válida, usando datos por defecto');
           this.error = 'Error al cargar datos de reportes';
         }
         this.isLoading = false;
@@ -1688,9 +1688,9 @@ export class ReportesComponent implements OnInit {
   }
 
   actualizarDatosReportes(): void {
-    console.log('📈 INICIO actualizarDatosReportes');
-    console.log('📈 this.estadisticas:', this.estadisticas);
-    console.log('📈 this.estadisticas.reservasPorMes:', this.estadisticas.reservasPorMes);
+    // console.log('📈 INICIO actualizarDatosReportes');
+    // console.log('📈 this.estadisticas:', this.estadisticas);
+    // console.log('📈 this.estadisticas.reservasPorMes:', this.estadisticas.reservasPorMes);
     
     this.totalReservas = this.estadisticas.totalReservas || 0;
     this.ingresosTotales = this.estadisticas.ingresosTotales || 0;
@@ -1698,10 +1698,10 @@ export class ReportesComponent implements OnInit {
     this.usuariosActivos = this.estadisticas.totalClientes || 0;
 
     // Reservas por mes
-    console.log('Reservas por mes del servicio:', this.estadisticas.reservasPorMes);
+    // console.log('Reservas por mes del servicio:', this.estadisticas.reservasPorMes);
     
     if (this.estadisticas.reservasPorMes && this.estadisticas.reservasPorMes.length > 0) {
-      console.log('✅ Hay datos de reservas por mes, procesando...');
+      // console.log('✅ Hay datos de reservas por mes, procesando...');
       this.reservasPorMes = this.estadisticas.reservasPorMes.map(item => ({
         nombre: this.getNombreMes(item._id?.month ?? item.month ?? 1),
         reservas: item.count ?? 0,
@@ -1711,15 +1711,15 @@ export class ReportesComponent implements OnInit {
       this.dataReservasPorMes = this.reservasPorMes.map(m => m.reservas);
       this.dataIngresosPorMes = this.reservasPorMes.map(m => m.ingresos);
       
-      console.log('📊 reservasPorMes procesado:', this.reservasPorMes);
-      console.log('📊 labelsReservasPorMes:', this.labelsReservasPorMes);
-      console.log('📊 dataReservasPorMes:', this.dataReservasPorMes);
-      console.log('Datos procesados para gráfica:', {
-        labels: this.labelsReservasPorMes,
-        data: this.dataReservasPorMes
-      });
+      // console.log('📊 reservasPorMes procesado:', this.reservasPorMes);
+      // console.log('📊 labelsReservasPorMes:', this.labelsReservasPorMes);
+      // console.log('📊 dataReservasPorMes:', this.dataReservasPorMes);
+      // console.log('Datos procesados para gráfica:', {
+      //   labels: this.labelsReservasPorMes,
+      //   data: this.dataReservasPorMes
+      // });
     } else {
-      console.log('❌ No hay datos de reservas por mes, usando datos por defecto');
+      // console.log('❌ No hay datos de reservas por mes, usando datos por defecto');
       this.usarDatosPorDefectoReservas();
       this.labelsReservasPorMes = this.reservasPorMes.map(m => m.nombre);
       this.dataReservasPorMes = this.reservasPorMes.map(m => m.reservas);
@@ -1957,7 +1957,7 @@ export class ReportesComponent implements OnInit {
       XLSX.writeFile(workbook, nombreArchivo);
 
       // Mostrar mensaje de éxito
-      console.log('✅ Reporte exportado exitosamente:', nombreArchivo);
+      // console.log('✅ Reporte exportado exitosamente:', nombreArchivo);
       
       // Opcional: mostrar notificación al usuario
       this.mostrarNotificacionExportacion(nombreArchivo);
@@ -1997,7 +1997,7 @@ export class ReportesComponent implements OnInit {
           // Actualizar datos para la gráfica
           this.labelsOcupacion = this.reporteOcupacion.map(r => r.hotel);
           this.dataOcupacion = this.reporteOcupacion.map(r => r.ocupacionPromedio);
-          console.log('📊 Reporte de ocupación cargado:', this.reporteOcupacion);
+          // console.log('📊 Reporte de ocupación cargado:', this.reporteOcupacion);
         } else {
           this.error = 'Error al cargar reporte de ocupación';
         }
@@ -2026,7 +2026,7 @@ export class ReportesComponent implements OnInit {
           // Actualizar datos para la gráfica
           this.labelsEventos = this.reporteEventos.map(r => r.salon);
           this.dataEventos = this.reporteEventos.map(r => r.eventos.length);
-          console.log('🎭 Reporte de eventos cargado:', this.reporteEventos);
+          // console.log('🎭 Reporte de eventos cargado:', this.reporteEventos);
         } else {
           this.error = 'Error al cargar reporte de eventos';
         }
@@ -2055,7 +2055,7 @@ export class ReportesComponent implements OnInit {
           // Actualizar datos para la gráfica
           this.labelsKPIs = this.kpisSedes.map(k => k.sede);
           this.dataKPIs = this.kpisSedes.map(k => k.ingresosTotales);
-          console.log('📈 KPIs de sedes cargados:', this.kpisSedes);
+          // console.log('📈 KPIs de sedes cargados:', this.kpisSedes);
         } else {
           this.error = 'Error al cargar KPIs de sedes';
         }

@@ -391,39 +391,39 @@ export class BuscarPaquetesComponent implements OnInit {
    * Ver detalles de un paquete
    */
   verDetallePaquete(paquete: PaqueteDisponible): void {
-    console.log('🔍 Abriendo detalles del paquete:', paquete.nombre);
-    console.log('Ver detalles de: ', paquete);
+    // console.log('🔍 Abriendo detalles del paquete:', paquete.nombre);
+    // console.log('Ver detalles de: ', paquete);
     
     this.paqueteSeleccionado = paquete;
     this.modalDetalleVisible = true;
     
-    console.log('✅ Modal debería estar visible:', this.modalDetalleVisible);
-    console.log('📋 Paquete seleccionado:', this.paqueteSeleccionado?.nombre);
+    // console.log('✅ Modal debería estar visible:', this.modalDetalleVisible);
+    // console.log('📋 Paquete seleccionado:', this.paqueteSeleccionado?.nombre);
     
     // Forzar detección de cambios y debugging extensivo
     setTimeout(() => {
-      console.log('🔄 DEBUGGING COMPLETO:');
-      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
-      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      // console.log('🔄 DEBUGGING COMPLETO:');
+      // console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      // console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
       
       const modalSimple = document.querySelector('.modal-simple-test');
       const modalBootstrap = document.querySelector('.modal');
       const backdrop = document.querySelector('.modal-backdrop');
       
-      console.log('🎭 ELEMENTOS EN DOM:');
-      console.log('   - Modal simple:', modalSimple);
-      console.log('   - Modal Bootstrap:', modalBootstrap);
-      console.log('   - Backdrop:', backdrop);
+      // console.log('🎭 ELEMENTOS EN DOM:');
+      // console.log('   - Modal simple:', modalSimple);
+      // console.log('   - Modal Bootstrap:', modalBootstrap);
+      // console.log('   - Backdrop:', backdrop);
       
       if (modalSimple) {
-        console.log('📏 Estilos del modal simple:', window.getComputedStyle(modalSimple));
-        console.log('   - Display:', window.getComputedStyle(modalSimple).display);
-        console.log('   - Position:', window.getComputedStyle(modalSimple).position);
-        console.log('   - Z-index:', window.getComputedStyle(modalSimple).zIndex);
+        // console.log('📏 Estilos del modal simple:', window.getComputedStyle(modalSimple));
+        // console.log('   - Display:', window.getComputedStyle(modalSimple).display);
+        // console.log('   - Position:', window.getComputedStyle(modalSimple).position);
+        // console.log('   - Z-index:', window.getComputedStyle(modalSimple).zIndex);
       }
       
       if (modalBootstrap) {
-        console.log('📏 Estilos del modal Bootstrap:', window.getComputedStyle(modalBootstrap));
+        // console.log('📏 Estilos del modal Bootstrap:', window.getComputedStyle(modalBootstrap));
       }
       
       // Intentar forzar la visibilidad del modal simple
@@ -436,7 +436,7 @@ export class BuscarPaquetesComponent implements OnInit {
         (modalSimple as HTMLElement).style.height = '100vh';
         (modalSimple as HTMLElement).style.zIndex = '99999';
         (modalSimple as HTMLElement).style.background = 'rgba(255, 0, 0, 0.8)';
-        console.log('🚨 MODAL FORZADO A SER VISIBLE');
+        // console.log('🚨 MODAL FORZADO A SER VISIBLE');
       }
     }, 200);
   }
@@ -445,7 +445,7 @@ export class BuscarPaquetesComponent implements OnInit {
    * Cerrar modal de detalles
    */
   cerrarModalDetalle(): void {
-    console.log('🚪 Cerrando modal');
+    // console.log('🚪 Cerrando modal');
     this.modalDetalleVisible = false;
     this.paqueteSeleccionado = null;
   }
@@ -454,34 +454,34 @@ export class BuscarPaquetesComponent implements OnInit {
    * Método de test para forzar apertura del modal
    */
   testModal(): void {
-    console.log('🧪 TEST: Forzando apertura del modal');
+    // console.log('🧪 TEST: Forzando apertura del modal');
     
     if (this.paquetes.length > 0) {
       const paquetePrueba = this.paquetes[0];
-      console.log('🧪 Usando paquete de prueba:', paquetePrueba.nombre);
+      // console.log('🧪 Usando paquete de prueba:', paquetePrueba.nombre);
       
       this.paqueteSeleccionado = paquetePrueba;
       this.modalDetalleVisible = true;
       
-      console.log('🧪 Variables establecidas:');
-      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
-      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      // console.log('🧪 Variables establecidas:');
+      // console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      // console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
       
       // Forzar actualización del DOM
       setTimeout(() => {
         const modalElement = document.querySelector('.modal-simple-test');
         if (modalElement) {
-          console.log('🧪 Modal encontrado, forzando estilos...');
+          // console.log('🧪 Modal encontrado, forzando estilos...');
           (modalElement as HTMLElement).style.display = 'flex';
           (modalElement as HTMLElement).style.position = 'fixed';
           (modalElement as HTMLElement).style.zIndex = '999999';
           (modalElement as HTMLElement).style.background = 'rgba(255, 0, 0, 0.9)';
         } else {
-          console.log('🚨 ERROR: Modal no encontrado en DOM');
+          // console.log('🚨 ERROR: Modal no encontrado en DOM');
         }
       }, 100);
     } else {
-      console.log('🚨 No hay paquetes disponibles');
+      // console.log('🚨 No hay paquetes disponibles');
       alert('No hay paquetes para mostrar');
     }
   }
@@ -490,7 +490,7 @@ export class BuscarPaquetesComponent implements OnInit {
    * Método alternativo para debugging - abrir modal con alert
    */
   verDetallesPaqueteDebug(paquete: PaqueteDisponible): void {
-    console.log('🔍 DEBUG: Intentando abrir modal para:', paquete.nombre);
+    // console.log('🔍 DEBUG: Intentando abrir modal para:', paquete.nombre);
     
     // Mostrar un alert primero para confirmar que el método se ejecuta
     alert(`Modal para: ${paquete.nombre}\nTipo: ${this.getTipoEventoLabel(paquete.tipo)}\nCiudad: ${paquete.hotel.ciudad}`);
@@ -499,10 +499,10 @@ export class BuscarPaquetesComponent implements OnInit {
     this.paqueteSeleccionado = paquete;
     this.modalDetalleVisible = true;
     
-    console.log('🎭 Estado después de intentar abrir:', {
-      modalVisible: this.modalDetalleVisible,
-      paqueteSeleccionado: this.paqueteSeleccionado?.nombre
-    });
+    // console.log('🎭 Estado después de intentar abrir:', {
+    //   modalVisible: this.modalDetalleVisible,
+    //   paqueteSeleccionado: this.paqueteSeleccionado?.nombre
+    // });
   }
 
   /**

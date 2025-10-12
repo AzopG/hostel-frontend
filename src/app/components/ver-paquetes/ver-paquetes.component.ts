@@ -783,17 +783,17 @@ export class VerPaquetesComponent implements OnInit {
 
   cargarPaquetes() {
     this.cargando = true;
-    console.log('🔄 Cargando paquetes desde el servicio...');
+    // console.log('🔄 Cargando paquetes desde el servicio...');
     this.paqueteService.listarPaquetesDisponibles().subscribe({
       next: (response: any) => {
-        console.log('📦 Respuesta recibida:', response);
+        // console.log('📦 Respuesta recibida:', response);
         if (response.success) {
           this.paquetes = response.paquetes;
           this.paquetesFiltrados = [...this.paquetes];
-          console.log(`✅ ${this.paquetes.length} paquetes cargados:`, this.paquetes);
+          // console.log(`✅ ${this.paquetes.length} paquetes cargados:`, this.paquetes);
           this.extraerCiudades();
         } else {
-          console.log('❌ Respuesta no exitosa:', response);
+          // console.log('❌ Respuesta no exitosa:', response);
         }
         this.cargando = false;
       },
@@ -809,57 +809,57 @@ export class VerPaquetesComponent implements OnInit {
   extraerCiudades() {
     const ciudadesSet = new Set(this.paquetes.map(p => p.hotel?.ciudad).filter(Boolean));
     this.ciudades = Array.from(ciudadesSet);
-    console.log('🏙️ Ciudades extraídas:', this.ciudades);
+    // console.log('🏙️ Ciudades extraídas:', this.ciudades);
   }
 
   filtrarPaquetes() {
-    console.log('🔍 Filtrando paquetes por ciudad:', this.ciudadFiltro, 'y tipo:', this.tipoEventoFiltro);
+    // console.log('🔍 Filtrando paquetes por ciudad:', this.ciudadFiltro, 'y tipo:', this.tipoEventoFiltro);
     this.paquetesFiltrados = this.paquetes.filter(paquete => {
       const cumpleCiudad = !this.ciudadFiltro || paquete.hotel?.ciudad === this.ciudadFiltro;
       const cumpleTipo = !this.tipoEventoFiltro || paquete.tipo === this.tipoEventoFiltro;
-      console.log(`- Paquete ${paquete.nombre}: ciudad ${paquete.hotel?.ciudad} (${cumpleCiudad}), tipo ${paquete.tipo} (${cumpleTipo})`);
+      // console.log(`- Paquete ${paquete.nombre}: ciudad ${paquete.hotel?.ciudad} (${cumpleCiudad}), tipo ${paquete.tipo} (${cumpleTipo})`);
       return cumpleCiudad && cumpleTipo;
     });
-    console.log(`✅ ${this.paquetesFiltrados.length} paquetes después del filtro`);
+    // console.log(`✅ ${this.paquetesFiltrados.length} paquetes después del filtro`);
   }
 
   reservarPaquete(paquete: any) {
-    console.log('🎯 Reservando paquete:', paquete);
-    console.log('📋 ID del paquete:', paquete._id);
+    // console.log('🎯 Reservando paquete:', paquete);
+    // console.log('📋 ID del paquete:', paquete._id);
     // Navegar a formulario de reserva simple
     this.router.navigate(['/reservar-paquete-simple', paquete._id]);
   }
 
   verDetalles(paquete: any) {
-    console.log('🔍 Abriendo detalles del paquete:', paquete.nombre);
-    console.log('Ver detalles de:', paquete);
+    // console.log('🔍 Abriendo detalles del paquete:', paquete.nombre);
+    // console.log('Ver detalles de:', paquete);
     
     this.paqueteSeleccionado = paquete;
     this.modalDetalleVisible = true;
     
-    console.log('✅ Modal debería estar visible:', this.modalDetalleVisible);
-    console.log('📋 Paquete seleccionado:', this.paqueteSeleccionado?.nombre);
+    // console.log('✅ Modal debería estar visible:', this.modalDetalleVisible);
+    // console.log('📋 Paquete seleccionado:', this.paqueteSeleccionado?.nombre);
     
     // Forzar detección de cambios y debugging extensivo
     setTimeout(() => {
-      console.log('🔄 DEBUGGING COMPLETO:');
-      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
-      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      // console.log('🔄 DEBUGGING COMPLETO:');
+      // console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      // console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
       
       const modalSimple = document.querySelector('.modal-simple-test');
       const modalBootstrap = document.querySelector('.modal');
       const backdrop = document.querySelector('.modal-backdrop');
       
-      console.log('🎭 ELEMENTOS EN DOM:');
-      console.log('   - Modal simple:', modalSimple);
-      console.log('   - Modal Bootstrap:', modalBootstrap);
-      console.log('   - Backdrop:', backdrop);
+      // console.log('🎭 ELEMENTOS EN DOM:');
+      // console.log('   - Modal simple:', modalSimple);
+      // console.log('   - Modal Bootstrap:', modalBootstrap);
+      // console.log('   - Backdrop:', backdrop);
       
       if (modalSimple) {
-        console.log('📏 Estilos del modal simple:', window.getComputedStyle(modalSimple));
-        console.log('   - Display:', window.getComputedStyle(modalSimple).display);
-        console.log('   - Position:', window.getComputedStyle(modalSimple).position);
-        console.log('   - Z-index:', window.getComputedStyle(modalSimple).zIndex);
+        // console.log('📏 Estilos del modal simple:', window.getComputedStyle(modalSimple));
+        // console.log('   - Display:', window.getComputedStyle(modalSimple).display);
+        // console.log('   - Position:', window.getComputedStyle(modalSimple).position);
+        // console.log('   - Z-index:', window.getComputedStyle(modalSimple).zIndex);
         
         // Intentar forzar la visibilidad del modal simple
         (modalSimple as HTMLElement).style.display = 'flex';
@@ -870,7 +870,7 @@ export class VerPaquetesComponent implements OnInit {
         (modalSimple as HTMLElement).style.height = '100vh';
         (modalSimple as HTMLElement).style.zIndex = '99999';
         (modalSimple as HTMLElement).style.background = 'rgba(255, 0, 0, 0.8)';
-        console.log('🚨 MODAL FORZADO A SER VISIBLE');
+        // console.log('🚨 MODAL FORZADO A SER VISIBLE');
       }
     }, 200);
   }
@@ -879,7 +879,7 @@ export class VerPaquetesComponent implements OnInit {
    * Cerrar modal de detalles
    */
   cerrarModalDetalle(): void {
-    console.log('🚪 Cerrando modal');
+    // console.log('🚪 Cerrando modal');
     this.modalDetalleVisible = false;
     this.paqueteSeleccionado = null;
   }
@@ -888,34 +888,34 @@ export class VerPaquetesComponent implements OnInit {
    * Método de test para forzar apertura del modal
    */
   testModal(): void {
-    console.log('🧪 TEST: Forzando apertura del modal');
+    // console.log('🧪 TEST: Forzando apertura del modal');
     
     if (this.paquetesFiltrados.length > 0) {
       const paquetePrueba = this.paquetesFiltrados[0];
-      console.log('🧪 Usando paquete de prueba:', paquetePrueba.nombre);
+      // console.log('🧪 Usando paquete de prueba:', paquetePrueba.nombre);
       
       this.paqueteSeleccionado = paquetePrueba;
       this.modalDetalleVisible = true;
       
-      console.log('🧪 Variables establecidas:');
-      console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
-      console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
+      // console.log('🧪 Variables establecidas:');
+      // console.log('   - modalDetalleVisible:', this.modalDetalleVisible);
+      // console.log('   - paqueteSeleccionado:', this.paqueteSeleccionado?.nombre);
       
       // Forzar actualización del DOM
       setTimeout(() => {
         const modalElement = document.querySelector('.modal-simple-test');
         if (modalElement) {
-          console.log('🧪 Modal encontrado, forzando estilos...');
+          // console.log('🧪 Modal encontrado, forzando estilos...');
           (modalElement as HTMLElement).style.display = 'flex';
           (modalElement as HTMLElement).style.position = 'fixed';
           (modalElement as HTMLElement).style.zIndex = '999999';
           (modalElement as HTMLElement).style.background = 'rgba(255, 0, 0, 0.9)';
         } else {
-          console.log('🚨 ERROR: Modal no encontrado en DOM');
+          // console.log('🚨 ERROR: Modal no encontrado en DOM');
         }
       }, 100);
     } else {
-      console.log('🚨 No hay paquetes disponibles');
+      // console.log('🚨 No hay paquetes disponibles');
       alert('No hay paquetes para mostrar');
     }
   }

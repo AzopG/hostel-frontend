@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReservaService, ReservaCreada } from '../../services/reserva.service';
-import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
 import { AuthService } from '../../services/auth.service';
+import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
+import { ReservaCreada, ReservaService } from '../../services/reserva.service';
 
 type EstadoFiltro = 'todas' | 'confirmada' | 'cancelada' | 'completada' | 'pendiente';
 type TipoVista = 'habitaciones' | 'paquetes';
@@ -63,19 +63,19 @@ export class MisReservasComponent implements OnInit {
 
   ngOnInit(): void {
     // Debug: Check current user and role
-    console.log('🔄 MisReservas Component Loading... [UPDATED]');
+    // console.log('🔄 MisReservas Component Loading... [UPDATED]');
     const currentUser = this.authService.getCurrentUser();
-    console.log('MisReservas init - Current user:', currentUser);
-    console.log('Is empresa user?', this.isEmpresaUser());
+    // console.log('MisReservas init - Current user:', currentUser);
+    // console.log('Is empresa user?', this.isEmpresaUser());
     
     this.cargarReservas();
     
     // Only load paquetes if user is empresa type
     if (this.isEmpresaUser()) {
-      console.log('Loading paquetes for empresa user');
+      // console.log('Loading paquetes for empresa user');
       this.cargarReservasPaquetes();
     } else {
-      console.log('Not loading paquetes - user is not empresa type');
+      // console.log('Not loading paquetes - user is not empresa type');
       // Ensure we're on habitaciones view if not empresa user
       this.vistaActual = 'habitaciones';
     }
@@ -110,7 +110,7 @@ export class MisReservasComponent implements OnInit {
         this.aplicarFiltros();
         this.cargando = false;
         
-        console.log('Reservas cargadas:', this.reservas.length);
+        // console.log('Reservas cargadas:', this.reservas.length);
       },
       error: (err: any) => {
         console.error('Error al cargar reservas:', err);
@@ -407,7 +407,7 @@ export class MisReservasComponent implements OnInit {
    */
   isEmpresaUser(): boolean {
     const user = this.authService.getCurrentUser();
-    console.log('Current user type:', user?.tipo);
+    // console.log('Current user type:', user?.tipo);
     return this.authService.hasRole('empresa');
   }
 
@@ -550,25 +550,25 @@ export class MisReservasComponent implements OnInit {
    * Ver detalles de un paquete corporativo
    */
   verDetallePaquete(reserva: any): void {
-    console.log('Ver detalles del paquete:', reserva);
+    // console.log('Ver detalles del paquete:', reserva);
     // TODO: Implementar modal o navegación para ver detalles
     alert(`Ver detalles de la reserva ${reserva.numeroReserva}`);
   }
 
   /**
-   * Modificar un paquete corporativo
+   * Modificar paquete corporativo
    */
   modificarPaquete(reserva: any): void {
-    console.log('Modificar paquete:', reserva);
-    // TODO: Implementar modal o navegación para modificar
-    alert(`Modificar reserva ${reserva.numeroReserva}`);
+    // console.log('Modificar paquete:', reserva);
+    // TODO: Implementar modificación
+    alert(`Modificar reserva ${reserva.numeroReserva} - Funcionalidad en desarrollo`);
   }
 
   /**
-   * Cancelar un paquete corporativo
+   * Cancelar paquete corporativo
    */
   cancelarPaquete(reserva: any): void {
-    console.log('Cancelar paquete:', reserva);
+    // console.log('Cancelar paquete:', reserva);
     if (confirm(`¿Estás seguro de que deseas cancelar la reserva ${reserva.numeroReserva}?`)) {
       // TODO: Implementar cancelación de paquete
       alert(`Cancelando reserva ${reserva.numeroReserva}`);

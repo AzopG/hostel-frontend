@@ -1,14 +1,14 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { AuthService, Usuario } from '../../services/auth.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
+import { AuthService, Usuario } from '../../services/auth.service';
+import { EstadisticasGenerales, EstadisticasService } from '../../services/estadisticas.service';
 import { AppState } from '../../store';
 import * as HotelActions from '../../store/actions/hotel.actions';
 import * as HotelSelectors from '../../store/selectors/hotel.selectors';
-import { EstadisticasService, EstadisticasGenerales } from '../../services/estadisticas.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -286,7 +286,7 @@ export class DashboardComponent implements OnInit {
     
     this.estadisticasService.obtenerEstadisticasGenerales().subscribe({
       next: (response) => {
-        console.log('📊 Estadísticas recibidas:', response);
+        // console.log('📊 Estadísticas recibidas:', response);
         if (response.success) {
           this.estadisticas = response.stats;
           this.actualizarStatsData();

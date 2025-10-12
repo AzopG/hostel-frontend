@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FiltrosService, FiltrosHabitacion, HabitacionResultado } from '../../services/filtros.service';
-import { DisponibilidadService, Ciudad } from '../../services/disponibilidad.service';
 import { SERVICIOS_DISPONIBLES, ServicioDisponible } from '../../constants/servicios';
+import { Ciudad, DisponibilidadService } from '../../services/disponibilidad.service';
+import { FiltrosHabitacion, FiltrosService, HabitacionResultado } from '../../services/filtros.service';
 
 @Component({
   selector: 'app-buscar-habitaciones',
@@ -1359,7 +1359,7 @@ export class BuscarHabitacionesComponent implements OnInit {
           
           // CA3: Sin resultados
           if (this.habitaciones.length === 0) {
-            console.log('No se encontraron habitaciones disponibles');
+            // console.log('No se encontraron habitaciones disponibles');
           }
         } else {
           // CA2 o CA4: Error del servidor
@@ -1463,7 +1463,7 @@ export class BuscarHabitacionesComponent implements OnInit {
    * Navegar a reserva (placeholder)
    */
   reservar(habitacion: HabitacionResultado): void {
-    console.log('Reservar habitación:', habitacion);
+    // console.log('Reservar habitación:', habitacion);
     
     // Verificar que hay fechas seleccionadas
     if (!this.filtros.fechaInicio || !this.filtros.fechaFin) {

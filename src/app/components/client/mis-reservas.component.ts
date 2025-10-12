@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalAsistentesComponent } from './modal-asistentes.component';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { ReservaService, ReservaCreada } from '../../services/reserva.service';
-import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { DashboardComponent } from '../dashboard/dashboard.component';
+import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
+import { ReservaCreada, ReservaService } from '../../services/reserva.service';
+import { ModalAsistentesComponent } from './modal-asistentes.component';
 
 type EstadoFiltro = 'todas' | 'confirmada' | 'cancelada' | 'completada' | 'pendiente';
 type TipoVista = 'habitaciones' | 'paquetes';
@@ -1548,15 +1547,15 @@ export class MisReservasClientComponent implements OnInit {
     const tipoUsuario = currentUser?.tipo?.toLowerCase() || 'cliente';
     this.esCliente = tipoUsuario === 'cliente';
     
-    console.log('🔍 Debug: Tipo de usuario:', tipoUsuario, 'Es cliente:', this.esCliente);
-    console.log('🎯 BOTONES ACTUALIZADOS - VERSION 2025-10-07');
+    // console.log('🔍 Debug: Tipo de usuario:', tipoUsuario, 'Es cliente:', this.esCliente);
+    // console.log('🎯 BOTONES ACTUALIZADOS - VERSION 2025-10-07');
     
     // Cargar reservas de habitaciones siempre
     this.cargarReservas();
     
     // Cargar paquetes solo si no es cliente
     if (!this.esCliente) {
-      console.log('🔄 Cargando paquetes para empresa...');
+      // console.log('🔄 Cargando paquetes para empresa...');
       this.cargarReservasPaquetes();
     }
   }
@@ -1590,7 +1589,7 @@ export class MisReservasClientComponent implements OnInit {
         this.aplicarFiltros();
         this.cargando = false;
         
-        console.log('Reservas cargadas:', this.reservas.length);
+        // console.log('Reservas cargadas:', this.reservas.length);
       },
       error: (err: any) => {
         console.error('Error al cargar reservas:', err);
@@ -2015,13 +2014,13 @@ export class MisReservasClientComponent implements OnInit {
   irABuscar(): void {
     // Verificamos si estamos en el contexto del dashboard y navegamos a la ruta correcta
     if (this.router.url.includes('/dashboard')) {
-      console.log('Navegando a la vista de búsqueda de habitaciones dentro del dashboard...');
+      // console.log('Navegando a la vista de búsqueda de habitaciones dentro del dashboard...');
       // Usar timeout para asegurar que la navegación ocurra después de cualquier proceso pendiente
       setTimeout(() => {
         this.router.navigate(['/dashboard/busqueda-habitaciones']);
       }, 100);
     } else {
-      console.log('Navegando a la vista de búsqueda de habitaciones fuera del dashboard...');
+      // console.log('Navegando a la vista de búsqueda de habitaciones fuera del dashboard...');
       this.router.navigate(['/buscar-habitaciones']);
     }
   }
@@ -2049,7 +2048,7 @@ export class MisReservasClientComponent implements OnInit {
    * Ver detalles de un paquete corporativo
    */
   verDetallePaquete(reserva: any): void {
-    console.log('Ver detalles del paquete:', reserva);
+    // console.log('Ver detalles del paquete:', reserva);
     
     // Crear modal con detalles completos
     const detalles = `
@@ -2087,7 +2086,7 @@ ${reserva.notas || 'Sin observaciones adicionales'}
    * Modificar un paquete corporativo
    */
   modificarPaquete(reserva: any): void {
-    console.log('Modificar paquete:', reserva);
+    // console.log('Modificar paquete:', reserva);
     
     if (reserva.estado !== 'confirmada') {
       alert('Solo se pueden modificar reservas confirmadas');
@@ -2116,7 +2115,7 @@ ${reserva.notas || 'Sin observaciones adicionales'}
    * Cancelar un paquete corporativo
    */
   cancelarPaquete(reserva: any): void {
-    console.log('Cancelar paquete:', reserva);
+    // console.log('Cancelar paquete:', reserva);
     
     if (reserva.estado === 'cancelada') {
       alert('Esta reserva ya está cancelada');

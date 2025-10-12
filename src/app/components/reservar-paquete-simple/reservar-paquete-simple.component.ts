@@ -1,10 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { PaquetePublicoService } from '../../services/paquete-publico.service';
 import { ReservaPaqueteService } from '../../services/reserva-paquete.service';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reservar-paquete-simple',
@@ -203,16 +203,16 @@ export class ReservarPaqueteSimpleComponent implements OnInit {
   }
 
   cargarPaquete() {
-    console.log('🔍 Cargando paquete con ID:', this.paqueteId);
+    // console.log('🔍 Cargando paquete con ID:', this.paqueteId);
     this.paqueteService.obtenerPaqueteDisponible(this.paqueteId).subscribe({
       next: (response: any) => {
-        console.log('📦 Respuesta del servidor:', response);
+        // console.log('📦 Respuesta del servidor:', response);
         if (response.success) {
           this.paquete = response.paquete;
           this.reservaData.numeroAsistentes = this.paquete.capacidadMinima;
-          console.log('✅ Paquete cargado correctamente:', this.paquete.nombre);
+          // console.log('✅ Paquete cargado correctamente:', this.paquete.nombre);
         } else {
-          console.log('❌ Respuesta no exitosa:', response);
+          // console.log('❌ Respuesta no exitosa:', response);
           alert('Error: ' + response.message);
           this.volver();
         }
@@ -278,12 +278,12 @@ export class ReservarPaqueteSimpleComponent implements OnInit {
       }
     };
 
-    console.log('📋 Enviando reserva:', reservaCompleta);
+    // console.log('📋 Enviando reserva:', reservaCompleta);
 
     // Usar el servicio real de reserva de paquetes
     this.reservaPaqueteService.crearReservaPaquete(reservaCompleta).subscribe({
       next: (response: any) => {
-        console.log('✅ Reserva creada:', response);
+        // console.log('✅ Reserva creada:', response);
         this.procesando = false;
         if (response.success) {
           alert(`¡Reserva creada exitosamente! 

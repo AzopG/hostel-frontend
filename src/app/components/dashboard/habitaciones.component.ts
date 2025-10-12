@@ -598,19 +598,19 @@ export class HabitacionesComponent {
   }
 
   agregarHabitacion(): void {
-    console.log('Agregar nueva habitación');
+    // console.log('Agregar nueva habitación');
   }
 
   verHabitacion(habitacion: any): void {
-    console.log('Ver habitación:', habitacion);
+    // console.log('Ver habitación:', habitacion);
   }
 
   editarHabitacion(habitacion: any): void {
-    console.log('Editar habitación:', habitacion);
+    // console.log('Editar habitación:', habitacion);
   }
 
   eliminarHabitacion(habitacion: any): void {
-    console.log('Eliminar habitación:', habitacion);
+    // console.log('Eliminar habitación:', habitacion);
   }
 
   // Métodos adicionales para la nueva UI

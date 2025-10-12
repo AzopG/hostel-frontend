@@ -20,18 +20,18 @@ export class ReportesBarChartComponent implements AfterViewInit, OnChanges {
   private chart: any = null;
 
   ngAfterViewInit(): void {
-    console.log('🎨 ReportesBarChartComponent ngAfterViewInit');
-    console.log('🎨 Initial labels:', this.labels);
-    console.log('🎨 Initial data:', this.data);
+    // console.log('🎨 ReportesBarChartComponent ngAfterViewInit');
+    // console.log('🎨 Initial labels:', this.labels);
+    // console.log('🎨 Initial data:', this.data);
     this.initializeChart();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('🔄 ReportesBarChartComponent ngOnChanges:', changes);
+    // console.log('🔄 ReportesBarChartComponent ngOnChanges:', changes);
     if (changes['labels'] || changes['data']) {
-      console.log('🔄 Labels o Data cambiaron, actualizando chart...');
-      console.log('🔄 New labels:', this.labels);
-      console.log('🔄 New data:', this.data);
+      // console.log('🔄 Labels o Data cambiaron, actualizando chart...');
+      // console.log('🔄 New labels:', this.labels);
+      // console.log('🔄 New data:', this.data);
       this.updateChart();
     }
   }
@@ -49,7 +49,7 @@ export class ReportesBarChartComponent implements AfterViewInit, OnChanges {
 
   private updateChart(): void {
     if (this.chart && this.labels.length > 0 && this.data.length > 0) {
-      console.log('📊 Actualizando chart existente...');
+      // console.log('📊 Actualizando chart existente...');
       this.chart.data.labels = this.labels;
       this.chart.data.datasets[0].data = this.data;
       
@@ -67,26 +67,26 @@ export class ReportesBarChartComponent implements AfterViewInit, OnChanges {
       this.chart.data.datasets[0].backgroundColor = backgroundColors;
       this.chart.data.datasets[0].borderColor = backgroundColors.map(color => color + '80');
       this.chart.update();
-      console.log('✅ Chart actualizado!');
+      // console.log('✅ Chart actualizado!');
     } else if (this.barChartRef && this.labels.length > 0 && this.data.length > 0) {
-      console.log('📊 Creando nuevo chart...');
+      // console.log('📊 Creando nuevo chart...');
       this.renderChart();
     }
   }
 
   renderChart(): void {
-    console.log('🎨 renderChart llamado');
-    console.log('🎨 this.labels:', this.labels);
-    console.log('🎨 this.data:', this.data);
+    // console.log('🎨 renderChart llamado');
+    // console.log('🎨 this.labels:', this.labels);
+    // console.log('🎨 this.data:', this.data);
     
     if (!this.barChartRef || !(window as any).Chart) {
-      console.log('❌ Chart.js no está disponible o ref no existe');
+      // console.log('❌ Chart.js no está disponible o ref no existe');
       return;
     }
     
     const ctx = this.barChartRef.nativeElement.getContext('2d');
     if (!ctx) {
-      console.log('❌ No se pudo obtener contexto del canvas');
+      // console.log('❌ No se pudo obtener contexto del canvas');
       return;
     }
 
@@ -120,7 +120,7 @@ export class ReportesBarChartComponent implements AfterViewInit, OnChanges {
       chartColors[index % chartColors.length]
     );
 
-    console.log('🎨 Creando nuevo chart con Chart.js...');
+    // console.log('🎨 Creando nuevo chart con Chart.js...');
     
     this.chart = new (window as any).Chart(ctx, {
       type: 'bar',
@@ -182,7 +182,7 @@ export class ReportesBarChartComponent implements AfterViewInit, OnChanges {
       }
     });
     
-    console.log('✅ Chart creado exitosamente!');
-    console.log('✅ Chart data:', this.chart.data);
+    // console.log('✅ Chart creado exitosamente!');
+    // console.log('✅ Chart data:', this.chart.data);
   }
 }

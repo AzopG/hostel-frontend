@@ -754,10 +754,10 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   }
 
   navegarA(ruta: string): void {
-    console.log('🔄 Navegando a:', ruta);
+    // console.log('🔄 Navegando a:', ruta);
     this.router.navigate([ruta]).then(success => {
       if (success) {
-        console.log('✅ Navegación exitosa a:', ruta);
+        // console.log('✅ Navegación exitosa a:', ruta);
       } else {
         console.error('❌ Error en navegación a:', ruta);
       }

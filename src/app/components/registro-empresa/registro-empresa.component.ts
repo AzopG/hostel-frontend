@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService, RegisterEmpresaRequest } from '../../services/auth.service';
 
 @Component({
@@ -163,7 +163,7 @@ export class RegistroEmpresaComponent {
           this.success = true;
           this.loading = false;
           
-          console.log('✅ Empresa registrada exitosamente:', response.empresa.razonSocial);
+          // console.log('✅ Empresa registrada exitosamente:', response.empresa.razonSocial);
           
           // Mostrar mensaje de éxito por 2 segundos y redirigir
           setTimeout(() => {
