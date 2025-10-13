@@ -1,0 +1,943 @@
+<div class="politica-container">
+  <nav class="breadcrumb-nav">
+    <div class="nav-left">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        {{ getTranslation('backButton') }}
+      </button>
+      <button class="language-toggle" (click)="toggleLanguage()">
+        <i class="fas fa-globe"></i>
+        {{ currentLanguage === 'es' ? 'English' : 'Español' }}
+      </button>
+    </div>
+    <div class="breadcrumb">
+      <span>Hotel Paradise</span>
+      <i class="fas fa-chevron-right"></i>
+      <span class="current">{{ getTranslation('breadcrumb') }}</span>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">{{ getTranslation('title') }}</h1>
+      <p class="page-subtitle">{{ getTranslation('subtitle') }}</p>
+      <div class="last-updated">
+        <i class="fas fa-shield-alt"></i>
+        {{ getTranslation('lastUpdated') }}
+      </div>
+    </div>
+  </header>
+
+  <main class="content-wrapper">
+    <div class="content-container">
+      <div class="table-of-contents">
+        <h3>{{ getTranslation('tableOfContents') }}</h3>
+        <ul>
+          <li><a href="#section-1">{{ getTranslation('sections.section1') }}</a></li>
+          <li><a href="#section-2">{{ getTranslation('sections.section2') }}</a></li>
+          <li><a href="#section-3">{{ getTranslation('sections.section3') }}</a></li>
+          <li><a href="#section-4">{{ getTranslation('sections.section4') }}</a></li>
+          <li><a href="#section-5">{{ getTranslation('sections.section5') }}</a></li>
+          <li><a href="#section-6">{{ getTranslation('sections.section6') }}</a></li>
+          <li><a href="#section-7">{{ getTranslation('sections.section7') }}</a></li>
+          <li><a href="#section-8">{{ getTranslation('sections.section8') }}</a></li>
+          <li><a href="#section-9">{{ getTranslation('sections.section9') }}</a></li>
+          <li><a href="#section-10">{{ getTranslation('sections.section10') }}</a></li>
+          <li><a href="#section-11">{{ getTranslation('sections.section11') }}</a></li>
+          <li><a href="#section-12">{{ getTranslation('sections.section12') }}</a></li>
+          <li><a href="#section-13">{{ getTranslation('sections.section13') }}</a></li>
+        </ul>
+      </div>
+
+      <article class="privacy-content">
+        <section id="section-1" class="content-section">
+          <h2>{{ getTranslation('sections.section1') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>1.1 Datos de Identificación Personal</h3>
+            <p>Hotel Paradise recopila los siguientes datos de identificación de nuestros huéspedes: nombre completo, apellidos paterno y materno, fecha de nacimiento, nacionalidad, número y tipo de documento de identificación oficial (INE, pasaporte, cédula profesional), Registro Federal de Contribuyentes (RFC) en caso de facturación, Clave Única de Registro de Población (CURP), estado civil, ocupación profesional, y cualquier información adicional requerida por las autoridades migratorias o fiscales mexicanas.</p>
+            
+            <h3>1.2 Datos de Contacto</h3>
+            <p>Recopilamos información de contacto que incluye: domicilio completo (calle, número, colonia, código postal, ciudad, estado, país), números telefónicos (fijo, móvil, oficina), direcciones de correo electrónico personal y corporativo, perfiles de redes sociales cuando sean proporcionados voluntariamente, y datos de contacto de emergencia incluyendo nombres, relación familiar y números telefónicos de personas de contacto.</p>
+            
+            <h3>1.3 Información Financiera</h3>
+            <p>Para procesar pagos y garantizar reservas, recopilamos: números de tarjetas de crédito y débito (únicamente los últimos 4 dígitos se almacenan), fechas de vencimiento, nombres del titular tal como aparecen en las tarjetas, información bancaria para transferencias, historial crediticio cuando sea aplicable, y registros de transacciones financieras relacionadas con los servicios del hotel.</p>
+            
+            <h3>1.4 Datos de Preferencias y Estancia</h3>
+            <p>Durante su estancia recopilamos: preferencias de habitación, alergias alimentarias y restricciones dietéticas, preferencias gastronómicas, historial de estancias anteriores, evaluaciones y comentarios sobre servicios, comportamiento de consumo en el hotel, participación en programas de lealtad, y cualquier solicitud especial o requerimiento médico comunicado al hotel.</p>
+            
+            <h3>1.5 Información Técnica y de Navegación</h3>
+            <p>A través de nuestros sistemas digitales recopilamos: direcciones IP, tipo de navegador y sistema operativo, páginas web visitadas antes y después de nuestro sitio, tiempo de permanencia en nuestras páginas, patrones de navegación, ubicación geográfica aproximada, información del dispositivo utilizado (marca, modelo, configuración), y datos de uso de nuestras aplicaciones móviles.</p>
+            
+            <h3>1.6 Datos Biométricos y de Seguridad</h3>
+            <p>En cumplimiento con protocolos de seguridad, podemos recopilar: fotografías tomadas durante el proceso de registro, grabaciones de video de circuito cerrado en áreas comunes, grabaciones de audio en servicios de atención telefónica, registros de acceso a habitaciones y áreas restringidas, y en casos específicos y con consentimiento expreso, datos biométricos para servicios premium de seguridad.</p>
+            
+            <h3>1.7 Información de Terceros</h3>
+            <p>Podemos recibir información sobre usted de: agencias de viajes y operadores turísticos, programas de lealtad de aerolíneas y hoteles, redes sociales cuando vincule sus cuentas, servicios de verificación de identidad y antecedentes, proveedores de servicios de pago, y referencias proporcionadas por otros huéspedes o empresas.</p>
+            
+            <h3>1.8 Datos Especiales o Sensibles</h3>
+            <p>Con su consentimiento explícito, podemos procesar categorías especiales de datos como: información médica relevante para brindar servicios adecuados, datos religiosos para servicios gastronómicos específicos, información sobre discapacidades para adaptaciones de accesibilidad, y origen étnico únicamente para fines estadísticos agregados y anónimos.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>1.1 Personal Identification Data</h3>
+            <p>Hotel Paradise collects the following identification data from our guests: full name, paternal and maternal surnames, date of birth, nationality, number and type of official identification document (INE, passport, professional license), Federal Taxpayer Registry (RFC) for billing purposes, Unique Population Registry Code (CURP), marital status, professional occupation, and any additional information required by Mexican immigration or tax authorities.</p>
+            
+            <h3>1.2 Contact Information</h3>
+            <p>We collect contact information including: complete address (street, number, neighborhood, postal code, city, state, country), telephone numbers (landline, mobile, office), personal and corporate email addresses, social media profiles when voluntarily provided, and emergency contact data including names, family relationship and phone numbers of contact persons.</p>
+            
+            <h3>1.3 Financial Information</h3>
+            <p>To process payments and guarantee reservations, we collect: credit and debit card numbers (only the last 4 digits are stored), expiration dates, cardholder names as they appear on cards, banking information for transfers, credit history when applicable, and records of financial transactions related to hotel services.</p>
+            
+            <h3>1.4 Preferences and Stay Data</h3>
+            <p>During your stay we collect: room preferences, food allergies and dietary restrictions, gastronomic preferences, previous stay history, evaluations and comments on services, consumption behavior in the hotel, participation in loyalty programs, and any special requests or medical requirements communicated to the hotel.</p>
+            
+            <h3>1.5 Technical and Navigation Information</h3>
+            <p>Through our digital systems we collect: IP addresses, browser type and operating system, web pages visited before and after our site, time spent on our pages, navigation patterns, approximate geographic location, information about the device used (brand, model, configuration), and usage data from our mobile applications.</p>
+            
+            <h3>1.6 Biometric and Security Data</h3>
+            <p>In compliance with security protocols, we may collect: photographs taken during the registration process, closed-circuit video recordings in common areas, audio recordings in telephone customer service, access records to rooms and restricted areas, and in specific cases and with express consent, biometric data for premium security services.</p>
+            
+            <h3>1.7 Third Party Information</h3>
+            <p>We may receive information about you from: travel agencies and tour operators, airline and hotel loyalty programs, social networks when you link your accounts, identity and background verification services, payment service providers, and references provided by other guests or companies.</p>
+            
+            <h3>1.8 Special or Sensitive Data</h3>
+            <p>With your explicit consent, we may process special categories of data such as: medical information relevant to providing adequate services, religious data for specific gastronomic services, information about disabilities for accessibility adaptations, and ethnic origin only for aggregated and anonymous statistical purposes.</p>
+          </div>
+        </section>
+
+        <section id="section-2" class="content-section">
+          <h2>{{ getTranslation('sections.section2') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>2.1 Prestación de Servicios Hoteleros</h3>
+            <p>Utilizamos su información personal para proporcionar todos los servicios contratados, incluyendo: proceso de registro y check-in/check-out, asignación y preparación de habitaciones según preferencias, servicios de alimentación y bebidas personalizados, organización de eventos y actividades, servicios de spa y bienestar, transporte y excursiones, y cualquier servicio adicional solicitado durante la estancia.</p>
+            
+            <h3>2.2 Comunicación y Atención al Cliente</h3>
+            <p>Sus datos son utilizados para: responder consultas, dudas y solicitudes, enviar confirmaciones de reserva y modificaciones, proporcionar información sobre servicios y promociones, gestionar quejas y sugerencias, realizar encuestas de satisfacción, enviar recordatorios de reservas y follow-up post-estancia, y mantener comunicación relacionada con su experiencia en el hotel.</p>
+            
+            <h3>2.3 Procesamiento de Pagos y Facturación</h3>
+            <p>La información financiera se utiliza para: procesar pagos de servicios contratados, generar facturas y comprobantes fiscales, gestionar reembolsos y ajustes de cuentas, verificar la validez de métodos de pago, detectar y prevenir fraudes financieros, cumplir obligaciones fiscales y contables, y mantener registros financieros conforme a la ley.</p>
+            
+            <h3>2.4 Seguridad y Protección</h3>
+            <p>Utilizamos sus datos para: garantizar la seguridad física de huéspedes y personal, monitorear accesos a instalaciones restringidas, prevenir actividades ilícitas o no autorizadas, investigar incidentes de seguridad, cumplir verificaciones de identidad requeridas por ley, proteger los activos del hotel, y colaborar con autoridades cuando sea legalmente requerido.</p>
+            
+            <h3>2.5 Mejora de Servicios y Análisis</h3>
+            <p>Su información nos ayuda a: analizar patrones de uso y preferencias de huéspedes, desarrollar nuevos servicios y mejoras, realizar análisis estadísticos de ocupación y demanda, personalizar ofertas y promociones, optimizar operaciones hoteleras, evaluar la calidad del servicio, y desarrollar estrategias de negocio basadas en datos.</p>
+            
+            <h3>2.6 Marketing y Promociones</h3>
+            <p>Con su consentimiento, utilizamos sus datos para: enviar ofertas especiales y promociones personalizadas, invitaciones a eventos exclusivos, newsletters y comunicaciones promocionales, programas de lealtad y recompensas, promociones en redes sociales (cuando autoriza el uso de su imagen), y desarrollo de campañas publicitarias dirigidas.</p>
+            
+            <h3>2.7 Cumplimiento Legal y Regulatorio</h3>
+            <p>Procesamos su información para: cumplir obligaciones fiscales y contables mexicanas, reportar a autoridades migratorias cuando sea requerido, mantener registros de huéspedes conforme a regulaciones turísticas, cooperar en investigaciones legales autorizadas, cumplir requerimientos de transparencia financiera, y satisfacer auditorías regulatorias.</p>
+            
+            <h3>2.8 Gestión de Reclamaciones y Disputas</h3>
+            <p>Sus datos se utilizan para: documentar y resolver quejas o reclamaciones, proporcionar evidencia en procedimientos legales, gestionar disputas de pagos o servicios, mantener registros de incidentes, facilitar mediación y resolución de conflictos, y proteger los derechos e intereses legítimos del hotel.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>2.1 Hotel Services Provision</h3>
+            <p>We use your personal information to provide all contracted services, including: registration and check-in/check-out process, room assignment and preparation according to preferences, personalized food and beverage services, event and activity organization, spa and wellness services, transportation and excursions, and any additional services requested during the stay.</p>
+            
+            <h3>2.2 Communication and Customer Service</h3>
+            <p>Your data is used to: respond to inquiries, questions and requests, send reservation confirmations and modifications, provide information about services and promotions, manage complaints and suggestions, conduct satisfaction surveys, send reservation reminders and post-stay follow-up, and maintain communication related to your hotel experience.</p>
+            
+            <h3>2.3 Payment Processing and Billing</h3>
+            <p>Financial information is used to: process payments for contracted services, generate invoices and tax receipts, manage refunds and account adjustments, verify validity of payment methods, detect and prevent financial fraud, comply with tax and accounting obligations, and maintain financial records in accordance with law.</p>
+            
+            <h3>2.4 Security and Protection</h3>
+            <p>We use your data to: ensure physical security of guests and staff, monitor access to restricted facilities, prevent illicit or unauthorized activities, investigate security incidents, comply with identity verifications required by law, protect hotel assets, and collaborate with authorities when legally required.</p>
+            
+            <h3>2.5 Service Improvement and Analysis</h3>
+            <p>Your information helps us to: analyze usage patterns and guest preferences, develop new services and improvements, conduct statistical analysis of occupancy and demand, personalize offers and promotions, optimize hotel operations, evaluate service quality, and develop data-driven business strategies.</p>
+            
+            <h3>2.6 Marketing and Promotions</h3>
+            <p>With your consent, we use your data to: send special offers and personalized promotions, invitations to exclusive events, newsletters and promotional communications, loyalty and rewards programs, social media promotions (when you authorize use of your image), and development of targeted advertising campaigns.</p>
+            
+            <h3>2.7 Legal and Regulatory Compliance</h3>
+            <p>We process your information to: comply with Mexican tax and accounting obligations, report to immigration authorities when required, maintain guest records in accordance with tourism regulations, cooperate in authorized legal investigations, comply with financial transparency requirements, and satisfy regulatory audits.</p>
+            
+            <h3>2.8 Claims and Disputes Management</h3>
+            <p>Your data is used to: document and resolve complaints or claims, provide evidence in legal proceedings, manage payment or service disputes, maintain incident records, facilitate mediation and conflict resolution, and protect the hotel's legitimate rights and interests.</p>
+          </div>
+        </section>
+
+        <section id="section-3" class="content-section">
+          <h2>{{ getTranslation('sections.section3') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>3.1 Proveedores de Servicios</h3>
+            <p>Compartimos información con proveedores externos necesarios para la operación del hotel, incluyendo: empresas de sistemas de reservas y gestión hotelera, procesadores de pagos y servicios financieros, proveedores de servicios de limpieza y mantenimiento, empresas de lavandería y tintorería, proveedores de alimentos y bebidas, servicios de transporte y tours, empresas de entretenimiento y animación, y proveedores de tecnología y telecomunicaciones.</p>
+            
+            <h3>3.2 Autoridades Gubernamentales</h3>
+            <p>Cuando sea legalmente requerido, compartimos información con: Instituto Nacional de Migración (INM) para registro de huéspedes extranjeros, Servicio de Administración Tributaria (SAT) para cumplimiento fiscal, autoridades de seguridad nacional para verificaciones de identidad, Ministerio Público para investigaciones penales, autoridades sanitarias para cumplimiento de protocolos de salud, y otras entidades gubernamentales conforme a obligaciones legales.</p>
+            
+            <h3>3.3 Socios Comerciales</h3>
+            <p>Con su consentimiento, podemos compartir información con: programas de lealtad de aerolíneas y hoteles aliados, agencias de viajes y operadores turísticos partners, empresas de tarjetas de crédito para programas de recompensas, plataformas de reservas online como booking engines, proveedores de servicios de marketing digital, y otras empresas del sector turístico para ofertas conjuntas.</p>
+            
+            <h3>3.4 Empresas del Grupo Corporativo</h3>
+            <p>Podemos compartir información entre empresas relacionadas del grupo Hotel Paradise para: centralización de servicios administrativos, programas de lealtad unificados, ofertas promocionales cruzadas, gestión integrada de reservas, servicios de atención al cliente compartidos, análisis de mercado y desarrollo de productos, y operaciones corporativas consolidadas.</p>
+            
+            <h3>3.5 Terceros Autorizados por el Huésped</h3>
+            <p>Compartimos información cuando usted específicamente autoriza la divulgación a: agentes de viajes o asistentes personales que actúen en su nombre, empresas organizadoras de eventos para servicios corporativos, familiares o acompañantes designados como contactos autorizados, servicios médicos de emergencia cuando sea necesario, seguros de viaje para procesamiento de reclamaciones, y cualquier tercero que usted haya autorizado expresamente.</p>
+            
+            <h3>3.6 Transferencias por Reestructuración Empresarial</h3>
+            <p>En caso de fusiones, adquisiciones, venta de activos o reestructuración empresarial, su información personal puede ser transferida como parte del proceso, siempre notificando previamente y garantizando que el adquirente mantenga el mismo nivel de protección de datos establecido en esta política.</p>
+            
+            <h3>3.7 Situaciones de Emergencia</h3>
+            <p>En situaciones de emergencia que amenacen la vida, salud o seguridad, podemos compartir información relevante con: servicios médicos de emergencia y hospitales, familiares o contactos de emergencia designados, autoridades de protección civil, servicios de rescate y bomberos, y cualquier entidad necesaria para proteger intereses vitales del huésped.</p>
+            
+            <h3>3.8 Protección de Derechos Legales</h3>
+            <p>Podemos divulgar información cuando sea necesario para: defender los derechos legales del hotel en procedimientos judiciales, prevenir o investigar posibles delitos, proteger la seguridad de huéspedes y empleados, hacer cumplir nuestros términos y condiciones, recuperar deudas legítimas, y proteger contra fraudes o actividades ilegales.</p>
+            
+            <h3>3.9 Garantías de Protección</h3>
+            <p>Cuando compartimos información con terceros, exigimos: contratos de confidencialidad y protección de datos, implementación de medidas de seguridad equivalentes, uso limitado a las finalidades específicamente autorizadas, prohibición de transferencias no autorizadas a otros terceros, auditorías periódicas de cumplimiento, y notificación inmediata de cualquier incidente de seguridad.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>3.1 Service Providers</h3>
+            <p>We share information with external providers necessary for hotel operation, including: reservation and hotel management system companies, payment processors and financial services, cleaning and maintenance service companies, laundry and dry cleaning companies, food and beverage suppliers, transportation and tour services, entertainment and animation companies, and technology and telecommunications providers.</p>
+            
+            <h3>3.2 Government Authorities</h3>
+            <p>When legally required, we share information with: National Migration Institute (INM) for foreign guest registration, Tax Administration Service (SAT) for tax compliance, national security authorities for identity verification, Public Ministry for criminal investigations, health authorities for health protocol compliance, and other government entities in accordance with legal obligations.</p>
+            
+            <h3>3.3 Commercial Partners</h3>
+            <p>With your consent, we may share information with: loyalty programs of allied airlines and hotels, partner travel agencies and tour operators, credit card companies for rewards programs, online booking platforms such as booking engines, digital marketing service providers, and other tourism sector companies for joint offers.</p>
+            
+            <h3>3.4 Corporate Group Companies</h3>
+            <p>We may share information between related companies of the Hotel Paradise group for: centralization of administrative services, unified loyalty programs, cross-promotional offers, integrated reservation management, shared customer service, market analysis and product development, and consolidated corporate operations.</p>
+            
+            <h3>3.5 Third Parties Authorized by Guest</h3>
+            <p>We share information when you specifically authorize disclosure to: travel agents or personal assistants acting on your behalf, event organizing companies for corporate services, family members or companions designated as authorized contacts, emergency medical services when necessary, travel insurance for claims processing, and any third party you have expressly authorized.</p>
+            
+            <h3>3.6 Business Restructuring Transfers</h3>
+            <p>In case of mergers, acquisitions, asset sales or business restructuring, your personal information may be transferred as part of the process, always notifying in advance and ensuring that the acquirer maintains the same level of data protection established in this policy.</p>
+            
+            <h3>3.7 Emergency Situations</h3>
+            <p>In emergency situations that threaten life, health or safety, we may share relevant information with: emergency medical services and hospitals, family members or designated emergency contacts, civil protection authorities, rescue and fire services, and any entity necessary to protect the guest's vital interests.</p>
+            
+            <h3>3.8 Legal Rights Protection</h3>
+            <p>We may disclose information when necessary to: defend the hotel's legal rights in judicial proceedings, prevent or investigate possible crimes, protect the safety of guests and employees, enforce our terms and conditions, recover legitimate debts, and protect against fraud or illegal activities.</p>
+            
+            <h3>3.9 Protection Guarantees</h3>
+            <p>When we share information with third parties, we require: confidentiality and data protection contracts, implementation of equivalent security measures, use limited to specifically authorized purposes, prohibition of unauthorized transfers to other third parties, periodic compliance audits, and immediate notification of any security incident.</p>
+          </div>
+        </section>
+
+        <section id="section-4" class="content-section">
+          <h2>{{ getTranslation('sections.section4') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>4.1 Medidas de Seguridad Técnicas</h3>
+            <p>Implementamos robustas medidas técnicas de protección incluyendo: encriptación de datos sensibles mediante algoritmos AES-256, firewalls de última generación con monitoreo 24/7, sistemas de detección y prevención de intrusiones (IDS/IPS), autenticación multifactor para accesos administrativos, respaldos encriptados en múltiples ubicaciones geográficas, redes segmentadas para diferentes tipos de datos, y actualizaciones automáticas de seguridad en todos los sistemas.</p>
+            
+            <h3>4.2 Medidas de Seguridad Físicas</h3>
+            <p>Nuestras instalaciones cuentan con: acceso controlado mediante tarjetas de identificación y códigos únicos, sistema de videovigilancia CCTV con grabación continua, guardias de seguridad 24/7 en áreas críticas, cajas fuertes ignífugas para documentos físicos, control biométrico para acceso a servidores, detectores de intrusión en centros de datos, y protocolos de destrucción segura para documentos físicos.</p>
+            
+            <h3>4.3 Medidas de Seguridad Administrativas</h3>
+            <p>Mantenemos controles administrativos estrictos mediante: políticas internas de protección de datos actualizadas regularmente, capacitación continua del personal en seguridad y privacidad, acuerdos de confidencialidad firmados por todos los empleados, revisión periódica de permisos y accesos del personal, auditorías internas de seguridad trimestrales, procedimientos de respuesta a incidentes de seguridad, y evaluaciones de riesgo anuales.</p>
+            
+            <h3>4.4 Protección en Transmisión de Datos</h3>
+            <p>Durante la transmisión de información utilizamos: protocolos HTTPS con certificados SSL/TLS válidos, redes privadas virtuales (VPN) para conexiones remotas, canales encriptados para comunicaciones internas, sistemas seguros de transferencia de archivos (SFTP), protección contra ataques man-in-the-middle, validación de certificados digitales, y monitoreo en tiempo real de todas las transmisiones.</p>
+            
+            <h3>4.5 Gestión de Accesos y Autenticación</h3>
+            <p>Controlamos el acceso mediante: sistemas de gestión de identidades centralizados, autenticación basada en roles y necesidades específicas, contraseñas complejas renovadas periódicamente, tokens de seguridad para accesos críticos, logs detallados de todos los accesos a información personal, desactivación automática de cuentas inactivas, y revisión mensual de permisos otorgados.</p>
+            
+            <h3>4.6 Monitoreo y Detección de Amenazas</h3>
+            <p>Implementamos sistemas avanzados de: monitoreo continuo de actividades sospechosas, alertas automáticas ante intentos de acceso no autorizado, análisis de comportamiento para detectar anomalías, sistemas de correlación de eventos de seguridad (SIEM), escaneo regular de vulnerabilidades, pruebas de penetración por terceros certificados, y análisis forense en caso de incidentes.</p>
+            
+            <h3>4.7 Planes de Contingencia y Recuperación</h3>
+            <p>Mantenemos planes robustos de: continuidad de negocio ante desastres, recuperación de datos en tiempo mínimo (RTO/RPO optimizados), procedimientos de notificación de brechas de seguridad, respaldo y restauración de sistemas críticos, comunicación de crisis con huéspedes afectados, coordinación con autoridades competentes, y evaluación post-incidente para mejora continua.</p>
+            
+            <h3>4.8 Cumplimiento de Estándares Internacionales</h3>
+            <p>Nuestras medidas de seguridad cumplen con: estándares ISO 27001 para gestión de seguridad de la información, mejores prácticas del NIST (National Institute of Standards and Technology), normativas PCI DSS para protección de datos de tarjetas, lineamientos de la Ley Federal de Protección de Datos Personales, regulaciones internacionales de privacidad aplicables, y auditorías externas de cumplimiento anuales.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>4.1 Technical Security Measures</h3>
+            <p>We implement robust technical protection measures including: sensitive data encryption using AES-256 algorithms, next-generation firewalls with 24/7 monitoring, intrusion detection and prevention systems (IDS/IPS), multi-factor authentication for administrative access, encrypted backups in multiple geographic locations, segmented networks for different data types, and automatic security updates on all systems.</p>
+            
+            <h3>4.2 Physical Security Measures</h3>
+            <p>Our facilities feature: controlled access through identification cards and unique codes, CCTV surveillance system with continuous recording, 24/7 security guards in critical areas, fireproof safes for physical documents, biometric control for server access, intrusion detectors in data centers, and secure destruction protocols for physical documents.</p>
+            
+            <h3>4.3 Administrative Security Measures</h3>
+            <p>We maintain strict administrative controls through: internal data protection policies updated regularly, continuous staff training in security and privacy, confidentiality agreements signed by all employees, periodic review of staff permissions and access, quarterly internal security audits, security incident response procedures, and annual risk assessments.</p>
+            
+            <h3>4.4 Data Transmission Protection</h3>
+            <p>During information transmission we use: HTTPS protocols with valid SSL/TLS certificates, virtual private networks (VPN) for remote connections, encrypted channels for internal communications, secure file transfer systems (SFTP), protection against man-in-the-middle attacks, digital certificate validation, and real-time monitoring of all transmissions.</p>
+            
+            <h3>4.5 Access Management and Authentication</h3>
+            <p>We control access through: centralized identity management systems, role-based authentication and specific needs, complex passwords renewed periodically, security tokens for critical access, detailed logs of all personal information access, automatic deactivation of inactive accounts, and monthly review of granted permissions.</p>
+            
+            <h3>4.6 Threat Monitoring and Detection</h3>
+            <p>We implement advanced systems for: continuous monitoring of suspicious activities, automatic alerts for unauthorized access attempts, behavioral analysis to detect anomalies, security information and event management systems (SIEM), regular vulnerability scanning, penetration testing by certified third parties, and forensic analysis in case of incidents.</p>
+            
+            <h3>4.7 Contingency and Recovery Plans</h3>
+            <p>We maintain robust plans for: business continuity in case of disasters, data recovery in minimum time (optimized RTO/RPO), security breach notification procedures, backup and restoration of critical systems, crisis communication with affected guests, coordination with competent authorities, and post-incident evaluation for continuous improvement.</p>
+            
+            <h3>4.8 International Standards Compliance</h3>
+            <p>Our security measures comply with: ISO 27001 standards for information security management, NIST (National Institute of Standards and Technology) best practices, PCI DSS regulations for card data protection, Federal Personal Data Protection Law guidelines, applicable international privacy regulations, and annual external compliance audits.</p>
+          </div>
+        </section>
+
+        <section id="section-5" class="content-section">
+          <h2>{{ getTranslation('sections.section5') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>5.1 Tipos de Cookies que Utilizamos</h3>
+            <p>Nuestro sitio web y aplicaciones utilizan diferentes tipos de cookies: cookies esenciales necesarias para el funcionamiento básico del sitio, cookies de preferencias para recordar configuraciones del usuario, cookies de estadísticas para analizar el uso del sitio web, cookies de marketing para personalizar anuncios y promociones, cookies de sesión que se eliminan al cerrar el navegador, cookies persistentes que permanecen por períodos específicos, y cookies de terceros de nuestros proveedores de servicios.</p>
+            
+            <h3>5.2 Finalidades Específicas de las Cookies</h3>
+            <p>Utilizamos cookies para: mantener su sesión activa durante la navegación, recordar sus preferencias de idioma y configuración, analizar patrones de tráfico y uso del sitio web, personalizar contenido según sus intereses, facilitar funciones de redes sociales cuando aplicable, mejorar la seguridad mediante detección de fraudes, optimizar el rendimiento del sitio web, y proporcionar soporte técnico eficiente.</p>
+            
+            <h3>5.3 Información Recopilada por Cookies</h3>
+            <p>Las cookies pueden recopilar: identificadores únicos del navegador y dispositivo, direcciones IP y ubicación geográfica aproximada, páginas visitadas y tiempo de permanencia, enlaces en los que hace clic, configuraciones de navegador y sistema operativo, historial de búsquedas en nuestro sitio, productos o servicios visualizados, y patrones de navegación y comportamiento.</p>
+            
+            <h3>5.4 Cookies de Terceros</h3>
+            <p>Permitimos cookies de proveedores externos para: servicios de análisis web como Google Analytics, plataformas de redes sociales (Facebook, Instagram, Twitter), sistemas de reservas y booking engines, proveedores de servicios de pago, plataformas de publicidad digital, servicios de chat en línea y soporte, y herramientas de marketing y email automatizado.</p>
+            
+            <h3>5.5 Gestión y Control de Cookies</h3>
+            <p>Usted puede controlar las cookies mediante: configuración de privacidad en su navegador web, herramientas de gestión de cookies disponibles en nuestro sitio, opciones de opt-out de servicios específicos de terceros, eliminación manual de cookies almacenadas, configuración de navegación privada o incógnita, uso de extensiones de navegador para bloqueo de cookies, y ajustes específicos para diferentes tipos de cookies.</p>
+            
+            <h3>5.6 Otras Tecnologías de Seguimiento</h3>
+            <p>Además de cookies, utilizamos: web beacons o píxeles de seguimiento en emails, tecnología de fingerprinting de dispositivos, local storage y session storage, tecnologías de geolocalización cuando autorizada, APIs de aplicaciones móviles para análisis, sistemas de analítica de aplicaciones móviles, y herramientas de mapas de calor para experiencia de usuario.</p>
+            
+            <h3>5.7 Impacto de Deshabilitar Cookies</h3>
+            <p>Si deshabilita las cookies, es posible que experimente: funcionalidad limitada en nuestro sitio web, pérdida de preferencias y configuraciones personalizadas, necesidad de reintroducir información repetidamente, menor personalización de contenido y ofertas, dificultades en procesos de reserva online, y experiencia de usuario menos optimizada.</p>
+            
+            <h3>5.8 Actualizaciones de Tecnología</h3>
+            <p>Nos reservamos el derecho de implementar nuevas tecnologías de seguimiento conforme evolucionen los estándares web, siempre manteniendo el mismo nivel de protección de privacidad y notificando cambios significativos en esta política.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>5.1 Types of Cookies We Use</h3>
+            <p>Our website and applications use different types of cookies: essential cookies necessary for basic site functionality, preference cookies to remember user settings, statistics cookies to analyze website usage, marketing cookies to personalize ads and promotions, session cookies that are deleted when closing the browser, persistent cookies that remain for specific periods, and third-party cookies from our service providers.</p>
+            
+            <h3>5.2 Specific Cookie Purposes</h3>
+            <p>We use cookies to: maintain your active session during navigation, remember your language and configuration preferences, analyze traffic patterns and website usage, personalize content according to your interests, facilitate social media functions when applicable, improve security through fraud detection, optimize website performance, and provide efficient technical support.</p>
+            
+            <h3>5.3 Information Collected by Cookies</h3>
+            <p>Cookies may collect: unique browser and device identifiers, IP addresses and approximate geographic location, pages visited and time spent, links you click, browser and operating system settings, search history on our site, products or services viewed, and navigation patterns and behavior.</p>
+            
+            <h3>5.4 Third-Party Cookies</h3>
+            <p>We allow cookies from external providers for: web analytics services like Google Analytics, social media platforms (Facebook, Instagram, Twitter), reservation systems and booking engines, payment service providers, digital advertising platforms, online chat and support services, and marketing and automated email tools.</p>
+            
+            <h3>5.5 Cookie Management and Control</h3>
+            <p>You can control cookies through: privacy settings in your web browser, cookie management tools available on our site, opt-out options for specific third-party services, manual deletion of stored cookies, private or incognito browsing settings, browser extensions for cookie blocking, and specific settings for different types of cookies.</p>
+            
+            <h3>5.6 Other Tracking Technologies</h3>
+            <p>In addition to cookies, we use: web beacons or tracking pixels in emails, device fingerprinting technology, local storage and session storage, geolocation technologies when authorized, mobile application APIs for analytics, mobile app analytics systems, and heat mapping tools for user experience.</p>
+            
+            <h3>5.7 Impact of Disabling Cookies</h3>
+            <p>If you disable cookies, you may experience: limited functionality on our website, loss of personal preferences and settings, need to re-enter information repeatedly, less content and offer personalization, difficulties in online booking processes, and less optimized user experience.</p>
+            
+            <h3>5.8 Technology Updates</h3>
+            <p>We reserve the right to implement new tracking technologies as web standards evolve, always maintaining the same level of privacy protection and notifying significant changes in this policy.</p>
+          </div>
+        </section>
+
+        <section id="section-6" class="content-section">
+          <h2>{{ getTranslation('sections.section6') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>6.1 Derecho de Acceso</h3>
+            <p>Usted tiene derecho a conocer qué datos personales tenemos sobre usted, las fuentes de donde los obtuvimos, las finalidades para las cuales los utilizamos, y las personas o entidades con quienes los hemos compartido. Puede solicitar una copia de sus datos personales en formato electrónico o físico, obtener información sobre el período de conservación aplicable, y conocer el fundamento legal que justifica el tratamiento.</p>
+            
+            <h3>6.2 Derecho de Rectificación</h3>
+            <p>Tiene derecho a solicitar la corrección de sus datos personales cuando sean inexactos, incompletos, o no estén actualizados. Puede actualizar información de contacto, corregir errores en datos de identificación, modificar preferencias registradas, actualizar información financiera, y solicitar la complementación de datos incompletos. Las rectificaciones se realizarán en un plazo máximo de 15 días hábiles.</p>
+            
+            <h3>6.3 Derecho de Cancelación</h3>
+            <p><strong>LIMITACIÓN IMPORTANTE:</strong> El derecho de cancelación está sujeto a la política de eliminación automática obligatoria de 365 días establecida en la sección 11. Durante este período, no será posible solicitar la eliminación anticipada de datos personales, excepto en casos donde el tratamiento sea ilícito o hayamos rebasado las finalidades originales sin consentimiento.</p>
+            
+            <h3>6.4 Derecho de Oposición</h3>
+            <p>Puede oponerse al tratamiento de sus datos personales cuando: el tratamiento se base en consentimiento y desee revocarlo, no esté de acuerdo con finalidades secundarias de mercadotecnia, considere que el tratamiento puede causarle un daño o perjuicio, o cuando el tratamiento se realice para finalidades que no requieren consentimiento pero afecten sus derechos fundamentales.</p>
+            
+            <h3>6.5 Derecho a la Portabilidad de Datos</h3>
+            <p>Cuando técnicamente sea factible, puede solicitar: recibir sus datos personales en formato estructurado y de uso común, transferir directamente sus datos a otro responsable, obtener una copia de datos que haya proporcionado voluntariamente, y migrar información a otras plataformas o servicios, siempre que no afecte derechos de terceros.</p>
+            
+            <h3>6.6 Derecho a la Limitación del Tratamiento</h3>
+            <p>Puede solicitar que limitemos el tratamiento de sus datos cuando: haya impugnado la exactitud de los datos durante el período de verificación, el tratamiento sea ilícito pero prefiera la limitación a la eliminación, ya no necesitemos los datos pero usted los requiera para reclamaciones legales, o haya ejercido oposición mientras verificamos la prevalencia de motivos legítimos.</p>
+            
+            <h3>6.7 Derecho de Revocación del Consentimiento</h3>
+            <p>Puede revocar su consentimiento en cualquier momento para: finalidades de mercadotecnia y promociones, comunicaciones comerciales no esenciales, uso de datos para análisis estadísticos no obligatorios, participación en programas de lealtad, uso de imagen para promociones, y cualquier tratamiento basado únicamente en consentimiento.</p>
+            
+            <h3>6.8 Procedimiento para Ejercer Derechos</h3>
+            <p>Para ejercer sus derechos debe: enviar solicitud escrita firmada al correo dpo&#64;hotelparadise.com, incluir copia de identificación oficial vigente, especificar claramente el derecho que desea ejercer, proporcionar información suficiente para localizar sus datos, incluir domicilio o correo para recibir respuesta, y adjuntar documentos que sustenten su solicitud cuando aplicable.</p>
+            
+            <h3>6.9 Plazos de Respuesta</h3>
+            <p>Nos comprometemos a responder en: máximo 20 días hábiles contados desde la recepción de la solicitud, prorrogables por 20 días adicionales en casos complejos, notificando la prórroga dentro de los primeros 20 días, proporcionando respuesta por el mismo medio de contacto utilizado en la solicitud, y sin costo alguno para el titular de los datos.</p>
+            
+            <h3>6.10 Recurso de Revisión ante el INAI</h3>
+            <p>Si no está conforme con nuestra respuesta o no recibe respuesta en el plazo establecido, puede interponer recurso de revisión ante el Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales (INAI) a través del sistema SIREDAP o presencialmente en sus oficinas.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>6.1 Right of Access</h3>
+            <p>You have the right to know what personal data we have about you, the sources from which we obtained it, the purposes for which we use it, and the people or entities with whom we have shared it. You can request a copy of your personal data in electronic or physical format, obtain information about the applicable retention period, and know the legal basis that justifies the processing.</p>
+            
+            <h3>6.2 Right of Rectification</h3>
+            <p>You have the right to request correction of your personal data when it is inaccurate, incomplete, or not updated. You can update contact information, correct errors in identification data, modify registered preferences, update financial information, and request completion of incomplete data. Rectifications will be made within a maximum of 15 business days.</p>
+            
+            <h3>6.3 Right of Cancellation</h3>
+            <p><strong>IMPORTANT LIMITATION:</strong> The right of cancellation is subject to the mandatory automatic deletion policy of 365 days established in section 11. During this period, it will not be possible to request early deletion of personal data, except in cases where processing is unlawful or we have exceeded original purposes without consent.</p>
+            
+            <h3>6.4 Right of Opposition</h3>
+            <p>You can oppose the processing of your personal data when: processing is based on consent and you wish to revoke it, you disagree with secondary marketing purposes, you consider that processing may cause harm or prejudice, or when processing is performed for purposes that do not require consent but affect your fundamental rights.</p>
+            
+            <h3>6.5 Right to Data Portability</h3>
+            <p>When technically feasible, you can request: receiving your personal data in structured and commonly used format, directly transferring your data to another controller, obtaining a copy of data you have voluntarily provided, and migrating information to other platforms or services, provided it does not affect third party rights.</p>
+            
+            <h3>6.6 Right to Processing Limitation</h3>
+            <p>You can request that we limit processing of your data when: you have contested data accuracy during the verification period, processing is unlawful but you prefer limitation to deletion, we no longer need the data but you require it for legal claims, or you have exercised opposition while we verify the prevalence of legitimate grounds.</p>
+            
+            <h3>6.7 Right to Consent Revocation</h3>
+            <p>You can revoke your consent at any time for: marketing and promotion purposes, non-essential commercial communications, use of data for non-mandatory statistical analysis, participation in loyalty programs, use of image for promotions, and any processing based solely on consent.</p>
+            
+            <h3>6.8 Procedure to Exercise Rights</h3>
+            <p>To exercise your rights you must: send signed written request to dpo&#64;hotelparadise.com, include copy of valid official identification, clearly specify the right you wish to exercise, provide sufficient information to locate your data, include address or email to receive response, and attach documents supporting your request when applicable.</p>
+            
+            <h3>6.9 Response Timeframes</h3>
+            <p>We commit to respond within: maximum 20 business days counted from receipt of request, extendable for 20 additional days in complex cases, notifying extension within the first 20 days, providing response through the same contact method used in the request, and at no cost to the data subject.</p>
+            
+            <h3>6.10 Review Appeal to INAI</h3>
+            <p>If you are not satisfied with our response or do not receive a response within the established timeframe, you can file a review appeal with the National Institute of Transparency, Access to Information and Personal Data Protection (INAI) through the SIREDAP system or in person at their offices.</p>
+          </div>
+        </section>
+
+        <section id="section-7" class="content-section">
+          <h2>{{ getTranslation('sections.section7') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>7.1 Períodos de Retención por Tipo de Datos</h3>
+            <p>Diferentes categorías de datos tienen períodos específicos de retención: datos de identificación personal se conservan durante 365 días después del último checkout, información financiera y de pagos se mantiene por 5 años conforme a obligaciones fiscales, registros de videovigilancia se conservan exactamente 365 días, datos médicos sensibles se eliminan tras 6 meses salvo autorización expresa, registros de comunicaciones se mantienen por 12 meses, y datos agregados y anonimizados pueden conservarse indefinidamente.</p>
+            
+            <h3>7.2 Factores que Determinan la Retención</h3>
+            <p>Los períodos de conservación se basan en: obligaciones legales establecidas en normativas mexicanas, necesidades operativas para la prestación de servicios, finalidades específicas para las cuales se recopilaron los datos, relaciones contractuales vigentes con el huésped, investigaciones o procedimientos legales en curso, evaluaciones de riesgo y seguridad, y mejores prácticas de la industria hotelera.</p>
+            
+            <h3>7.3 Proceso de Revisión Periódica</h3>
+            <p>Realizamos revisiones sistemáticas mediante: auditorías mensuales de bases de datos para identificar datos vencidos, evaluación trimestral de la necesidad de conservar información específica, revisión anual de políticas de retención y su efectividad, análisis de cambios en obligaciones legales que afecten la retención, evaluación de nuevas finalidades que pudieran justificar conservación adicional, y documentación completa de todas las decisiones de retención.</p>
+            
+            <h3>7.4 Eliminación Segura de Datos</h3>
+            <p>Cuando los datos alcanzan el final de su período de retención, implementamos: borrado seguro de bases de datos usando algoritmos de múltiples pasadas, destrucción física de medios de almacenamiento cuando sea necesario, eliminación de copias de respaldo conforme a calendarios establecidos, limpieza de cachés y archivos temporales en todos los sistemas, certificación de eliminación por parte de proveedores externos, y documentación completa del proceso de eliminación para auditorías.</p>
+            
+            <h3>7.5 Excepciones a la Eliminación Automática</h3>
+            <p>Los datos se conservarán más allá del período establecido únicamente cuando: existan procedimientos judiciales activos donde los datos sean evidencia relevante, autoridades competentes ordenen la conservación mediante requerimiento oficial, se necesiten para ejercer o defender derechos en procedimientos legales, investigaciones penales requieran conservación adicional, obligaciones contractuales específicas justifiquen retención extendida, o situaciones de fuerza mayor impidan la eliminación técnica.</p>
+            
+            <h3>7.6 Datos de Investigaciones y Procedimientos</h3>
+            <p>Para datos involucrados en investigaciones mantenemos: suspensión automática de eliminación durante procedimientos activos, revisión legal antes de cualquier eliminación relacionada con casos abiertos, coordinación con autoridades para determinar períodos de conservación extendidos, protección especial para datos que constituyan evidencia, y reanudación de políticas normales una vez concluidos los procedimientos.</p>
+            
+            <h3>7.7 Notificación de Cambios en Retención</h3>
+            <p>Si cambios legales o circunstancias especiales modifican períodos de retención, notificaremos: cambios en políticas de conservación a través de nuestros canales oficiales, actualización de esta política de privacidad con fechas específicas, comunicación directa a huéspedes afectados cuando sea relevante, y justificación legal clara de cualquier extensión de períodos de retención.</p>
+            
+            <h3>7.8 Derechos Relacionados con Retención</h3>
+            <p>En relación con la retención de datos, usted puede: solicitar información específica sobre períodos aplicables a sus datos, obtener justificación legal de retenciones extendidas, recibir notificación cuando sus datos sean eliminados conforme a calendario, solicitar revisión de decisiones de retención extendida, y ejercer derechos ARCO considerando las limitaciones temporales establecidas.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>7.1 Retention Periods by Data Type</h3>
+            <p>Different categories of data have specific retention periods: personal identification data is kept for 365 days after last checkout, financial and payment information is maintained for 5 years in accordance with tax obligations, video surveillance records are kept for exactly 365 days, sensitive medical data is deleted after 6 months unless expressly authorized, communication records are maintained for 12 months, and aggregated and anonymized data may be kept indefinitely.</p>
+            
+            <h3>7.2 Factors Determining Retention</h3>
+            <p>Conservation periods are based on: legal obligations established in Mexican regulations, operational needs for service provision, specific purposes for which data was collected, current contractual relationships with the guest, ongoing investigations or legal proceedings, risk and security assessments, and hotel industry best practices.</p>
+            
+            <h3>7.3 Periodic Review Process</h3>
+            <p>We conduct systematic reviews through: monthly database audits to identify expired data, quarterly evaluation of the need to retain specific information, annual review of retention policies and their effectiveness, analysis of changes in legal obligations affecting retention, evaluation of new purposes that could justify additional conservation, and complete documentation of all retention decisions.</p>
+            
+            <h3>7.4 Secure Data Deletion</h3>
+            <p>When data reaches the end of its retention period, we implement: secure database deletion using multi-pass algorithms, physical destruction of storage media when necessary, elimination of backup copies according to established schedules, cleanup of caches and temporary files in all systems, deletion certification by external providers, and complete documentation of the deletion process for audits.</p>
+            
+            <h3>7.5 Exceptions to Automatic Deletion</h3>
+            <p>Data will be retained beyond the established period only when: active judicial proceedings exist where data is relevant evidence, competent authorities order conservation through official requirement, needed to exercise or defend rights in legal proceedings, criminal investigations require additional conservation, specific contractual obligations justify extended retention, or force majeure situations prevent technical deletion.</p>
+            
+            <h3>7.6 Investigation and Proceeding Data</h3>
+            <p>For data involved in investigations we maintain: automatic suspension of deletion during active proceedings, legal review before any deletion related to open cases, coordination with authorities to determine extended conservation periods, special protection for data constituting evidence, and resumption of normal policies once proceedings are concluded.</p>
+            
+            <h3>7.7 Notification of Retention Changes</h3>
+            <p>If legal changes or special circumstances modify retention periods, we will notify: changes in conservation policies through our official channels, update of this privacy policy with specific dates, direct communication to affected guests when relevant, and clear legal justification of any extension of retention periods.</p>
+            
+            <h3>7.8 Rights Related to Retention</h3>
+            <p>Regarding data retention, you can: request specific information about periods applicable to your data, obtain legal justification for extended retentions, receive notification when your data is deleted according to schedule, request review of extended retention decisions, and exercise ARCO rights considering established temporal limitations.</p>
+          </div>
+        </section>
+
+        <section id="section-8" class="content-section">
+          <h2>{{ getTranslation('sections.section8') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>8.1 Política Estricta de Protección de Menores</h3>
+            <p><strong>COMPROMISO ABSOLUTO:</strong> Hotel Paradise mantiene una política de protección integral de menores de 18 años, estableciendo medidas especiales para el tratamiento de datos de niños, niñas y adolescentes. Reconocemos que los menores merecen protección especial y que sus datos personales requieren salvaguardas adicionales conforme a la legislación mexicana y convenios internacionales de protección infantil.</p>
+            
+            <h3>8.2 Consentimiento de Padres o Tutores</h3>
+            <p>Para el tratamiento de datos de menores requerimos: consentimiento expreso, informado y por escrito de padres o tutores legales, verificación de la identidad y capacidad legal de quien otorga el consentimiento, documentación que acredite la patria potestad o tutela legal, especificación clara de las finalidades para las cuales se recopilan los datos del menor, y renovación periódica del consentimiento para tratamientos continuos.</p>
+            
+            <h3>8.3 Tipos de Datos Recopilados de Menores</h3>
+            <p>De menores de edad únicamente recopilamos datos estrictamente necesarios: información de identificación básica (nombre, edad, nacionalidad), datos de contacto de padres o tutores responsables, información médica relevante para brindar servicios seguros, preferencias alimentarias y alergias para servicios gastronómicos, datos de emergencia para contacto con responsables legales, y registros de participación en actividades supervisadas del hotel.</p>
+            
+            <h3>8.4 Finalidades Específicas para Datos de Menores</h3>
+            <p>Los datos de menores se utilizan exclusivamente para: garantizar su seguridad y bienestar durante la estancia, proporcionar servicios apropiados para su edad, contactar padres o tutores en caso de emergencia, cumplir protocolos de seguridad y supervisión, brindar servicios médicos cuando sea necesario, documentar participación en actividades del kids club, y cumplir obligaciones legales de protección infantil.</p>
+            
+            <h3>8.5 Prohibiciones Específicas</h3>
+            <p>Está estrictamente prohibido: utilizar datos de menores para marketing directo sin consentimiento específico adicional, compartir información de menores con terceros no esenciales para el servicio, recopilar datos innecesarios o excesivos de menores, mantener perfiles detallados de comportamiento de menores, utilizar tecnologías de seguimiento invasivas en dispositivos de menores, y procesar datos de menores para finalidades comerciales no relacionadas con servicios hoteleros.</p>
+            
+            <h3>8.6 Medidas de Seguridad Reforzadas</h3>
+            <p>Para proteger datos de menores implementamos: sistemas de acceso restringido con autenticación adicional, encriptación reforzada para bases de datos con información de menores, auditorías de seguridad específicas para datos de menores, capacitación especializada del personal en protección infantil, protocolos de respuesta inmediata ante incidentes, y revisión legal adicional antes de cualquier transferencia de datos.</p>
+            
+            <h3>8.7 Derechos Especiales de Menores</h3>
+            <p>Los menores y sus representantes legales tienen derechos especiales incluyendo: eliminación prioritaria de datos al alcanzar la mayoría de edad si así lo solicitan, oposición inmediata a tratamientos que consideren perjudiciales, acceso simplificado a información sobre el tratamiento de sus datos, rectificación expedita de datos inexactos, y protección especial contra perfilado automatizado y toma de decisiones algorítmicas.</p>
+            
+            <h3>8.8 Transición a la Mayoría de Edad</h3>
+            <p>Cuando un menor alcanza los 18 años: notificamos sobre sus derechos como adulto respecto al tratamiento de datos, solicitamos confirmación para continuar el tratamiento bajo nuevas bases legales, ofrecemos la opción de modificar consentimientos previos otorgados por padres o tutores, proporcionamos control directo sobre sus datos personales, y facilitamos la transición sin interrumpir servicios necesarios.</p>
+            
+            <h3>8.9 Cooperación con Autoridades de Protección Infantil</h3>
+            <p>Mantenemos coordinación estrecha con: Sistema Nacional DIF para reportes de protección infantil, autoridades de trabajo infantil para verificación de edades, instituciones educativas cuando aplique, servicios médicos especializados en pediatría, y cualquier autoridad competente en protección de derechos de niñas, niños y adolescentes.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>8.1 Strict Minor Protection Policy</h3>
+            <p><strong>ABSOLUTE COMMITMENT:</strong> Hotel Paradise maintains a comprehensive protection policy for minors under 18 years old, establishing special measures for processing data of children and adolescents. We recognize that minors deserve special protection and that their personal data requires additional safeguards in accordance with Mexican legislation and international child protection conventions.</p>
+            
+            <h3>8.2 Parental or Guardian Consent</h3>
+            <p>For processing minors' data we require: express, informed and written consent from parents or legal guardians, verification of identity and legal capacity of the person granting consent, documentation proving parental authority or legal guardianship, clear specification of purposes for which the minor's data is collected, and periodic renewal of consent for ongoing processing.</p>
+            
+            <h3>8.3 Types of Data Collected from Minors</h3>
+            <p>From minors we only collect strictly necessary data: basic identification information (name, age, nationality), contact data of responsible parents or guardians, relevant medical information to provide safe services, food preferences and allergies for gastronomic services, emergency data to contact legal guardians, and records of participation in supervised hotel activities.</p>
+            
+            <h3>8.4 Specific Purposes for Minors' Data</h3>
+            <p>Minors' data is used exclusively to: ensure their safety and well-being during the stay, provide age-appropriate services, contact parents or guardians in case of emergency, comply with safety and supervision protocols, provide medical services when necessary, document participation in kids club activities, and comply with legal obligations for child protection.</p>
+            
+            <h3>8.5 Specific Prohibitions</h3>
+            <p>It is strictly prohibited to: use minors' data for direct marketing without specific additional consent, share information of minors with non-essential third parties for the service, collect unnecessary or excessive data from minors, maintain detailed behavioral profiles of minors, use invasive tracking technologies on minors' devices, and process minors' data for commercial purposes unrelated to hotel services.</p>
+            
+            <h3>8.6 Reinforced Security Measures</h3>
+            <p>To protect minors' data we implement: restricted access systems with additional authentication, reinforced encryption for databases with minors' information, specific security audits for minors' data, specialized staff training in child protection, immediate response protocols for incidents, and additional legal review before any data transfer.</p>
+            
+            <h3>8.7 Special Rights of Minors</h3>
+            <p>Minors and their legal representatives have special rights including: priority deletion of data upon reaching majority age if requested, immediate opposition to processing they consider harmful, simplified access to information about their data processing, expedited rectification of inaccurate data, and special protection against automated profiling and algorithmic decision-making.</p>
+            
+            <h3>8.8 Transition to Majority Age</h3>
+            <p>When a minor reaches 18 years old: we notify about their rights as an adult regarding data processing, request confirmation to continue processing under new legal bases, offer the option to modify previous consents granted by parents or guardians, provide direct control over their personal data, and facilitate transition without interrupting necessary services.</p>
+            
+            <h3>8.9 Cooperation with Child Protection Authorities</h3>
+            <p>We maintain close coordination with: National DIF System for child protection reports, child labor authorities for age verification, educational institutions when applicable, specialized pediatric medical services, and any competent authority in protection of children and adolescents' rights.</p>
+          </div>
+        </section>
+
+        <section id="section-9" class="content-section">
+          <h2>{{ getTranslation('sections.section9') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>9.1 Marco Legal para Transferencias</h3>
+            <p>Las transferencias internacionales de datos personales se realizan conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares y su Reglamento, siguiendo principios de legalidad, consentimiento, información, calidad, finalidad, lealtad, proporcionalidad y responsabilidad. Todas las transferencias requieren fundamento legal específico y medidas de protección equivalentes.</p>
+            
+            <h3>9.2 Países y Regiones de Transferencia</h3>
+            <p>Podemos transferir datos personales a: Estados Unidos para servicios de tecnología y sistemas de reservas, países de la Unión Europea para servicios financieros y de marketing, Canadá para procesamiento de pagos y servicios corporativos, otros países de América Latina para operaciones de cadenas hoteleras, y cualquier país donde tengamos proveedores de servicios esenciales, siempre con las debidas protecciones.</p>
+            
+            <h3>9.3 Tipos de Datos Transferidos</h3>
+            <p>Las transferencias internacionales pueden incluir: datos de identificación necesarios para servicios de reservas globales, información de contacto para comunicaciones corporativas, datos financieros para procesamiento de pagos internacionales, registros de preferencias para servicios personalizados, información agregada y anonimizada para análisis estadísticos, y datos técnicos para mantenimiento de sistemas globales.</p>
+            
+            <h3>9.4 Fundamentos Legales para Transferencias</h3>
+            <p>Realizamos transferencias basadas en: consentimiento expreso del titular cuando sea requerido, ejecución de contratos en los que el titular sea parte, protección de intereses vitales del titular o terceros, cumplimiento de obligaciones legales aplicables, interés público o ejercicio de autoridad oficial, intereses legítimos del responsable que no sean prevalecidos por derechos fundamentales del titular.</p>
+            
+            <h3>9.5 Medidas de Protección Implementadas</h3>
+            <p>Para garantizar protección adecuada establecemos: cláusulas contractuales estándar aprobadas por autoridades competentes, certificaciones internacionales de protección de datos, códigos de conducta vinculantes para procesadores externos, mecanismos de transferencia aprobados por autoridades mexicanas, auditorías regulares de cumplimiento de estándares de protección, y evaluaciones de impacto en la protección de datos.</p>
+            
+            <h3>9.6 Derechos en Transferencias Internacionales</h3>
+            <p>En relación con transferencias internacionales, usted puede: obtener información sobre países de destino y finalidades específicas, conocer las garantías de protección implementadas, solicitar limitación de transferencias a países específicos, ejercer derechos ARCO ante receptores internacionales cuando sea factible, recibir notificación de transferencias que requieran consentimiento específico, y oponerse a transferencias no fundamentadas legalmente.</p>
+            
+            <h3>9.7 Evaluación de Riesgos de Transferencia</h3>
+            <p>Antes de cada transferencia evaluamos: nivel de protección de datos en el país de destino, garantías específicas ofrecidas por el receptor, necesidad y proporcionalidad de la transferencia, existencia de decisiones de adecuación o instrumentos de transferencia, riesgos específicos para derechos y libertades del titular, y disponibilidad de recursos efectivos para el titular en el país de destino.</p>
+            
+            <h3>9.8 Monitoreo y Supervisión Continua</h3>
+            <p>Mantenemos supervisión constante mediante: revisión periódica de acuerdos de transferencia, monitoreo de cambios en legislaciones de países receptores, evaluación continua de riesgos emergentes, auditorías a receptores internacionales, actualización de medidas de protección según evolución normativa, y respuesta inmediata ante cambios que afecten la protección adecuada.</p>
+            
+            <h3>9.9 Procedimiento de Suspensión</h3>
+            <p>Suspenderemos transferencias cuando: cambios en la legislación del país receptor comprometan la protección, el receptor incumpla obligaciones de protección establecidas, autoridades competentes ordenen la suspensión, evaluaciones de riesgo identifiquen amenazas graves a derechos fundamentales, o cuando no sea posible mantener garantías de protección equivalente.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>9.1 Legal Framework for Transfers</h3>
+            <p>International transfers of personal data are carried out in accordance with the Federal Law for the Protection of Personal Data Held by Private Parties and its Regulation, following principles of legality, consent, information, quality, purpose, loyalty, proportionality and responsibility. All transfers require specific legal basis and equivalent protection measures.</p>
+            
+            <h3>9.2 Transfer Countries and Regions</h3>
+            <p>We may transfer personal data to: United States for technology services and reservation systems, European Union countries for financial and marketing services, Canada for payment processing and corporate services, other Latin American countries for hotel chain operations, and any country where we have essential service providers, always with due protections.</p>
+            
+            <h3>9.3 Types of Data Transferred</h3>
+            <p>International transfers may include: identification data necessary for global reservation services, contact information for corporate communications, financial data for international payment processing, preference records for personalized services, aggregated and anonymized information for statistical analysis, and technical data for global system maintenance.</p>
+            
+            <h3>9.4 Legal Grounds for Transfers</h3>
+            <p>We make transfers based on: express consent of the data subject when required, execution of contracts in which the data subject is a party, protection of vital interests of the data subject or third parties, compliance with applicable legal obligations, public interest or exercise of official authority, legitimate interests of the controller that are not overridden by fundamental rights of the data subject.</p>
+            
+            <h3>9.5 Protection Measures Implemented</h3>
+            <p>To ensure adequate protection we establish: standard contractual clauses approved by competent authorities, international data protection certifications, binding codes of conduct for external processors, transfer mechanisms approved by Mexican authorities, regular audits of protection standard compliance, and data protection impact assessments.</p>
+            
+            <h3>9.6 Rights in International Transfers</h3>
+            <p>Regarding international transfers, you can: obtain information about destination countries and specific purposes, know the protection guarantees implemented, request limitation of transfers to specific countries, exercise ARCO rights before international recipients when feasible, receive notification of transfers requiring specific consent, and oppose transfers not legally grounded.</p>
+            
+            <h3>9.7 Transfer Risk Assessment</h3>
+            <p>Before each transfer we evaluate: level of data protection in the destination country, specific guarantees offered by the recipient, necessity and proportionality of the transfer, existence of adequacy decisions or transfer instruments, specific risks to rights and freedoms of the data subject, and availability of effective remedies for the data subject in the destination country.</p>
+            
+            <h3>9.8 Continuous Monitoring and Supervision</h3>
+            <p>We maintain constant supervision through: periodic review of transfer agreements, monitoring changes in recipient country legislations, continuous assessment of emerging risks, audits of international recipients, updating protection measures according to regulatory evolution, and immediate response to changes affecting adequate protection.</p>
+            
+            <h3>9.9 Suspension Procedure</h3>
+            <p>We will suspend transfers when: changes in recipient country legislation compromise protection, the recipient breaches established protection obligations, competent authorities order suspension, risk assessments identify serious threats to fundamental rights, or when it is not possible to maintain equivalent protection guarantees.</p>
+          </div>
+        </section>
+
+        <section id="section-10" class="content-section">
+          <h2>{{ getTranslation('sections.section10') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>10.1 Grabación en Instalaciones</h3>
+            <p><strong>CONSENTIMIENTO EXPRESO PARA GRABACIÓN:</strong> Al ingresar a las instalaciones de Hotel Paradise, el huésped otorga su consentimiento expreso, informado e irrevocable para ser grabado, fotografiado o filmado por los sistemas de seguridad del hotel, personal autorizado, otros huéspedes, o terceros presentes en las instalaciones. Este consentimiento incluye grabaciones en áreas comunes, eventos, actividades recreativas, y cualquier espacio del hotel excepto el interior de las habitaciones privadas.</p>
+            
+            <h3>10.2 Finalidades de las Grabaciones</h3>
+            <p>El material audiovisual recopilado se utiliza para:</p>
+            <ul>
+              <li>Seguridad y protección de huéspedes, personal y visitantes</li>
+              <li>Prevención y investigación de delitos o incidentes</li>
+              <li>Supervisión de operaciones y calidad del servicio</li>
+              <li>Evidencia en procedimientos legales o administrativos</li>
+              <li>Promoción y marketing del hotel (con autorización específica)</li>
+              <li>Cumplimiento de obligaciones legales y regulatorias</li>
+              <li>Análisis estadístico de flujo de personas y operaciones</li>
+            </ul>
+            
+            <h3>10.3 Tipos de Material Audiovisual</h3>
+            <p>Se recopilan los siguientes tipos de material:</p>
+            <ul>
+              <li>Grabaciones de video de circuito cerrado (CCTV) en áreas comunes</li>
+              <li>Fotografías tomadas durante eventos y actividades del hotel</li>
+              <li>Videos promocionales y de redes sociales</li>
+              <li>Grabaciones de audio en servicios de atención al cliente</li>
+              <li>Material audiovisual capturado por otros huéspedes que incluya su imagen</li>
+              <li>Grabaciones de eventos privados cuando el hotel proporcione servicios</li>
+            </ul>
+            
+            <h3>10.4 Derechos de Imagen</h3>
+            <p>Al aceptar estos términos, el huésped:</p>
+            <ul>
+              <li>Autoriza el uso de su imagen y voz en el material audiovisual descrito</li>
+              <li>Renuncia a reclamar derechos de autor o conexos sobre dicho material</li>
+              <li>Acepta que el hotel es propietario de las grabaciones realizadas en sus instalaciones</li>
+              <li>Consiente el uso del material para las finalidades establecidas</li>
+              <li>Reconoce que no recibirá compensación económica por el uso de su imagen</li>
+            </ul>
+            
+            <h3>10.5 Limitaciones de Uso</h3>
+            <p>El hotel se compromete a:</p>
+            <ul>
+              <li>No utilizar el material para fines distintos a los establecidos sin consentimiento adicional</li>
+              <li>No vender o comercializar la imagen de huéspedes a terceros sin autorización</li>
+              <li>Mantener la confidencialidad del material cuando contenga información sensible</li>
+              <li>Aplicar medidas de seguridad para proteger el material audiovisual</li>
+              <li>Respetar la dignidad y privacidad de los huéspedes en el uso del material</li>
+            </ul>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>10.1 Recording on Premises</h3>
+            <p><strong>EXPRESS CONSENT FOR RECORDING:</strong> Upon entering Hotel Paradise facilities, the guest grants their express, informed and irrevocable consent to be recorded, photographed or filmed by hotel security systems, authorized personnel, other guests, or third parties present at the facilities. This consent includes recordings in common areas, events, recreational activities, and any hotel space except the interior of private rooms.</p>
+            
+            <h3>10.2 Recording Purposes</h3>
+            <p>Audiovisual material collected is used for:</p>
+            <ul>
+              <li>Security and protection of guests, staff and visitors</li>
+              <li>Prevention and investigation of crimes or incidents</li>
+              <li>Supervision of operations and service quality</li>
+              <li>Evidence in legal or administrative proceedings</li>
+              <li>Hotel promotion and marketing (with specific authorization)</li>
+              <li>Compliance with legal and regulatory obligations</li>
+              <li>Statistical analysis of people flow and operations</li>
+            </ul>
+            
+            <h3>10.3 Types of Audiovisual Material</h3>
+            <p>The following types of material are collected:</p>
+            <ul>
+              <li>Closed-circuit video recordings (CCTV) in common areas</li>
+              <li>Photographs taken during hotel events and activities</li>
+              <li>Promotional videos and social media content</li>
+              <li>Audio recordings in customer service</li>
+              <li>Audiovisual material captured by other guests that includes your image</li>
+              <li>Private event recordings when the hotel provides services</li>
+            </ul>
+            
+            <h3>10.4 Image Rights</h3>
+            <p>By accepting these terms, the guest:</p>
+            <ul>
+              <li>Authorizes the use of their image and voice in the described audiovisual material</li>
+              <li>Waives claiming copyright or related rights over such material</li>
+              <li>Accepts that the hotel owns recordings made at its facilities</li>
+              <li>Consents to the use of material for established purposes</li>
+              <li>Acknowledges they will not receive economic compensation for the use of their image</li>
+            </ul>
+            
+            <h3>10.5 Usage Limitations</h3>
+            <p>The hotel commits to:</p>
+            <ul>
+              <li>Not use material for purposes other than established without additional consent</li>
+              <li>Not sell or commercialize guest images to third parties without authorization</li>
+              <li>Maintain confidentiality of material when it contains sensitive information</li>
+              <li>Apply security measures to protect audiovisual material</li>
+              <li>Respect guest dignity and privacy in material usage</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="section-11" class="content-section">
+          <h2>{{ getTranslation('sections.section11') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>11.1 Período de Retención Obligatorio</h3>
+            <p><strong>ELIMINACIÓN AUTOMÁTICA A LOS 365 DÍAS:</strong> Todos los datos personales, material audiovisual, registros de estancia, y cualquier información recopilada por Hotel Paradise será eliminada de manera <strong>AUTOMÁTICA E IRREVOCABLE</strong> exactamente <strong>365 días calendario</strong> después de la fecha de checkout del huésped o de la última interacción registrada con el hotel.</p>
+            
+            <h3>11.2 Imposibilidad de Solicitar Eliminación Anticipada</h3>
+            <p><strong>RESTRICCIÓN ABSOLUTA:</strong> Durante el período de 365 días establecido, <strong>NO SERÁ POSIBLE</strong> para los huéspedes solicitar la eliminación anticipada de sus datos personales o material audiovisual. Esta restricción es <strong>IRRENUNCIABLE</strong> y prevalece sobre cualquier solicitud de ejercicio de derechos ARCO (Acceso, Rectificación, Cancelación, Oposición). El huésped acepta expresamente esta limitación al contratar los servicios del hotel.</p>
+            
+            <h3>11.3 Justificación Legal</h3>
+            <p>El período obligatorio de retención se fundamenta en:</p>
+            <ul>
+              <li>Obligaciones fiscales conforme al Código Fiscal de la Federación</li>
+              <li>Requerimientos de la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita</li>
+              <li>Disposiciones de la Ley General de Turismo</li>
+              <li>Normativas de seguridad nacional y prevención del delito</li>
+              <li>Protección de derechos e intereses legítimos del hotel y terceros</li>
+              <li>Cumplimiento de obligaciones contractuales y garantías</li>
+            </ul>
+            
+            <h3>11.4 Proceso de Eliminación Automática</h3>
+            <p>El proceso de eliminación automática incluye:</p>
+            <ul>
+              <li>Borrado seguro de bases de datos principales y respaldos</li>
+              <li>Eliminación de archivos audiovisuales en todos los sistemas</li>
+              <li>Destrucción de documentos físicos mediante métodos seguros</li>
+              <li>Limpieza de cachés y archivos temporales</li>
+              <li>Notificación a procesadores externos para eliminación sincronizada</li>
+              <li>Generación de certificado de eliminación para fines de auditoría</li>
+            </ul>
+            
+            <h3>11.5 Excepciones a la Eliminación</h3>
+            <p>Los datos únicamente se conservarán más allá de 365 días en los siguientes casos excepcionales:</p>
+            <ul>
+              <li>Procedimientos judiciales o administrativos en curso donde los datos sean evidencia</li>
+              <li>Investigaciones penales activas conducidas por autoridades competentes</li>
+              <li>Obligaciones legales específicas que requieran conservación adicional</li>
+              <li>Reclamaciones pendientes de resolución entre las partes</li>
+            </ul>
+            
+            <h3>11.6 Datos Agregados y Anónimos</h3>
+            <p>Después de la eliminación de datos personales, el hotel podrá conservar indefinidamente información estadística agregada y completamente anonimizada que no permita la identificación directa o indirecta de individuos específicos.</p>
+            
+            <h3>11.7 Responsabilidad por Cumplimiento</h3>
+            <p>Hotel Paradise garantiza el cumplimiento estricto de esta política de eliminación automática y será responsable de cualquier retención indebida de datos más allá del período establecido, salvo en los casos de excepción legalmente justificados.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>11.1 Mandatory Retention Period</h3>
+            <p><strong>AUTOMATIC DELETION AT 365 DAYS:</strong> All personal data, audiovisual material, stay records, and any information collected by Hotel Paradise will be deleted <strong>AUTOMATICALLY AND IRREVOCABLY</strong> exactly <strong>365 calendar days</strong> after the guest's checkout date or last recorded interaction with the hotel.</p>
+            
+            <h3>11.2 Impossibility of Requesting Early Deletion</h3>
+            <p><strong>ABSOLUTE RESTRICTION:</strong> During the established 365-day period, it will <strong>NOT BE POSSIBLE</strong> for guests to request early deletion of their personal data or audiovisual material. This restriction is <strong>NON-WAIVABLE</strong> and prevails over any request to exercise ARCO rights (Access, Rectification, Cancellation, Opposition). The guest expressly accepts this limitation when contracting hotel services.</p>
+            
+            <h3>11.3 Legal Justification</h3>
+            <p>The mandatory retention period is based on:</p>
+            <ul>
+              <li>Tax obligations according to the Federal Tax Code</li>
+              <li>Requirements of the Federal Law for Prevention and Identification of Operations with Illegal Resources</li>
+              <li>General Tourism Law provisions</li>
+              <li>National security and crime prevention regulations</li>
+              <li>Protection of legitimate rights and interests of the hotel and third parties</li>
+              <li>Compliance with contractual obligations and guarantees</li>
+            </ul>
+            
+            <h3>11.4 Automatic Deletion Process</h3>
+            <p>The automatic deletion process includes:</p>
+            <ul>
+              <li>Secure deletion of main databases and backups</li>
+              <li>Elimination of audiovisual files in all systems</li>
+              <li>Destruction of physical documents through secure methods</li>
+              <li>Cleanup of caches and temporary files</li>
+              <li>Notification to external processors for synchronized deletion</li>
+              <li>Generation of deletion certificate for audit purposes</li>
+            </ul>
+            
+            <h3>11.5 Deletion Exceptions</h3>
+            <p>Data will only be retained beyond 365 days in the following exceptional cases:</p>
+            <ul>
+              <li>Ongoing judicial or administrative proceedings where data is evidence</li>
+              <li>Active criminal investigations conducted by competent authorities</li>
+              <li>Specific legal obligations requiring additional conservation</li>
+              <li>Pending claims for resolution between parties</li>
+            </ul>
+            
+            <h3>11.6 Aggregated and Anonymous Data</h3>
+            <p>After personal data deletion, the hotel may indefinitely retain aggregated and completely anonymized statistical information that does not allow direct or indirect identification of specific individuals.</p>
+            
+            <h3>11.7 Compliance Responsibility</h3>
+            <p>Hotel Paradise guarantees strict compliance with this automatic deletion policy and will be responsible for any improper retention of data beyond the established period, except in legally justified exception cases.</p>
+          </div>
+        </section>
+
+        <section id="section-12" class="content-section">
+          <h2>{{ getTranslation('sections.section12') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>12.1 Derecho de Modificación</h3>
+            <p>Hotel Paradise se reserva el derecho de modificar esta Política de Privacidad en cualquier momento para reflejar cambios en nuestras prácticas, servicios, normativas legales, o requerimientos tecnológicos. Las modificaciones pueden incluir cambios en los tipos de datos recopilados, finalidades de tratamiento, medidas de seguridad, o procedimientos de eliminación.</p>
+            
+            <h3>12.2 Notificación de Cambios</h3>
+            <p>Las modificaciones serán notificadas a través de:</p>
+            <ul>
+              <li>Actualización de la fecha de "última modificación" en el encabezado de esta política</li>
+              <li>Publicación en nuestro sitio web oficial con destacado de cambios principales</li>
+              <li>Envío de correo electrónico a huéspedes registrados en nuestra base de datos</li>
+              <li>Avisos en las instalaciones del hotel durante un período mínimo de 30 días</li>
+              <li>Notificaciones push en nuestra aplicación móvil oficial</li>
+            </ul>
+            
+            <h3>12.3 Vigencia de Modificaciones</h3>
+            <p>Los cambios entrarán en vigor 30 días después de su publicación, excepto cuando sean requeridos por ley, en cuyo caso serán efectivos inmediatamente. Para reservas existentes, los cambios se aplicarán a partir de la siguiente estancia del huésped.</p>
+            
+            <h3>12.4 Consentimiento a Modificaciones</h3>
+            <p>El uso continuado de nuestros servicios después de la entrada en vigor de las modificaciones constituirá aceptación de la nueva Política de Privacidad. Los huéspedes que no estén de acuerdo podrán cancelar reservas futuras sin penalización si lo hacen dentro de los 30 días posteriores a la notificación.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>12.1 Right of Modification</h3>
+            <p>Hotel Paradise reserves the right to modify this Privacy Policy at any time to reflect changes in our practices, services, legal regulations, or technological requirements. Modifications may include changes in types of data collected, processing purposes, security measures, or deletion procedures.</p>
+            
+            <h3>12.2 Change Notification</h3>
+            <p>Modifications will be notified through:</p>
+            <ul>
+              <li>Update of the "last modification" date in the header of this policy</li>
+              <li>Publication on our official website with highlighting of main changes</li>
+              <li>Email to guests registered in our database</li>
+              <li>Notices at hotel facilities for a minimum period of 30 days</li>
+              <li>Push notifications on our official mobile application</li>
+            </ul>
+            
+            <h3>12.3 Modification Effectiveness</h3>
+            <p>Changes will take effect 30 days after publication, except when required by law, in which case they will be effective immediately. For existing reservations, changes will apply from the guest's next stay.</p>
+            
+            <h3>12.4 Consent to Modifications</h3>
+            <p>Continued use of our services after modifications take effect will constitute acceptance of the new Privacy Policy. Guests who disagree may cancel future reservations without penalty if done within 30 days after notification.</p>
+          </div>
+        </section>
+
+        <section id="section-13" class="content-section">
+          <h2>{{ getTranslation('sections.section13') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>13.1 Oficial de Protección de Datos</h3>
+            <p><strong>Ing. Carlos Alberto Martínez Hernández</strong><br>
+            Oficial de Protección de Datos Personales<br>
+            Hotel Paradise S.A. de C.V.<br>
+            Calle Principal #123, Colonia Centro, C.P. 45000, Belén, México<br>
+            Teléfono: +52 (33) 1234-5684<br>
+            Email: dpo&#64;hotelparadise.com<br>
+            Horario de Atención: Lunes a Viernes, 9:00 a 17:00 hrs</p>
+            
+            <h3>13.2 Departamento de Privacidad</h3>
+            <p>Para consultas, ejercicio de derechos ARCO, o reportes relacionados con privacidad:<br>
+            Email: privacidad&#64;hotelparadise.com<br>
+            Teléfono: +52 (33) 1234-5685<br>
+            Horario: Lunes a Viernes, 8:00 a 18:00 hrs</p>
+            
+            <h3>13.3 Procedimiento para Ejercer Derechos</h3>
+            <p>Las solicitudes de ejercicio de derechos ARCO deben presentarse por escrito incluyendo:</p>
+            <ul>
+              <li>Nombre completo y firma del titular de los datos</li>
+              <li>Copia de identificación oficial vigente</li>
+              <li>Descripción clara del derecho que desea ejercer</li>
+              <li>Domicilio para recibir notificaciones</li>
+              <li>Documentos que acrediten la identidad del solicitante</li>
+            </ul>
+            
+            <h3>13.4 Tiempo de Respuesta</h3>
+            <p>Nos comprometemos a responder solicitudes en un máximo de 20 días hábiles, prorrogables por 20 días adicionales cuando la complejidad lo requiera. La respuesta será notificada al domicilio o correo electrónico proporcionado.</p>
+            
+            <h3>13.5 Autoridad de Control</h3>
+            <p><strong>Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales (INAI)</strong><br>
+            Insurgentes Sur 3211, Colonia Insurgentes Cuicuilco, C.P. 04530, Ciudad de México<br>
+            Teléfono: +52 (55) 5004-2400<br>
+            Sitio web: www.inai.org.mx<br>
+            Sistema SIREDAP: www.siredap.inai.org.mx</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>13.1 Data Protection Officer</h3>
+            <p><strong>Ing. Carlos Alberto Martínez Hernández</strong><br>
+            Personal Data Protection Officer<br>
+            Hotel Paradise S.A. de C.V.<br>
+            Calle Principal #123, Colonia Centro, C.P. 45000, Belén, Mexico<br>
+            Phone: +52 (33) 1234-5684<br>
+            Email: dpo&#64;hotelparadise.com<br>
+            Office Hours: Monday to Friday, 9:00 to 17:00 hrs</p>
+            
+            <h3>13.2 Privacy Department</h3>
+            <p>For inquiries, exercise of ARCO rights, or privacy-related reports:<br>
+            Email: privacidad&#64;hotelparadise.com<br>
+            Phone: +52 (33) 1234-5685<br>
+            Hours: Monday to Friday, 8:00 to 18:00 hrs</p>
+            
+            <h3>13.3 Procedure for Exercising Rights</h3>
+            <p>Requests for exercising ARCO rights must be submitted in writing including:</p>
+            <ul>
+              <li>Full name and signature of the data subject</li>
+              <li>Copy of valid official identification</li>
+              <li>Clear description of the right to be exercised</li>
+              <li>Address to receive notifications</li>
+              <li>Documents proving the applicant's identity</li>
+            </ul>
+            
+            <h3>13.4 Response Time</h3>
+            <p>We commit to respond to requests within a maximum of 20 business days, extendable for 20 additional days when complexity requires it. The response will be notified to the address or email provided.</p>
+            
+            <h3>13.5 Control Authority</h3>
+            <p><strong>National Institute of Transparency, Access to Information and Personal Data Protection (INAI)</strong><br>
+            Insurgentes Sur 3211, Colonia Insurgentes Cuicuilco, C.P. 04530, Mexico City<br>
+            Phone: +52 (55) 5004-2400<br>
+            Website: www.inai.org.mx<br>
+            SIREDAP System: www.siredap.inai.org.mx</p>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    <div class="footer-content">
+      <button class="scroll-top-btn" (click)="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+        {{ getTranslation('scrollTop') }}
+      </button>
+      <p>{{ getTranslation('copyright') }}</p>
+    </div>
+  </footer>
+</div>

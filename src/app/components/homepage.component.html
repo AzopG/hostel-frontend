@@ -277,58 +277,82 @@
             <i class="fas fa-map-marker-alt"></i>
           </div>
           <h3 class="contact-title">Visítenos</h3>
-          <p class="contact-info">Calle Principal #123<br>Bogotá, Colombia</p>
-          <a href="https://maps.google.com" target="_blank" class="contact-button">Ver mapa</a>
+          <p class="contact-info">Calle Principal #123<br>Belén, Mexico</p>
+          <button (click)="openMapModal()" class="contact-button">Ver mapa</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-top">
-      <div class="footer-content-wrapper">
-        <!-- Enlaces rápidos -->
-        <div class="footer-section">
-          <h3 class="footer-title">Hotel Paradise</h3>
-          <p class="footer-tagline">Sistema de gestión hotelera integral</p>
+  <!-- Footer Elegante y Completo -->
+  <footer class="footer-elegante">
+    <div class="footer-container">
+      <div class="footer-row">
+        <div class="footer-brand">
+          <img src="Hotel.png" alt="Hotel Paradise" class="footer-logo">
+          <span class="footer-title">Hotel Paradise</span>
         </div>
-        
-        <!-- Enlaces -->
-        <div class="footer-section">
-          <div class="footer-links-group">
-            <a href="#inicio" class="footer-link">Inicio</a>
-            <span class="footer-divider">|</span>
-            <a href="#servicios" class="footer-link">Servicios</a>
-            <span class="footer-divider">|</span>
-            <a href="#contacto" class="footer-link">Contacto</a>
-            <span class="footer-divider">|</span>
-            <a href="login/" class="footer-link">Iniciar Sesión</a>
-          </div>
+        <div class="footer-links">
+          <a href="terminos-condiciones" class="footer-link">Términos y Condiciones</a>
+          <span class="separator">|</span>
+          <a href="politica-privacidad" class="footer-link">Política de Privacidad</a>
+          <span class="separator">|</span>
+          <a href="tratamiento-datos" class="footer-link">Tratamiento de Datos</a>
         </div>
-        
-        <!-- Social y Contacto -->
-        <div class="footer-section">
-          <div class="footer-contact-wrapper">
-            <a href="mailto:info&#64;hotelparadise.com" class="footer-contact-link">
-              <i class="fas fa-envelope"></i> info&#64;hotelparadise.com
-            </a>
-            <a href="tel:+573211234567" class="footer-contact-link">
-              <i class="fas fa-phone-alt"></i> +57 123 456 7890
-            </a>
-          </div>
-          <div class="social-icons">
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-          </div>
+      </div>
+      <div class="footer-row">
+        <div class="footer-copyright">
+          &copy; 2025 Hotel Paradise S.A. de C.V. &mdash; Todos los derechos reservados
+        </div>
+        <div class="footer-cert">
+          <span class="footer-badge"><i class="fas fa-shield-alt"></i> Datos protegidos</span>
+          <span class="footer-badge"><i class="fas fa-headset"></i> Soporte 24/7</span>
         </div>
       </div>
     </div>
-    
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-      <p class="copyright">&copy; 2025 Hotel Paradise. Todos los derechos reservados.</p>
-    </div>
   </footer>
+</div>
+
+<!-- Modal de Mapa Lazy -->
+<div class="map-modal-overlay" *ngIf="showMapModal" (click)="closeMapModal()">
+  <div class="map-modal-content" (click)="$event.stopPropagation()">
+    <div class="map-modal-header">
+      <h3>Nuestra Ubicación</h3>
+      <button class="close-btn" (click)="closeMapModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="map-modal-body">
+      <div class="map-info">
+        <p><strong>Hotel Paradise</strong></p>
+        <p>Calle Principal #123, Belén, Mexico</p>
+      </div>
+      
+      <!-- Mapa lazy cargado solo cuando se abre el modal -->
+      <div class="map-container" *ngIf="mapLoaded">
+        <iframe 
+          [src]="mapUrl" 
+          width="100%" 
+          height="300" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      
+      <!-- Indicador de carga -->
+      <div class="map-loading" *ngIf="!mapLoaded">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Cargando mapa...</p>
+      </div>
+      
+      <div class="map-actions">
+        <a href="https://maps.app.goo.gl/rWA4bcw5wwK81jPJA" target="_blank" class="external-map-btn">
+          <i class="fas fa-external-link-alt"></i>
+          Abrir en Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
 </div>

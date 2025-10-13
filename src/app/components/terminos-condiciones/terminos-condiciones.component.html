@@ -1,0 +1,1067 @@
+<div class="terminos-container">
+  <nav class="breadcrumb-nav">
+    <div class="nav-left">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        {{ getTranslation('backButton') }}
+      </button>
+      <button class="language-toggle" (click)="toggleLanguage()">
+        <i class="fas fa-globe"></i>
+        {{ currentLanguage === 'es' ? 'English' : 'Español' }}
+      </button>
+    </div>
+    <div class="breadcrumb">
+      <span>Hotel Paradise</span>
+      <i class="fas fa-chevron-right"></i>
+      <span class="current">{{ getTranslation('breadcrumb') }}</span>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">{{ getTranslation('title') }}</h1>
+      <p class="page-subtitle">{{ getTranslation('subtitle') }}</p>
+      <div class="last-updated">
+        <i class="fas fa-calendar-alt"></i>
+        {{ getTranslation('lastUpdated') }}
+      </div>
+    </div>
+  </header>
+
+  <main class="content-wrapper">
+    <div class="content-container">
+      <div class="table-of-contents">
+        <h3>{{ getTranslation('tableOfContents') }}</h3>
+        <ul>
+          <li><a href="#section-1">{{ getTranslation('sections.section1') }}</a></li>
+          <li><a href="#section-2">{{ getTranslation('sections.section2') }}</a></li>
+          <li><a href="#section-3">{{ getTranslation('sections.section3') }}</a></li>
+          <li><a href="#section-4">{{ getTranslation('sections.section4') }}</a></li>
+          <li><a href="#section-5">{{ getTranslation('sections.section5') }}</a></li>
+          <li><a href="#section-6">{{ getTranslation('sections.section6') }}</a></li>
+          <li><a href="#section-7">{{ getTranslation('sections.section7') }}</a></li>
+          <li><a href="#section-8">{{ getTranslation('sections.section8') }}</a></li>
+          <li><a href="#section-9">{{ getTranslation('sections.section9') }}</a></li>
+        </ul>
+      </div>
+
+      <article class="terms-content">
+        <section id="section-1" class="content-section">
+          <h2>{{ getTranslation('sections.section1') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>1.1 Identificación del Prestador de Servicios</h3>
+            <p><strong>Hotel Paradise S.A. de C.V.</strong>, sociedad anónima de capital variable constituida conforme a las leyes mexicanas, con domicilio fiscal en Calle Principal #123, Colonia Centro, C.P. 45000, Belén, México, inscrita en el Registro Público de Comercio bajo el folio mercantil número HP-2020-001, con Registro Federal de Contribuyentes HPX-251012-MX7, es la empresa responsable de la prestación de servicios hoteleros, gastronómicos, de entretenimiento y servicios conexos bajo la marca "Hotel Paradise".</p>
+            
+            <h3>1.2 Naturaleza y Alcance de los Servicios</h3>
+            <p>Hotel Paradise opera como una empresa de hospitalidad integral que ofrece una amplia gama de servicios turísticos y de hospedaje, incluyendo pero no limitándose a: alojamiento en habitaciones y suites de lujo, servicios de alimentación y bebidas, organización de eventos sociales y corporativos, servicios de spa y bienestar, entretenimiento, actividades recreativas, tours y excursiones, servicios de transporte, y cualquier otro servicio relacionado con la industria hotelera y turística.</p>
+            
+            <h3>1.3 Jurisdicción y Aplicabilidad</h3>
+            <p>Los presentes términos y condiciones están sujetos a la legislación mexicana, específicamente al Código Civil Federal, Ley Federal de Protección al Consumidor, Ley Federal del Trabajo, Código Penal Federal, Ley General de Turismo, y demás ordenamientos jurídicos aplicables en los Estados Unidos Mexicanos. Cualquier controversia derivada de la interpretación o aplicación de estos términos será sometida a la jurisdicción de los tribunales competentes de Belén, México, renunciando expresamente las partes a cualquier otro fuero que pudiera corresponderles.</p>
+            
+            <h3>1.4 Definiciones y Conceptos</h3>
+            <p>Para efectos de estos términos y condiciones, se entiende por:</p>
+            <ul>
+              <li><strong>Huésped:</strong> Toda persona física o moral que contrata o utiliza los servicios del hotel, incluyendo acompañantes, visitantes y terceros autorizados.</li>
+              <li><strong>Servicios:</strong> Todas las prestaciones ofrecidas por Hotel Paradise, ya sean principales, complementarias o adicionales.</li>
+              <li><strong>Instalaciones:</strong> Todos los espacios físicos, equipamiento, mobiliario y áreas del hotel y sus dependencias.</li>
+              <li><strong>Reserva:</strong> El acuerdo contractual entre el huésped y el hotel para la prestación de servicios en fechas determinadas.</li>
+              <li><strong>Tarifas:</strong> Los precios establecidos por el hotel para sus diversos servicios, sujetos a variaciones según temporada, demanda y promociones.</li>
+            </ul>
+            
+            <h3>1.5 Modificaciones y Actualizaciones</h3>
+            <p>Hotel Paradise se reserva el derecho de modificar estos términos y condiciones en cualquier momento, notificando a los huéspedes a través de los medios oficiales de comunicación del hotel, incluyendo el sitio web oficial, aplicaciones móviles, correo electrónico, y mediante avisos colocados en las instalaciones del hotel. Las modificaciones entrarán en vigor inmediatamente después de su publicación, y el uso continuado de los servicios constituirá la aceptación tácita de los nuevos términos.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>1.1 Service Provider Identification</h3>
+            <p><strong>Hotel Paradise S.A. de C.V.</strong>, a variable capital corporation established under Mexican law, with tax domicile at Calle Principal #123, Colonia Centro, C.P. 45000, Belén, Mexico, registered in the Public Commerce Registry under commercial folio number HP-2020-001, with Federal Taxpayer Registration HPX-251012-MX7, is the company responsible for providing hotel, gastronomic, entertainment and related services under the "Hotel Paradise" brand.</p>
+            
+            <h3>1.2 Nature and Scope of Services</h3>
+            <p>Hotel Paradise operates as a comprehensive hospitality company offering a wide range of tourism and accommodation services, including but not limited to: luxury room and suite accommodation, food and beverage services, social and corporate event organization, spa and wellness services, entertainment, recreational activities, tours and excursions, transportation services, and any other service related to the hotel and tourism industry.</p>
+            
+            <h3>1.3 Jurisdiction and Applicability</h3>
+            <p>These terms and conditions are subject to Mexican legislation, specifically the Federal Civil Code, Federal Consumer Protection Law, Federal Labor Law, Federal Penal Code, General Tourism Law, and other legal regulations applicable in the United Mexican States. Any controversy arising from the interpretation or application of these terms shall be submitted to the jurisdiction of the competent courts of Belén, Mexico, expressly waiving the parties any other jurisdiction that may correspond to them.</p>
+            
+            <h3>1.4 Definitions and Concepts</h3>
+            <p>For the purposes of these terms and conditions, it is understood by:</p>
+            <ul>
+              <li><strong>Guest:</strong> Any individual or entity that contracts or uses hotel services, including companions, visitors and authorized third parties.</li>
+              <li><strong>Services:</strong> All benefits offered by Hotel Paradise, whether main, complementary or additional.</li>
+              <li><strong>Facilities:</strong> All physical spaces, equipment, furniture and areas of the hotel and its dependencies.</li>
+              <li><strong>Reservation:</strong> The contractual agreement between the guest and the hotel for the provision of services on specific dates.</li>
+              <li><strong>Rates:</strong> The prices established by the hotel for its various services, subject to variations according to season, demand and promotions.</li>
+            </ul>
+            
+            <h3>1.5 Modifications and Updates</h3>
+            <p>Hotel Paradise reserves the right to modify these terms and conditions at any time, notifying guests through the hotel's official communication channels, including the official website, mobile applications, email, and through notices posted at the hotel facilities. Modifications will take effect immediately after publication, and continued use of services will constitute tacit acceptance of the new terms.</p>
+          </div>
+        </section>
+
+        <section id="section-2" class="content-section">
+          <h2>{{ getTranslation('sections.section2') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>2.1 Aceptación Expresa</h3>
+            <p>Al realizar una reserva, registrarse en nuestras instalaciones, utilizar cualquiera de nuestros servicios, o firmar cualquier documento en las instalaciones del hotel, el huésped acepta de manera expresa, irrevocable e incondicional todos y cada uno de los términos y condiciones aquí establecidos. Esta aceptación constituye un contrato legalmente vinculante entre el huésped y Hotel Paradise S.A. de C.V.</p>
+            
+            <h3>2.2 Capacidad Legal</h3>
+            <p>El huésped declara bajo protesta de decir verdad que cuenta con la capacidad legal necesaria para contratar conforme a las leyes mexicanas, que es mayor de 18 años de edad, y que no se encuentra en ninguno de los supuestos de incapacidad establecidos en el Código Civil Federal. En caso de menores de edad, deberán estar acompañados por sus padres, tutores legales o representantes legales debidamente acreditados, quienes serán responsables solidarios de todas las obligaciones derivadas de estos términos.</p>
+            
+            <h3>2.3 Firma Digital y Electrónica</h3>
+            <p>Hotel Paradise reconoce la validez jurídica de las firmas electrónicas y digitales conforme a la Ley de Firma Electrónica Avanzada y el Código de Comercio. La aceptación de estos términos mediante medios electrónicos, incluyendo pero no limitándose a checkboxes en sitios web, aplicaciones móviles, o sistemas de registro digital en el hotel, tendrá la misma validez y efectos legales que una firma autógrafa.</p>
+            
+            <h3>2.4 Momento de la Aceptación</h3>
+            <p>La aceptación de estos términos se perfecciona en el momento en que el huésped:</p>
+            <ul>
+              <li>Realiza el pago total o parcial de cualquier servicio del hotel</li>
+              <li>Se registra en recepción y firma la tarjeta de registro</li>
+              <li>Utiliza cualquier servicio o instalación del hotel</li>
+              <li>Acepta expresamente los términos mediante medios electrónicos</li>
+              <li>Permanece en las instalaciones del hotel por más de 30 minutos después de haber sido informado de estos términos</li>
+            </ul>
+            
+            <h3>2.5 Conocimiento y Comprensión</h3>
+            <p>El huésped reconoce haber leído, comprendido y aceptado completamente todos los términos y condiciones, incluyendo las políticas de privacidad, tratamiento de datos personales, y reglamentos internos del hotel. En caso de no comprender algún aspecto, el huésped se compromete a solicitar aclaraciones al personal del hotel antes de proceder con la aceptación.</p>
+            
+            <h3>2.6 Renuncia a Reclamaciones</h3>
+            <p>Al aceptar estos términos, el huésped renuncia expresamente a cualquier reclamación futura basada en el desconocimiento de estos términos y condiciones, reconociendo que tuvo la oportunidad de leerlos, comprenderlos y rechazarlos antes de contratar los servicios del hotel.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>2.1 Express Acceptance</h3>
+            <p>By making a reservation, registering at our facilities, using any of our services, or signing any document at the hotel facilities, the guest expressly, irrevocably and unconditionally accepts each and every one of the terms and conditions established herein. This acceptance constitutes a legally binding contract between the guest and Hotel Paradise S.A. de C.V.</p>
+            
+            <h3>2.2 Legal Capacity</h3>
+            <p>The guest declares under oath that they have the necessary legal capacity to contract under Mexican law, that they are over 18 years of age, and that they are not in any of the incapacity cases established in the Federal Civil Code. In the case of minors, they must be accompanied by their parents, legal guardians or duly accredited legal representatives, who will be jointly responsible for all obligations arising from these terms.</p>
+            
+            <h3>2.3 Digital and Electronic Signature</h3>
+            <p>Hotel Paradise recognizes the legal validity of electronic and digital signatures in accordance with the Advanced Electronic Signature Law and the Commercial Code. Acceptance of these terms through electronic means, including but not limited to checkboxes on websites, mobile applications, or digital registration systems at the hotel, shall have the same validity and legal effects as a handwritten signature.</p>
+            
+            <h3>2.4 Moment of Acceptance</h3>
+            <p>Acceptance of these terms is perfected at the moment the guest:</p>
+            <ul>
+              <li>Makes total or partial payment for any hotel service</li>
+              <li>Registers at reception and signs the registration card</li>
+              <li>Uses any hotel service or facility</li>
+              <li>Expressly accepts the terms through electronic means</li>
+              <li>Remains at the hotel facilities for more than 30 minutes after being informed of these terms</li>
+            </ul>
+            
+            <h3>2.5 Knowledge and Understanding</h3>
+            <p>The guest acknowledges having read, understood and completely accepted all terms and conditions, including privacy policies, personal data processing, and internal hotel regulations. If they do not understand any aspect, the guest undertakes to request clarifications from hotel staff before proceeding with acceptance.</p>
+            
+            <h3>2.6 Waiver of Claims</h3>
+            <p>By accepting these terms, the guest expressly waives any future claim based on ignorance of these terms and conditions, acknowledging that they had the opportunity to read, understand and reject them before contracting hotel services.</p>
+          </div>
+        </section>
+
+        <section id="section-3" class="content-section">
+          <h2>{{ getTranslation('sections.section3') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>3.1 Servicios de Hospedaje</h3>
+            <p>Hotel Paradise ofrece servicios de alojamiento en diversas categorías de habitaciones y suites, diseñadas para satisfacer las necesidades más exigentes de nuestros huéspedes:</p>
+            
+            <h4>3.1.1 Categorías de Habitaciones</h4>
+            <ul>
+              <li><strong>Habitaciones Estándar:</strong> Espacios cómodos y elegantes con amenidades básicas, cama matrimonial o dos camas individuales, baño privado con ducha, aire acondicionado, televisión de pantalla plana, minibar, caja de seguridad, y conexión WiFi gratuita.</li>
+              <li><strong>Habitaciones Superiores:</strong> Habitaciones ampliadas con balcón privado, vista al jardín o ciudad, amenidades premium, bathrobe y pantuflas de cortesía, máquina de café/té, y servicio de turndown nocturno.</li>
+              <li><strong>Habitaciones Deluxe:</strong> Espacios de lujo con vista panorámica, jacuzzi en baño, sala de estar separada, amenidades de marca reconocida, servicio de mayordomo disponible bajo solicitud, y acceso prioritario a servicios del hotel.</li>
+              <li><strong>Suites Junior:</strong> Suites de una habitación con sala de estar integrada, comedor para cuatro personas, cocina básica equipada, dos televisiones, dos baños completos, y terraza privada con mobiliario exterior.</li>
+              <li><strong>Suites Ejecutivas:</strong> Suites de dos habitaciones con oficina equipada, sala de juntas para reuniones pequeñas, cocina integral completa, servicio de secretaria disponible, y acceso a salón ejecutivo con desayuno continental incluido.</li>
+              <li><strong>Suite Presidencial:</strong> La suite más exclusiva del hotel con tres habitaciones, sala de estar de lujo, comedor formal para ocho personas, cocina gourmet completa, gimnasio privado, spa personal, terraza con jacuzzi, mayordomo personal 24/7, y servicios de chef privado disponibles.</li>
+            </ul>
+            
+            <h4>3.1.2 Amenidades Incluidas</h4>
+            <p>Todas las habitaciones incluyen sin costo adicional:</p>
+            <ul>
+              <li>Servicio de limpieza diario con cambio de toallas y ropa de cama según estándares internacionales</li>
+              <li>Artículos de tocador premium (champú, acondicionador, jabón corporal, loción, kit dental, kit de afeitar)</li>
+              <li>Conexión WiFi de alta velocidad ilimitada en toda la habitación</li>
+              <li>Aire acondicionado con control individual de temperatura</li>
+              <li>Televisión por cable con canales internacionales y sistema de entretenimiento</li>
+              <li>Minibar surtido con bebidas y snacks (cargo por consumo)</li>
+              <li>Caja de seguridad electrónica con capacidad para laptop</li>
+              <li>Servicio de lavandería y tintorería (cargo adicional)</li>
+              <li>Planchado express sin costo para una prenda por día</li>
+              <li>Periódico local y nacional bajo solicitud</li>
+            </ul>
+            
+            <h3>3.2 Servicios Gastronómicos</h3>
+            <p>Hotel Paradise cuenta con una variada oferta gastronómica que incluye:</p>
+            
+            <h4>3.2.1 Restaurantes Especializados</h4>
+            <ul>
+              <li><strong>Restaurante Principal "Paradise Garden":</strong> Cocina internacional con buffet de desayuno, menú à la carte para almuerzo y cena, especialidades mexicanas e internacionales, bar de ensaladas gourmet, estación de carnes asadas, y postres artesanales. Capacidad para 200 comensales con áreas de terraza climatizada.</li>
+              <li><strong>Restaurante de Especialidades "El Corazón":</strong> Cocina mexicana tradicional y contemporánea, con chef especializado en cocina prehispánica, maridajes con tequilas y mezcales premium, shows de cocina en vivo, y cenas temáticas semanales. Ambiente íntimo para 80 personas.</li>
+              <li><strong>Restaurante Asiático "Zen Garden":</strong> Fusión asiática con especialidades japonesas, tailandesas y chinas, sushi bar con chef especializado, teppanyaki en vivo, y bar de sake premium. Decoración zen con jardín japonés privado.</li>
+              <li><strong>Steakhouse "El Rancho":</strong> Especializado en cortes de carne premium, parrilla argentina, mariscos frescos, cava de vinos con más de 300 etiquetas, y ambiente rústico elegante con música en vivo fines de semana.</li>
+            </ul>
+            
+            <h4>3.2.2 Bares y Lounges</h4>
+            <ul>
+              <li><strong>Lobby Bar "Paradise Lounge":</strong> Cocktails clásicos y creaciones exclusivas del hotel, café gourmet, tapas y bocadillos, música ambient, y ambiente elegante para reuniones de negocios o sociales.</li>
+              <li><strong>Pool Bar "Aqua":</strong> Bar junto a la alberca con bebidas tropicales, smoothies naturales, ensaladas frescas, ceviches, y snacks ligeros. Servicio directo a camastros y cabañas.</li>
+              <li><strong>Rooftop Bar "Sky Paradise":</strong> Bar en la azotea con vista panorámica de la ciudad, cocktails premium, champagne bar, DJ los fines de semana, y área VIP con servicio de botella.</li>
+              <li><strong>Sports Bar "Champions":</strong> Bar deportivo con múltiples pantallas, cerveza artesanal, alitas y nachos gourmet, juegos de mesa, y transmisión de eventos deportivos importantes.</li>
+            </ul>
+            
+            <h4>3.2.3 Servicios Especiales de Alimentos</h4>
+            <ul>
+              <li><strong>Room Service 24/7:</strong> Menú completo disponible las 24 horas con entrega en habitación en máximo 45 minutos</li>
+              <li><strong>Servicio de Chef Privado:</strong> Chef personal para cenas especiales en suite, con menú personalizado y servicio de meseros</li>
+              <li><strong>Catering para Eventos:</strong> Servicio completo de banquetes para bodas, conferencias, y celebraciones especiales</li>
+              <li><strong>Cenas Románticas:</strong> Cenas privadas en terraza, playa, jardín, o ubicaciones especiales del hotel</li>
+              <li><strong>Experiencias Gastronómicas:</strong> Clases de cocina, cenas maridaje, tours gastronómicos, y noches temáticas</li>
+            </ul>
+            
+            <h3>3.3 Servicios de Spa y Bienestar</h3>
+            <p>El "Paradise Spa" es nuestro santuario de relajación y bienestar que incluye:</p>
+            
+            <h4>3.3.1 Tratamientos Corporales</h4>
+            <ul>
+              <li><strong>Masajes Terapéuticos:</strong> Sueco, deep tissue, hot stone, aromaterapia, parejas, prenatal, y deportivo con terapistas certificados</li>
+              <li><strong>Tratamientos Faciales:</strong> Limpieza profunda, anti-edad, hidratación intensiva, tratamientos específicos por tipo de piel, y faciales para hombres</li>
+              <li><strong>Tratamientos Corporales:</strong> Exfoliación corporal, envolturas detox, hidratación profunda, y tratamientos reductivos</li>
+              <li><strong>Medicina Estética:</strong> Tratamientos no invasivos, mesoterapia, radiofrecuencia, y consultas con dermatólogo certificado</li>
+            </ul>
+            
+            <h4>3.3.2 Instalaciones de Bienestar</h4>
+            <ul>
+              <li><strong>Gimnasio Equipado:</strong> Equipo cardiovascular de última generación, pesas libres, máquinas de resistencia, área de estiramientos, y entrenador personal disponible</li>
+              <li><strong>Piscinas Terapéuticas:</strong> Piscina temperada, jacuzzis exteriores, piscina de nado, y área de hidroterapia</li>
+              <li><strong>Sauna y Vapor:</strong> Sauna finlandesa, baño de vapor, duchas escocesas, y área de relajación</li>
+              <li><strong>Yoga y Meditación:</strong> Clases grupales diarias, sesiones privadas, meditación guiada, y terapias holísticas</li>
+              <li><strong>Salón de Belleza:</strong> Servicios de peluquería, manicure, pedicure, maquillaje profesional, y tratamientos de belleza integral</li>
+            </ul>
+            
+            <h3>3.4 Servicios de Entretenimiento y Recreación</h3>
+            
+            <h4>3.4.1 Actividades Diurnas</h4>
+            <ul>
+              <li><strong>Deportes Acuáticos:</strong> Piscina olímpica, piscina recreativa, toboganes, área infantil, clases de aqua aeróbicos, y competencias de natación</li>
+              <li><strong>Deportes Terrestres:</strong> Cancha de tenis iluminada, cancha de paddle, voleibol de playa, fútbol rápido, y torneos organizados</li>
+              <li><strong>Actividades de Aventura:</strong> Senderismo guiado, ciclismo de montaña, escalada en roca, rappel, y expediciones naturales</li>
+              <li><strong>Actividades Culturales:</strong> Tours históricos, talleres de artesanías, clases de baile folklórico, y espectáculos culturales</li>
+            </ul>
+            
+            <h4>3.4.2 Entretenimiento Nocturno</h4>
+            <ul>
+              <li><strong>Shows en Vivo:</strong> Espectáculos musicales, bailes folklóricos, shows temáticos, y presentaciones de artistas invitados</li>
+              <li><strong>Discoteca "Paradise Nights":</strong> Pista de baile, DJ profesional, sistema de sonido de última generación, área VIP, y fiestas temáticas</li>
+              <li><strong>Casino "Golden Paradise":</strong> Mesas de juego, máquinas tragamonedas, poker texas hold'em, blackjack, ruleta, y torneos semanales</li>
+              <li><strong>Karaoke Bar:</strong> Cabinas privadas, sistema profesional de sonido, amplio catálogo musical, y competencias de karaoke</li>
+            </ul>
+            
+            <h3>3.5 Servicios para Familias y Niños</h3>
+            
+            <h4>3.5.1 Club Infantil "Paradise Kids"</h4>
+            <ul>
+              <li><strong>Supervisión Profesional:</strong> Personal especializado en cuidado infantil, enfermera pediátrica de guardia, y actividades educativas</li>
+              <li><strong>Instalaciones Especializadas:</strong> Área de juegos techada, parque infantil exterior, piscina para niños, y sala de videojuegos</li>
+              <li><strong>Actividades por Edades:</strong> Programas específicos para bebés (6m-2años), niños (3-7años), y pre-adolescentes (8-12años)</li>
+              <li><strong>Servicios Especiales:</strong> Guardería nocturna, servicio de niñera en habitación, menú infantil especializado, y celebraciones de cumpleaños</li>
+            </ul>
+            
+            <h4>3.5.2 Servicios Teen</h4>
+            <ul>
+              <li><strong>Teen Club:</strong> Área exclusiva para adolescentes con videojuegos, mesa de billar, ping pong, y zona de descanso</li>
+              <li><strong>Actividades Especializadas:</strong> Deportes extremos, talleres de tecnología, concursos de talentos, y fiestas teen</li>
+              <li><strong>Supervisión Apropiada:</strong> Coordinadores especializados en manejo de adolescentes y actividades de integración social</li>
+            </ul>
+            
+            <h3>3.6 Servicios de Eventos y Convenciones</h3>
+            
+            <h4>3.6.1 Espacios para Eventos</h4>
+            <ul>
+              <li><strong>Salón de Convenciones Principal:</strong> Capacidad para 500 personas en formato teatro, divisible en 3 secciones, sistema audiovisual completo, iluminación profesional, y aire acondicionado independiente</li>
+              <li><strong>Salones Ejecutivos:</strong> 6 salones con capacidad de 20 a 100 personas, equipo de videoconferencia, WiFi de alta velocidad, y servicio de coffee break</li>
+              <li><strong>Salón de Bailes "Crystal Ballroom":</strong> Espacio elegante para bodas y gala con capacidad para 300 personas, pista de baile, sistema de iluminación ambiental, y terraza privada</li>
+              <li><strong>Espacios al Aire Libre:</strong> Jardines para ceremonias, terraza con vista panorámica, área de alberca para eventos casuales, y gazebos románticos</li>
+            </ul>
+            
+            <h4>3.6.2 Servicios Integrales de Eventos</h4>
+            <ul>
+              <li><strong>Coordinación Profesional:</strong> Wedding planner certificado, coordinador de eventos corporativos, y asistente personal durante el evento</li>
+              <li><strong>Servicios Audiovisuales:</strong> Proyectores de alta definición, sistemas de sonido profesional, iluminación ambiental, y transmisión en vivo</li>
+              <li><strong>Decoración y Montaje:</strong> Diseño floral, decoración temática, montaje de espacios, y servicios de fotografía/video profesional</li>
+              <li><strong>Catering Especializado:</strong> Menús personalizados, servicio de meseros especializados, barra libre premium, y opciones dietéticas especiales</li>
+            </ul>
+            
+            <h3>3.7 Servicios de Transporte y Logística</h3>
+            
+            <h4>3.7.1 Transporte Terrestre</h4>
+            <ul>
+              <li><strong>Servicio de Shuttle:</strong> Transporte gratuito al centro comercial más cercano y centro histórico de la ciudad (horarios específicos)</li>
+              <li><strong>Transporte al Aeropuerto:</strong> Servicio de traslado privado disponible 24/7 con vehículos de lujo y conductores profesionales</li>
+              <li><strong>Renta de Vehículos:</strong> Convenios con empresas rentadoras para autos compactos, SUVs, y vehículos de lujo</li>
+              <li><strong>Transporte para Eventos:</strong> Autobuses para grupos, vans ejecutivas, y limousinas para ocasiones especiales</li>
+            </ul>
+            
+            <h4>3.7.2 Servicios de Concierge</h4>
+            <ul>
+              <li><strong>Información Turística:</strong> Mapas detallados, recomendaciones personalizadas, reservas en restaurantes externos, y tickets para espectáculos</li>
+              <li><strong>Tours y Excursiones:</strong> City tours, expediciones naturales, tours culturales, y experiencias gastronómicas en la ciudad</li>
+              <li><strong>Servicios Personales:</strong> Shopping personal, gestión de citas médicas, organización de celebraciones, y servicios de secretaria</li>
+              <li><strong>Servicios Especializados:</strong> Cuidado de mascotas, servicios religiosos, traducción/interpretación, y asistencia para necesidades especiales</li>
+            </ul>
+            
+            <h3>3.8 Servicios Adicionales y Premium</h3>
+            
+            <h4>3.8.1 Servicios VIP</h4>
+            <ul>
+              <li><strong>Mayordomo Personal:</strong> Disponible para suites y huéspedes premium con servicios personalizados 24/7</li>
+              <li><strong>Check-in VIP:</strong> Proceso privado en suite o área exclusiva sin hacer filas</li>
+              <li><strong>Servicios de Jet Privado:</strong> Coordinación de vuelos privados y helicópteros para traslados especiales</li>
+              <li><strong>Shopping Personal:</strong> Compras personalizadas en tiendas de lujo y boutiques exclusivas</li>
+            </ul>
+            
+            <h4>3.8.2 Servicios de Negocios</h4>
+            <ul>
+              <li><strong>Business Center:</strong> Computadoras, impresoras, fax, escáner, servicio de secretaria, y oficinas privadas por horas</li>
+              <li><strong>Servicios de Traducción:</strong> Intérpretes profesionales en múltiples idiomas y servicios de traducción de documentos</li>
+              <li><strong>Videoconferencias:</strong> Salas equipadas con tecnología de punta para reuniones virtuales internacionales</li>
+              <li><strong>Servicios Legales:</strong> Asesoría legal básica, notarización de documentos, y contacto con despachos especializados</li>
+            </ul>
+            
+            <h3>3.9 Disponibilidad y Reservaciones de Servicios</h3>
+            <p>La disponibilidad de servicios está sujeta a:</p>
+            <ul>
+              <li><strong>Horarios Operativos:</strong> Cada servicio tiene horarios específicos que pueden variar según temporada y demanda</li>
+              <li><strong>Reservaciones Previas:</strong> Servicios de spa, restaurantes especializados, y actividades grupales requieren reservación anticipada</li>
+              <li><strong>Capacidad Limitada:</strong> Algunos servicios tienen cupo limitado y se asignan por orden de llegada o reservación</li>
+              <li><strong>Condiciones Climáticas:</strong> Actividades al aire libre pueden cancelarse por condiciones climáticas adversas</li>
+              <li><strong>Mantenimiento Programado:</strong> Instalaciones pueden estar temporalmente cerradas por mantenimiento preventivo</li>
+            </ul>
+            
+            <h3>3.10 Calidad y Estándares de Servicio</h3>
+            <p>Hotel Paradise se compromete a mantener los más altos estándares de calidad:</p>
+            <ul>
+              <li><strong>Certificaciones:</strong> ISO 9001 para gestión de calidad, certificación ambiental ISO 14001, y distintivo "H" de higiene</li>
+              <li><strong>Personal Capacitado:</strong> Entrenamiento continuo del personal, certificaciones profesionales, y evaluaciones periódicas de desempeño</li>
+              <li><strong>Mantenimiento Preventivo:</strong> Programas rigurosos de mantenimiento de instalaciones, equipos, y sistemas</li>
+              <li><strong>Evaluación Continua:</strong> Encuestas de satisfacción, mystery shopping, y auditorías internas regulares</li>
+              <li><strong>Mejora Continua:</strong> Implementación de sugerencias de huéspedes y actualización constante de servicios</li>
+            </ul>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>3.1 Accommodation Services</h3>
+            <p>Hotel Paradise offers accommodation services in various categories of rooms and suites, designed to satisfy the most demanding needs of our guests:</p>
+            
+            <h4>3.1.1 Room Categories</h4>
+            <ul>
+              <li><strong>Standard Rooms:</strong> Comfortable and elegant spaces with basic amenities, double bed or two single beds, private bathroom with shower, air conditioning, flat screen TV, minibar, safe, and free WiFi connection.</li>
+              <li><strong>Superior Rooms:</strong> Extended rooms with private balcony, garden or city view, premium amenities, complimentary bathrobe and slippers, coffee/tea machine, and nightly turndown service.</li>
+              <li><strong>Deluxe Rooms:</strong> Luxury spaces with panoramic view, bathroom jacuzzi, separate living area, recognized brand amenities, butler service available upon request, and priority access to hotel services.</li>
+              <li><strong>Junior Suites:</strong> One-bedroom suites with integrated living room, dining area for four people, equipped basic kitchen, two televisions, two full bathrooms, and private terrace with outdoor furniture.</li>
+              <li><strong>Executive Suites:</strong> Two-bedroom suites with equipped office, meeting room for small meetings, complete integral kitchen, secretary service available, and access to executive lounge with continental breakfast included.</li>
+              <li><strong>Presidential Suite:</strong> The hotel's most exclusive suite with three bedrooms, luxury living room, formal dining room for eight people, complete gourmet kitchen, private gym, personal spa, terrace with jacuzzi, 24/7 personal butler, and private chef services available.</li>
+            </ul>
+            
+            <h4>3.1.2 Included Amenities</h4>
+            <p>All rooms include at no additional cost:</p>
+            <ul>
+              <li>Daily cleaning service with towel and linen change according to international standards</li>
+              <li>Premium toiletries (shampoo, conditioner, body soap, lotion, dental kit, shaving kit)</li>
+              <li>Unlimited high-speed WiFi connection throughout the room</li>
+              <li>Air conditioning with individual temperature control</li>
+              <li>Cable television with international channels and entertainment system</li>
+              <li>Stocked minibar with beverages and snacks (consumption charges apply)</li>
+              <li>Electronic safe with laptop capacity</li>
+              <li>Laundry and dry cleaning service (additional charge)</li>
+              <li>Express ironing service at no cost for one garment per day</li>
+              <li>Local and national newspaper upon request</li>
+            </ul>
+            
+            <h3>3.2 Gastronomic Services</h3>
+            <p>Hotel Paradise features a varied gastronomic offer that includes:</p>
+            
+            <h4>3.2.1 Specialized Restaurants</h4>
+            <ul>
+              <li><strong>Main Restaurant "Paradise Garden":</strong> International cuisine with breakfast buffet, à la carte menu for lunch and dinner, Mexican and international specialties, gourmet salad bar, grilled meat station, and artisanal desserts. Capacity for 200 diners with heated terrace areas.</li>
+              <li><strong>Specialty Restaurant "El Corazón":</strong> Traditional and contemporary Mexican cuisine, with chef specialized in pre-Hispanic cooking, pairings with premium tequilas and mezcals, live cooking shows, and weekly themed dinners. Intimate atmosphere for 80 people.</li>
+              <li><strong>Asian Restaurant "Zen Garden":</strong> Asian fusion with Japanese, Thai and Chinese specialties, sushi bar with specialized chef, live teppanyaki, and premium sake bar. Zen decoration with private Japanese garden.</li>
+              <li><strong>Steakhouse "El Rancho":</strong> Specialized in premium meat cuts, Argentine grill, fresh seafood, wine cellar with more than 300 labels, and elegant rustic atmosphere with live music on weekends.</li>
+            </ul>
+            
+            <h4>3.2.2 Bars and Lounges</h4>
+            <ul>
+              <li><strong>Lobby Bar "Paradise Lounge":</strong> Classic cocktails and exclusive hotel creations, gourmet coffee, tapas and snacks, ambient music, and elegant atmosphere for business or social meetings.</li>
+              <li><strong>Pool Bar "Aqua":</strong> Bar next to the pool with tropical drinks, natural smoothies, fresh salads, ceviches, and light snacks. Direct service to loungers and cabanas.</li>
+              <li><strong>Rooftop Bar "Sky Paradise":</strong> Rooftop bar with panoramic city view, premium cocktails, champagne bar, DJ on weekends, and VIP area with bottle service.</li>
+              <li><strong>Sports Bar "Champions":</strong> Sports bar with multiple screens, craft beer, gourmet wings and nachos, board games, and broadcast of major sporting events.</li>
+            </ul>
+            
+            <h4>3.2.3 Special Food Services</h4>
+            <ul>
+              <li><strong>24/7 Room Service:</strong> Complete menu available 24 hours with in-room delivery in maximum 45 minutes</li>
+              <li><strong>Private Chef Service:</strong> Personal chef for special dinners in suite, with personalized menu and waiter service</li>
+              <li><strong>Event Catering:</strong> Complete banquet service for weddings, conferences, and special celebrations</li>
+              <li><strong>Romantic Dinners:</strong> Private dinners on terrace, beach, garden, or special hotel locations</li>
+              <li><strong>Gastronomic Experiences:</strong> Cooking classes, pairing dinners, gastronomic tours, and themed nights</li>
+            </ul>
+            
+            <h3>3.3 Spa and Wellness Services</h3>
+            <p>The "Paradise Spa" is our relaxation and wellness sanctuary that includes:</p>
+            
+            <h4>3.3.1 Body Treatments</h4>
+            <ul>
+              <li><strong>Therapeutic Massages:</strong> Swedish, deep tissue, hot stone, aromatherapy, couples, prenatal, and sports with certified therapists</li>
+              <li><strong>Facial Treatments:</strong> Deep cleansing, anti-aging, intensive hydration, specific treatments by skin type, and men's facials</li>
+              <li><strong>Body Treatments:</strong> Body exfoliation, detox wraps, deep hydration, and reductive treatments</li>
+              <li><strong>Aesthetic Medicine:</strong> Non-invasive treatments, mesotherapy, radiofrequency, and consultations with certified dermatologist</li>
+            </ul>
+            
+            <h4>3.3.2 Wellness Facilities</h4>
+            <ul>
+              <li><strong>Equipped Gym:</strong> Latest generation cardiovascular equipment, free weights, resistance machines, stretching area, and personal trainer available</li>
+              <li><strong>Therapeutic Pools:</strong> Heated pool, outdoor jacuzzis, swimming pool, and hydrotherapy area</li>
+              <li><strong>Sauna and Steam:</strong> Finnish sauna, steam bath, Scottish showers, and relaxation area</li>
+              <li><strong>Yoga and Meditation:</strong> Daily group classes, private sessions, guided meditation, and holistic therapies</li>
+              <li><strong>Beauty Salon:</strong> Hairdressing services, manicure, pedicure, professional makeup, and comprehensive beauty treatments</li>
+            </ul>
+            
+            <h3>3.4 Entertainment and Recreation Services</h3>
+            
+            <h4>3.4.1 Daytime Activities</h4>
+            <ul>
+              <li><strong>Water Sports:</strong> Olympic pool, recreational pool, water slides, children's area, aqua aerobics classes, and swimming competitions</li>
+              <li><strong>Land Sports:</strong> Illuminated tennis court, paddle court, beach volleyball, quick soccer, and organized tournaments</li>
+              <li><strong>Adventure Activities:</strong> Guided hiking, mountain biking, rock climbing, rappelling, and natural expeditions</li>
+              <li><strong>Cultural Activities:</strong> Historical tours, craft workshops, folk dance classes, and cultural shows</li>
+            </ul>
+            
+            <h4>3.4.2 Nighttime Entertainment</h4>
+            <ul>
+              <li><strong>Live Shows:</strong> Musical performances, folk dances, themed shows, and guest artist presentations</li>
+              <li><strong>Nightclub "Paradise Nights":</strong> Dance floor, professional DJ, latest generation sound system, VIP area, and themed parties</li>
+              <li><strong>Casino "Golden Paradise":</strong> Gaming tables, slot machines, Texas Hold'em poker, blackjack, roulette, and weekly tournaments</li>
+              <li><strong>Karaoke Bar:</strong> Private booths, professional sound system, extensive music catalog, and karaoke competitions</li>
+            </ul>
+            
+            <h3>3.5 Family and Children Services</h3>
+            
+            <h4>3.5.1 Kids Club "Paradise Kids"</h4>
+            <ul>
+              <li><strong>Professional Supervision:</strong> Staff specialized in childcare, pediatric nurse on duty, and educational activities</li>
+              <li><strong>Specialized Facilities:</strong> Indoor play area, outdoor playground, children's pool, and video game room</li>
+              <li><strong>Age-Based Activities:</strong> Specific programs for babies (6m-2years), children (3-7years), and pre-teens (8-12years)</li>
+              <li><strong>Special Services:</strong> Nighttime nursery, in-room babysitting service, specialized children's menu, and birthday celebrations</li>
+            </ul>
+            
+            <h4>3.5.2 Teen Services</h4>
+            <ul>
+              <li><strong>Teen Club:</strong> Exclusive area for teenagers with video games, pool table, ping pong, and rest area</li>
+              <li><strong>Specialized Activities:</strong> Extreme sports, technology workshops, talent contests, and teen parties</li>
+              <li><strong>Appropriate Supervision:</strong> Coordinators specialized in teenager management and social integration activities</li>
+            </ul>
+            
+            <h3>3.6 Events and Convention Services</h3>
+            
+            <h4>3.6.1 Event Spaces</h4>
+            <ul>
+              <li><strong>Main Convention Hall:</strong> Capacity for 500 people in theater format, divisible into 3 sections, complete audiovisual system, professional lighting, and independent air conditioning</li>
+              <li><strong>Executive Rooms:</strong> 6 rooms with capacity from 20 to 100 people, videoconference equipment, high-speed WiFi, and coffee break service</li>
+              <li><strong>Ballroom "Crystal Ballroom":</strong> Elegant space for weddings and galas with capacity for 300 people, dance floor, ambient lighting system, and private terrace</li>
+              <li><strong>Outdoor Spaces:</strong> Gardens for ceremonies, terrace with panoramic view, pool area for casual events, and romantic gazebos</li>
+            </ul>
+            
+            <h4>3.6.2 Comprehensive Event Services</h4>
+            <ul>
+              <li><strong>Professional Coordination:</strong> Certified wedding planner, corporate event coordinator, and personal assistant during the event</li>
+              <li><strong>Audiovisual Services:</strong> High-definition projectors, professional sound systems, ambient lighting, and live streaming</li>
+              <li><strong>Decoration and Setup:</strong> Floral design, themed decoration, space setup, and professional photography/video services</li>
+              <li><strong>Specialized Catering:</strong> Personalized menus, specialized waiter service, premium open bar, and special dietary options</li>
+            </ul>
+            
+            <h3>3.7 Transportation and Logistics Services</h3>
+            
+            <h4>3.7.1 Ground Transportation</h4>
+            <ul>
+              <li><strong>Shuttle Service:</strong> Free transportation to the nearest shopping center and historic city center (specific schedules)</li>
+              <li><strong>Airport Transportation:</strong> Private transfer service available 24/7 with luxury vehicles and professional drivers</li>
+              <li><strong>Vehicle Rental:</strong> Agreements with rental companies for compact cars, SUVs, and luxury vehicles</li>
+              <li><strong>Event Transportation:</strong> Buses for groups, executive vans, and limousines for special occasions</li>
+            </ul>
+            
+            <h4>3.7.2 Concierge Services</h4>
+            <ul>
+              <li><strong>Tourist Information:</strong> Detailed maps, personalized recommendations, external restaurant reservations, and show tickets</li>
+              <li><strong>Tours and Excursions:</strong> City tours, natural expeditions, cultural tours, and gastronomic experiences in the city</li>
+              <li><strong>Personal Services:</strong> Personal shopping, medical appointment management, celebration organization, and secretarial services</li>
+              <li><strong>Specialized Services:</strong> Pet care, religious services, translation/interpretation, and assistance for special needs</li>
+            </ul>
+            
+            <h3>3.8 Additional and Premium Services</h3>
+            
+            <h4>3.8.1 VIP Services</h4>
+            <ul>
+              <li><strong>Personal Butler:</strong> Available for suites and premium guests with 24/7 personalized services</li>
+              <li><strong>VIP Check-in:</strong> Private process in suite or exclusive area without waiting in lines</li>
+              <li><strong>Private Jet Services:</strong> Coordination of private flights and helicopters for special transfers</li>
+              <li><strong>Personal Shopping:</strong> Personalized purchases at luxury stores and exclusive boutiques</li>
+            </ul>
+            
+            <h4>3.8.2 Business Services</h4>
+            <ul>
+              <li><strong>Business Center:</strong> Computers, printers, fax, scanner, secretarial service, and private offices by the hour</li>
+              <li><strong>Translation Services:</strong> Professional interpreters in multiple languages and document translation services</li>
+              <li><strong>Videoconferences:</strong> Rooms equipped with cutting-edge technology for international virtual meetings</li>
+              <li><strong>Legal Services:</strong> Basic legal advice, document notarization, and contact with specialized firms</li>
+            </ul>
+            
+            <h3>3.9 Service Availability and Reservations</h3>
+            <p>Service availability is subject to:</p>
+            <ul>
+              <li><strong>Operating Hours:</strong> Each service has specific hours that may vary according to season and demand</li>
+              <li><strong>Prior Reservations:</strong> Spa services, specialized restaurants, and group activities require advance reservation</li>
+              <li><strong>Limited Capacity:</strong> Some services have limited capacity and are assigned on a first-come, first-served or reservation basis</li>
+              <li><strong>Weather Conditions:</strong> Outdoor activities may be canceled due to adverse weather conditions</li>
+              <li><strong>Scheduled Maintenance:</strong> Facilities may be temporarily closed for preventive maintenance</li>
+            </ul>
+            
+            <h3>3.10 Quality and Service Standards</h3>
+            <p>Hotel Paradise is committed to maintaining the highest quality standards:</p>
+            <ul>
+              <li><strong>Certifications:</strong> ISO 9001 for quality management, ISO 14001 environmental certification, and "H" hygiene distinction</li>
+              <li><strong>Trained Staff:</strong> Continuous staff training, professional certifications, and periodic performance evaluations</li>
+              <li><strong>Preventive Maintenance:</strong> Rigorous maintenance programs for facilities, equipment, and systems</li>
+              <li><strong>Continuous Evaluation:</strong> Satisfaction surveys, mystery shopping, and regular internal audits</li>
+              <li><strong>Continuous Improvement:</strong> Implementation of guest suggestions and constant service updates</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="section-4" class="content-section">
+          <h2>{{ getTranslation('sections.section4') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>4.1 Proceso de Reserva</h3>
+            <p>Las reservas pueden realizarse a través del sitio web oficial, aplicación móvil, teléfono, correo electrónico, o directamente en las instalaciones del hotel. Toda reserva requiere proporcionar información personal completa y verídica, incluyendo nombre completo, documento de identificación oficial, información de contacto y método de pago válido.</p>
+            
+            <h3>4.2 Confirmación de Reserva</h3>
+            <p>Las reservas se consideran confirmadas únicamente cuando el huésped recibe una confirmación escrita por parte del hotel, ya sea por correo electrónico, mensaje de texto, o documento físico. La confirmación incluirá número de reserva, fechas, servicios contratados, tarifas aplicables y condiciones específicas.</p>
+            
+            <h3>4.3 Modificaciones de Reserva</h3>
+            <p>Las modificaciones a reservas confirmadas están sujetas a disponibilidad y pueden generar cargos adicionales. Cambios de fecha pueden resultar en ajustes tarifarios según las tarifas vigentes para las nuevas fechas solicitadas. Todas las modificaciones deben solicitarse por escrito y confirmarse por el hotel.</p>
+            
+            <h3>4.4 Política de Cancelación Estándar</h3>
+            <p>Las cancelaciones realizadas con más de 72 horas de anticipación a la fecha de llegada no generarán penalización. Cancelaciones realizadas entre 72 y 24 horas antes de la llegada incurrirán en una penalización del 50% del valor total de la reserva. Cancelaciones realizadas con menos de 24 horas de anticipación o no-shows (no presentarse) resultarán en el cobro del 100% del valor de la reserva.</p>
+            
+            <h3>4.5 Penalizaciones por Cancelación Tardía</h3>
+            <p><strong>PENALIZACIÓN ESPECIAL:</strong> En caso de cancelaciones realizadas dentro de las 48 horas previas a la fecha de llegada, o en caso de no presentarse (no-show), el huésped deberá pagar una penalización equivalente al <strong>40% del precio total de la reserva</strong>, independientemente de los cargos por cancelación estándar. Esta penalización se aplicará automáticamente a la tarjeta de crédito proporcionada al momento de la reserva.</p>
+            
+            <h3>4.6 Casos Especiales de Cancelación</h3>
+            <p>Para eventos, temporadas altas (Navidad, Año Nuevo, Semana Santa, puentes largos), y reservas de grupo, se aplicarán políticas de cancelación más estrictas que serán informadas al momento de la reserva. Estas reservas especiales pueden requerir pagos anticipados no reembolsables.</p>
+            
+            <h3>4.7 Fuerza Mayor</h3>
+            <p>En casos de fuerza mayor, incluyendo pero no limitándose a desastres naturales, pandemias, actos de terrorismo, guerra, o disposiciones gubernamentales que impidan la operación del hotel, las cancelaciones podrán realizarse sin penalización, ofreciendo reembolso completo o crédito para uso futuro, a elección del huésped.</p>
+            
+            <h3>4.8 Garantías de Reserva</h3>
+            <p>Todas las reservas requieren garantía mediante tarjeta de crédito válida. El hotel se reserva el derecho de realizar pre-autorizaciones en la tarjeta para garantizar el cumplimiento de las obligaciones del huésped. La tarjeta debe estar a nombre del huésped principal de la reserva.</p>
+            
+            <h3>4.9 Overbooking</h3>
+            <p>En el excepcional caso de overbooking (sobreventa), el hotel relocalizará al huésped en un establecimiento de categoría similar o superior, cubriendo la diferencia de tarifas y proporcionando transporte gratuito. Adicionalmente, se otorgará una compensación equivalente a una noche de hospedaje para uso futuro.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>4.1 Reservation Process</h3>
+            <p>Reservations can be made through the official website, mobile application, telephone, email, or directly at the hotel facilities. Every reservation requires providing complete and truthful personal information, including full name, official identification document, contact information and valid payment method.</p>
+            
+            <h3>4.2 Reservation Confirmation</h3>
+            <p>Reservations are considered confirmed only when the guest receives written confirmation from the hotel, either by email, text message, or physical document. The confirmation will include reservation number, dates, contracted services, applicable rates and specific conditions.</p>
+            
+            <h3>4.3 Reservation Modifications</h3>
+            <p>Modifications to confirmed reservations are subject to availability and may generate additional charges. Date changes may result in rate adjustments according to current rates for the new requested dates. All modifications must be requested in writing and confirmed by the hotel.</p>
+            
+            <h3>4.4 Standard Cancellation Policy</h3>
+            <p>Cancellations made more than 72 hours in advance of the arrival date will not generate penalties. Cancellations made between 72 and 24 hours before arrival will incur a penalty of 50% of the total reservation value. Cancellations made less than 24 hours in advance or no-shows will result in charging 100% of the reservation value.</p>
+            
+            <h3>4.5 Late Cancellation Penalties</h3>
+            <p><strong>SPECIAL PENALTY:</strong> In case of cancellations made within 48 hours prior to the arrival date, or in case of no-show, the guest must pay a penalty equivalent to <strong>40% of the total reservation price</strong>, regardless of standard cancellation charges. This penalty will be automatically applied to the credit card provided at the time of reservation.</p>
+            
+            <h3>4.6 Special Cancellation Cases</h3>
+            <p>For events, high seasons (Christmas, New Year, Easter, long weekends), and group reservations, stricter cancellation policies will apply and will be informed at the time of reservation. These special reservations may require non-refundable advance payments.</p>
+            
+            <h3>4.7 Force Majeure</h3>
+            <p>In cases of force majeure, including but not limited to natural disasters, pandemics, acts of terrorism, war, or government provisions that prevent hotel operation, cancellations may be made without penalty, offering full refund or credit for future use, at the guest's choice.</p>
+            
+            <h3>4.8 Reservation Guarantees</h3>
+            <p>All reservations require guarantee through valid credit card. The hotel reserves the right to make pre-authorizations on the card to guarantee compliance with guest obligations. The card must be in the name of the main guest of the reservation.</p>
+            
+            <h3>4.9 Overbooking</h3>
+            <p>In the exceptional case of overbooking, the hotel will relocate the guest to a similar or superior category establishment, covering the rate difference and providing free transportation. Additionally, compensation equivalent to one night's accommodation for future use will be granted.</p>
+          </div>
+        </section>
+
+        <section id="section-5" class="content-section">
+          <h2>{{ getTranslation('sections.section5') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>5.1 Métodos de Pago Aceptados</h3>
+            <p>Hotel Paradise acepta los siguientes métodos de pago: efectivo en moneda nacional (pesos mexicanos), tarjetas de crédito (Visa, MasterCard, American Express), tarjetas de débito, transferencias bancarias, y cheques certificados. Los pagos en divisas extranjeras estarán sujetos al tipo de cambio vigente establecido por el hotel al momento del pago.</p>
+            
+            <h3>5.2 Tarifas y Precios</h3>
+            <p>Las tarifas están sujetas a cambios sin previo aviso y pueden variar según la temporada, demanda, eventos especiales, y promociones vigentes. Los precios publicados no incluyen impuestos aplicables (IVA, impuesto al hospedaje) ni propinas, a menos que se especifique expresamente. Todas las tarifas se expresan en pesos mexicanos salvo indicación contraria.</p>
+            
+            <h3>5.3 Facturación y Comprobantes Fiscales</h3>
+            <p>El hotel expedirá facturas fiscales conforme a las disposiciones del Servicio de Administración Tributaria (SAT). Para la emisión de facturas, el huésped deberá proporcionar sus datos fiscales completos y correctos. Las solicitudes de facturación deberán realizarse durante la estancia o dentro de los 5 días hábiles posteriores al checkout.</p>
+            
+            <h3>5.4 Pagos Anticipados y Depósitos</h3>
+            <p>Ciertas reservas pueden requerir pago anticipado total o parcial al momento de la confirmación. Los depósitos de garantía por daños pueden solicitarse al momento del check-in, especialmente para eventos, grupos, o huéspedes sin historial crediticio con el hotel. Estos depósitos serán reembolsados dentro de 7 días hábiles posteriores al checkout, previa verificación del estado de las instalaciones.</p>
+            
+            <h3>5.5 Cargos Adicionales</h3>
+            <p>El huésped será responsable de todos los cargos incurridos durante su estancia, incluyendo pero no limitándose a: servicios de habitación, minibar, llamadas telefónicas, internet premium, servicios de spa, lavandería, estacionamiento, servicios de terceros contratados a través del hotel, y cualquier daño a las instalaciones o mobiliario.</p>
+            
+            <h3>5.6 Política de Reembolsos</h3>
+            <p>Los reembolsos se procesarán al método de pago original dentro de 10 a 15 días hábiles. Para pagos en efectivo, los reembolsos se realizarán mediante transferencia bancaria o cheque. No se realizarán reembolsos por servicios no utilizados por decisión del huésped, salvo en casos de fuerza mayor debidamente comprobados.</p>
+            
+            <h3>5.7 Disputas y Reclamaciones</h3>
+            <p>Cualquier disputa relacionada con cargos debe reportarse durante la estancia o dentro de las 24 horas posteriores al checkout. El hotel investigará todas las reclamaciones y proporcionará respuesta por escrito dentro de 5 días hábiles. Para disputas de tarjetas de crédito, el hotel colaborará con las instituciones financieras proporcionando toda la documentación necesaria.</p>
+            
+            <h3>5.8 Mora y Intereses</h3>
+            <p>Los pagos vencidos generarán intereses moratorios a la tasa máxima permitida por la ley. El hotel se reserva el derecho de suspender servicios y proceder con acciones legales para el cobro de adeudos. Los gastos de cobranza y honorarios legales serán a cargo del deudor.</p>
+            
+            <h3>5.9 Promociones y Descuentos</h3>
+            <p>Las promociones y descuentos no son acumulables salvo indicación expresa, están sujetos a términos y condiciones específicos, y pueden tener fechas de vigencia limitada. El hotel se reserva el derecho de modificar o cancelar promociones en cualquier momento.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>5.1 Accepted Payment Methods</h3>
+            <p>Hotel Paradise accepts the following payment methods: cash in national currency (Mexican pesos), credit cards (Visa, MasterCard, American Express), debit cards, bank transfers, and certified checks. Payments in foreign currencies will be subject to the current exchange rate established by the hotel at the time of payment.</p>
+            
+            <h3>5.2 Rates and Prices</h3>
+            <p>Rates are subject to change without notice and may vary according to season, demand, special events, and current promotions. Published prices do not include applicable taxes (VAT, accommodation tax) or tips, unless expressly specified. All rates are expressed in Mexican pesos unless otherwise indicated.</p>
+            
+            <h3>5.3 Billing and Tax Receipts</h3>
+            <p>The hotel will issue tax invoices in accordance with the provisions of the Tax Administration Service (SAT). For invoice issuance, the guest must provide complete and correct tax information. Billing requests must be made during the stay or within 5 business days after checkout.</p>
+            
+            <h3>5.4 Advance Payments and Deposits</h3>
+            <p>Certain reservations may require total or partial advance payment at the time of confirmation. Damage guarantee deposits may be requested at check-in, especially for events, groups, or guests without credit history with the hotel. These deposits will be refunded within 7 business days after checkout, after verification of facility condition.</p>
+            
+            <h3>5.5 Additional Charges</h3>
+            <p>The guest will be responsible for all charges incurred during their stay, including but not limited to: room service, minibar, telephone calls, premium internet, spa services, laundry, parking, third-party services contracted through the hotel, and any damage to facilities or furniture.</p>
+            
+            <h3>5.6 Refund Policy</h3>
+            <p>Refunds will be processed to the original payment method within 10 to 15 business days. For cash payments, refunds will be made through bank transfer or check. No refunds will be made for services not used by guest decision, except in cases of duly proven force majeure.</p>
+            
+            <h3>5.7 Disputes and Claims</h3>
+            <p>Any dispute related to charges must be reported during the stay or within 24 hours after checkout. The hotel will investigate all claims and provide written response within 5 business days. For credit card disputes, the hotel will collaborate with financial institutions providing all necessary documentation.</p>
+            
+            <h3>5.8 Default and Interest</h3>
+            <p>Overdue payments will generate default interest at the maximum rate allowed by law. The hotel reserves the right to suspend services and proceed with legal actions for debt collection. Collection expenses and legal fees will be borne by the debtor.</p>
+            
+            <h3>5.9 Promotions and Discounts</h3>
+            <p>Promotions and discounts are not cumulative unless expressly indicated, are subject to specific terms and conditions, and may have limited validity dates. The hotel reserves the right to modify or cancel promotions at any time.</p>
+          </div>
+        </section>
+
+        <section id="section-6" class="content-section">
+          <h2>{{ getTranslation('sections.section6') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>6.1 Comportamiento y Conducta</h3>
+            <p>Los huéspedes deben mantener en todo momento un comportamiento respetuoso, cívico y apropiado que no perturbe la tranquilidad de otros huéspedes o interfiera con las operaciones del hotel. Está estrictamente prohibido: el uso de lenguaje obsceno o amenazante, comportamiento agresivo o violento, consumo excesivo de alcohol que genere molestias, ruidos excesivos especialmente durante horas de descanso (22:00 a 08:00 horas), y cualquier actividad que pueda considerarse inmoral o ilegal.</p>
+            
+            <h3>6.2 Protección de Menores de Edad</h3>
+            <p><strong>POLÍTICA ESTRICTA CONTRA ABUSO INFANTIL:</strong> Hotel Paradise mantiene una política de cero tolerancia hacia cualquier forma de abuso, explotación o maltrato infantil. Está terminantemente prohibido:</p>
+            <ul>
+              <li>Cualquier forma de abuso físico, sexual, psicológico o emocional hacia menores de edad</li>
+              <li>La producción, distribución, posesión o visualización de material de abuso sexual infantil</li>
+              <li>El turismo sexual infantil o cualquier actividad relacionada</li>
+              <li>Dejar menores sin supervisión adecuada en las instalaciones del hotel</li>
+              <li>Permitir que menores accedan a áreas restringidas o consuman alcohol o sustancias prohibidas</li>
+            </ul>
+            <p>Cualquier sospecha o reporte de abuso infantil será inmediatamente reportado a las autoridades competentes (Ministerio Público, DIF, Policía) y resultará en la expulsión inmediata del hotel sin reembolso, prohibición permanente de acceso, y persecución legal conforme al Código Penal Federal.</p>
+            
+            <h3>6.3 Supervisión de Menores</h3>
+            <p>Los menores de 18 años deben estar acompañados y bajo supervisión constante de sus padres, tutores legales o adultos responsables debidamente identificados. Los adultos responsables son solidariamente responsables de todos los actos, daños y comportamientos de los menores bajo su cuidado. El hotel se reserva el derecho de solicitar documentación que acredite la relación legal entre adultos y menores.</p>
+            
+            <h3>6.4 Identificación y Registro</h3>
+            <p>Todos los huéspedes mayores de 16 años deben presentar identificación oficial vigente con fotografía al momento del check-in. Los huéspedes extranjeros deben presentar pasaporte vigente y, en su caso, documentos migratorios válidos. La información proporcionada debe ser verídica y cualquier falsificación será reportada a las autoridades correspondientes.</p>
+            
+            <h3>6.5 Cuidado de las Instalaciones</h3>
+            <p>Los huéspedes son responsables del uso adecuado y cuidado de todas las instalaciones, mobiliario, equipamiento y amenidades del hotel. Cualquier daño causado por negligencia, mal uso intencional o accidental será facturado al huésped responsable. Los daños incluyen pero no se limitan a: roturas, manchas permanentes, pérdida de objetos, daños a sistemas electrónicos, y cualquier modificación no autorizada a las instalaciones.</p>
+            
+            <h3>6.6 Seguridad Personal y de Pertenencias</h3>
+            <p>Los huéspedes son responsables de la seguridad de sus pertenencias personales. Se recomienda encarecidamente el uso de las cajas de seguridad proporcionadas en las habitaciones para objetos de valor. El hotel no se hace responsable por pérdida, robo o daño de pertenencias personales, incluyendo dinero, joyas, documentos, equipos electrónicos, vehículos o cualquier otro objeto, excepto cuando se demuestre negligencia grave del hotel.</p>
+            
+            <h3>6.7 Cumplimiento de Leyes y Reglamentos</h3>
+            <p>Los huéspedes deben cumplir con todas las leyes federales, estatales y municipales mexicanas, así como con los reglamentos internos del hotel. Está prohibido el uso, posesión o distribución de sustancias ilegales, armas de fuego o cualquier objeto considerado peligroso. El incumplimiento resultará en expulsión inmediata y reporte a las autoridades.</p>
+            
+            <h3>6.8 Actividades Comerciales</h3>
+            <p>Está prohibido realizar actividades comerciales, promocionales o de ventas en las instalaciones del hotel sin autorización previa y por escrito de la administración. Esto incluye la solicitud de propinas excesivas, venta de productos o servicios, y cualquier forma de comercio no autorizado.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>6.1 Behavior and Conduct</h3>
+            <p>Guests must maintain at all times respectful, civic and appropriate behavior that does not disturb the tranquility of other guests or interfere with hotel operations. Strictly prohibited: use of obscene or threatening language, aggressive or violent behavior, excessive alcohol consumption that generates disturbance, excessive noise especially during rest hours (22:00 to 08:00 hours), and any activity that may be considered immoral or illegal.</p>
+            
+            <h3>6.2 Protection of Minors</h3>
+            <p><strong>STRICT POLICY AGAINST CHILD ABUSE:</strong> Hotel Paradise maintains a zero tolerance policy towards any form of abuse, exploitation or child mistreatment. Strictly prohibited:</p>
+            <ul>
+              <li>Any form of physical, sexual, psychological or emotional abuse towards minors</li>
+              <li>Production, distribution, possession or viewing of child sexual abuse material</li>
+              <li>Child sex tourism or any related activity</li>
+              <li>Leaving minors without adequate supervision at hotel facilities</li>
+              <li>Allowing minors to access restricted areas or consume alcohol or prohibited substances</li>
+            </ul>
+            <p>Any suspicion or report of child abuse will be immediately reported to competent authorities (Public Ministry, DIF, Police) and will result in immediate expulsion from the hotel without refund, permanent access prohibition, and legal prosecution in accordance with the Federal Penal Code.</p>
+            
+            <h3>6.3 Minor Supervision</h3>
+            <p>Minors under 18 years must be accompanied and under constant supervision of their parents, legal guardians or duly identified responsible adults. Responsible adults are jointly responsible for all acts, damages and behaviors of minors under their care. The hotel reserves the right to request documentation that accredits the legal relationship between adults and minors.</p>
+            
+            <h3>6.4 Identification and Registration</h3>
+            <p>All guests over 16 years must present valid official identification with photograph at check-in. Foreign guests must present valid passport and, where applicable, valid immigration documents. The information provided must be truthful and any falsification will be reported to corresponding authorities.</p>
+            
+            <h3>6.5 Facility Care</h3>
+            <p>Guests are responsible for appropriate use and care of all facilities, furniture, equipment and hotel amenities. Any damage caused by negligence, intentional misuse or accident will be billed to the responsible guest. Damages include but are not limited to: breakage, permanent stains, loss of objects, damage to electronic systems, and any unauthorized modification to facilities.</p>
+            
+            <h3>6.6 Personal and Property Security</h3>
+            <p>Guests are responsible for the security of their personal belongings. Use of safes provided in rooms for valuables is strongly recommended. The hotel is not responsible for loss, theft or damage of personal belongings, including money, jewelry, documents, electronic equipment, vehicles or any other object, except when gross negligence of the hotel is demonstrated.</p>
+            
+            <h3>6.7 Compliance with Laws and Regulations</h3>
+            <p>Guests must comply with all federal, state and municipal Mexican laws, as well as hotel internal regulations. Use, possession or distribution of illegal substances, firearms or any object considered dangerous is prohibited. Non-compliance will result in immediate expulsion and report to authorities.</p>
+            
+            <h3>6.8 Commercial Activities</h3>
+            <p>Commercial, promotional or sales activities are prohibited on hotel premises without prior written authorization from management. This includes soliciting excessive tips, selling products or services, and any form of unauthorized commerce.</p>
+          </div>
+        </section>
+
+        <section id="section-7" class="content-section">
+          <h2>{{ getTranslation('sections.section7') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>7.1 Alcance de la Responsabilidad del Hotel</h3>
+            <p>La responsabilidad de Hotel Paradise se limita exclusivamente a la prestación de los servicios hoteleros contratados conforme a los estándares de la industria. El hotel no será responsable por daños indirectos, consecuenciales, punitivos, especiales o incidentales, incluyendo pero no limitándose a pérdida de ganancias, oportunidades de negocio, daño moral, o cualquier perjuicio que no sea resultado directo de negligencia comprobada del hotel.</p>
+            
+            <h3>7.2 Limitaciones por Caso Fortuito y Fuerza Mayor</h3>
+            <p>El hotel no será responsable por incumplimientos causados por circunstancias de caso fortuito o fuerza mayor, incluyendo pero no limitándose a: desastres naturales (terremotos, huracanes, inundaciones), actos de gobierno, guerra, terrorismo, disturbios civiles, huelgas, pandemias, cortes de servicios públicos, fallas en sistemas de terceros, o cualquier evento fuera del control razonable del hotel.</p>
+            
+            <h3>7.3 Servicios de Terceros</h3>
+            <p>El hotel actúa únicamente como intermediario en la contratación de servicios proporcionados por terceros (tours, excursiones, transporte, entretenimiento, servicios médicos). La responsabilidad por estos servicios recae exclusivamente en los proveedores externos, y el hotel no garantiza la calidad, seguridad o disponibilidad de dichos servicios.</p>
+            
+            <h3>7.4 Limitación Monetaria</h3>
+            <p>En cualquier caso, la responsabilidad total del hotel no excederá el monto total pagado por el huésped por los servicios específicos que dieron origen al reclamo. Esta limitación aplica independientemente de la teoría legal en que se base la reclamación (contractual, extracontractual, negligencia, etc.).</p>
+            
+            <h3>7.5 Exclusiones de Responsabilidad</h3>
+            <p>El hotel expresamente excluye su responsabilidad por:</p>
+            <ul>
+              <li>Enfermedades, lesiones o accidentes no causados por negligencia comprobada del hotel</li>
+              <li>Pérdida o robo de pertenencias personales no depositadas en cajas de seguridad</li>
+              <li>Daños a vehículos estacionados en las instalaciones</li>
+              <li>Problemas de salud preexistentes que se agraven durante la estancia</li>
+              <li>Conflictos entre huéspedes o con terceros</li>
+              <li>Fallas en servicios de telecomunicaciones o internet</li>
+              <li>Cambios en condiciones climáticas que afecten actividades</li>
+            </ul>
+            
+            <h3>7.6 Seguros Recomendados</h3>
+            <p>Se recomienda encarecidamente a los huéspedes contratar seguros de viaje que cubran gastos médicos, cancelaciones, y protección de pertenencias. El hotel puede facilitar información sobre proveedores de seguros pero no garantiza ni se responsabiliza por las coberturas ofrecidas.</p>
+            
+            <h3>7.7 Notificación de Reclamos</h3>
+            <p>Cualquier reclamo debe notificarse por escrito al hotel dentro de las 24 horas de ocurrido el incidente o, a más tardar, al momento del checkout. La falta de notificación oportuna podrá resultar en la pérdida del derecho a reclamar.</p>
+            
+            <h3>7.8 Grabaciones de Seguridad</h3>
+            <p><strong>POLÍTICA DE VIDEOVIGILANCIA:</strong> Las instalaciones del hotel cuentan con sistemas de circuito cerrado de televisión (CCTV) para fines de seguridad. Al aceptar estos términos, el huésped consiente expresamente ser grabado en áreas comunes. Las grabaciones se conservarán por un período de <strong>365 días</strong> y podrán ser utilizadas como evidencia en procedimientos legales, investigaciones de seguridad, o para proteger los intereses legítimos del hotel y sus huéspedes.</p>
+            
+            <h3>7.9 Conservación de Material Audiovisual</h3>
+            <p><strong>RETENCIÓN OBLIGATORIA:</strong> Todas las fotografías, videos, grabaciones de audio, y cualquier otro material audiovisual capturado en las instalaciones del hotel, ya sea por sistemas de seguridad, huéspedes, personal del hotel, o terceros, serán conservados por el hotel durante un período mínimo de <strong>365 días calendario</strong>. Esta retención es <strong>IRRENUNCIABLE</strong> y no podrá ser modificada por solicitud de los huéspedes. El material será eliminado automáticamente después de transcurrido dicho período, salvo que existan procedimientos legales pendientes que requieran su conservación adicional.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>7.1 Scope of Hotel Responsibility</h3>
+            <p>Hotel Paradise's responsibility is limited exclusively to providing contracted hotel services in accordance with industry standards. The hotel will not be responsible for indirect, consequential, punitive, special or incidental damages, including but not limited to loss of profits, business opportunities, moral damage, or any harm that is not a direct result of proven negligence by the hotel.</p>
+            
+            <h3>7.2 Limitations for Fortuitous Events and Force Majeure</h3>
+            <p>The hotel will not be responsible for non-compliance caused by fortuitous circumstances or force majeure, including but not limited to: natural disasters (earthquakes, hurricanes, floods), government acts, war, terrorism, civil unrest, strikes, pandemics, public service outages, third-party system failures, or any event beyond the hotel's reasonable control.</p>
+            
+            <h3>7.3 Third Party Services</h3>
+            <p>The hotel acts solely as intermediary in contracting services provided by third parties (tours, excursions, transportation, entertainment, medical services). Responsibility for these services lies exclusively with external providers, and the hotel does not guarantee the quality, safety or availability of such services.</p>
+            
+            <h3>7.4 Monetary Limitation</h3>
+            <p>In any case, the hotel's total responsibility will not exceed the total amount paid by the guest for the specific services that gave rise to the claim. This limitation applies regardless of the legal theory on which the claim is based (contractual, extra-contractual, negligence, etc.).</p>
+            
+            <h3>7.5 Responsibility Exclusions</h3>
+            <p>The hotel expressly excludes its responsibility for:</p>
+            <ul>
+              <li>Illnesses, injuries or accidents not caused by proven negligence of the hotel</li>
+              <li>Loss or theft of personal belongings not deposited in safes</li>
+              <li>Damage to vehicles parked at the facilities</li>
+              <li>Pre-existing health problems that worsen during the stay</li>
+              <li>Conflicts between guests or with third parties</li>
+              <li>Telecommunications or internet service failures</li>
+              <li>Changes in weather conditions affecting activities</li>
+            </ul>
+            
+            <h3>7.6 Recommended Insurance</h3>
+            <p>Guests are strongly recommended to contract travel insurance covering medical expenses, cancellations, and property protection. The hotel may provide information about insurance providers but does not guarantee or take responsibility for offered coverage.</p>
+            
+            <h3>7.7 Claim Notification</h3>
+            <p>Any claim must be notified in writing to the hotel within 24 hours of the incident occurring or, at the latest, at checkout time. Failure to provide timely notification may result in loss of the right to claim.</p>
+            
+            <h3>7.8 Security Recordings</h3>
+            <p><strong>VIDEO SURVEILLANCE POLICY:</strong> Hotel facilities have closed-circuit television (CCTV) systems for security purposes. By accepting these terms, the guest expressly consents to being recorded in common areas. Recordings will be preserved for a period of <strong>365 days</strong> and may be used as evidence in legal proceedings, security investigations, or to protect the legitimate interests of the hotel and its guests.</p>
+            
+            <h3>7.9 Conservation of Audiovisual Material</h3>
+            <p><strong>MANDATORY RETENTION:</strong> All photographs, videos, audio recordings, and any other audiovisual material captured at hotel facilities, whether by security systems, guests, hotel staff, or third parties, will be preserved by the hotel for a minimum period of <strong>365 calendar days</strong>. This retention is <strong>NON-WAIVABLE</strong> and cannot be modified by guest request. Material will be automatically deleted after said period expires, except when there are pending legal proceedings requiring additional conservation.</p>
+          </div>
+        </section>
+
+        <section id="section-8" class="content-section">
+          <h2>{{ getTranslation('sections.section8') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>8.1 Derecho de Modificación</h3>
+            <p>Hotel Paradise S.A. de C.V. se reserva el derecho unilateral e irrevocable de modificar, actualizar, enmendar o revisar estos términos y condiciones en cualquier momento, sin necesidad de consentimiento previo de los huéspedes, pero con la obligación de notificar dichos cambios a través de los medios de comunicación oficiales del hotel.</p>
+            
+            <h3>8.2 Medios de Notificación</h3>
+            <p>Las modificaciones serán notificadas a través de uno o más de los siguientes medios:</p>
+            <ul>
+              <li>Publicación en el sitio web oficial del hotel (www.hotelparadise.com)</li>
+              <li>Avisos colocados en lugares visibles de las instalaciones del hotel</li>
+              <li>Correo electrónico a las direcciones proporcionadas por los huéspedes</li>
+              <li>Mensajes de texto (SMS) a números telefónicos registrados</li>
+              <li>Notificaciones push en la aplicación móvil oficial</li>
+              <li>Anuncios en redes sociales oficiales del hotel</li>
+              <li>Comunicación directa durante el proceso de check-in</li>
+            </ul>
+            
+            <h3>8.3 Vigencia de las Modificaciones</h3>
+            <p>Las modificaciones entrarán en vigor inmediatamente después de su publicación o notificación, aplicándose a todas las reservas futuras y, en casos justificados por razones de seguridad o cumplimiento legal, a estancias en curso. Los huéspedes que no estén de acuerdo con las modificaciones tendrán derecho a cancelar reservas futuras sin penalización, siempre que la cancelación se realice dentro de las 48 horas posteriores a la notificación.</p>
+            
+            <h3>8.4 Aceptación Tácita</h3>
+            <p>El uso continuado de los servicios del hotel después de la entrada en vigor de las modificaciones constituirá aceptación tácita e irrevocable de los nuevos términos. Los huéspedes que no deseen aceptar las modificaciones deberán abstenerse de utilizar los servicios del hotel.</p>
+            
+            <h3>8.5 Modificaciones por Razones Legales</h3>
+            <p>En caso de que cambios en la legislación mexicana o internacional requieran modificaciones a estos términos, dichos cambios se implementarán automáticamente sin necesidad de notificación previa, prevaleciendo siempre el cumplimiento de la ley sobre cualquier disposición contractual.</p>
+            
+            <h3>8.6 Historial de Versiones</h3>
+            <p>El hotel mantendrá un registro de las versiones anteriores de estos términos y condiciones, disponible para consulta de los huéspedes por un período de 5 años. Los huéspedes podrán solicitar copias de versiones anteriores para fines legales o de referencia.</p>
+            
+            <h3>8.7 Prevalencia de Términos</h3>
+            <p>En caso de conflicto entre diferentes versiones de los términos y condiciones, prevalecerá siempre la versión más reciente publicada en el sitio web oficial del hotel. Los términos impresos o en formato físico serán válidos únicamente si coinciden con la versión digital actualizada.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>8.1 Right of Modification</h3>
+            <p>Hotel Paradise S.A. de C.V. reserves the unilateral and irrevocable right to modify, update, amend or revise these terms and conditions at any time, without need for prior guest consent, but with the obligation to notify such changes through the hotel's official communication channels.</p>
+            
+            <h3>8.2 Notification Channels</h3>
+            <p>Modifications will be notified through one or more of the following channels:</p>
+            <ul>
+              <li>Publication on the hotel's official website (www.hotelparadise.com)</li>
+              <li>Notices posted in visible places at hotel facilities</li>
+              <li>Email to addresses provided by guests</li>
+              <li>Text messages (SMS) to registered phone numbers</li>
+              <li>Push notifications on the official mobile app</li>
+              <li>Announcements on official hotel social media</li>
+              <li>Direct communication during check-in process</li>
+            </ul>
+            
+            <h3>8.3 Modification Effectiveness</h3>
+            <p>Modifications will take effect immediately after publication or notification, applying to all future reservations and, in cases justified by security or legal compliance reasons, to current stays. Guests who disagree with modifications will have the right to cancel future reservations without penalty, provided cancellation is made within 48 hours after notification.</p>
+            
+            <h3>8.4 Tacit Acceptance</h3>
+            <p>Continued use of hotel services after modifications take effect will constitute tacit and irrevocable acceptance of new terms. Guests who do not wish to accept modifications must refrain from using hotel services.</p>
+            
+            <h3>8.5 Modifications for Legal Reasons</h3>
+            <p>In case changes in Mexican or international legislation require modifications to these terms, such changes will be implemented automatically without need for prior notification, with legal compliance always prevailing over any contractual provision.</p>
+            
+            <h3>8.6 Version History</h3>
+            <p>The hotel will maintain a record of previous versions of these terms and conditions, available for guest consultation for a period of 5 years. Guests may request copies of previous versions for legal or reference purposes.</p>
+            
+            <h3>8.7 Term Prevalence</h3>
+            <p>In case of conflict between different versions of terms and conditions, the most recent version published on the hotel's official website will always prevail. Printed or physical format terms will be valid only if they match the updated digital version.</p>
+          </div>
+        </section>
+
+        <section id="section-9" class="content-section">
+          <h2>{{ getTranslation('sections.section9') }}</h2>
+          
+          <!-- Contenido en Español -->
+          <div class="text-content" *ngIf="currentLanguage === 'es'">
+            <h3>9.1 Información de Contacto Corporativo</h3>
+            <p><strong>Hotel Paradise S.A. de C.V.</strong><br>
+            Domicilio Social: Calle Principal #123, Colonia Centro, C.P. 45000, Belén, México<br>
+            Teléfono Principal: +52 (33) 1234-5678<br>
+            Línea de Emergencias 24/7: +52 (33) 1234-5679<br>
+            Correo Electrónico Corporativo: info&#64;hotelparadise.com<br>
+            Sitio Web Oficial: www.hotelparadise.com<br>
+            RFC: HPX-251012-MX7</p>
+            
+            <h3>9.2 Departamentos Especializados</h3>
+            <p><strong>Reservaciones:</strong><br>
+            Teléfono: +52 (33) 1234-5680<br>
+            Email: reservas&#64;hotelparadise.com<br>
+            Horario: Lunes a Domingo, 24 horas</p>
+            
+            <p><strong>Atención al Cliente:</strong><br>
+            Teléfono: +52 (33) 1234-5681<br>
+            Email: atencion&#64;hotelparadise.com<br>
+            Horario: Lunes a Viernes, 8:00 a 20:00 hrs; Sábados y Domingos, 9:00 a 18:00 hrs</p>
+            
+            <p><strong>Quejas y Sugerencias:</strong><br>
+            Teléfono: +52 (33) 1234-5682<br>
+            Email: quejas&#64;hotelparadise.com<br>
+            Horario: Lunes a Viernes, 9:00 a 17:00 hrs</p>
+            
+            <p><strong>Departamento Legal:</strong><br>
+            Teléfono: +52 (33) 1234-5683<br>
+            Email: legal&#64;hotelparadise.com<br>
+            Horario: Lunes a Viernes, 9:00 a 17:00 hrs</p>
+            
+            <h3>9.3 Representante Legal</h3>
+            <p>Lic. María Elena Rodríguez González<br>
+            Directora General y Representante Legal<br>
+            Cédula Profesional: 1234567<br>
+            Email: direccion&#64;hotelparadise.com</p>
+            
+            <h3>9.4 Procedimiento para Comunicaciones Oficiales</h3>
+            <p>Todas las comunicaciones oficiales, notificaciones legales, y documentos con efectos jurídicos deberán enviarse por escrito a través de:</p>
+            <ul>
+              <li>Correo certificado con acuse de recibo al domicilio social</li>
+              <li>Correo electrónico oficial con confirmación de lectura</li>
+              <li>Entrega personal en las oficinas administrativas del hotel</li>
+              <li>Mensajería especializada con comprobante de entrega</li>
+            </ul>
+            
+            <h3>9.5 Horarios de Atención</h3>
+            <p>Las oficinas administrativas del hotel operan en el siguiente horario:<br>
+            Lunes a Viernes: 8:00 a 18:00 horas<br>
+            Sábados: 9:00 a 14:00 horas<br>
+            Domingos y días festivos: Cerrado (excepto emergencias)</p>
+            
+            <h3>9.6 Tiempo de Respuesta</h3>
+            <p>El hotel se compromete a responder comunicaciones en los siguientes plazos:</p>
+            <ul>
+              <li>Emergencias: Inmediato (máximo 30 minutos)</li>
+              <li>Consultas generales: 24 horas hábiles</li>
+              <li>Quejas y reclamaciones: 72 horas hábiles</li>
+              <li>Asuntos legales: 5 días hábiles</li>
+              <li>Solicitudes de información: 48 horas hábiles</li>
+            </ul>
+            
+            <h3>9.7 Autoridades Competentes</h3>
+            <p>En caso de requerir intervención de autoridades, las instancias competentes son:</p>
+            <p><strong>PROFECO (Procuraduría Federal del Consumidor):</strong><br>
+            Delegación Jalisco: +52 (33) 3668-1200<br>
+            Sitio web: www.profeco.gob.mx</p>
+            
+            <p><strong>Secretaría de Turismo de Jalisco:</strong><br>
+            Teléfono: +52 (33) 3668-1600<br>
+            Email: turismo&#64;jalisco.gob.mx</p>
+            
+            <h3>9.8 Validez de la Información</h3>
+            <p>Toda la información de contacto proporcionada en este documento es válida a la fecha de la última actualización. El hotel se compromete a mantener actualizada esta información y notificar cualquier cambio conforme a los procedimientos establecidos en la sección de modificaciones.</p>
+          </div>
+
+          <!-- Contenido en Inglés -->
+          <div class="text-content" *ngIf="currentLanguage === 'en'">
+            <h3>9.1 Corporate Contact Information</h3>
+            <p><strong>Hotel Paradise S.A. de C.V.</strong><br>
+            Corporate Address: Calle Principal #123, Colonia Centro, C.P. 45000, Belén, Mexico<br>
+            Main Phone: +52 (33) 1234-5678<br>
+            24/7 Emergency Line: +52 (33) 1234-5679<br>
+            Corporate Email: info&#64;hotelparadise.com<br>
+            Official Website: www.hotelparadise.com<br>
+            Tax ID: HPX-251012-MX7</p>
+            
+            <h3>9.2 Specialized Departments</h3>
+            <p><strong>Reservations:</strong><br>
+            Phone: +52 (33) 1234-5680<br>
+            Email: reservas&#64;hotelparadise.com<br>
+            Hours: Monday to Sunday, 24 hours</p>
+            
+            <p><strong>Customer Service:</strong><br>
+            Phone: +52 (33) 1234-5681<br>
+            Email: atencion&#64;hotelparadise.com<br>
+            Hours: Monday to Friday, 8:00 to 20:00 hrs; Saturday and Sunday, 9:00 to 18:00 hrs</p>
+            
+            <p><strong>Complaints and Suggestions:</strong><br>
+            Phone: +52 (33) 1234-5682<br>
+            Email: quejas&#64;hotelparadise.com<br>
+            Hours: Monday to Friday, 9:00 to 17:00 hrs</p>
+            
+            <p><strong>Legal Department:</strong><br>
+            Phone: +52 (33) 1234-5683<br>
+            Email: legal&#64;hotelparadise.com<br>
+            Hours: Monday to Friday, 9:00 to 17:00 hrs</p>
+            
+            <h3>9.3 Legal Representative</h3>
+            <p>Lic. María Elena Rodríguez González<br>
+            General Director and Legal Representative<br>
+            Professional License: 1234567<br>
+            Email: direccion&#64;hotelparadise.com</p>
+            
+            <h3>9.4 Official Communications Procedure</h3>
+            <p>All official communications, legal notifications, and documents with legal effects must be sent in writing through:</p>
+            <ul>
+              <li>Certified mail with acknowledgment of receipt to the corporate address</li>
+              <li>Official email with read confirmation</li>
+              <li>Personal delivery at hotel administrative offices</li>
+              <li>Specialized courier with delivery receipt</li>
+            </ul>
+            
+            <h3>9.5 Service Hours</h3>
+            <p>Hotel administrative offices operate on the following schedule:<br>
+            Monday to Friday: 8:00 to 18:00 hours<br>
+            Saturdays: 9:00 to 14:00 hours<br>
+            Sundays and holidays: Closed (except emergencies)</p>
+            
+            <h3>9.6 Response Time</h3>
+            <p>The hotel commits to respond to communications within the following timeframes:</p>
+            <ul>
+              <li>Emergencies: Immediate (maximum 30 minutes)</li>
+              <li>General inquiries: 24 business hours</li>
+              <li>Complaints and claims: 72 business hours</li>
+              <li>Legal matters: 5 business days</li>
+              <li>Information requests: 48 business hours</li>
+            </ul>
+            
+            <h3>9.7 Competent Authorities</h3>
+            <p>In case of requiring authority intervention, competent instances are:</p>
+            <p><strong>PROFECO (Federal Consumer Protection Agency):</strong><br>
+            Jalisco Delegation: +52 (33) 3668-1200<br>
+            Website: www.profeco.gob.mx</p>
+            
+            <p><strong>Jalisco Tourism Secretariat:</strong><br>
+            Phone: +52 (33) 3668-1600<br>
+            Email: turismo&#64;jalisco.gob.mx</p>
+            
+            <h3>9.8 Information Validity</h3>
+            <p>All contact information provided in this document is valid as of the last update date. The hotel commits to keeping this information updated and notifying any changes according to procedures established in the modifications section.</p>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    <div class="footer-content">
+      <button class="scroll-top-btn" (click)="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+        {{ getTranslation('scrollTop') }}
+      </button>
+      <p>{{ getTranslation('copyright') }}</p>
+    </div>
+  </footer>
+</div>
